@@ -143,9 +143,7 @@ class _LoginState extends State<Login> {
                                                   context,
                                                 );
                                               }
-                                              // Get.to(Home());
                                             },
-                                            // label: 'Login',
                                             label:
                                                 _authService.isLoading.isFalse
                                                     ? 'Log In'
