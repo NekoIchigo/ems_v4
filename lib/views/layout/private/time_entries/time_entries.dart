@@ -30,21 +30,13 @@ class _TimeEntriesState extends State<TimeEntries> {
               left: 0,
               right: 0,
               child: Container(
-                height: Get.height * .12,
-                padding: const EdgeInsets.only(top: 10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      bgPrimaryBlue.withOpacity(0.9),
-                      bgSecondaryBlue.withOpacity(0.9),
-                    ],
-                  ),
-                ),
+                height: Get.height * .16,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                color: bgPrimaryBlue,
                 child: Image.asset(
                   'assets/images/EMS_logo.png',
-                  height: 85,
+                  height: 50,
                 ),
               ),
             ),
@@ -55,7 +47,7 @@ class _TimeEntriesState extends State<TimeEntries> {
               child: Center(
                 child: Container(
                   alignment: Alignment.center,
-                  height: Get.height * .9,
+                  height: Get.height * .86,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:

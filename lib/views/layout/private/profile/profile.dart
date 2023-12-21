@@ -26,14 +26,13 @@ class _ProfileState extends State<Profile> {
               left: 0,
               right: 0,
               child: Container(
-                height: Get.height * .12,
-                padding: const EdgeInsets.only(top: 10),
-                decoration: const BoxDecoration(
-                  color: bgPrimaryBlue,
-                ),
+                height: Get.height * .16,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                color: bgPrimaryBlue,
                 child: Image.asset(
                   'assets/images/EMS_logo.png',
-                  height: 85,
+                  height: 50,
                 ),
               ),
             ),
@@ -44,7 +43,7 @@ class _ProfileState extends State<Profile> {
               child: Center(
                 child: Container(
                   alignment: Alignment.center,
-                  height: Get.height * .9,
+                  height: Get.height * .86,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:

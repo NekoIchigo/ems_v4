@@ -132,26 +132,26 @@ class _LoginState extends State<Login> {
                                                   )),
                                             ],
                                           ),
-                                          // Obx(() =>
-                                          RoundedCustomButton(
-                                            onPressed: () async {
-                                              if (_authService
-                                                  .isLoading.isFalse) {
-                                                _authService.login(
-                                                  _emailController.text,
-                                                  _passwordController.text,
-                                                  context,
-                                                );
-                                              }
-                                            },
-                                            label:
-                                                _authService.isLoading.isFalse
-                                                    ? 'Log In'
-                                                    : 'Logging In...',
-                                            radius: 50,
-                                            size: Size(Get.width, 50),
+                                          Obx(
+                                            () => RoundedCustomButton(
+                                              onPressed: () async {
+                                                if (_authService
+                                                    .isLoading.isFalse) {
+                                                  _authService.login(
+                                                    _emailController.text,
+                                                    _passwordController.text,
+                                                    context,
+                                                  );
+                                                }
+                                              },
+                                              label:
+                                                  _authService.isLoading.isFalse
+                                                      ? 'Log In'
+                                                      : 'Logging In...',
+                                              radius: 50,
+                                              size: Size(Get.width, 50),
+                                            ),
                                           ),
-                                          // ),
                                           Container(
                                             width: Get.width * .55,
                                             alignment: Alignment.center,

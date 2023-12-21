@@ -44,9 +44,7 @@ class _HomeState extends State<Home> {
                 height: Get.height * .16,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                decoration: const BoxDecoration(
-                  color: bgPrimaryBlue,
-                ),
+                color: bgPrimaryBlue,
                 child: Image.asset(
                   'assets/images/EMS_logo.png',
                   height: 50,
@@ -97,17 +95,5 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
-    // Scaffold(
-    //   backgroundColor: primaryBlue,
-    //   body: Center(
-    //     child: Obx(
-    //       () => Text(
-    //         DateFormat("hh:mm a").format(
-    //           _settings.currentTime.value,
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

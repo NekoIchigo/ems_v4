@@ -18,18 +18,9 @@ class InOutPage extends StatefulWidget {
 
 class _InOutPageState extends State<InOutPage> {
   final AuthService _authViewService = Get.find<AuthService>();
-  // final InitLoadController _initLoadController = Get.find<InitLoadController>();
   final Settings _settings = Get.find<Settings>();
   final HomeController _homeController = Get.find<HomeController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
-
-  @override
-  void initState() {
-    // _initLoadController.getServerTime().then((value) {
-    //   _initLoadController.updateCurrentTime();
-    // });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
