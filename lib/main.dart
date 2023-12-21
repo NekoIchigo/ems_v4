@@ -4,6 +4,7 @@ import 'package:ems_v4/global/guards/auth_guard.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
+import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,13 +35,54 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/login',
+      initialRoute: '/',
       getPages: [
         GetPage(name: '/login', page: () => const Login()),
         GetPage(
-            name: '/home',
-            page: () => const Home(),
-            middlewares: [AuthGuard()]),
+          name: '/',
+          page: () => const MainNavigation(),
+          middlewares: [AuthGuard()],
+          children: [
+            GetPage(
+              name: '/home',
+              page: () => const Home(),
+              middlewares: [AuthGuard()],
+              // children: [
+              //   GetPage(
+              //     name: '/home/in_out',
+              //     page: () => const InOutPage(),
+              //   ),
+              //   GetPage(
+              //     name: '/home/info',
+              //     page: () => const HomeInfoPage(),
+              //   ),
+              //   GetPage(
+              //     name: '/home/result',
+              //     page: () => const HomeResultPage(),
+              //   ),
+              //   GetPage(
+              //     name: '/home/health_declaration',
+              //     page: () => const HealthDeclaration(),
+              //   ),
+              // ],
+            ),
+            // GetPage(
+            //   name: '/time_entries',
+            //   page: () => const TimeEntries(),
+            //   middlewares: [AuthGuard()],
+            // ),
+            // GetPage(
+            //   name: '/transactions',
+            //   page: () => const Transactions(),
+            //   middlewares: [AuthGuard()],
+            // ),
+            // GetPage(
+            //   name: '/profile',
+            //   page: () => const Profile(),
+            //   middlewares: [AuthGuard()],
+            // ),
+          ],
+        ),
       ],
     );
   }

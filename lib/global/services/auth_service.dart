@@ -102,7 +102,7 @@ class AuthService extends GetxService {
           gender: employeeData['gender'],
           civilStatus: employeeData['civil_status'],
         ).obs;
-        Get.toNamed('/home');
+        Get.toNamed('/');
       } else {
         await EMSDialog(
           title: "Opps!",

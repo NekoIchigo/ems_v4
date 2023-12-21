@@ -101,8 +101,8 @@ class _MainNavigationState extends State<MainNavigation> {
             curve: Curves.easeInOut,
           );
         },
-        kIconSize: 20,
-        kBottomRadius: 20,
+        kIconSize: 25,
+        kBottomRadius: 15,
       ),
     );
   }
