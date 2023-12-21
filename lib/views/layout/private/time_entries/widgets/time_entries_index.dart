@@ -148,11 +148,15 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                         ),
                                       ),
                                       const Spacer(),
-                                      Text(
-                                        attendance.clockedInLocationType!,
-                                        style: const TextStyle(
-                                          color: darkGray,
-                                          fontSize: 14,
+                                      SizedBox(
+                                        width: 50,
+                                        child: Text(
+                                          attendance.clockedInLocationType!,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            color: darkGray,
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -177,11 +181,15 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                           ),
                                         ),
                                         const Spacer(),
-                                        Text(
-                                          attendance.clockedOutLocationType!,
-                                          style: const TextStyle(
-                                            color: darkGray,
-                                            fontSize: 14,
+                                        SizedBox(
+                                          width: 50,
+                                          child: Text(
+                                            attendance.clockedOutLocationType!,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: darkGray,
+                                              fontSize: 14,
+                                            ),
                                           ),
                                         ),
                                       ],
