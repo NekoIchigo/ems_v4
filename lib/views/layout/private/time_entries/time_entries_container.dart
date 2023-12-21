@@ -1,6 +1,6 @@
-import 'package:ems_v3/View/private/time_entries/widgets/attendance_log.dart';
-import 'package:ems_v3/View/private/time_entries/widgets/time_entries_index.dart';
-import 'package:ems_v3/ViewModel/time_entries_controller.dart';
+import 'package:ems_v4/controller/time_entries_controller.dart';
+import 'package:ems_v4/views/layout/private/time_entries/widgets/attendance_log.dart';
+import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

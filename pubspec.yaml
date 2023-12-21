@@ -22,6 +22,8 @@ dependencies:
   flutter_device_type: ^0.4.0
   loading_animation_widget: ^1.2.0+4
   animated_notch_bottom_bar: ^1.0.1
+  calendar_date_picker2: ^0.5.3
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
