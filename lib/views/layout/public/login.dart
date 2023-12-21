@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
 
@@ -20,7 +21,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  // final AuthService _authService = Get.find<AuthService>();
+  final AuthService _authService = Get.find<AuthService>();
   final Settings _settings = Get.find<Settings>();
   final ApiCall apiCall = ApiCall();
   final TextEditingController _emailController = TextEditingController();
@@ -138,19 +139,19 @@ class _LoginState extends State<Login> {
                                           // Obx(() =>
                                           RoundedCustomButton(
                                             onPressed: () async {
-                                              // if (_authService.isLoading.isFalse) {
-                                              //   _authService.login(
-                                              //     _emailController.text,
-                                              //     _passwordController.text,
-                                              //     context,
-                                              //   );
-                                              // }
-                                              Get.to(Home());
+                                              if (_authService.isLoading.isFalse) {
+                                                _authService.login(
+                                                  _emailController.text,
+                                                  _passwordController.text,
+                                                  context,
+                                                );
+                                              }
+                                              // Get.to(Home());
                                             },
-                                            label: 'Login',
-                                            // label: _authService.isLoading.isFalse
-                                            //     ? 'Log In'
-                                            //     : 'Logging In...',
+                                            // label: 'Login',
+                                            label: _authService.isLoading.isFalse
+                                                ? 'Log In'
+                                                : 'Logging In...',
                                             radius: 50,
                                             size: Size(Get.width, 50),
                                           ),

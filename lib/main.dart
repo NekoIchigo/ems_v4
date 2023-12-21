@@ -1,6 +1,8 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/guards/auth_guard.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
+import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +31,14 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const Login(),
+      initialRoute: '/login',
+      getPages: [
+        GetPage(name: '/login', page: () => const Login()),
+        GetPage(
+            name: '/home',
+            page: () => const Home(),
+            middlewares: [AuthGuard()]),
+      ],
     );
   }
 }

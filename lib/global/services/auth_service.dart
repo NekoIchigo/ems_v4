@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
 import 'package:ems_v4/models/user.dart';
+import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +24,18 @@ class AuthService extends GetxService {
   late Rx<Employee> employee;
 
   Future<AuthService> init() async {
+    localStorage = await SharedPreferences.getInstance();
+    token = localStorage.getString('token');
+    if (token != null) {
+      var response = await apiCall.getRequest('/check-token');
+      var result = jsonDecode(response.body);
+      if (!result['token']) {
+        Get.toNamed('/login');
+      } else {
+        setAuthStatus();
+      }
+    }
+    autheticated.value = token != null;
     return this;
   }
 
@@ -48,10 +62,6 @@ class AuthService extends GetxService {
         gender: employeeData['gender'],
         civilStatus: employeeData['civil_status'],
       ).obs;
-
-      print('data: $data');
-      print('emplyeeData: ${employee.value}');
-      print('companyData: $companyData');
     }
   }
 
@@ -65,6 +75,7 @@ class AuthService extends GetxService {
         },
         '/mobile/login',
       );
+
       var result = jsonDecode(response.body);
 
       if (result['success']) {
@@ -93,7 +104,7 @@ class AuthService extends GetxService {
           gender: employeeData['gender'],
           civilStatus: employeeData['civil_status'],
         ).obs;
-        Get.toNamed('/');
+        Get.toNamed('/home');
       } else {
         await EMSDialog(
           title: "Opps!",
