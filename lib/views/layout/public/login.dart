@@ -41,16 +41,16 @@ class _LoginState extends State<Login> {
           height: Get.height,
           width: Get.width,
           child: Container(
-            decoration: const BoxDecoration(
-              color: bgPrimaryBlue,
-              // gradient: LinearGradient(
-              //   begin: Alignment.topCenter,
-              //   end: Alignment.bottomCenter,
-              //   colors: [
-              //     bgPrimaryBlue.withOpacity(0.9),
-              //     bgSecondaryBlue.withOpacity(0.9),
-              //   ],
-              // ),
+            decoration: BoxDecoration(
+              // color: bgPrimaryBlue,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  bgPrimaryBlue.withOpacity(0.9),
+                  bgSecondaryBlue.withOpacity(0.9),
+                ],
+              ),
             ),
             child: Column(
               children: [
