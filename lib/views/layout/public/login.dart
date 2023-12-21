@@ -3,7 +3,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
+import 'package:ems_v4/views/widgets/inputs/underline_input.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -100,13 +100,13 @@ class _LoginState extends State<Login> {
                                               ),
                                             ),
                                           ),
-                                          FloatingInput(
+                                          UnderlineInput(
                                             label: 'Email',
                                             isPassword: false,
                                             textController: _emailController,
                                             icon: Icons.mail,
                                           ),
-                                          FloatingInput(
+                                          UnderlineInput(
                                             label: 'Password',
                                             isPassword: true,
                                             textController: _passwordController,
