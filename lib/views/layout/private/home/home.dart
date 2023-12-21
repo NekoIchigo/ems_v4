@@ -41,21 +41,15 @@ class _HomeState extends State<Home> {
               left: 0,
               right: 0,
               child: Container(
-                height: Get.height * .12,
-                padding: const EdgeInsets.only(top: 10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      bgPrimaryBlue.withOpacity(0.9),
-                      bgSecondaryBlue.withOpacity(0.9),
-                    ],
-                  ),
+                height: Get.height * .16,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                decoration: const BoxDecoration(
+                  color: bgPrimaryBlue,
                 ),
                 child: Image.asset(
                   'assets/images/EMS_logo.png',
-                  height: 85,
+                  height: 50,
                 ),
               ),
             ),
@@ -64,39 +58,40 @@ class _HomeState extends State<Home> {
               right: 0,
               left: 0,
               child: Center(
-                  child: Obx(
-                () => Container(
-                  alignment: Alignment.center,
-                  height: Get.height * .9,
-                  decoration: _homeController.isWhite.isTrue
-                      ? const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20)),
-                        )
-                      : const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/tiles-bg.png'),
-                            fit: BoxFit.fill,
+                child: Obx(
+                  () => Container(
+                    alignment: Alignment.center,
+                    height: Get.height * .86,
+                    decoration: _homeController.isWhite.isTrue
+                        ? const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
+                          )
+                        : const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/tiles-bg.png'),
+                              fit: BoxFit.fill,
+                            ),
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
                           ),
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: Get.height * .78,
+                          child: _homeController.isLoading.isTrue
+                              ? const Loading()
+                              : const HomePageContiner(),
                         ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: Get.height * .78,
-                        child: _homeController.isLoading.isTrue
-                            ? const Loading()
-                            : const HomePageContiner(),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              )),
+              ),
             ),
           ],
         ),

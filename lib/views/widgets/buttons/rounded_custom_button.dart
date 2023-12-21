@@ -2,7 +2,6 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class RoundedCustomButton extends StatefulWidget {
   final void Function() onPressed;
   final String label;
@@ -33,7 +32,6 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
           fixedSize: widget.size,
-          textStyle: TextStyle(color: widget.textColor ?? Colors.white),
           alignment: Alignment.center,
           shape: RoundedRectangleBorder(
               borderRadius:
@@ -42,7 +40,7 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
         ),
         child: Text(
           widget.label,
-          style: GoogleFonts.plusJakartaSans(fontSize: 16),
+          style: TextStyle(color: widget.textColor ?? Colors.white),
         ),
       ),
     );

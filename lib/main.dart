@@ -1,3 +1,4 @@
+import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/guards/auth_guard.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -21,12 +22,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(HomeController());
+    // Get.put(TimeEntriesController());
+
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         textTheme: GoogleFonts.plusJakartaSansTextTheme(),
         colorScheme: ColorScheme.fromSeed(
-          primary: Colors.white,
           seedColor: bgPrimaryBlue,
         ),
         useMaterial3: true,

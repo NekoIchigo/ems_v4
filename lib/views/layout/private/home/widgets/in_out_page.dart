@@ -1,4 +1,3 @@
-
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -20,7 +19,7 @@ class InOutPage extends StatefulWidget {
 class _InOutPageState extends State<InOutPage> {
   final AuthService _authViewService = Get.find<AuthService>();
   // final InitLoadController _initLoadController = Get.find<InitLoadController>();
-    final Settings _settings = Get.find<Settings>();
+  final Settings _settings = Get.find<Settings>();
   final HomeController _homeController = Get.find<HomeController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
@@ -47,7 +46,7 @@ class _InOutPageState extends State<InOutPage> {
             margin: const EdgeInsets.only(top: 40),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             color: Colors.white,
-            height: Get.height * .17,
+            height: Get.height * .19,
             width: Get.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +94,7 @@ class _InOutPageState extends State<InOutPage> {
             ),
           ),
           SizedBox(
-            height: Get.height * .40,
+            height: Get.height * .35,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -103,13 +102,13 @@ class _InOutPageState extends State<InOutPage> {
                     ? Positioned(
                         top: 0,
                         child: Image.asset('assets/images/EMS1.png',
-                            width: Get.width * .75),
+                            width: Get.width * .65),
                       )
                     : Stack(
                         alignment: Alignment.center,
                         children: [
                           Positioned(
-                            top: 0,
+                            top: -30,
                             child: _homeController.isClockOut.isTrue
                                 ? Lottie.asset("assets/lottie/Clock-out.json",
                                     width: 300)
@@ -117,7 +116,7 @@ class _InOutPageState extends State<InOutPage> {
                                     width: 300),
                           ),
                           Positioned(
-                            top: 72,
+                            top: 50,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 minimumSize:
@@ -155,6 +154,7 @@ class _InOutPageState extends State<InOutPage> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 24,
+                                  color: Colors.white,
                                   shadows: <Shadow>[
                                     Shadow(
                                       offset: const Offset(0.0, 5.0),
@@ -199,7 +199,7 @@ class _InOutPageState extends State<InOutPage> {
             margin: const EdgeInsets.only(top: 10),
             padding: const EdgeInsets.all(10),
             color: Colors.white,
-            height: Get.height * .12,
+            height: Get.height * .14,
             width: Get.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
