@@ -14,8 +14,6 @@ class HomePageContiner extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeController homeController = Get.find<HomeController>();
 
-    // final currentRoute = Get.currentRoute;
-
     return Obx(() {
       switch (homeController.pageName.value) {
         case '/home/info':

@@ -2,6 +2,7 @@
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class InOutPage extends StatefulWidget {
 class _InOutPageState extends State<InOutPage> {
   final AuthService _authViewService = Get.find<AuthService>();
   // final InitLoadController _initLoadController = Get.find<InitLoadController>();
+    final Settings _settings = Get.find<Settings>();
   final HomeController _homeController = Get.find<HomeController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
@@ -33,10 +35,9 @@ class _InOutPageState extends State<InOutPage> {
   @override
   Widget build(BuildContext context) {
     Attendance attendance = _homeController.attendance.value;
-    DateTime currentTime =
-        DateTime.now(); //_initLoadController.currentTime.value;
+    DateTime currentTime = _settings.currentTime.value;
     final String date = DateFormat("EEE, MMM dd").format(currentTime);
-    final String greetings = 'hello'; //_initLoadController.getGreeting();
+    final String greetings = _settings.getGreeting();
 
     return Obx(
       () => Column(
@@ -171,10 +172,9 @@ class _InOutPageState extends State<InOutPage> {
                   bottom: 20,
                   child: Column(
                     children: [
-                      const Text(
-                        'Time',
-                        // DateFormat("hh:mm a")
-                        //     .format(_initLoadController.currentTime.value),
+                      Text(
+                        DateFormat("hh:mm a")
+                            .format(_settings.currentTime.value),
                         style: TextStyle(
                           color: darkGray,
                           fontSize: 28,
