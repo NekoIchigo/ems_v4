@@ -38,33 +38,26 @@ class _LoginState extends State<Login> {
           height: Get.height,
           width: Get.width,
           child: Container(
-            decoration: BoxDecoration(
-              // color: bgPrimaryBlue,
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  bgPrimaryBlue.withOpacity(0.9),
-                  bgSecondaryBlue.withOpacity(0.9),
-                ],
-              ),
-            ),
+            color: Colors.white,
             child: Column(
               children: [
-                Expanded(
-                  flex: 2,
-                  child: Image.asset(
-                    'assets/images/EMS_logo.png',
-                    width: Get.width * .9,
+                SizedBox(
+                  height: Get.height * 0.13,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Image.asset(
+                      'assets/images/EMS_logo_Blue.png',
+                      width: Get.width,
+                    ),
                   ),
                 ),
-                Expanded(
-                  flex: 8,
+                SizedBox(
+                  height: Get.height * 0.82,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: SizedBox(
                       width: Get.width,
-                      height: Get.height * 0.80,
+                      height: Get.height * 0.81,
                       child: Stack(
                         alignment: Alignment.topCenter,
                         children: [
@@ -72,24 +65,25 @@ class _LoginState extends State<Login> {
                             bottom: 0,
                             left: 0,
                             right: 0,
-                            height: Get.height * .55,
+                            height: Get.height * .45,
                             child: Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               padding: const EdgeInsets.all(20),
                               decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(30.0),
-                                ),
+                                color: bgPrimaryBlue,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30.0)),
                               ),
                               child: Column(
                                 children: [
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 25),
                                   const Text(
                                     'Welcome',
                                     style: TextStyle(
                                         fontSize: 26,
                                         fontWeight: FontWeight.w600,
-                                        color: primaryBlue),
+                                        color: Colors.white),
                                   ),
                                   Expanded(
                                     child: SingleChildScrollView(
@@ -102,7 +96,7 @@ class _LoginState extends State<Login> {
                                               'Login to continue',
                                               style: TextStyle(
                                                 fontSize: 13,
-                                                color: darkGray,
+                                                color: Colors.white,
                                               ),
                                             ),
                                           ),
@@ -127,7 +121,7 @@ class _LoginState extends State<Login> {
                                                   child: const Text(
                                                     'Forgot Password?',
                                                     style: TextStyle(
-                                                      color: darkGray,
+                                                      color: Colors.white,
                                                     ),
                                                   )),
                                             ],
@@ -152,51 +146,6 @@ class _LoginState extends State<Login> {
                                               size: Size(Get.width, 50),
                                             ),
                                           ),
-                                          Container(
-                                            width: Get.width * .55,
-                                            alignment: Alignment.center,
-                                            child: Text.rich(
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: gray,
-                                                height: 1.5,
-                                                fontSize: 12,
-                                              ),
-                                              TextSpan(children: [
-                                                const TextSpan(
-                                                  text:
-                                                      'By logging in, you agree to our ',
-                                                ),
-                                                TextSpan(
-                                                  text: 'Privacy Policy ',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          _launchInBrowser(
-                                                              'https://happyhousekeepers.com.ph/privacy-policy');
-                                                        },
-                                                ),
-                                                const TextSpan(
-                                                  text: 'and ',
-                                                ),
-                                                TextSpan(
-                                                  text: 'Terms of User',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          _launchInBrowser(
-                                                              'https://happyhousekeepers.com.ph/privacy-policy');
-                                                        },
-                                                )
-                                              ]),
-                                            ),
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -206,15 +155,51 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           Positioned(
-                            top: -20,
+                            top: -10,
                             child: Image.asset(
                               'assets/images/EMS1.png',
-                              width: Get.width * .8,
+                              width: Get.width * .75,
                             ),
                           ),
                         ],
                       ),
                     ),
+                  ),
+                ),
+                Container(
+                  child: Text.rich(
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: bgPrimaryBlue,
+                      height: 1.5,
+                      fontSize: 12,
+                    ),
+                    TextSpan(children: [
+                      const TextSpan(
+                        text: 'By logging in, you agree to our ',
+                      ),
+                      TextSpan(
+                        text: 'Privacy Policy ',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _launchInBrowser(
+                                'https://happyhousekeepers.com.ph/privacy-policy');
+                          },
+                      ),
+                      const TextSpan(
+                        text: 'and ',
+                      ),
+                      TextSpan(
+                        text: 'Terms of User',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _launchInBrowser(
+                                'https://happyhousekeepers.com.ph/privacy-policy');
+                          },
+                      )
+                    ]),
                   ),
                 ),
               ],
