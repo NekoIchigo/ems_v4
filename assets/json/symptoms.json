@@ -1,0 +1,70 @@
+{
+    "symptoms": [
+        {
+            "path": "assets/images/hdf/Fever.png", 
+            "state" : false,
+            "descriptionEnglish": "Fever",
+            "descriptionTagalog": "Lagnat"
+        },
+        {
+            "path": "assets/images/hdf/Cough.png", 
+            "state" : false,
+            "descriptionEnglish": "Dry Cough",
+            "descriptionTagalog": "Tuyong Ubo"
+        },
+        {
+          "path": "assets/images/hdf/Sore-Throat.png", 
+          "state" : false,
+          "descriptionEnglish": "Sore Throat",
+          "descriptionTagalog": "Namamagang lalamunan"
+        },
+        {
+          "path": "assets/images/hdf/Breathlessness.png", 
+          "state" : false,
+          "descriptionEnglish": "Shortness of Breath",
+          "descriptionTagalog": "Hirap sa paghinga"
+        },
+        {
+          "path": "assets/images/hdf/No-Smell.png", 
+          "state" : false,
+          "descriptionEnglish": "Loss of Smell/Taste",
+          "descriptionTagalog": "Pagkawala ng pang-amoy at panglasa"
+        },
+        {
+          "path": "assets/images/hdf/Colds.png", 
+          "state" : false,
+          "descriptionEnglish": "Runny Nose",
+          "descriptionTagalog": "Sipon"
+        },
+        {
+          "path": "assets/images/hdf/Fatigue.png", 
+          "state" : false,
+          "descriptionEnglish": "Fatigue",
+          "descriptionTagalog": "Pagkapagod"
+        },
+        {
+          "path": "assets/images/hdf/Aches.png", 
+          "state" : false,
+          "descriptionEnglish": "Aches and Pains",
+          "descriptionTagalog": "Pananakit ng katawan"
+        },
+        {
+          "path": "assets/images/hdf/Diarrhea.png", 
+          "state" : false,
+          "descriptionEnglish": "Diarrhea",
+          "descriptionTagalog": "Pagdudumi"
+        },
+        {
+          "path": "assets/images/hdf/Headache.png", 
+          "state" : false,
+          "descriptionEnglish": "Headache",
+          "descriptionTagalog": "Pananakit ng ulo"
+        },
+        {
+          "path": "assets/images/hdf/none.png", 
+          "state" : false,
+          "descriptionEnglish": "None of the Above",
+          "descriptionTagalog": "Wala sa nabanggit"
+        }
+    ]
+}

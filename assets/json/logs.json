@@ -1,0 +1,116 @@
+{
+    "logs":[
+        {
+            "clock_in" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "clock_out" : {
+                "date" : "--",
+                "time" : "--",
+                "location_type" : "--",
+                "location" : "--"
+            },
+            "hours_worked" : "--",
+            "health Check" : "NO SYMPTOMS"
+        },
+        {
+            "clock_in" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "clock_out" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "hours_worked" : "9h0m",
+            "health Check" : "NO SYMPTOMS"
+        },
+        {
+            "clock_in" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "clock_out" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "hours_worked" : "9h0m",
+            "health Check" : "WITH SYMPTOMS"
+        },
+        {
+            "clock_in" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "clock_out" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "hours_worked" : "9h0m",
+            "health Check" : "WITH SYMPTOMS"
+        },
+        {
+            "clock_in" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "clock_out" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "hours_worked" : "9h0m",
+            "health Check" : "WITH SYMPTOMS"
+        },
+        {
+            "clock_in" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "clock_out" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "hours_worked" : "9h0m",
+            "health Check" : "WITH SYMPTOMS"
+        },
+        {
+            "clock_in" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "clock_out" : {
+                "date" : "11/13/2021",
+                "time" : "9:00",
+                "location_type" : "Within Vicinity",
+                "location" : "GlobalSpaces Shaw"
+            },
+            "hours_worked" : "9h0m",
+            "health Check" : "WITH SYMPTOMS"
+        }
+    ]
+}

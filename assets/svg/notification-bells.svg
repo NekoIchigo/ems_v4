@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24" xml:space="preserve">
+    <style>
+        .st1{display:none}.st2{display:inline}.st3{fill:none;stroke:#cecece;stroke-width:.1;stroke-miterlimit:10}
+    </style>
+    <path style="fill:none" d="M0 0h24v24H0z" id="bounding_box"/>
+    <path d="m19.92 16.92-1.79-3.58c-.08-.18-.13-.37-.13-.56V10c0-3.06-2.29-5.58-5.25-5.95v-1.3c0-.41-.34-.75-.75-.75s-.75.34-.75.75v1.3A5.998 5.998 0 0 0 6 10v2.78c0 .19-.05.38-.13.56l-1.79 3.58c-.12.23-.1.5.03.72.14.23.38.36.64.36H9v1c0 1.65 1.35 3 3 3s3-1.35 3-3v-1h4.25c.26 0 .5-.13.64-.36.13-.22.15-.49.03-.72zM13.5 19c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5v-1h3v1zm-7.54-2.5 1.25-2.49c.19-.38.29-.81.29-1.23V10c0-2.48 2.02-4.5 4.5-4.5s4.5 2.02 4.5 4.5v2.78c0 .42.1.85.29 1.23l1.25 2.49H5.96z" style="fill:#121331" id="design"/>
+</svg>
