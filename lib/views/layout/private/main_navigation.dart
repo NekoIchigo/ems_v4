@@ -1,4 +1,4 @@
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/getting_started.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
@@ -24,30 +24,155 @@ class _MainNavigationState extends State<MainNavigation> {
     final pageController = PageController(initialPage: 0);
 
     /// Controller to handle bottom nav bar and also handles initial page
-    final controller = NotchBottomBarController(index: 0);
+    // final controller = NotchBottomBarController(index: 0);
 
     final List<Widget> pages = [
       const Home(),
       const TimeEntries(),
       const Transactions(),
+      const Transactions(),
       const Profile(),
     ];
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          PageView(
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: List.generate(pages.length, (index) => pages[index]),
+    final List<TabItem> navigations = [
+      TabItem(
+        icon: ColorFiltered(
+          colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Home.json",
+            repeat: false,
           ),
-          const GettingStarted(),
-        ],
+        ),
+        activeIcon: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: ColorFiltered(
+            colorFilter: const ColorFilter.mode(darkGray, BlendMode.srcIn),
+            child: Lottie.asset(
+              "assets/lottie/Home.json",
+              repeat: false,
+            ),
+          ),
+        ),
       ),
-      extendBody: true,
-      bottomNavigationBar: AnimatedNotchBottomBar(
+      TabItem(
+        icon: ColorFiltered(
+          colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Calendar.json",
+            repeat: false,
+            fit: BoxFit.contain,
+          ),
+        ),
+        activeIcon: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: ColorFiltered(
+            colorFilter: const ColorFilter.mode(darkGray, BlendMode.srcIn),
+            child: Lottie.asset(
+              "assets/lottie/Calendar.json",
+              repeat: false,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+      ),
+      TabItem(
+        icon: ColorFiltered(
+          colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Transaction.json",
+            repeat: false,
+            fit: BoxFit.contain,
+          ),
+        ),
+        activeIcon: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Lottie.asset(
+            "assets/lottie/Transaction.json",
+            repeat: false,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+      TabItem(
+        icon: ColorFiltered(
+          colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Bell.json",
+            repeat: false,
+            fit: BoxFit.contain,
+          ),
+        ),
+        activeIcon: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: ColorFiltered(
+            colorFilter: const ColorFilter.mode(darkGray, BlendMode.srcIn),
+            child: Lottie.asset(
+              "assets/lottie/Bell.json",
+              repeat: false,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+      ),
+      TabItem(
+        icon: ColorFiltered(
+          colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Account.json",
+            repeat: false,
+            fit: BoxFit.contain,
+          ),
+        ),
+        activeIcon: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: ColorFiltered(
+            colorFilter: const ColorFilter.mode(darkGray, BlendMode.srcIn),
+            child: Lottie.asset(
+              "assets/lottie/Account.json",
+              repeat: false,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+      ),
+    ];
+
+    return Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            PageView(
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: List.generate(pages.length, (index) => pages[index]),
+            ),
+            const GettingStarted(),
+          ],
+        ),
+        extendBody: true,
+        bottomNavigationBar: ConvexAppBar(
+          backgroundColor: bgPrimaryBlue,
+          height: 55,
+          items: navigations,
+          curveSize: 80,
+          top: -15,
+          style: TabStyle.reactCircle,
+          // cornerRadius: 5,
+          onTap: (index) {
+            pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
+        ));
+  }
+}
+
+
+/* 
+AnimatedNotchBottomBar(
         notchBottomBarController: controller,
         color: navBlue,
         showLabel: false,
@@ -109,6 +234,4 @@ class _MainNavigationState extends State<MainNavigation> {
         kIconSize: 25,
         kBottomRadius: 15,
       ),
-    );
-  }
-}
+*/

@@ -181,19 +181,20 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               Visibility(
                 visible: _homeController.isClockOut.isFalse,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(bottom: 8.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              CupertinoIcons.heart_circle,
-                              color: primaryBlue,
-                            ),
-                            SizedBox(width: 10),
+                            // Icon(
+                            //   CupertinoIcons.heart_circle,
+                            //   color: primaryBlue,
+                            // ),
+                            // SizedBox(width: 10),
                             Text(
                               'How are you feeling today?',
                               style: TextStyle(
@@ -225,21 +226,23 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             children: const [
                               Padding(
                                 padding: EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 14),
+                                    vertical: 8, horizontal: 14),
                                 child: Column(
                                   children: [
                                     Image(
                                       image:
                                           AssetImage('assets/images/happy.png'),
-                                      width: 40,
-                                      height: 40,
+                                      width: 25,
+                                      height: 25,
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 10),
                                       child: Text(
                                         "I am perfectly fine",
                                         style: TextStyle(
-                                            fontSize: 13, color: darkGray),
+                                          fontSize: 12,
+                                          color: darkGray,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -260,13 +263,13 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                                   borderRadius: BorderRadius.circular(10)),
                             ),
                             child: const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 21),
+                              padding: EdgeInsets.symmetric(vertical: 10),
                               child: Column(
                                 children: [
                                   Image(
                                     image: AssetImage('assets/images/sad.png'),
-                                    width: 40,
-                                    height: 40,
+                                    width: 25,
+                                    height: 25,
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 10),
@@ -274,7 +277,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                                       "I feel unwell today",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 13,
+                                        fontSize: 12,
                                         color: darkGray,
                                       ),
                                     ),
