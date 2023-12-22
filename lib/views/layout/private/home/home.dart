@@ -41,13 +41,14 @@ class _HomeState extends State<Home> {
               left: 0,
               right: 0,
               child: Container(
-                height: Get.height * .16,
+                height: Get.height * .15,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                 color: bgPrimaryBlue,
-                child: Image.asset(
-                  'assets/images/EMS_logo.png',
-                  height: 50,
+                child: SizedBox(
+                  child: Image.asset(
+                    'assets/images/EMS_logo.png',
+                  ),
                 ),
               ),
             ),
@@ -59,7 +60,7 @@ class _HomeState extends State<Home> {
                 child: Obx(
                   () => Container(
                     alignment: Alignment.center,
-                    height: Get.height * .86,
+                    height: Get.height * .87,
                     decoration: _homeController.isWhite.isTrue
                         ? const BoxDecoration(
                             color: Colors.white,

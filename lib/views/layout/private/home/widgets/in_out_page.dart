@@ -99,7 +99,6 @@ class _InOutPageState extends State<InOutPage> {
                         alignment: Alignment.center,
                         children: [
                           Positioned(
-                            top: -30,
                             child: _homeController.isClockOut.isTrue
                                 ? Lottie.asset("assets/lottie/Clock-out.json",
                                     width: 300)
@@ -107,7 +106,6 @@ class _InOutPageState extends State<InOutPage> {
                                     width: 300),
                           ),
                           Positioned(
-                            top: 50,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 minimumSize:
@@ -160,7 +158,7 @@ class _InOutPageState extends State<InOutPage> {
                         ],
                       ),
                 Positioned(
-                  bottom: 20,
+                  bottom: 0,
                   child: Column(
                     children: [
                       Text(
