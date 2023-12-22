@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
               child: Container(
                 height: Get.height * .15,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 100, vertical: 35),
                 color: bgPrimaryBlue,
                 child: SizedBox(
                   child: Image.asset(

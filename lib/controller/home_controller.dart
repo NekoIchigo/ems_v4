@@ -102,7 +102,7 @@ class HomeController extends GetxController {
     // attendance.value.clockedInLattitude = lattitude;
     // attendance.value.clockedInLongitude = longitude;
 
-    currentLocation.value = 'Clock in Location';
+    currentLocation.value = 'EDSA Shaw Starmall, Mandaluyong City';
 
     attendance.value.clockedInLocation = currentLocation.value;
     attendance.value.clockedInLattitude = '14.5828';
@@ -121,7 +121,7 @@ class HomeController extends GetxController {
     // attendance.value.clockedOutLattitude = lattitude;
     // attendance.value.clockedOutLongitude = longitude;
 
-    currentLocation.value = 'Clock in Location';
+    currentLocation.value = 'EDSA Shaw Starmall, Mandaluyong City';
 
     attendance.value.clockedOutLocation = currentLocation.value;
     attendance.value.clockedOutLattitude = '14.5828';

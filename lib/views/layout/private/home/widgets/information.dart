@@ -1,4 +1,3 @@
-
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -34,98 +33,103 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
         () => Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          _homeController.isClockOut.isTrue
-                              ? 'CLOCK-OUT'
-                              : 'CLOCK-IN',
-                          style: const TextStyle(
-                              color: darkGray,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Text(
-                        _authViewService.company.value.name,
-                        style: const TextStyle(
-                            color: primaryBlue, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+              //   child: Center(
+              //     child: Column(
+              //       children: [
+              //         Padding(
+              //           padding: const EdgeInsets.symmetric(vertical: 8.0),
+              //           child: Text(
+              //             _homeController.isClockOut.isTrue
+              //                 ? 'CLOCK-OUT'
+              //                 : 'CLOCK-IN',
+              //             style: const TextStyle(
+              //                 color: darkGray,
+              //                 fontSize: 24,
+              //                 fontWeight: FontWeight.w600),
+              //           ),
+              //         ),
+              //         Text(
+              //           _authViewService.company.value.name,
+              //           style: const TextStyle(
+              //               color: primaryBlue, fontWeight: FontWeight.bold),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Center(
                   child: Image.asset(
-                    "assets/images/Businessman-pana.png",
-                    width: Get.width * .5,
+                    _homeController.isOustideVicinity.isFalse
+                        ? "assets/images/current_location-pana.png"
+                        : "assets/images/current_location-rafiki.png",
+                    width: Get.width * .70,
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.thumb_up_alt_outlined,
-                    color: primaryBlue,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    _homeController.isOustideVicinity.isFalse
-                        ? 'You are within the vicinity!'
-                        : 'You are outside the vicinity!',
-                    style: const TextStyle(
-                      color: darkGray,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+              // Row(
+              //   children: [
+              //     const Icon(
+              //       Icons.thumb_up_alt_outlined,
+              //       color: primaryBlue,
+              //     ),
+              //     const SizedBox(width: 10),
+              //     Text(
+              //       _homeController.isOustideVicinity.isFalse
+              //           ? 'You are within the vicinity!'
+              //           : 'You are outside the vicinity!',
+              //       style: const TextStyle(
+              //         color: darkGray,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              Text(
+                _authViewService.company.value.name,
+                style: const TextStyle(
+                  color: primaryBlue,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: InkWell(
                   onTap: () {},
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.location_on,
-                            color: darkGray,
-                          ),
-                          const SizedBox(width: 10),
+                          // const Icon(
+                          //   Icons.location_on,
+                          //   color: darkGray,
+                          // ),
+                          // const SizedBox(width: 10),
                           Flexible(
                             child: Text(
                               // "${_homeController.isClockOut.isTrue ? _homeController.attendance.value.clockedInLocation ?? 'Location' : _homeController.attendance.value.clockedOutLocation ?? 'Location'} - View Map",
-                              "${_homeController.currentLocation.value} - View Map",
-                              style: const TextStyle(
-                                color: darkGray,
-                                decoration: TextDecoration.underline,
-                              ),
+                              _homeController.currentLocation.value,
+                              style: const TextStyle(color: darkGray),
                             ),
                           ),
                         ],
                       ),
-                      // const Padding(
-                      //   padding: EdgeInsets.only(left: 35),
-                      //   child: Text(
-                      //     'View Map',
-                      //     style: TextStyle(
-                      //       decoration: TextDecoration.underline,
-                      //       color: darkGray,
-                      //       fontSize: 12,
-                      //     ),
-                      //   ),
-                      // ),
+                      const Text(
+                        'View Map',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: darkGray,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -173,10 +177,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     ),
                   ],
                 ),
-              ),
-              Visibility(
-                visible: _homeController.isClockOut.isTrue,
-                child: SizedBox(height: Get.height * .05),
               ),
               Visibility(
                 visible: _homeController.isClockOut.isFalse,
@@ -289,12 +289,30 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
-                child: Text(
-                  'By clicking Submit, you confirm your location and affirm your health condition.',
+              Visibility(
+                visible: _homeController.isClockOut.isTrue,
+                child: SizedBox(height: 10),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 5.0),
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'By clicking ',
+                      ),
+                      TextSpan(
+                          text: _homeController.isOustideVicinity.isFalse
+                              ? 'Clock In '
+                              : 'Clock Out '),
+                      const TextSpan(
+                          text:
+                              ', you confirm your location and affirm your health condition.')
+                    ],
+                  ),
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: darkGray),
+                  style: const TextStyle(color: darkGray, fontSize: 12),
                 ),
               ),
               Row(
@@ -336,7 +354,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                         : 'Clock in',
                     radius: 8,
                     bgColor: _homeController.isClockOut.isTrue
-                        ? bgPrimaryBlue
+                        ? colorError
                         : _isNotButtonDisable
                             ? colorSuccess
                             : lightGray,
