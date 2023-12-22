@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
     Get.put(TimeEntriesController());
 
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'EMS V.4',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         textTheme: GoogleFonts.outfitTextTheme(),
         colorScheme: ColorScheme.fromSeed(

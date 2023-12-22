@@ -19,6 +19,7 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
+    // ! https://pub.dev/packages/convex_bottom_bar Change bottom bar
     /// Controller to handle PageView and also handles initial page
     final pageController = PageController(initialPage: 0);
 

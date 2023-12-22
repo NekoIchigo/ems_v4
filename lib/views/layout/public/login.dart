@@ -41,10 +41,11 @@ class _LoginState extends State<Login> {
             color: Colors.white,
             child: Column(
               children: [
+                const SizedBox(height: 40),
                 SizedBox(
-                  height: Get.height * 0.13,
+                  height: Get.height * 0.11,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 25.0),
                     child: Image.asset(
                       'assets/images/EMS_logo_Blue.png',
                       width: Get.width,
@@ -66,24 +67,18 @@ class _LoginState extends State<Login> {
                             left: 0,
                             right: 0,
                             height: Get.height * .45,
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              padding: const EdgeInsets.all(20),
-                              decoration: const BoxDecoration(
-                                color: bgPrimaryBlue,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0)),
-                              ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30.0),
                               child: Column(
                                 children: [
-                                  const SizedBox(height: 25),
+                                  // const SizedBox(height: 10),
                                   const Text(
                                     'Welcome',
                                     style: TextStyle(
                                         fontSize: 26,
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.white),
+                                        color: darkGray),
                                   ),
                                   Expanded(
                                     child: SingleChildScrollView(
@@ -96,7 +91,7 @@ class _LoginState extends State<Login> {
                                               'Login to continue',
                                               style: TextStyle(
                                                 fontSize: 13,
-                                                color: Colors.white,
+                                                color: darkGray,
                                               ),
                                             ),
                                           ),
@@ -121,7 +116,7 @@ class _LoginState extends State<Login> {
                                                   child: const Text(
                                                     'Forgot Password?',
                                                     style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: darkGray,
                                                     ),
                                                   )),
                                             ],
@@ -143,7 +138,52 @@ class _LoginState extends State<Login> {
                                                       ? 'Log In'
                                                       : 'Logging In...',
                                               radius: 50,
-                                              size: Size(Get.width, 50),
+                                              size: Size(Get.width, 20),
+                                              bgColor: bgPrimaryBlue,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: Get.width * .70,
+                                            child: Text.rich(
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                color: darkGray,
+                                                height: 1.5,
+                                                fontSize: 12,
+                                              ),
+                                              TextSpan(children: [
+                                                const TextSpan(
+                                                  text:
+                                                      'By logging in, you agree to our ',
+                                                ),
+                                                TextSpan(
+                                                  text: 'Privacy Policy ',
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          _launchInBrowser(
+                                                              'https://happyhousekeepers.com.ph/privacy-policy');
+                                                        },
+                                                ),
+                                                const TextSpan(
+                                                  text: 'and ',
+                                                ),
+                                                TextSpan(
+                                                  text: 'Terms of User',
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          _launchInBrowser(
+                                                              'https://happyhousekeepers.com.ph/privacy-policy');
+                                                        },
+                                                )
+                                              ]),
                                             ),
                                           ),
                                         ],
@@ -155,51 +195,15 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           Positioned(
-                            top: -10,
+                            top: 20,
                             child: Image.asset(
-                              'assets/images/EMS1.png',
-                              width: Get.width * .75,
+                              'assets/images/login-image.png',
+                              width: Get.width * .88,
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  child: Text.rich(
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: bgPrimaryBlue,
-                      height: 1.5,
-                      fontSize: 12,
-                    ),
-                    TextSpan(children: [
-                      const TextSpan(
-                        text: 'By logging in, you agree to our ',
-                      ),
-                      TextSpan(
-                        text: 'Privacy Policy ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            _launchInBrowser(
-                                'https://happyhousekeepers.com.ph/privacy-policy');
-                          },
-                      ),
-                      const TextSpan(
-                        text: 'and ',
-                      ),
-                      TextSpan(
-                        text: 'Terms of User',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            _launchInBrowser(
-                                'https://happyhousekeepers.com.ph/privacy-policy');
-                          },
-                      )
-                    ]),
                   ),
                 ),
               ],

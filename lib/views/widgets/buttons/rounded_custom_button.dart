@@ -39,7 +39,10 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
         ),
         child: Text(
           widget.label,
-          style: TextStyle(color: widget.textColor ?? Colors.white),
+          style: TextStyle(
+            color: widget.textColor ?? Colors.white,
+            fontSize: 15,
+          ),
         ),
       ),
     );
