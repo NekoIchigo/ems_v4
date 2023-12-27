@@ -45,7 +45,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   }
                 },
                 label: 'Log out',
-                size: Size(Get.width, 50),
+                size: Size(Get.width, 30),
                 bgColor: bgPrimaryBlue,
               ),
             ],
