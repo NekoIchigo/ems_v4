@@ -37,7 +37,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   fontSize: 18,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               RoundedCustomButton(
                 onPressed: () {
                   if (authService.isLoading.isFalse) {

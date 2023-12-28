@@ -147,12 +147,12 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                           fontSize: 14,
                                         ),
                                       ),
-                                      const Spacer(),
-                                      SizedBox(
-                                        width: 50,
+                                      const SizedBox(width: 5),
+                                      Expanded(
                                         child: Text(
                                           attendance.clockedInLocationType!,
                                           overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                           style: const TextStyle(
                                             color: darkGray,
                                             fontSize: 14,
@@ -180,11 +180,11 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                             fontSize: 14,
                                           ),
                                         ),
-                                        const Spacer(),
-                                        SizedBox(
-                                          width: 50,
+                                        const SizedBox(width: 5),
+                                        Expanded(
                                           child: Text(
                                             attendance.clockedOutLocationType!,
+                                            maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                               color: darkGray,

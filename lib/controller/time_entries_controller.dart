@@ -40,9 +40,6 @@ class TimeEntriesController extends GetxController {
             .map((attendance) => Attendance.fromJson(attendance)));
         // print(attendances.length);
       } else {
-        // if (!context.mounted) {
-        //   return;
-        // }
         await EMSDialog(
           title: "Opps!",
           hasMessage: true,
@@ -55,9 +52,6 @@ class TimeEntriesController extends GetxController {
         // pageName.value = '/home';
       }
     } catch (error) {
-      // if (!context.mounted) {
-      //   return;
-      // }
       await EMSDialog(
         title: "Opps!",
         hasMessage: true,

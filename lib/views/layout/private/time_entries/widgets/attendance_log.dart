@@ -84,9 +84,11 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       children: [
                         const Text('GPS Location:'),
                         const SizedBox(width: 30),
-                        Text(
-                          selectedRecord.clockedInLocation!,
-                          style: const TextStyle(color: primaryBlue),
+                        Expanded(
+                          child: Text(
+                            selectedRecord.clockedInLocation!,
+                            style: const TextStyle(color: primaryBlue),
+                          ),
                         )
                       ],
                     ),
@@ -163,9 +165,11 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         children: [
                           const Text('GPS Location:'),
                           const SizedBox(width: 30),
-                          Text(
-                            selectedRecord.clockedOutLocation!,
-                            style: const TextStyle(color: primaryBlue),
+                          Expanded(
+                            child: Text(
+                              selectedRecord.clockedOutLocation!,
+                              style: const TextStyle(color: primaryBlue),
+                            ),
                           )
                         ],
                       ),

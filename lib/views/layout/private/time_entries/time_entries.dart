@@ -32,7 +32,7 @@ class _TimeEntriesState extends State<TimeEntries> {
               child: Container(
                 height: Get.height * .16,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 120, vertical: 35),
                 color: bgPrimaryBlue,
                 child: Image.asset(
                   'assets/images/EMS_logo.png',
@@ -54,17 +54,40 @@ class _TimeEntriesState extends State<TimeEntries> {
                         BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Obx(
                         () => Visibility(
-                          visible: _timeEntriesController.hasClose.isTrue,
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(0, 10.0, 10.0, 0),
+                          visible: _timeEntriesController.hasClose.isFalse,
+                          child: const SizedBox(height: 11),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Obx(
+                                  () => Visibility(
+                                    visible:
+                                        _timeEntriesController.hasClose.isTrue,
+                                    child: const SizedBox(width: 48),
+                                  ),
+                                ),
+                                const Text(
+                                  'Time Entries',
+                                  style: TextStyle(
+                                    color: primaryBlue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Obx(
+                            () => Visibility(
+                              visible: _timeEntriesController.hasClose.isTrue,
                               child: IconButton(
                                 onPressed: () {
                                   _timeEntriesController.hasClose.value = false;
@@ -75,26 +98,7 @@ class _TimeEntriesState extends State<TimeEntries> {
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      Obx(
-                        () => Visibility(
-                          visible: _timeEntriesController.hasClose.isFalse,
-                          child: const SizedBox(height: 58),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 20.0),
-                        child: Center(
-                          child: Text(
-                            'Time Entries',
-                            style: TextStyle(
-                              color: primaryBlue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
+                        ],
                       ),
                       SizedBox(
                         height: Get.height * .66,
