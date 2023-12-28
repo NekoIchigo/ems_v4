@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -150,6 +151,15 @@ class _EditProfileState extends State<EditProfile>
                           ),
                           const SizedBox(height: 20),
                         ],
+                      ),
+                    ),
+                    Center(
+                      child: RoundedCustomButton(
+                        onPressed: () {},
+                        label: 'Update',
+                        radius: 5,
+                        size: Size(Get.width * .4, 30),
+                        bgColor: bgPrimaryBlue,
                       ),
                     ),
                   ],

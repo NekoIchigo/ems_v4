@@ -22,34 +22,29 @@ class _ProfileContainerState extends State<ProfileContainer> {
       physics: const BouncingScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: SizedBox(
-          height: Get.height * .78,
-          width: Get.width,
-          child: Column(
-            children: [
-              SizedBox(
-                height: Get.height * .63,
-                child: ListView(
-                  children: const [
-                    EditProfile(),
-                    SizedBox(height: 10),
-                    EmployeeDetails(),
-                  ],
-                ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: Get.height * .75,
+              child: ListView(
+                children: [
+                  const EditProfile(),
+                  const SizedBox(height: 10),
+                  const EmployeeDetails(),
+                  RoundedCustomButton(
+                    onPressed: () {
+                      if (authService.isLoading.isFalse) {
+                        authService.logout(context);
+                      }
+                    },
+                    label: 'Log out',
+                    size: Size(Get.width, 30),
+                    bgColor: bgPrimaryBlue,
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              RoundedCustomButton(
-                onPressed: () {
-                  if (authService.isLoading.isFalse) {
-                    authService.logout(context);
-                  }
-                },
-                label: 'Log out',
-                size: Size(Get.width, 30),
-                bgColor: bgPrimaryBlue,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
