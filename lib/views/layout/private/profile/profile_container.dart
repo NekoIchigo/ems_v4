@@ -1,9 +1,10 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/edit_profile.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/employee_details.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 class ProfileContainer extends StatefulWidget {
   const ProfileContainer({super.key});
@@ -13,10 +14,10 @@ class ProfileContainer extends StatefulWidget {
 }
 
 class _ProfileContainerState extends State<ProfileContainer> {
+  final AuthService authService = Get.find<AuthService>();
+
   @override
   Widget build(BuildContext context) {
-    final AuthService authService = Get.find<AuthService>();
-
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
@@ -25,16 +26,15 @@ class _ProfileContainerState extends State<ProfileContainer> {
           height: Get.height * .78,
           width: Get.width,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Lottie.asset(
-                "assets/lottie/under_development.json",
-                width: 300,
-              ),
-              const Text(
-                'This page is still under development',
-                style: TextStyle(
-                  fontSize: 18,
+              SizedBox(
+                height: Get.height * .63,
+                child: ListView(
+                  children: const [
+                    EditProfile(),
+                    SizedBox(height: 10),
+                    EmployeeDetails(),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),

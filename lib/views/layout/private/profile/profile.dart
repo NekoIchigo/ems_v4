@@ -28,7 +28,7 @@ class _ProfileState extends State<Profile> {
               child: Container(
                 height: Get.height * .16,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 120, vertical: 35),
                 color: bgPrimaryBlue,
                 child: Image.asset(
                   'assets/images/EMS_logo.png',
