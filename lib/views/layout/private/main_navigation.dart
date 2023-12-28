@@ -2,6 +2,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/getting_started.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
+import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
@@ -30,7 +31,7 @@ class _MainNavigationState extends State<MainNavigation> {
       const Home(),
       const TimeEntries(),
       const Transactions(),
-      const Transactions(),
+      const NotificationPage(),
       const Profile(),
     ];
 
@@ -75,23 +76,29 @@ class _MainNavigationState extends State<MainNavigation> {
           ),
         ),
       ),
-      TabItem(
-        icon: ColorFiltered(
-          colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
-          child: Lottie.asset(
-            "assets/lottie/Transaction.json",
-            repeat: false,
-            fit: BoxFit.contain,
-          ),
+      const TabItem(
+        icon: Icons.edit_document,
+        // ColorFiltered(
+        //   colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+        //   child: Align(
+        //     alignment: Alignment.topLeft,
+        //     child: Lottie.asset(
+        //       "assets/lottie/Transaction.json",
+        //       repeat: false,
+        //     ),
+        //   ),
+        // ),
+        activeIcon: Icon(
+          Icons.edit_document,
+          color: darkGray,
         ),
-        activeIcon: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Lottie.asset(
-            "assets/lottie/Transaction.json",
-            repeat: false,
-            fit: BoxFit.contain,
-          ),
-        ),
+        //  Padding(
+        //   padding: const EdgeInsets.all(0.0),
+        //   child: Lottie.asset(
+        //     "assets/lottie/Transaction.json",
+        //     repeat: false,
+        //   ),
+        // ),
       ),
       TabItem(
         icon: ColorFiltered(

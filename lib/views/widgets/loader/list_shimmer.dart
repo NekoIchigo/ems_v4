@@ -1,4 +1,3 @@
-
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +5,12 @@ import 'package:shimmer/shimmer.dart';
 
 class ListShimmer extends StatefulWidget {
   final int listLength;
-  const ListShimmer({super.key, required this.listLength});
+  final bool? withLeading;
+  const ListShimmer({
+    super.key,
+    required this.listLength,
+    this.withLeading,
+  });
 
   @override
   State<ListShimmer> createState() => _ListShimmerState();
@@ -31,11 +35,14 @@ class _ListShimmerState extends State<ListShimmer> {
             highlightColor: const Color(0xFFe6e6e6),
             child: Row(
               children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 50,
-                  height: 50,
-                  color: primaryBlue,
+                Visibility(
+                  visible: widget.withLeading ?? false,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    width: 50,
+                    height: 50,
+                    color: primaryBlue,
+                  ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
