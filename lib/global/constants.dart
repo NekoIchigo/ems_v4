@@ -4,6 +4,7 @@ const primaryBlue = Color(0xFF2465C7);
 const navBlue = Color(0xFF274D85);
 const bgPrimaryBlue = Color(0xFF1F4583);
 const bgSecondaryBlue = Color(0xFF2465C7);
+const bgSky = Color(0xFF699BF7);
 const lightGray = Color(0xFFC4C4C4);
 const darkGray = Color(0xFF404040);
 const gray = Color(0xFF888888);
