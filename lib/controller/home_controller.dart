@@ -4,7 +4,7 @@ import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance.dart';
-import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,8 +21,9 @@ class HomeController extends GetxController {
       isClockInOutComplete = false.obs;
   Rx<Attendance> attendance = Attendance().obs;
 
-  Future getLatestLog(
-      {required int employeeId, required BuildContext context}) async {
+  Future getLatestLog({
+    required int employeeId,
+  }) async {
     isLoading.value = true;
     try {
       var response = await apiCall.getRequest('/latest-dtr/$employeeId');
@@ -32,7 +33,6 @@ class HomeController extends GetxController {
 
       if (result['success']) {
         int dayDifference = -1;
-        // print('result.data = ${result['data']}');
         if (result['data'] != null) {
           dayDifference = dateTimeUtils.calculateDateTimeDifference(
             timeResult['data']['withTimeZone'],
@@ -42,7 +42,6 @@ class HomeController extends GetxController {
 
           if (dayDifference == 0) {
             attendance = Attendance.fromJson(result['data']).obs;
-            // isClockInOutComplete.value = true;
             if (result['data']['clock_in_at'] != null &&
                 result['data']['clock_out_at'] == null) {
               attendance = Attendance.fromJson(result['data']).obs;
@@ -54,11 +53,8 @@ class HomeController extends GetxController {
             }
           }
         }
-
-        // isClockOut.value = attendance.value.clockedOutAt == '';
       } else {
-        // ignore: use_build_context_synchronously
-        await EMSDialog(
+        Get.dialog(GetDialog(
           title: "Opps!",
           hasMessage: true,
           withCloseButton: true,
@@ -66,15 +62,14 @@ class HomeController extends GetxController {
           message: "Error: $result",
           type: "error",
           buttonNumber: 0,
-        ).show(context);
+        ));
         pageName.value = '/home';
         printError(info: 'Error Message getLatestLog: Invalid Request');
         pageName.value = '/home';
       }
-      // isLoadingInitial.value = false;
       isLoading.value = false;
     } catch (error) {
-      await EMSDialog(
+      Get.dialog(GetDialog(
         title: "Opps!",
         hasMessage: true,
         withCloseButton: true,
@@ -82,10 +77,9 @@ class HomeController extends GetxController {
         message: "Error: $error",
         type: "error",
         buttonNumber: 0,
-      ).show(context);
+      ));
       pageName.value = '/home';
       printError(info: 'Error Message getLatestLog: $error');
-      // isLoadingInitial.value = false;
       isLoading.value = false;
       pageName.value = '/home';
     }
@@ -155,12 +149,9 @@ class HomeController extends GetxController {
       if (result['success']) {
         attendance.value.id = result['data']['id'];
         isClockOut.value = true;
-        getLatestLog(
-          employeeId: authService.employee.value.id,
-          context: context,
-        );
+        getLatestLog(employeeId: authService.employee.value.id);
       } else {
-        await EMSDialog(
+        Get.dialog(GetDialog(
           title: "Opps!",
           hasMessage: true,
           withCloseButton: true,
@@ -168,11 +159,10 @@ class HomeController extends GetxController {
           message: "Error: $result",
           type: "error",
           buttonNumber: 0,
-        ).show(context);
-        pageName.value = '/home';
+        ));
       }
     } catch (error) {
-      await EMSDialog(
+      Get.dialog(GetDialog(
         title: "Opps!",
         hasMessage: true,
         withCloseButton: true,
@@ -180,7 +170,7 @@ class HomeController extends GetxController {
         message: "Error: $error",
         type: "error",
         buttonNumber: 0,
-      ).show(context);
+      ));
       printError(info: 'Error Message: $error');
       isLoading.value = false;
       pageName.value = '/home';
@@ -207,12 +197,9 @@ class HomeController extends GetxController {
         // isClockOut.value = false;
         // isClockInOutComplete.value = true;
 
-        getLatestLog(
-          employeeId: authService.employee.value.id,
-          context: context,
-        );
+        getLatestLog(employeeId: authService.employee.value.id);
       } else {
-        await EMSDialog(
+        Get.dialog(GetDialog(
           title: "Opps!",
           hasMessage: true,
           withCloseButton: true,
@@ -220,13 +207,14 @@ class HomeController extends GetxController {
           message: "Error: $result",
           type: "error",
           buttonNumber: 0,
-        ).show(context);
+        ));
+
         pageName.value = '/home';
       }
 
       isLoading.value = false;
     } catch (error) {
-      await EMSDialog(
+      Get.dialog(GetDialog(
         title: "Opps!",
         hasMessage: true,
         withCloseButton: true,
@@ -234,7 +222,7 @@ class HomeController extends GetxController {
         message: "Error: $error",
         type: "error",
         buttonNumber: 0,
-      ).show(context);
+      ));
     } finally {
       isLoading.value = false;
       pageName.value = '/home';

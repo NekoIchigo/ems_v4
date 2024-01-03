@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/attendance.dart';
-import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,14 +33,13 @@ class TimeEntriesController extends GetxController {
             await apiCall.getRequest('/show-dtrs/$employeeId?months=$months');
       }
       var result = jsonDecode(response.body);
-      print("result time =  $result");
       if (result['success']) {
         final attendancesJson = result['data']['data'];
         attendances = RxList<Attendance>.from(attendancesJson
             .map((attendance) => Attendance.fromJson(attendance)));
         // print(attendances.length);
       } else {
-        await EMSDialog(
+        Get.dialog(GetDialog(
           title: "Opps!",
           hasMessage: true,
           withCloseButton: true,
@@ -48,11 +47,10 @@ class TimeEntriesController extends GetxController {
           message: "Error: $result",
           type: "error",
           buttonNumber: 0,
-        ).show(context);
-        // pageName.value = '/home';
+        ));
       }
     } catch (error) {
-      await EMSDialog(
+      Get.dialog(GetDialog(
         title: "Opps!",
         hasMessage: true,
         withCloseButton: true,
@@ -60,7 +58,7 @@ class TimeEntriesController extends GetxController {
         message: "Error: $error",
         type: "error",
         buttonNumber: 0,
-      ).show(context);
+      ));
     } finally {
       isLoading.value = false;
     }

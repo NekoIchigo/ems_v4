@@ -5,6 +5,7 @@ import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
 import 'package:ems_v4/models/user.dart';
 import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,7 +64,7 @@ class AuthService extends GetxService {
     }
   }
 
-  Future login(String email, String password, BuildContext context) async {
+  Future login(String email, String password) async {
     isLoading.value = true;
     try {
       var response = await apiCall.postRequest(
@@ -104,7 +105,7 @@ class AuthService extends GetxService {
         ).obs;
         Get.toNamed('/');
       } else {
-        await EMSDialog(
+        Get.dialog(const GetDialog(
           title: "Opps!",
           hasMessage: true,
           withCloseButton: true,
@@ -112,11 +113,11 @@ class AuthService extends GetxService {
           message: "Invalid username or password.",
           type: "error",
           buttonNumber: 0,
-        ).show(context);
+        ));
       }
       isLoading.value = false;
     } catch (error) {
-      await EMSDialog(
+      Get.dialog(GetDialog(
         title: "Opps!",
         hasMessage: true,
         withCloseButton: true,
@@ -124,7 +125,7 @@ class AuthService extends GetxService {
         message: "Error: $error",
         type: "error",
         buttonNumber: 0,
-      ).show(context);
+      ));
       isLoading.value = false;
       printError(info: 'Error Message Login: $error');
     }

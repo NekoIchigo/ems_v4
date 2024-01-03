@@ -23,10 +23,7 @@ class _GettingStartedState extends State<GettingStarted> {
   @override
   void initState() {
     super.initState();
-    _homeController.getLatestLog(
-      employeeId: _authService.employee.value.id,
-      context: context,
-    );
+    _homeController.getLatestLog(employeeId: _authService.employee.value.id);
     _timeEntriesController.getAttendanceList(
       employeeId: _authService.employee.value.id,
       context: context,

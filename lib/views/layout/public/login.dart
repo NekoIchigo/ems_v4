@@ -129,7 +129,6 @@ class _LoginState extends State<Login> {
                                                   _authService.login(
                                                     _emailController.text,
                                                     _passwordController.text,
-                                                    context,
                                                   );
                                                 }
                                               },

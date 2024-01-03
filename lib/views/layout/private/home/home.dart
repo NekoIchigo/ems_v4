@@ -20,10 +20,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _homeController.getLatestLog(
-      employeeId: _authService.employee.value.id,
-      context: context,
-    );
+    _homeController.getLatestLog(employeeId: _authService.employee.value.id);
   }
 
   @override
