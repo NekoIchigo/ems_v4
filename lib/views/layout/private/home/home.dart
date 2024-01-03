@@ -26,17 +26,34 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return EMSContainer(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: Get.height * .78,
-            child: _homeController.isLoading.isTrue
-                ? const Loading()
-                : const HomePageContiner(),
+      child: Obx(
+        () => Container(
+          decoration: _homeController.isWhite.isTrue
+              ? const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                )
+              : const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/tiles-bg.png'),
+                    fit: BoxFit.fill,
+                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: Get.height * .78,
+                child: _homeController.isLoading.isTrue
+                    ? const Loading()
+                    : const HomePageContiner(),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
