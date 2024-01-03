@@ -2,7 +2,6 @@ import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -294,7 +293,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               ),
               Visibility(
                 visible: _homeController.isClockOut.isTrue,
-                child: SizedBox(height: 10),
+                child: const SizedBox(height: 10),
               ),
               Padding(
                 padding:

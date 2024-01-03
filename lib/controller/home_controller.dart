@@ -39,7 +39,6 @@ class HomeController extends GetxController {
             result['data']['clock_in_at'],
             'days',
           );
-          print(dayDifference);
 
           if (dayDifference == 0) {
             attendance = Attendance.fromJson(result['data']).obs;
@@ -138,7 +137,6 @@ class HomeController extends GetxController {
     String temperature = '',
   }) async {
     isLoading.value = true;
-    print('clockin true loading');
     String healthCheckStr = healthCheck.join(', ');
     try {
       // print('called');
@@ -188,13 +186,11 @@ class HomeController extends GetxController {
       pageName.value = '/home';
     } finally {
       isLoading.value = false;
-      print('clockit false loading');
     }
   }
 
   Future clockOut({required BuildContext context}) async {
     isLoading.value = true;
-    print('clockout true loading');
     try {
       var response = await apiCall.postRequest({
         'attendance_id': attendance.value.id,
@@ -241,7 +237,6 @@ class HomeController extends GetxController {
       ).show(context);
     } finally {
       isLoading.value = false;
-      print('clockout false loading');
       pageName.value = '/home';
     }
   }

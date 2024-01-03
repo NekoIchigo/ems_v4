@@ -142,7 +142,7 @@ class _LoginState extends State<Login> {
                                               bgColor: bgPrimaryBlue,
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width: Get.width * .70,
                                             child: Text.rich(
                                               textAlign: TextAlign.center,

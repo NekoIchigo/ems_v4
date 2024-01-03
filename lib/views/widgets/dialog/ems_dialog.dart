@@ -23,7 +23,7 @@ class EMSDialog extends StatelessWidget {
   final String? cancelText;
 
   EMSDialog({
-    Key? key,
+    super.key,
     this.okPress,
     required this.type,
     required this.title,
@@ -38,7 +38,7 @@ class EMSDialog extends StatelessWidget {
     this.okButtonBGColor,
     required this.hasCustomWidget,
     this.customWidget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

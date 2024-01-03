@@ -25,8 +25,8 @@ class Settings extends GetxService {
     return this;
   }
 
- void updateCurrentTime() {
-    currentTime.value = currentTime.value.add(Duration(seconds: 1));
+  void updateCurrentTime() {
+    currentTime.value = currentTime.value.add(const Duration(seconds: 1));
   }
 
   Future getServerTime() async {

@@ -14,7 +14,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
-  TextEditingController _contactNumber = TextEditingController();
+  final TextEditingController _contactNumber = TextEditingController();
 
   late AnimationController _animationController;
   @override
