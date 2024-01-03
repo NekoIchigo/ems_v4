@@ -1,5 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
+// import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +12,7 @@ class EmployeeDetails extends StatefulWidget {
 
 class _EmployeeDetailsState extends State<EmployeeDetails>
     with SingleTickerProviderStateMixin {
-  final AuthService _authService = Get.find<AuthService>();
+  // final AuthService _authService = Get.find<AuthService>();
   bool _isExpanded = false;
 
   late AnimationController _animationController;

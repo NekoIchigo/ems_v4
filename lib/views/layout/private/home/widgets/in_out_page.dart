@@ -93,7 +93,7 @@ class _InOutPageState extends State<InOutPage> {
                     ? Positioned(
                         top: 0,
                         child: Image.asset('assets/images/EMS1.png',
-                            width: Get.width * .65),
+                            width: Get.width * .62),
                       )
                     : Stack(
                         alignment: Alignment.center,

@@ -52,12 +52,15 @@ class _CustomDateBottomsheetState extends State<CustomDateBottomsheet> {
               ),
             ),
           ),
-          CalendarDatePicker2(
-            config: CalendarDatePicker2Config(
-              calendarType: CalendarDatePicker2Type.range,
+          SizedBox(
+            height: Get.height * .4,
+            child: CalendarDatePicker2(
+              config: CalendarDatePicker2Config(
+                calendarType: CalendarDatePicker2Type.range,
+              ),
+              value: _dates,
+              onValueChanged: (dates) => _dates = dates,
             ),
-            value: _dates,
-            onValueChanged: (dates) => _dates = dates,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
