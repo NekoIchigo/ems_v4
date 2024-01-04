@@ -76,7 +76,6 @@ class _CustomDateBottomsheetState extends State<CustomDateBottomsheet> {
                 onPressed: () {
                   if (_dates.length == 2) {
                     _timeEntriesController.getAttendanceList(
-                      context: context,
                       employeeId: _authService.employee.value.id,
                       months: 0,
                       startDate: _dates[0],

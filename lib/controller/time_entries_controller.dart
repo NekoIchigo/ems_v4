@@ -17,7 +17,6 @@ class TimeEntriesController extends GetxController {
 
   Future getAttendanceList({
     required int employeeId,
-    required BuildContext context,
     required int months,
     startDate,
     endDate,

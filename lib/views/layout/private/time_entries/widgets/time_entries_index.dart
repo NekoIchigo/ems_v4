@@ -72,7 +72,6 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                       Get.bottomSheet(const CustomDateBottomsheet());
                     } else {
                       _timeEntriesController.getAttendanceList(
-                        context: context,
                         employeeId: _authService.employee.value.id,
                         months: value["month"],
                       );
