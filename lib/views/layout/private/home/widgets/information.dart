@@ -34,32 +34,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 8.0),
-              //   child: Center(
-              //     child: Column(
-              //       children: [
-              //         Padding(
-              //           padding: const EdgeInsets.symmetric(vertical: 8.0),
-              //           child: Text(
-              //             _homeController.isClockOut.isTrue
-              //                 ? 'CLOCK-OUT'
-              //                 : 'CLOCK-IN',
-              //             style: const TextStyle(
-              //                 color: darkGray,
-              //                 fontSize: 24,
-              //                 fontWeight: FontWeight.w600),
-              //           ),
-              //         ),
-              //         Text(
-              //           _authViewService.company.value.name,
-              //           style: const TextStyle(
-              //               color: primaryBlue, fontWeight: FontWeight.bold),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Center(
@@ -71,24 +45,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   ),
                 ),
               ),
-              // Row(
-              //   children: [
-              //     const Icon(
-              //       Icons.thumb_up_alt_outlined,
-              //       color: primaryBlue,
-              //     ),
-              //     const SizedBox(width: 10),
-              //     Text(
-              //       _homeController.isOustideVicinity.isFalse
-              //           ? 'You are within the vicinity!'
-              //           : 'You are outside the vicinity!',
-              //       style: const TextStyle(
-              //         color: darkGray,
-              //         fontWeight: FontWeight.w600,
-              //       ),
-              //     ),
-              //   ],
-              // ),
               Text(
                 _authViewService.company.value.name,
                 style: const TextStyle(
@@ -107,14 +63,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // const Icon(
-                          //   Icons.location_on,
-                          //   color: darkGray,
-                          // ),
-                          // const SizedBox(width: 10),
                           Flexible(
                             child: Text(
-                              // "${_homeController.isClockOut.isTrue ? _homeController.attendance.value.clockedInLocation ?? 'Location' : _homeController.attendance.value.clockedOutLocation ?? 'Location'} - View Map",
                               _homeController.currentLocation.value,
                               style: const TextStyle(color: darkGray),
                             ),
@@ -159,7 +109,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                           isExpanded: true,
                           style: const TextStyle(color: darkGray),
                           onChanged: (String? value) {
-                            // This is called when the user selects an item.
                             setState(() {
                               _dropdownValue = value!;
                             });
@@ -189,11 +138,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Icon(
-                            //   CupertinoIcons.heart_circle,
-                            //   color: primaryBlue,
-                            // ),
-                            // SizedBox(width: 10),
                             Text(
                               'How are you feeling today?',
                               style: TextStyle(
@@ -216,8 +160,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             onPressed: (int index) {
                               setState(() {
                                 _isSelected[index] = !_isSelected[index];
-                                // isFine = !isFine;
-                                // isHealthCheck = !isHealthCheck;
                                 _isNotButtonDisable = !_isNotButtonDisable;
                               });
                             },
