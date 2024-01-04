@@ -1,9 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="ems_v4"
+        android:label="EMS"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyAiGzgFITTlOuq5BTzbwA0Kpm3z_kOj7ms"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
