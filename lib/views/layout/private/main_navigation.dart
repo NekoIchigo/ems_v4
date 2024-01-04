@@ -26,7 +26,7 @@ class _MainNavigationState extends State<MainNavigation> {
           children: [
             const GettingStarted(),
             Navigator(
-              key: Get.nestedKey(0),
+              key: Get.nestedKey(_mainNavigationController.routerKey),
               onGenerateRoute: (settings) {
                 return GetPageRoute(
                   page: () => Obx(

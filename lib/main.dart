@@ -51,35 +51,21 @@ class MyApp extends StatelessWidget {
           page: () => const MainNavigation(),
           middlewares: [AuthGuard()],
           children: [
-            GetPage(name: '/home', page: () => const Home(), middlewares: [
-              AuthGuard(),
-            ], children: [
-              GetPage(
-                name: '/info',
-                page: () => const HomeInfoPage(),
-              ),
-              GetPage(
-                name: '/test',
-                page: () => const HealthDeclaration(),
-              ),
-            ]),
+            GetPage(
+              name: '/home',
+              page: () => const Home(),
+              middlewares: [AuthGuard()],
+            ),
             GetPage(
               name: '/time_entries',
               page: () => const TimeEntries(),
               middlewares: [AuthGuard()],
             ),
             GetPage(
-                name: '/transactions',
-                page: () => const Transactions(),
-                middlewares: [
-                  AuthGuard()
-                ],
-                children: [
-                  GetPage(
-                    name: '/time_records',
-                    page: () => const TimeRecords(),
-                  ),
-                ]),
+              name: '/transactions',
+              page: () => const Transactions(),
+              middlewares: [AuthGuard()],
+            ),
             GetPage(
               name: '/profile',
               page: () => const Profile(),

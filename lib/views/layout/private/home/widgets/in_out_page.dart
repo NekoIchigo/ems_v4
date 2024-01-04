@@ -4,6 +4,7 @@ import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -121,6 +122,8 @@ class _InOutPageState extends State<InOutPage> {
                                   _homeController
                                       .setClockInLocation()
                                       .then((value) {
+                                    // Get.to(() => const HomeInfoPage(),
+                                    //     id: _homeController.routerKey);
                                     _homeController.isWhite.value = true;
                                     _homeController.pageName.value =
                                         '/home/info';
@@ -129,6 +132,8 @@ class _InOutPageState extends State<InOutPage> {
                                   _homeController
                                       .setClockOutLocation()
                                       .then((value) {
+                                    // Get.to(() => const HomeInfoPage(),
+                                    //     id: _homeController.routerKey);
                                     _homeController.isWhite.value = true;
                                     _homeController.pageName.value =
                                         '/home/info';

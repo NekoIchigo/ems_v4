@@ -47,17 +47,19 @@ class _HomeState extends State<Home> {
             children: [
               SizedBox(
                 height: Get.height * .78,
-                child: _homeController.isLoading.isTrue
-                    ? const Loading()
-                    : Navigator(
-                        key: Get.nestedKey(_homeController.routerKey),
-                        onGenerateRoute: (settings) {
-                          return GetPageRoute(
-                            page: () => _homeController
-                                .pages[_homeController.pageIndex.value],
-                          );
-                        },
-                      ),
+                child: _homeController.isLoading.isFalse
+                    ? const HomePageContiner()
+                    // Navigator(
+                    //     key: Get.nestedKey(_homeController.routerKey),
+                    //     onGenerateRoute: (settings) {
+                    //       return GetPageRoute(
+                    //         page: () => _homeController
+                    //             .pages[_homeController.pageIndex.value],
+                    //       );
+                    //     },
+                    //   )
+
+                    : const Loading(),
               ),
             ],
           ),

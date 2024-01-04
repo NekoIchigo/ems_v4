@@ -266,6 +266,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     onPressed: () {
                       _homeController.isWhite.value = false;
                       _homeController.pageName.value = '/home';
+                      // Get.back(id: _homeController.routerKey);
                     },
                     label: 'Close',
                     radius: 8,
