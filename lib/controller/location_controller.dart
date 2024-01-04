@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
-class UtilsController extends GetxController {
+class LocationController extends GetxController {
   Future checkLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;

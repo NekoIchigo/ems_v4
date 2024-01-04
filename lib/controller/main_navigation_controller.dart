@@ -26,7 +26,7 @@ class MainNavigationController extends GetxController {
         colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
         child: Lottie.asset(
           "assets/lottie/Home.json",
-          repeat: false,
+          animate: false,
         ),
       ),
       activeIcon: Padding(
@@ -45,8 +45,8 @@ class MainNavigationController extends GetxController {
         colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
         child: Lottie.asset(
           "assets/lottie/Calendar.json",
-          repeat: false,
           fit: BoxFit.contain,
+          repeat: false,
         ),
       ),
       activeIcon: Padding(
@@ -73,7 +73,7 @@ class MainNavigationController extends GetxController {
         colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
         child: Lottie.asset(
           "assets/lottie/Bell.json",
-          repeat: false,
+          animate: false,
           fit: BoxFit.contain,
         ),
       ),
@@ -94,7 +94,7 @@ class MainNavigationController extends GetxController {
         colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
         child: Lottie.asset(
           "assets/lottie/Account.json",
-          repeat: false,
+          animate: false,
           fit: BoxFit.contain,
         ),
       ),

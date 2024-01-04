@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -10,6 +11,7 @@ import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
@@ -100,23 +102,32 @@ class HomeController extends GetxController {
     return;
   }
 
-  Future<Position> getUserCurrentLocation() async {
-    return await Geolocator.getCurrentPosition();
-  }
-
   Future setClockInLocation() async {
     isLoading.value = true;
     // TODO: must get the location from googlemaps api
 
-    // attendance.value.clockedInLocation = description;
-    // attendance.value.clockedInLattitude = lattitude;
-    // attendance.value.clockedInLongitude = longitude;
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    String address =
+        "${placemarks[0].street ?? ''}, ${placemarks[0].thoroughfare ?? ''}, ${placemarks[0].locality ?? ''}";
+    // final api = GoogleGeocodingApi('AIzaSyAiGzgFITTlOuq5BTzbwA0Kpm3z_kOj7ms',
+    //     isLogged: true);
+    // final String strLatLng = '${position.latitude}, ${position.longitude}';
+    // final reversedSearchResults = await api.reverse(
+    //   strLatLng,
+    //   language: 'en',
+    // );
+    // log(reversedSearchResults.toString());
 
-    currentLocation.value = 'EDSA Shaw Starmall, Mandaluyong City';
+    log(position.toString());
+
+    currentLocation.value = address;
 
     attendance.value.clockedInLocation = currentLocation.value;
-    attendance.value.clockedInLattitude = '14.5828';
-    attendance.value.clockedInLongitude = '121.0535';
+    attendance.value.clockedInLattitude = position.latitude.toString();
+    attendance.value.clockedInLongitude = position.longitude.toString();
     attendance.value.clockedInLocationType = 'Within Vicinity';
     attendance.value.clockedInLocationSetting = '';
     isLoading.value = false;

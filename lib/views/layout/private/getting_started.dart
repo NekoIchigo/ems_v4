@@ -1,6 +1,6 @@
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
-import 'package:ems_v4/controller/uitls_controller.dart';
+import 'package:ems_v4/controller/location_controller.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class _GettingStartedState extends State<GettingStarted> {
   final Settings _settings = Get.find<Settings>();
   final HomeController _homeController = Get.find<HomeController>();
   final AuthService _authService = Get.find<AuthService>();
-  final UtilsController _utilsController = Get.find<UtilsController>();
+  final LocationController _locationController = Get.find<LocationController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
 
@@ -28,7 +28,7 @@ class _GettingStartedState extends State<GettingStarted> {
     _homeController.getLatestLog(employeeId: _authService.employee.value.id);
     _timeEntriesController.getAttendanceList(
         employeeId: _authService.employee.value.id, months: 1);
-    _utilsController.checkLocationPermission();
+    _locationController.checkLocationPermission();
   }
 
   @override

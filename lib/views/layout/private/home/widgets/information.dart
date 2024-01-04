@@ -67,6 +67,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             child: Text(
                               _homeController.currentLocation.value,
                               style: const TextStyle(color: darkGray),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ],
