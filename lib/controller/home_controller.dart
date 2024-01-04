@@ -4,6 +4,10 @@ import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +16,14 @@ class HomeController extends GetxController {
   final AuthService authService = Get.find<AuthService>();
   final ApiCall apiCall = ApiCall();
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
+  final int routerKey = 1;
+  RxInt pageIndex = 0.obs;
+  final List<Widget> pages = [
+    const InOutPage(),
+    const HomeInfoPage(),
+    const HealthDeclaration(),
+    const HomeResultPage()
+  ];
 
   RxString pageName = ''.obs, currentLocation = ''.obs;
   RxBool isWhite = false.obs,

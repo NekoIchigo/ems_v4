@@ -10,13 +10,14 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class MainNavigationController extends GetxController {
-  var selectedIndex = 0.obs;
-  final List<List<Widget>> pages = [
-    [const Home()],
-    [const TimeEntries()],
-    [const Transactions()],
-    [const NotificationPage()],
-    [const Profile()],
+  RxInt selectedIndex = 0.obs;
+  final int routerKey = 0;
+  final List<Widget> pages = [
+    const Home(),
+    const TimeEntries(),
+    const Transactions(),
+    const NotificationPage(),
+    const Profile(),
   ];
 
   final List<TabItem> navigations = [

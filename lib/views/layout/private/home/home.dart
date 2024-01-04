@@ -49,7 +49,15 @@ class _HomeState extends State<Home> {
                 height: Get.height * .78,
                 child: _homeController.isLoading.isTrue
                     ? const Loading()
-                    : const HomePageContiner(),
+                    : Navigator(
+                        key: Get.nestedKey(_homeController.routerKey),
+                        onGenerateRoute: (settings) {
+                          return GetPageRoute(
+                            page: () => _homeController
+                                .pages[_homeController.pageIndex.value],
+                          );
+                        },
+                      ),
               ),
             ],
           ),

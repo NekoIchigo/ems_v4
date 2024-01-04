@@ -25,16 +25,16 @@ class _MainNavigationState extends State<MainNavigation> {
         body: Stack(
           children: [
             const GettingStarted(),
-            Obx(
-              () => Navigator(
-                key: Get.nestedKey(
-                    _mainNavigationController.selectedIndex.value),
-                onGenerateRoute: (settings) {
-                  return GetPageRoute(
-                      page: () => _mainNavigationController.pages[
-                          _mainNavigationController.selectedIndex.value][0]);
-                },
-              ),
+            Navigator(
+              key: Get.nestedKey(0),
+              onGenerateRoute: (settings) {
+                return GetPageRoute(
+                  page: () => Obx(
+                    () => _mainNavigationController
+                        .pages[_mainNavigationController.selectedIndex.value],
+                  ),
+                );
+              },
             ),
           ],
         ),

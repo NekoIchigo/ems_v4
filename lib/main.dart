@@ -5,6 +5,8 @@ import 'package:ems_v4/global/guards/auth_guard.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
@@ -49,11 +51,18 @@ class MyApp extends StatelessWidget {
           page: () => const MainNavigation(),
           middlewares: [AuthGuard()],
           children: [
-            GetPage(
-              name: '/home',
-              page: () => const Home(),
-              middlewares: [AuthGuard()],
-            ),
+            GetPage(name: '/home', page: () => const Home(), middlewares: [
+              AuthGuard(),
+            ], children: [
+              GetPage(
+                name: '/info',
+                page: () => const HomeInfoPage(),
+              ),
+              GetPage(
+                name: '/test',
+                page: () => const HealthDeclaration(),
+              ),
+            ]),
             GetPage(
               name: '/time_entries',
               page: () => const TimeEntries(),
