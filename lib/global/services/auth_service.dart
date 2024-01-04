@@ -103,7 +103,7 @@ class AuthService extends GetxService {
           gender: employeeData['gender'],
           civilStatus: employeeData['civil_status'],
         ).obs;
-        Get.toNamed('/');
+        Get.offNamed('/');
       } else {
         Get.dialog(const GetDialog(
           title: "Opps!",
