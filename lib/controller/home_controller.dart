@@ -10,6 +10,7 @@ import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -97,6 +98,16 @@ class HomeController extends GetxController {
     }
 
     return;
+  }
+
+  Future<Position> getUserCurrentLocation() async {
+    await Geolocator.requestPermission()
+        .then((value) {})
+        .onError((error, stackTrace) async {
+      await Geolocator.requestPermission();
+      print("ERROR" + error.toString());
+    });
+    return await Geolocator.getCurrentPosition();
   }
 
   Future setClockInLocation() async {

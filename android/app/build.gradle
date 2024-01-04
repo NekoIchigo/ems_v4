@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.ems_v4"
-    compileSdkVersion 31 //flutter.compileSdkVersion
+    compileSdkVersion 33 //flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     compileOptions {
