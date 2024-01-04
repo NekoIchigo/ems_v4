@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
+import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -36,44 +37,29 @@ class _TransactionsState extends State<Transactions> {
                   SizedBox(
                     height: Get.height * .6,
                     child: GridView.count(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 40,
-                      ),
-                      mainAxisSpacing: 40,
-                      crossAxisSpacing: 40,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       crossAxisCount: 2,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Colors.black,
-                            backgroundColor: bgSky,
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                        TransactionMenuButton(
+                          onPressed: () {
+                            Get.toNamed('/transactions/time_records');
+                          },
+                          child: const Center(
+                            child: Icon(
+                              Icons.calendar_month,
+                              size: 60,
+                              color: bgPrimaryBlue,
                             ),
-                          ),
-                          child: const Icon(
-                            Icons.calendar_month,
-                            size: 80,
-                            color: bgPrimaryBlue,
                           ),
                         ),
-                        ElevatedButton(
+                        TransactionMenuButton(
                           onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Colors.black,
-                            backgroundColor: bgSky,
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                          child: const Center(
+                            child: Icon(
+                              Icons.edit_calendar_rounded,
+                              size: 60,
+                              color: bgPrimaryBlue,
                             ),
-                          ),
-                          child: const Icon(
-                            Icons.edit_calendar_rounded,
-                            size: 80,
-                            color: bgPrimaryBlue,
                           ),
                         ),
                       ],
