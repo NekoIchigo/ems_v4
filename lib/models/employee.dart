@@ -1,56 +1,65 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:ems_v4/models/employee_details.dart';
 
 class Employee {
   final int id;
-  final String employeeNumber;
+  final int companyId;
+  final int userId;
+  final int accountStatusId;
   final String firstName;
   final String? middleName;
   final String lastName;
+  final String dailyTimeRecord;
   final String birthday;
   final String gender;
   final String civilStatus;
+  final EmployeeDetails employeeDetails;
 
   Employee({
     required this.id,
-    required this.employeeNumber,
+    required this.companyId,
+    required this.userId,
+    required this.accountStatusId,
     required this.firstName,
     this.middleName,
     required this.lastName,
+    required this.dailyTimeRecord,
     required this.birthday,
     required this.gender,
     required this.civilStatus,
+    required this.employeeDetails,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'employeeNumber': employeeNumber,
-      'firstName': firstName,
-      'middleName': middleName,
-      'lastName': lastName,
-      'birthday': birthday,
-      'gender': gender,
-      'civilStatus': civilStatus,
-    };
-  }
-
-  factory Employee.fromMap(Map<String, dynamic> map) {
+  factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-      id: map['id'] as int,
-      employeeNumber: map['employeeNumber'] as String,
-      firstName: map['firstName'] as String,
-      middleName:
-          map['middleName'] != null ? map['middleName'] as String : null,
-      lastName: map['lastName'] as String,
-      birthday: map['birthday'] as String,
-      gender: map['gender'] as String,
-      civilStatus: map['civilStatus'] as String,
+      id: json['id'] as int,
+      companyId: json['company_id'] as int,
+      userId: json['user_id'] as int,
+      accountStatusId: json['account_status_id'] as int,
+      firstName: json['first_name'] as String,
+      middleName: json['middle_name'] as String?,
+      lastName: json['last_name'] as String,
+      dailyTimeRecord: json['daily_time_record'] as String,
+      birthday: json['birthday'] as String,
+      gender: json['gender'] as String,
+      civilStatus: json['civil_status'] as String,
+      employeeDetails: EmployeeDetails.fromJson(json['employee_details']),
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory Employee.fromJson(String source) =>
-      Employee.fromMap(json.decode(source) as Map<String, dynamic>);
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'company_id': companyId,
+      'user_id': userId,
+      'account_status_id': accountStatusId,
+      'first_name': firstName,
+      'middle_name': middleName,
+      'last_name': lastName,
+      'daily_time_record': dailyTimeRecord,
+      'birthday': birthday,
+      'gender': gender,
+      'civil_status': civilStatus,
+      'employee_details': employeeDetails.toMap(),
+    };
+  }
 }
