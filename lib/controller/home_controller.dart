@@ -1,17 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
-import 'package:ems_v4/models/attendance.dart';
+import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
@@ -33,39 +31,34 @@ class HomeController extends GetxController {
       isOustideVicinity = false.obs,
       isLoading = false.obs,
       isClockOut = false.obs,
-      isClockInOutComplete = false.obs;
-  Rx<Attendance> attendance = Attendance().obs;
+      isClockInOutComplete = false.obs,
+      isNewShift = true.obs;
+  Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
 
-  Future getLatestLog({
-    required int employeeId,
-  }) async {
+  Future checkNewShift() async {
+    isLoading.value = true;
+    try {} catch (error) {
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future getLatestLog({required int employeeId}) async {
     isLoading.value = true;
     try {
       var response = await apiCall.getRequest('/latest-dtr/$employeeId');
       var result = jsonDecode(response.body);
-      var serverTime = await apiCall.getRequest('/server-time');
-      var timeResult = jsonDecode(serverTime.body);
 
       if (result['success']) {
-        int dayDifference = -1;
         if (result['data'] != null) {
-          dayDifference = dateTimeUtils.calculateDateTimeDifference(
-            timeResult['data']['withTimeZone'],
-            result['data']['clock_in_at'],
-            'days',
-          );
+          attendance = AttendanceRecord.fromJson(result['data']).obs;
 
-          if (dayDifference == 0) {
-            attendance = Attendance.fromJson(result['data']).obs;
-            if (result['data']['clock_in_at'] != null &&
-                result['data']['clock_out_at'] == null) {
-              attendance = Attendance.fromJson(result['data']).obs;
-              isClockOut.value = true;
-              isClockInOutComplete.value = false;
-            } else {
-              isClockOut.value = false;
-              isClockInOutComplete.value = true;
-            }
+          if (attendance.value.clockInAt != null &&
+              attendance.value.clockOutAt == null) {
+            isClockOut.value = true;
+            isClockInOutComplete.value = false;
+          } else {
+            isClockOut.value = false;
           }
         }
       } else {
@@ -80,9 +73,7 @@ class HomeController extends GetxController {
         ));
         pageName.value = '/home';
         printError(info: 'Error Message getLatestLog: Invalid Request');
-        pageName.value = '/home';
       }
-      isLoading.value = false;
     } catch (error) {
       Get.dialog(GetDialog(
         title: "Opps!",
@@ -95,58 +86,37 @@ class HomeController extends GetxController {
       ));
       pageName.value = '/home';
       printError(info: 'Error Message getLatestLog: $error');
+    } finally {
       isLoading.value = false;
-      pageName.value = '/home';
     }
-
-    return;
   }
 
   Future setClockInLocation() async {
     isLoading.value = true;
-    // TODO: must get the location from googlemaps api
-
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    String address =
-        "${placemarks[0].street ?? ''}, ${placemarks[0].thoroughfare ?? ''}, ${placemarks[0].locality ?? ''}";
-    // final api = GoogleGeocodingApi('AIzaSyAiGzgFITTlOuq5BTzbwA0Kpm3z_kOj7ms',
-    //     isLogged: true);
-    // final String strLatLng = '${position.latitude}, ${position.longitude}';
-    // final reversedSearchResults = await api.reverse(
-    //   strLatLng,
-    //   language: 'en',
-    // );
-    // log(reversedSearchResults.toString());
 
-    log(position.toString());
-
-    currentLocation.value = address;
+    currentLocation.value = 'Distance to report_at location';
 
     attendance.value.clockedInLocation = currentLocation.value;
-    attendance.value.clockedInLattitude = position.latitude.toString();
-    attendance.value.clockedInLongitude = position.longitude.toString();
+    attendance.value.clockedInLatitude = position.latitude;
+    attendance.value.clockedInLongitude = position.longitude;
     attendance.value.clockedInLocationType = 'Within Vicinity';
     attendance.value.clockedInLocationSetting = '';
+
     isLoading.value = false;
   }
 
   Future setClockOutLocation() async {
     isLoading.value = true;
-
-    // TODO: must get the location from googlemaps api
-
-    // attendance.value.clockedOutLocation = description;
-    // attendance.value.clockedOutLattitude = lattitude;
-    // attendance.value.clockedOutLongitude = longitude;
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
 
     currentLocation.value = 'EDSA Shaw Starmall, Mandaluyong City';
 
     attendance.value.clockedOutLocation = currentLocation.value;
-    attendance.value.clockedOutLattitude = '14.5828';
-    attendance.value.clockedOutLongitude = '121.0535';
+    attendance.value.clockedOutLatitude = position.latitude;
+    attendance.value.clockedOutLongitude = position.longitude;
     attendance.value.clockedInLocationType = 'Within Vicinity';
     attendance.value.clockedInLocationSetting = '';
     isLoading.value = false;
@@ -165,7 +135,7 @@ class HomeController extends GetxController {
       var response = await apiCall.postRequest({
         'employee_id': employeeId,
         'clocked_in_location': attendance.value.clockedInLocation,
-        'clocked_in_lattitude': attendance.value.clockedInLattitude,
+        'clocked_in_lattitude': attendance.value.clockedInLatitude,
         'clocked_in_longitude': attendance.value.clockedInLongitude,
         'clocked_in_location_type': attendance.value.clockedInLocationType,
         'clocked_in_location_setting':
@@ -175,7 +145,6 @@ class HomeController extends GetxController {
       }, '/clock-in');
       var result = jsonDecode(response.body);
       if (result['success']) {
-        attendance.value.id = result['data']['id'];
         isClockOut.value = true;
         getLatestLog(employeeId: authService.employee.value.id);
       } else {
@@ -213,17 +182,16 @@ class HomeController extends GetxController {
       var response = await apiCall.postRequest({
         'attendance_id': attendance.value.id,
         'clocked_out_location': attendance.value.clockedOutLocation,
-        'clocked_out_lattitude': attendance.value.clockedOutLattitude,
-        'clocked_out_longitude': attendance.value.clockedInLongitude,
-        'clocked_out_location_type': attendance.value.clockedInLocationType,
+        'clocked_out_lattitude': attendance.value.clockedOutLatitude,
+        'clocked_out_longitude': attendance.value.clockedOutLongitude,
+        'clocked_out_location_type': attendance.value.clockedOutLocationType,
         'clocked_out_location_setting':
             attendance.value.clockedInLocationSetting,
       }, '/clock-out');
       var result = jsonDecode(response.body);
       if (result['success']) {
-        // attendance.value.id = result['data']['id'];
-        // isClockOut.value = false;
-        // isClockInOutComplete.value = true;
+        isClockOut.value = false;
+        isClockInOutComplete.value = true;
 
         getLatestLog(employeeId: authService.employee.value.id);
       } else {
@@ -257,16 +225,10 @@ class HomeController extends GetxController {
     }
   }
 
-  String getWorkingHrs({
-    required String dateTimeIn,
-    required String dateTimeOut,
-  }) {
-    if (dateTimeIn != "" && dateTimeOut != "") {
-      DateTime timein = DateTime.parse(dateTimeIn);
-      DateTime timeout = DateTime.parse(dateTimeOut);
-
+  String getWorkingHrs({DateTime? dateTimeIn, DateTime? dateTimeOut}) {
+    if (dateTimeIn != null && dateTimeOut != null) {
       // Calculate the difference in minutes
-      Duration difference = timeout.difference(timein);
+      Duration difference = dateTimeOut.difference(dateTimeIn);
 
       // Calculate hours and remaining minutes
       int hours = difference.inHours;

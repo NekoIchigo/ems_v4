@@ -140,7 +140,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       ),
                                       const SizedBox(width: 15),
                                       Text(
-                                        attendance.clockedInAt!,
+                                        attendance.clockInAt.toString(),
                                         style: const TextStyle(
                                           color: primaryBlue,
                                           fontSize: 14,
@@ -161,7 +161,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                     ],
                                   ),
                                   Visibility(
-                                    visible: attendance.clockedOutAt != '',
+                                    visible: attendance.clockOutAt != null,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -173,7 +173,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                         ),
                                         const SizedBox(width: 15),
                                         Text(
-                                          attendance.clockedOutAt!,
+                                          attendance.clockOutAt.toString(),
                                           style: const TextStyle(
                                             color: primaryBlue,
                                             fontSize: 14,

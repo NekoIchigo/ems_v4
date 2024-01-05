@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 
 class DateTimeUtils {
@@ -15,19 +17,18 @@ class DateTimeUtils {
     }
   }
 
-  String formatTime({required String dateTime}) {
-    if (dateTime != "") {
-      DateTime timestamp = DateTime.parse(dateTime);
-      return DateFormat("hh:mm a").format(timestamp);
+  String formatTime({DateTime? dateTime}) {
+    if (dateTime != null) {
+      log(dateTime.toString());
+      return DateFormat("hh:mm a").format(dateTime);
     } else {
       return '?? : ??';
     }
   }
 
-  String formatDate({required String dateTime}) {
-    if (dateTime != "") {
-      DateTime timestamp = DateTime.parse(dateTime);
-      return DateFormat("MM/dd/yyyy").format(timestamp);
+  String formatDate({DateTime? dateTime}) {
+    if (dateTime != null) {
+      return DateFormat("MM/dd/yyyy").format(dateTime);
     } else {
       return '??/??/????';
     }

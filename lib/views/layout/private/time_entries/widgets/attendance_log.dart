@@ -1,7 +1,7 @@
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
-import 'package:ems_v4/models/attendance.dart';
+import 'package:ems_v4/models/attendance_record.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +19,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
 
   @override
   Widget build(BuildContext context) {
-    final Attendance selectedRecord = _timeEntriesController
+    final AttendanceRecord selectedRecord = _timeEntriesController
         .attendances[_timeEntriesController.attendanceIndex.value];
 
     return SingleChildScrollView(
@@ -45,7 +45,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      selectedRecord.clockedInAt!,
+                      selectedRecord.clockInAt.toString(),
                       style: const TextStyle(
                         color: primaryBlue,
                         fontSize: 16,
@@ -113,7 +113,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
             Positioned(
               top: Get.height * .40,
               child: Visibility(
-                visible: selectedRecord.clockedOutAt != '',
+                visible: selectedRecord.clockOutAt != null,
                 child: Container(
                   width: Get.width * .9,
                   height: Get.height * .35,
@@ -126,7 +126,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        selectedRecord.clockedOutAt!,
+                        selectedRecord.clockOutAt.toString(),
                         style: const TextStyle(
                           color: primaryBlue,
                           fontSize: 16,
@@ -215,7 +215,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
               top: Get.height * .385,
               left: 40,
               child: Visibility(
-                visible: selectedRecord.clockedOutAt != '',
+                visible: selectedRecord.clockOutAt != null,
                 child: Container(
                   color: Colors.white,
                   child: const Row(

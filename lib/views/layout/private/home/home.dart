@@ -1,5 +1,4 @@
 import 'package:ems_v4/controller/home_controller.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/home/home_container.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/loader/loading.dart';
@@ -15,13 +14,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final HomeController _homeController = Get.find<HomeController>();
-  final AuthService _authService = Get.find<AuthService>();
-
-  @override
-  void initState() {
-    super.initState();
-    _homeController.getLatestLog(employeeId: _authService.employee.value.id);
-  }
 
   @override
   Widget build(BuildContext context) {

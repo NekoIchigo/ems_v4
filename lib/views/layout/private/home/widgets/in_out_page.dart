@@ -3,7 +3,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
-import 'package:ems_v4/models/attendance.dart';
+import 'package:ems_v4/models/attendance_record.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +24,7 @@ class _InOutPageState extends State<InOutPage> {
 
   @override
   Widget build(BuildContext context) {
-    Attendance attendance = _homeController.attendance.value;
+    AttendanceRecord attendance = _homeController.attendance.value;
     DateTime currentTime = _settings.currentTime.value;
     final String date = DateFormat("EEE, MMM dd").format(currentTime);
     final String greetings = _settings.getGreeting();
@@ -205,7 +205,7 @@ class _InOutPageState extends State<InOutPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Text(
                         _dateTimeUtils.formatTime(
-                            dateTime: attendance.clockedInAt ?? ""),
+                            dateTime: attendance.clockInAt),
                         style: const TextStyle(color: darkGray),
                       ),
                     ),
@@ -222,7 +222,7 @@ class _InOutPageState extends State<InOutPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Text(
                         _dateTimeUtils.formatTime(
-                            dateTime: attendance.clockedOutAt ?? ""),
+                            dateTime: attendance.clockOutAt),
                         style: const TextStyle(color: darkGray),
                       ),
                     ),
@@ -252,8 +252,8 @@ class _InOutPageState extends State<InOutPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Text(
                         _homeController.getWorkingHrs(
-                            dateTimeIn: attendance.clockedInAt ?? "",
-                            dateTimeOut: attendance.clockedOutAt ?? ""),
+                            dateTimeIn: attendance.clockInAt,
+                            dateTimeOut: attendance.clockOutAt),
                         style: const TextStyle(color: darkGray),
                       ),
                     ),

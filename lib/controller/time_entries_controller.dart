@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:ems_v4/global/api.dart';
-import 'package:ems_v4/models/attendance.dart';
+import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +12,7 @@ class TimeEntriesController extends GetxController {
 
   RxBool hasClose = false.obs;
   RxBool isLoading = false.obs;
-  late RxList<Attendance> attendances;
+  RxList<AttendanceRecord> attendances = [AttendanceRecord()].obs;
 
   Future getAttendanceList({
     required int employeeId,
@@ -33,8 +33,8 @@ class TimeEntriesController extends GetxController {
       var result = jsonDecode(response.body);
       if (result['success']) {
         final attendancesJson = result['data']['data'];
-        attendances = RxList<Attendance>.from(attendancesJson
-            .map((attendance) => Attendance.fromJson(attendance)));
+        attendances = RxList<AttendanceRecord>.from(attendancesJson
+            .map((attendance) => AttendanceRecord.fromJson(attendance)));
         // print(attendances.length);
       } else {
         Get.dialog(GetDialog(
