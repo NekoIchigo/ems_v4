@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
-import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -96,14 +93,14 @@ class AuthService extends GetxService {
     }
   }
 
-  Future logout(BuildContext context) async {
+  Future logout() async {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
         _localStorage.clear();
         Get.toNamed('/login');
       });
     } catch (error) {
-      await EMSDialog(
+      Get.dialog(GetDialog(
         title: "Opps!",
         hasMessage: true,
         withCloseButton: true,
@@ -111,7 +108,7 @@ class AuthService extends GetxService {
         message: "Error: $error",
         type: "error",
         buttonNumber: 0,
-      ).show(context);
+      ));
       isLoading.value = false;
       printError(info: 'Error Message: $error');
     }

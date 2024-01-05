@@ -34,7 +34,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   RoundedCustomButton(
                     onPressed: () {
                       if (authService.isLoading.isFalse) {
-                        authService.logout(context);
+                        authService.logout();
                       }
                     },
                     label: 'Log out',
