@@ -3,14 +3,14 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EmployeeDetails extends StatefulWidget {
-  const EmployeeDetails({super.key});
+class EmployeeDetailsWidget extends StatefulWidget {
+  const EmployeeDetailsWidget({super.key});
 
   @override
-  State<EmployeeDetails> createState() => _EmployeeDetailsState();
+  State<EmployeeDetailsWidget> createState() => _EmployeeDetailsWidgetState();
 }
 
-class _EmployeeDetailsState extends State<EmployeeDetails>
+class _EmployeeDetailsWidgetState extends State<EmployeeDetailsWidget>
     with SingleTickerProviderStateMixin {
   // final AuthService _authService = Get.find<AuthService>();
   bool _isExpanded = false;
