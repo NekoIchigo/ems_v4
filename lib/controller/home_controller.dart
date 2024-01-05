@@ -35,9 +35,16 @@ class HomeController extends GetxController {
       isNewShift = true.obs;
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
 
-  Future checkNewShift() async {
+  Future checkNewShift({required int employeeId}) async {
     isLoading.value = true;
-    try {} catch (error) {
+    try {
+      var response = await apiCall.getRequest('/latest-dtr/$employeeId');
+      var result = jsonDecode(response.body);
+      if (result['success']) {}
+      isClockInOutComplete.value = false;
+      isClockOut.value = false;
+    } catch (error) {
+      printError(info: 'Check New Shift Error: $error');
     } finally {
       isLoading.value = false;
     }
@@ -122,12 +129,10 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
-  Future clockIn({
-    required int employeeId,
-    required BuildContext context,
-    List healthCheck = const [],
-    String temperature = '',
-  }) async {
+  Future clockIn(
+      {required int employeeId,
+      List healthCheck = const [],
+      String temperature = ''}) async {
     isLoading.value = true;
     String healthCheckStr = healthCheck.join(', ');
     try {
