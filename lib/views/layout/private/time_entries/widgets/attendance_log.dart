@@ -45,7 +45,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      selectedRecord.clockInAt.toString(),
+                      selectedRecord.formattedClockIn ?? "??/??/??/ | ??:??",
                       style: const TextStyle(
                         color: primaryBlue,
                         fontSize: 16,
@@ -68,7 +68,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(selectedRecord.clockedInLocationType!),
+                        Text(selectedRecord.clockedInLocationType ?? ""),
                         const SizedBox(width: 30),
                         const Text(
                           "View Map",
@@ -86,7 +86,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         const SizedBox(width: 30),
                         Expanded(
                           child: Text(
-                            selectedRecord.clockedInLocation!,
+                            selectedRecord.clockedInLocation ?? "",
                             style: const TextStyle(color: primaryBlue),
                           ),
                         )
@@ -126,7 +126,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        selectedRecord.clockOutAt.toString(),
+                        selectedRecord.formattedClockOut ?? "??/??/??/ | ??:??",
                         style: const TextStyle(
                           color: primaryBlue,
                           fontSize: 16,
@@ -149,7 +149,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(selectedRecord.clockedOutLocationType!),
+                          Text(selectedRecord.clockedOutLocationType ?? ""),
                           const SizedBox(width: 30),
                           const Text(
                             "View Map",
@@ -167,7 +167,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           const SizedBox(width: 30),
                           Expanded(
                             child: Text(
-                              selectedRecord.clockedOutLocation!,
+                              selectedRecord.clockedOutLocation ?? "",
                               style: const TextStyle(color: primaryBlue),
                             ),
                           )

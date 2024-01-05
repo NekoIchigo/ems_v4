@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:intl/intl.dart';
 
 class DateTimeUtils {
@@ -19,7 +17,6 @@ class DateTimeUtils {
 
   String formatTime({DateTime? dateTime}) {
     if (dateTime != null) {
-      log(dateTime.toString());
       return DateFormat("hh:mm a").format(dateTime);
     } else {
       return '?? : ??';

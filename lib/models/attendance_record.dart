@@ -3,27 +3,28 @@ class AttendanceRecord {
   int? employeeId;
   DateTime? clockInAt;
   DateTime? clockOutAt;
+  String? formattedClockIn;
+  String? formattedClockOut;
   String? clockedInLocation;
   String? clockedOutLocation;
-  double? clockedInLatitude;
-  double? clockedInLongitude;
-  double? clockedOutLatitude;
-  double? clockedOutLongitude;
+  String? clockedInLatitude;
+  String? clockedInLongitude;
+  String? clockedOutLatitude;
+  String? clockedOutLongitude;
   String? clockedInLocationType;
   String? clockedOutLocationType;
   String? clockedInLocationSetting;
   String? clockedOutLocationSetting;
   String? healthCheck;
-  double? healthTemperature;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  DateTime? deletedAt;
+  String? healthTemperature;
 
   AttendanceRecord({
     this.id,
     this.employeeId,
     this.clockInAt,
     this.clockOutAt,
+    this.formattedClockIn,
+    this.formattedClockOut,
     this.clockedInLocation,
     this.clockedOutLocation,
     this.clockedInLatitude,
@@ -36,9 +37,6 @@ class AttendanceRecord {
     this.clockedOutLocationSetting,
     this.healthCheck,
     this.healthTemperature,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
   });
 
   factory AttendanceRecord.fromJson(Map<String, dynamic> json) {
@@ -51,28 +49,21 @@ class AttendanceRecord {
       clockOutAt: json['clock_out_at'] != null
           ? DateTime.parse(json['clock_out_at'] as String)
           : null,
+      formattedClockIn: json['formatted_clock_in_at'] as String?,
+      formattedClockOut: json['formatted_clock_out_at'] as String?,
       clockedInLocation: json['clocked_in_location'] as String?,
       clockedOutLocation: json['clocked_out_location'] as String?,
-      clockedInLatitude: json['clocked_in_lattitude'] as double?,
-      clockedInLongitude: json['clocked_in_longitude'] as double?,
-      clockedOutLatitude: json['clocked_out_lattitude'] as double?,
-      clockedOutLongitude: json['clocked_out_longitude'] as double?,
+      clockedInLatitude: json['clocked_in_lattitude'] as String?,
+      clockedInLongitude: json['clocked_in_longitude'] as String?,
+      clockedOutLatitude: json['clocked_out_lattitude'] as String?,
+      clockedOutLongitude: json['clocked_out_longitude'] as String?,
       clockedInLocationType: json['clocked_in_location_type'] as String?,
       clockedOutLocationType: json['clocked_out_location_type'] as String?,
       clockedInLocationSetting: json['clocked_in_location_setting'] as String?,
       clockedOutLocationSetting:
           json['clocked_out_location_setting'] as String?,
       healthCheck: json['health_check'] as String?,
-      healthTemperature: json['health_temperature'] as double?,
-      createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'] as String)
-          : null,
-      updatedAt: json['updated_at'] != null
-          ? DateTime.parse(json['updated_at'] as String)
-          : null,
-      deletedAt: json['deleted_at'] != null
-          ? DateTime.parse(json['deleted_at'] as String)
-          : null,
+      healthTemperature: json['health_temperature'] as String?,
     );
   }
 
@@ -94,9 +85,6 @@ class AttendanceRecord {
       'clocked_out_location_setting': clockedOutLocationSetting,
       'health_check': healthCheck,
       'health_temperature': healthTemperature,
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
-      'deleted_at': deletedAt?.toIso8601String(),
     };
   }
 }

@@ -99,8 +99,8 @@ class HomeController extends GetxController {
     currentLocation.value = 'Distance to report_at location';
 
     attendance.value.clockedInLocation = currentLocation.value;
-    attendance.value.clockedInLatitude = position.latitude;
-    attendance.value.clockedInLongitude = position.longitude;
+    attendance.value.clockedInLatitude = position.latitude.toString();
+    attendance.value.clockedInLongitude = position.longitude.toString();
     attendance.value.clockedInLocationType = 'Within Vicinity';
     attendance.value.clockedInLocationSetting = '';
 
@@ -115,8 +115,8 @@ class HomeController extends GetxController {
     currentLocation.value = 'EDSA Shaw Starmall, Mandaluyong City';
 
     attendance.value.clockedOutLocation = currentLocation.value;
-    attendance.value.clockedOutLatitude = position.latitude;
-    attendance.value.clockedOutLongitude = position.longitude;
+    attendance.value.clockedOutLatitude = position.latitude.toString();
+    attendance.value.clockedOutLongitude = position.longitude.toString();
     attendance.value.clockedInLocationType = 'Within Vicinity';
     attendance.value.clockedInLocationSetting = '';
     isLoading.value = false;

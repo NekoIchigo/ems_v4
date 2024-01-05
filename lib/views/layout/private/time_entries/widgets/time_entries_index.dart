@@ -140,7 +140,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       ),
                                       const SizedBox(width: 15),
                                       Text(
-                                        attendance.clockInAt.toString(),
+                                        attendance.formattedClockIn ??
+                                            "??/??/??/ | ??:??",
                                         style: const TextStyle(
                                           color: primaryBlue,
                                           fontSize: 14,
@@ -149,7 +150,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       const SizedBox(width: 5),
                                       Expanded(
                                         child: Text(
-                                          attendance.clockedInLocationType!,
+                                          attendance.clockedInLocationType ??
+                                              "",
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: const TextStyle(
@@ -173,7 +175,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                         ),
                                         const SizedBox(width: 15),
                                         Text(
-                                          attendance.clockOutAt.toString(),
+                                          attendance.formattedClockOut ??
+                                              "??/??/??/ | ??:??",
                                           style: const TextStyle(
                                             color: primaryBlue,
                                             fontSize: 14,
@@ -182,7 +185,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                         const SizedBox(width: 5),
                                         Expanded(
                                           child: Text(
-                                            attendance.clockedOutLocationType!,
+                                            attendance.clockedOutLocationType ??
+                                                "",
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
