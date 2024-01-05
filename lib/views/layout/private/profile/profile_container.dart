@@ -30,7 +30,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 children: [
                   const EditProfile(),
                   const SizedBox(height: 10),
-                  const EmployeeDetails(),
+                  const EmployeeDetailsWidget(),
                   RoundedCustomButton(
                     onPressed: () {
                       if (authService.isLoading.isFalse) {
