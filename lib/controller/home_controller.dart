@@ -117,8 +117,8 @@ class HomeController extends GetxController {
     attendance.value.clockedOutLocation = currentLocation.value;
     attendance.value.clockedOutLatitude = position.latitude.toString();
     attendance.value.clockedOutLongitude = position.longitude.toString();
-    attendance.value.clockedInLocationType = 'Within Vicinity';
-    attendance.value.clockedInLocationSetting = '';
+    attendance.value.clockedOutLocationType = 'Within Vicinity';
+    attendance.value.clockedOutLocationSetting = '';
     isLoading.value = false;
   }
 
@@ -200,7 +200,7 @@ class HomeController extends GetxController {
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
-          message: "Error: $result",
+          message: "Error clock out result: $result",
           type: "error",
           buttonNumber: 0,
         ));
@@ -215,7 +215,7 @@ class HomeController extends GetxController {
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,
-        message: "Error: $error",
+        message: "Error clockout: $error",
         type: "error",
         buttonNumber: 0,
       ));
