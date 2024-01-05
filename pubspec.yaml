@@ -27,10 +27,7 @@ dependencies:
   launcher_name: ^1.0.2
   convex_bottom_bar: ^3.2.0
   flutter_svg: ^2.0.9
-  google_maps_flutter: ^2.5.1
   geolocator: ^10.1.0
-  geocoding: ^2.1.1
-  google_geocoding_api: ^1.4.1
 
 dev_dependencies:
   flutter_test:
