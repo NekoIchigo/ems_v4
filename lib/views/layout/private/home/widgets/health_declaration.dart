@@ -1,4 +1,3 @@
-
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -217,7 +216,6 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                       _homeController
                           .clockIn(
                         employeeId: _authService.employee.value.id,
-                        context: context,
                         healthCheck: checkedSymptoms,
                         temperature: temperatureController.text,
                       )

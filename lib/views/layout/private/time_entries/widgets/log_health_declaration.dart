@@ -216,7 +216,6 @@ class _LogHealthDeclarationState extends State<LogHealthDeclaration> {
                       _homeController
                           .clockIn(
                         employeeId: _authService.employee.value.id,
-                        context: context,
                         healthCheck: checkedSymptoms,
                         temperature: temperatureController.text,
                       )

@@ -281,7 +281,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                           _homeController
                               .clockIn(
                             employeeId: _authViewService.employee.value.id,
-                            context: context,
                           )
                               .then((value) {
                             _homeController.pageName.value = '/home/result';
