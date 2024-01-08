@@ -81,11 +81,8 @@ class _EditProfileState extends State<EditProfile>
                               boxShadow: const [
                                 BoxShadow(
                                   color: Colors.grey,
-                                  // Offset of the shadow
                                   offset: Offset(0, 5),
-                                  // Spread of the shadow
                                   blurRadius: 6,
-                                  // How much the shadow should be spread
                                   spreadRadius: 0,
                                 ),
                               ],

@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_corrections.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
@@ -58,7 +59,9 @@ class _TransactionsState extends State<Transactions> {
                           ),
                         ),
                         TransactionMenuButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(() => const DTRCorrection());
+                          },
                           title: "DTR Corrections",
                           child: const Center(
                             child: Icon(
