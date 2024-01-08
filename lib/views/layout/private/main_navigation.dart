@@ -20,35 +20,37 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: Stack(
-          children: [
-            const GettingStarted(),
-            Navigator(
-              key: Get.nestedKey(_mainNavigationController.routerKey),
-              onGenerateRoute: (settings) {
-                return GetPageRoute(
-                  page: () => Obx(
-                    () => _mainNavigationController
-                        .pages[_mainNavigationController.selectedIndex.value],
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-        extendBody: true,
-        bottomNavigationBar: ConvexAppBar(
-          backgroundColor: bgPrimaryBlue,
-          height: 55,
-          items: _mainNavigationController.navigations,
-          curveSize: 80,
-          top: -15,
-          style: TabStyle.reactCircle,
-          onTap: (index) {
-            _mainNavigationController.selectedIndex.value = index;
-          },
-        ));
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          const GettingStarted(),
+          Navigator(
+            key: Get.nestedKey(_mainNavigationController.routerKey),
+            onGenerateRoute: (settings) {
+              return GetPageRoute(
+                page: () => Obx(
+                  () => _mainNavigationController
+                      .pages[_mainNavigationController.selectedIndex.value],
+                ),
+                curve: Curves.easeInOut,
+              );
+            },
+          ),
+        ],
+      ),
+      extendBody: true,
+      bottomNavigationBar: ConvexAppBar(
+        backgroundColor: bgPrimaryBlue,
+        height: 55,
+        items: _mainNavigationController.navigations,
+        curveSize: 80,
+        top: -15,
+        style: TabStyle.reactCircle,
+        onTap: (index) {
+          _mainNavigationController.selectedIndex.value = index;
+        },
+      ),
+    );
   }
 }

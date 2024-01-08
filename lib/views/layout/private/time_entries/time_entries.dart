@@ -19,54 +19,41 @@ class _TimeEntriesState extends State<TimeEntries> {
   @override
   Widget build(BuildContext context) {
     return EMSContainer(
-      child: Column(
+      child: Stack(
         children: [
-          Obx(
-            () => Visibility(
-              visible: _timeEntriesController.hasClose.isFalse,
-              child: const SizedBox(height: 11),
+          Positioned(
+            top: 15,
+            right: 10,
+            child: Obx(
+              () => Visibility(
+                visible: _timeEntriesController.hasClose.isTrue,
+                child: IconButton(
+                  onPressed: () {
+                    _timeEntriesController.hasClose.value = false;
+                    _timeEntriesController.pageName.value = '/index';
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+              ),
             ),
           ),
-          Row(
+          Column(
             children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Obx(
-                      () => Visibility(
-                        visible: _timeEntriesController.hasClose.isTrue,
-                        child: const SizedBox(width: 48),
-                      ),
-                    ),
-                    const Text(
-                      'Time Entries',
-                      style: TextStyle(
-                        color: primaryBlue,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 25),
+              const Text(
+                'Time Entries',
+                style: TextStyle(
+                  color: primaryBlue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
-              Obx(
-                () => Visibility(
-                  visible: _timeEntriesController.hasClose.isTrue,
-                  child: IconButton(
-                    onPressed: () {
-                      _timeEntriesController.hasClose.value = false;
-                      _timeEntriesController.pageName.value = '/index';
-                    },
-                    icon: const Icon(Icons.close),
-                  ),
-                ),
+              const SizedBox(height: 15),
+              SizedBox(
+                height: Get.height * .66,
+                child: const TimeEntriesContainer(),
               ),
             ],
-          ),
-          SizedBox(
-            height: Get.height * .66,
-            child: const TimeEntriesContainer(),
           ),
         ],
       ),

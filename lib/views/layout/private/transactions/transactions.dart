@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _TransactionsState extends State<Transactions> {
             child: Center(
               child: Column(
                 children: [
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 25),
                   const Text(
                     "Transactions",
                     style: TextStyle(
@@ -45,7 +46,7 @@ class _TransactionsState extends State<Transactions> {
                       children: [
                         TransactionMenuButton(
                           onPressed: () {
-                            Get.toNamed('/transactions/time_records');
+                            Get.to(() => const TimeRecords());
                           },
                           title: "Time Records",
                           child: const Center(
