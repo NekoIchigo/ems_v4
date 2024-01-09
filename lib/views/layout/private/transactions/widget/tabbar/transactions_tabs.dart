@@ -15,18 +15,18 @@ class TransactionsTabs extends StatelessWidget {
     return Tab(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-        decoration: BoxDecoration(
-          color: isActive ? bgPrimaryBlue : Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: isActive ? Colors.grey : Colors.white,
-              offset: Offset(0, 5),
-              blurRadius: 6,
-              spreadRadius: 0,
-            ),
-          ],
-        ),
+        // decoration: BoxDecoration(
+        //   color: isActive ? bgPrimaryBlue : Colors.white,
+        //   borderRadius: BorderRadius.circular(10),
+        //   boxShadow: [
+        //     BoxShadow(
+        //       color: isActive ? Colors.grey : Colors.white,
+        //       offset: Offset(0, 5),
+        //       blurRadius: 6,
+        //       spreadRadius: 0,
+        //     ),
+        //   ],
+        // ),
         child: Text(
           title,
           style: TextStyle(
