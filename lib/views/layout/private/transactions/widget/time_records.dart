@@ -37,179 +37,141 @@ class _TimeRecordsState extends State<TimeRecords> {
   @override
   Widget build(BuildContext context) {
     return EMSContainer(
-        child: Stack(
-      children: [
-        Positioned(
-          top: 15,
-          right: 10,
-          child: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(Icons.close),
-          ),
-        ),
-        Column(
-          children: [
-            const SizedBox(height: 25),
-            const Text(
-              "Time Records",
-              style: TextStyle(
-                color: primaryBlue,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
+        child: Center(
+      child: Stack(
+        children: [
+          Positioned(
+            top: 15,
+            right: 10,
+            child: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(Icons.close),
             ),
-            SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Showing records for',
-                      style: TextStyle(color: gray, fontSize: 12),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: bgSecondaryBlue,
-                        borderRadius: BorderRadius.circular(10),
+          ),
+          Column(
+            children: [
+              const SizedBox(height: 25),
+              const Text(
+                "Time Records",
+                style: TextStyle(
+                  color: primaryBlue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Showing records for',
+                        style: TextStyle(color: gray, fontSize: 12),
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<dynamic>(
-                          iconEnabledColor: Colors.white,
-                          // hint: Text(
-                          //   "Select your reason/purpose here",
-                          //   style: TextStyle(color: Colors.white),
-                          // ),
-                          value: dropdownValue,
-                          dropdownColor: bgSecondaryBlue,
-                          elevation: 16,
-                          isExpanded: true,
-                          style: const TextStyle(color: Colors.white),
-                          onChanged: (value) {
-                            // This is called when the user selects an item.
-                            if (value["month"] == 0) {
-                              Get.bottomSheet(const CustomDateBottomsheet());
-                            } else {
-                              _timeEntriesController.getAttendanceList(
-                                employeeId: _authService.employee.value.id,
-                                months: value["month"],
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: bgSecondaryBlue,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<dynamic>(
+                            iconEnabledColor: Colors.white,
+                            // hint: Text(
+                            //   "Select your reason/purpose here",
+                            //   style: TextStyle(color: Colors.white),
+                            // ),
+                            value: dropdownValue,
+                            dropdownColor: bgSecondaryBlue,
+                            elevation: 16,
+                            isExpanded: true,
+                            style: const TextStyle(color: Colors.white),
+                            onChanged: (value) {
+                              // This is called when the user selects an item.
+                              if (value["month"] == 0) {
+                                Get.bottomSheet(const CustomDateBottomsheet());
+                              } else {
+                                _timeEntriesController.getAttendanceList(
+                                  employeeId: _authService.employee.value.id,
+                                  months: value["month"],
+                                );
+                              }
+                              setState(() {
+                                dropdownValue = value!;
+                              });
+                            },
+                            items: _list.map<DropdownMenuItem<dynamic>>(
+                                (dynamic value) {
+                              return DropdownMenuItem<dynamic>(
+                                value: value,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.date_range_rounded,
+                                        color: Colors.white),
+                                    const SizedBox(width: 10),
+                                    Text(value['label']),
+                                  ],
+                                ),
                               );
-                            }
-                            setState(() {
-                              dropdownValue = value!;
-                            });
-                          },
-                          items: _list
-                              .map<DropdownMenuItem<dynamic>>((dynamic value) {
-                            return DropdownMenuItem<dynamic>(
-                              value: value,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.date_range_rounded,
-                                      color: Colors.white),
-                                  const SizedBox(width: 10),
-                                  Text(value['label']),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                            }).toList(),
+                          ),
                         ),
                       ),
-                    ),
-                    Obx(
-                      () => SizedBox(
-                        height: Get.height * .55,
-                        child: _timeEntriesController.isLoading.isTrue
-                            ? const ListShimmer(listLength: 10)
-                            : ListView.builder(
-                                padding: EdgeInsets.zero,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount:
-                                    _timeEntriesController.attendances.length,
-                                itemBuilder: (context, index) {
-                                  final attendance =
-                                      _timeEntriesController.attendances[index];
+                      Obx(
+                        () => SizedBox(
+                          height: Get.height * .55,
+                          child: _timeEntriesController.isLoading.isTrue
+                              ? const ListShimmer(listLength: 10)
+                              : ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount:
+                                      _timeEntriesController.attendances.length,
+                                  itemBuilder: (context, index) {
+                                    final attendance = _timeEntriesController
+                                        .attendances[index];
 
-                                  return Container(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    height: 70,
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                            width: 1, color: lightGray),
+                                    return Container(
+                                      padding: const EdgeInsets.only(bottom: 5),
+                                      height: 70,
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                              width: 1, color: lightGray),
+                                        ),
                                       ),
-                                    ),
-                                    child: ListTile(
-                                      onTap: () {
-                                        _timeEntriesController.pageName.value =
-                                            '/atttendance-log';
-                                        _timeEntriesController
-                                            .attendanceIndex.value = index;
-                                        _timeEntriesController.hasClose.value =
-                                            true;
-                                      },
-                                      title: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              const Icon(
-                                                Icons.access_time,
-                                                color: primaryBlue,
-                                                size: 20,
-                                              ),
-                                              const SizedBox(width: 15),
-                                              Text(
-                                                attendance.formattedClockIn ??
-                                                    "??/??/??/ | ??:??",
-                                                style: const TextStyle(
-                                                  color: primaryBlue,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 5),
-                                              Expanded(
-                                                child: Text(
-                                                  attendance
-                                                          .clockedInLocationType ??
-                                                      "",
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: const TextStyle(
-                                                    color: darkGray,
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Visibility(
-                                            visible:
-                                                attendance.clockOutAt != null,
-                                            child: Row(
+                                      child: ListTile(
+                                        onTap: () {
+                                          _timeEntriesController.pageName
+                                              .value = '/atttendance-log';
+                                          _timeEntriesController
+                                              .attendanceIndex.value = index;
+                                          _timeEntriesController
+                                              .hasClose.value = true;
+                                        },
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                               children: [
                                                 const Icon(
-                                                  Icons.access_time_filled,
+                                                  Icons.access_time,
                                                   color: primaryBlue,
                                                   size: 20,
                                                 ),
                                                 const SizedBox(width: 15),
                                                 Text(
-                                                  attendance
-                                                          .formattedClockOut ??
+                                                  attendance.formattedClockIn ??
                                                       "??/??/??/ | ??:??",
                                                   style: const TextStyle(
                                                     color: primaryBlue,
@@ -220,11 +182,11 @@ class _TimeRecordsState extends State<TimeRecords> {
                                                 Expanded(
                                                   child: Text(
                                                     attendance
-                                                            .clockedOutLocationType ??
+                                                            .clockedInLocationType ??
                                                         "",
-                                                    maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
+                                                    maxLines: 1,
                                                     style: const TextStyle(
                                                       color: darkGray,
                                                       fontSize: 14,
@@ -233,27 +195,67 @@ class _TimeRecordsState extends State<TimeRecords> {
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                        ],
+                                            Visibility(
+                                              visible:
+                                                  attendance.clockOutAt != null,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.access_time_filled,
+                                                    color: primaryBlue,
+                                                    size: 20,
+                                                  ),
+                                                  const SizedBox(width: 15),
+                                                  Text(
+                                                    attendance
+                                                            .formattedClockOut ??
+                                                        "??/??/??/ | ??:??",
+                                                    style: const TextStyle(
+                                                      color: primaryBlue,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 5),
+                                                  Expanded(
+                                                    child: Text(
+                                                      attendance
+                                                              .clockedOutLocationType ??
+                                                          "",
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        color: darkGray,
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        trailing: const Icon(
+                                          Icons.navigate_next,
+                                          color: gray,
+                                          size: 20,
+                                        ),
                                       ),
-                                      trailing: const Icon(
-                                        Icons.navigate_next,
-                                        color: gray,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
+                                    );
+                                  },
+                                ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     ));
   }
 }

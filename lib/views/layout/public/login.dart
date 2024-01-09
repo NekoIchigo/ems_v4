@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -10,6 +11,7 @@ import 'package:get/get.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
+@RoutePage()
 class Login extends StatefulWidget {
   const Login({super.key});
 
