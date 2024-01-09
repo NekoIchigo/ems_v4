@@ -12,6 +12,9 @@ import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_corrections.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,10 +68,25 @@ class MyApp extends StatelessWidget {
               middlewares: [AuthGuard()],
             ),
             GetPage(
-              name: '/transactions',
-              page: () => const Transactions(),
-              middlewares: [AuthGuard()],
-            ),
+                name: '/transactions',
+                page: () => const Transactions(),
+                middlewares: [
+                  AuthGuard()
+                ],
+                children: [
+                  GetPage(
+                    name: '/menu',
+                    page: () => const Menu(),
+                  ),
+                  GetPage(
+                    name: '/time_records',
+                    page: () => const TimeRecords(),
+                  ),
+                  GetPage(
+                    name: '/dtr_correction',
+                    page: () => const DTRCorrection(),
+                  ),
+                ]),
             GetPage(
               name: '/profile',
               page: () => const Profile(),

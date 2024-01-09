@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class MainNavigationController extends GetxController {
-  RxInt selectedIndex = 0.obs;
+  RxInt pageIndex = 0.obs;
   final int routerKey = 0;
   final List<Widget> pages = [
     const Home(),

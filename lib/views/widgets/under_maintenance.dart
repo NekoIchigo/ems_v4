@@ -13,6 +13,7 @@ class _UnderMaintenanceState extends State<UnderMaintenance> {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Lottie.asset(
             "assets/lottie/under_development.json",

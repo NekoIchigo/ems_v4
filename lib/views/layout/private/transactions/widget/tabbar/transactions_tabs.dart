@@ -71,7 +71,7 @@ class _TransactionsTabsState extends State<TransactionsTabs>
           controller: _tabController,
         ),
         SizedBox(
-          height: Get.height * .6,
+          height: Get.height * .5,
           child: TabBarView(
             controller: _tabController,
             children: [

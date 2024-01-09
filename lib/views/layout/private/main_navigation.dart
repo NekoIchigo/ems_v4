@@ -47,7 +47,7 @@ class _MainNavigationState extends State<MainNavigation> {
                 return GetPageRoute(
                   page: () => Obx(
                     () => _mainNavigationController
-                        .pages[_mainNavigationController.selectedIndex.value],
+                        .pages[_mainNavigationController.pageIndex.value],
                   ),
                   curve: Curves.easeInOut,
                 );
@@ -64,7 +64,7 @@ class _MainNavigationState extends State<MainNavigation> {
           top: -15,
           style: TabStyle.reactCircle,
           onTap: (index) {
-            _mainNavigationController.selectedIndex.value = index;
+            _mainNavigationController.pageIndex.value = index;
           },
         ),
       ),
