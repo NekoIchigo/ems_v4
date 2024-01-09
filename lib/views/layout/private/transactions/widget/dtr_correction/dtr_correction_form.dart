@@ -1,6 +1,7 @@
 import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
+import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,10 +28,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 height: Get.height * .86,
-                child: SelectedItemTabs(
+                child: const SelectedItemTabs(
                   status: "Pending",
                   title: "DTR Correction",
-                  detailPage: Column(),
+                  detailPage: Column(children: [CustomDateInput()]),
                 ),
               ),
             ),
