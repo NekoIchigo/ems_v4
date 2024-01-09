@@ -1,6 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bottomsheet.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabbar.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
@@ -51,8 +50,22 @@ class _DTRCorrectionState extends State<DTRCorrection> {
                   MonthFilterDropdown(
                     onChanged: (p0) {},
                   ),
-                  const TransactionsTabbar(),
+                  const TransactionsTabs(),
                 ],
+              ),
+              Positioned(
+                bottom: 100,
+                right: 10,
+                child: FloatingActionButton(
+                  shape: const CircleBorder(),
+                  backgroundColor: bgPrimaryBlue,
+                  onPressed: () {},
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                ),
               ),
             ],
           ),
