@@ -1,6 +1,8 @@
 import 'package:ems_v4/controller/home_controller.dart';
+import 'package:ems_v4/controller/main_navigation_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/controller/location_controller.dart';
+import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/guards/auth_guard.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -31,6 +33,8 @@ class MyApp extends StatelessWidget {
     Get.put(HomeController());
     Get.put(TimeEntriesController());
     Get.put(LocationController());
+    Get.put(MainNavigationController());
+    Get.put(TransactionController());
 
     return GetMaterialApp(
       title: 'EMS V.4',
