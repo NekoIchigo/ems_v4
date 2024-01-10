@@ -54,7 +54,7 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
               onChanged: (value) {
                 // This is called when the user selects an item.
                 if (value["month"] == 0) {
-                  Get.bottomSheet(const CustomDateBottomsheet());
+                  Get.bottomSheet(const CustomDateBottomsheet(type: "range"));
                 } else {
                   widget.onChanged(value);
                 }

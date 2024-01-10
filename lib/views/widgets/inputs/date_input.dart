@@ -15,7 +15,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.bottomSheet(const CustomDateBottomsheet());
+        Get.bottomSheet(const CustomDateBottomsheet(type: "single"));
       },
       child: Container(
         decoration: BoxDecoration(

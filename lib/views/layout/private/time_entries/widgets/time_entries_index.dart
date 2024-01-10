@@ -69,7 +69,9 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                   onChanged: (value) {
                     // This is called when the user selects an item.
                     if (value["month"] == 0) {
-                      Get.bottomSheet(const CustomDateBottomsheet());
+                      Get.bottomSheet(
+                        const CustomDateBottomsheet(type: "range"),
+                      );
                     } else {
                       _timeEntriesController.getAttendanceList(
                         employeeId: _authService.employee.value.id,

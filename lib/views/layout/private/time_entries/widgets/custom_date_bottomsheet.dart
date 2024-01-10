@@ -1,22 +1,19 @@
-import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:get/get.dart';
 
 class CustomDateBottomsheet extends StatefulWidget {
-  const CustomDateBottomsheet({super.key});
+  final String type; // range or default single
+
+  const CustomDateBottomsheet({super.key, required this.type});
 
   @override
   State<CustomDateBottomsheet> createState() => _CustomDateBottomsheetState();
 }
 
 class _CustomDateBottomsheetState extends State<CustomDateBottomsheet> {
-  final TimeEntriesController _timeEntriesController =
-      Get.find<TimeEntriesController>();
-  final AuthService _authService = Get.find<AuthService>();
   List<DateTime?> _dates = <DateTime?>[];
 
   @override
@@ -42,13 +39,15 @@ class _CustomDateBottomsheetState extends State<CustomDateBottomsheet> {
             ),
           ),
           const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.only(left: 20.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "By custom date range:",
-                style: TextStyle(color: primaryBlue, fontSize: 18),
+                widget.type == "range"
+                    ? "Select the date range:"
+                    : "Select the date",
+                style: const TextStyle(color: primaryBlue, fontSize: 18),
               ),
             ),
           ),
@@ -56,7 +55,9 @@ class _CustomDateBottomsheetState extends State<CustomDateBottomsheet> {
             height: Get.height * .4,
             child: CalendarDatePicker2(
               config: CalendarDatePicker2Config(
-                calendarType: CalendarDatePicker2Type.range,
+                calendarType: widget.type == "range"
+                    ? CalendarDatePicker2Type.range
+                    : CalendarDatePicker2Type.single,
               ),
               value: _dates,
               onValueChanged: (dates) => _dates = dates,
@@ -74,18 +75,28 @@ class _CustomDateBottomsheetState extends State<CustomDateBottomsheet> {
               ),
               RoundedCustomButton(
                 onPressed: () {
-                  if (_dates.length == 2) {
-                    _timeEntriesController.getAttendanceList(
-                      employeeId: _authService.employee.value.id,
-                      months: 0,
-                      startDate: _dates[0],
-                      endDate: _dates[1],
-                    );
-                    Get.back();
+                  if (widget.type == "range") {
+                    if (_dates.length == 2) {
+                      Get.back(result: _dates);
+                    } else {
+                      Get.snackbar(
+                        "Invalid Action",
+                        "Please select the date range.",
+                        backgroundColor: colorError,
+                        colorText: Colors.white,
+                      );
+                    }
                   } else {
-                    Get.snackbar("Invalid Action",
-                        "Please select the custom date range.",
-                        backgroundColor: colorError, colorText: Colors.white);
+                    if (_dates.isNotEmpty) {
+                      Get.back(result: _dates[0]);
+                    } else {
+                      Get.snackbar(
+                        "Invalid Action",
+                        "Please select a date.",
+                        backgroundColor: colorError,
+                        colorText: Colors.white,
+                      );
+                    }
                   }
                 },
                 label: "Submit",
