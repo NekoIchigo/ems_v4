@@ -2,6 +2,7 @@ import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
+import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,14 +19,13 @@ class _DTRCorrectionState extends State<DTRCorrection> {
       Get.find<TransactionController>();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: SingleChildScrollView(
-        padding: EdgeInsets.zero,
+    return EMSContainer(
+      child: Container(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
         child: Stack(
           children: [
             Positioned(
@@ -33,8 +33,9 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               right: 0,
               child: IconButton(
                 onPressed: () {
-                  Get.back(id: _transactionController.routerKey);
-                  _transactionController.pageIndex.value = 0;
+                  Get.back();
+                  // Get.back(id: _transactionController.routerKey);
+                  // _transactionController.pageIndex.value = 0;
                 },
                 icon: const Icon(Icons.close),
               ),
@@ -61,7 +62,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               ],
             ),
             Positioned(
-              bottom: 10,
+              bottom: 25,
               right: 10,
               child: FloatingActionButton(
                 shape: const CircleBorder(),

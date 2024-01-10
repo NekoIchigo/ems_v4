@@ -1,5 +1,6 @@
-import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_corrections.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,9 +14,6 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  final TransactionController _transactionController =
-      Get.find<TransactionController>();
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,12 +37,12 @@ class _MenuState extends State<Menu> {
             children: [
               TransactionMenuButton(
                 onPressed: () {
-                  // Get.to(() => const TimeRecords());
-                  Get.toNamed(
-                    "/transactions/time_records",
-                    id: _transactionController.routerKey,
-                  );
-                  _transactionController.pageIndex.value = 1;
+                  Get.to(() => const TimeRecords());
+                  // Get.toNamed(
+                  //   "/transactions/time_records",
+                  //   id: _transactionController.routerKey,
+                  // );
+                  // _transactionController.pageIndex.value = 1;
                 },
                 title: "Time Records",
                 child: const Center(
@@ -57,12 +55,12 @@ class _MenuState extends State<Menu> {
               ),
               TransactionMenuButton(
                 onPressed: () {
-                  // Get.to(() => const DTRCorrection());
-                  Get.toNamed(
-                    "/transactions/dtr_correction",
-                    id: _transactionController.routerKey,
-                  );
-                  _transactionController.pageIndex.value = 2;
+                  Get.to(() => const DTRCorrection());
+                  // Get.toNamed(
+                  //   "/transactions/dtr_correction",
+                  //   id: _transactionController.routerKey,
+                  // );
+                  // _transactionController.pageIndex.value = 2;
                 },
                 title: "DTR Corrections",
                 child: const Center(

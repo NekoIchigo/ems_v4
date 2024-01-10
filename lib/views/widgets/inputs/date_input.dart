@@ -49,7 +49,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
       Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         decoration: BoxDecoration(
-          border: Border.all(color: gray),
+          border: Border.all(color: Color(0xFFc4c4c4)),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Row(

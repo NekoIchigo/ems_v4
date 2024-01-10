@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SelectedItemTabs extends StatefulWidget {
-  final String status;
+  final String? status;
   final String title;
   final Widget detailPage;
   const SelectedItemTabs({
     super.key,
-    required this.status,
+    this.status,
     required this.title,
     required this.detailPage,
   });
@@ -48,7 +48,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
           top: 5,
           left: 0,
           child: Text(
-            widget.status,
+            widget.status ?? '',
             style: TextStyle(
               color: widget.status == "Pending"
                   ? orange

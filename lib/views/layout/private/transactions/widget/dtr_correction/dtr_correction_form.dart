@@ -36,43 +36,39 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
     return EMSContainer(
       child: Column(
         children: [
-          SizedBox(
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             height: Get.height * .86,
-            child: SingleChildScrollView(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                height: Get.height * .86,
-                child: SelectedItemTabs(
-                  status: "Pending",
-                  title: "DTR Correction",
-                  detailPage: Column(
-                    children: [
-                      const NumberLabel(label: "Select the date", number: 1),
-                      CustomDateInput(
-                        type: "single",
-                        onDateTimeChanged: (value) {
-                          log(value.toString());
-                        },
-                        child: Container(),
-                      ),
-                      const NumberLabel(label: "Edit time record", number: 2),
-                      formField2(),
-                      const ReasonInput(readOnly: true),
-                      RoundedCustomButton(
-                        onPressed: () {},
-                        label: "Submit",
-                        size: Size(Get.width * .4, 40),
-                        radius: 8,
-                        bgColor: gray, //primaryBlue
-                      )
-                    ]
-                        .map((widget) => Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
-                              child: widget,
-                            ))
-                        .toList(),
-                  ),
+            child: SelectedItemTabs(
+              status: "Pending",
+              title: "DTR Correction",
+              detailPage: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const NumberLabel(label: "Select the date", number: 1),
+                    CustomDateInput(
+                      type: "range",
+                      onDateTimeChanged: (value) {
+                        log(value.toString());
+                      },
+                      child: Container(),
+                    ),
+                    const NumberLabel(label: "Edit time record", number: 2),
+                    formField2(),
+                    const ReasonInput(readOnly: true),
+                    RoundedCustomButton(
+                      onPressed: () {},
+                      label: "Submit",
+                      size: Size(Get.width * .4, 40),
+                      radius: 8,
+                      bgColor: gray, //primaryBlue
+                    )
+                  ]
+                      .map((widget) => Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
+                            child: widget,
+                          ))
+                      .toList(),
                 ),
               ),
             ),
@@ -95,24 +91,25 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
           Row(
             children: [
               SizedBox(
-                  width: Get.width * .5,
-                  child: DropdownMenu<String>(
-                    initialSelection: _list.first,
-                    inputDecorationTheme: const InputDecorationTheme(),
-                    onSelected: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        _dropdownValue = value!;
-                      });
-                    },
-                    dropdownMenuEntries:
-                        _list.map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                        value: value,
-                        label: value,
-                      );
-                    }).toList(),
-                  )),
+                width: Get.width * .5,
+                child: DropdownMenu<String>(
+                  initialSelection: _list.first,
+                  inputDecorationTheme: const InputDecorationTheme(),
+                  onSelected: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      _dropdownValue = value!;
+                    });
+                  },
+                  dropdownMenuEntries:
+                      _list.map<DropdownMenuEntry<String>>((String value) {
+                    return DropdownMenuEntry<String>(
+                      value: value,
+                      label: value,
+                    );
+                  }).toList(),
+                ),
+              ),
               InkWell(
                 onTap: () async {
                   final TimeOfDay time = await showTimePicker(
