@@ -24,15 +24,16 @@ class _TransactionsState extends State<Transactions> {
           SizedBox(
             height: Get.height * .78,
             child: Center(
-                child: Navigator(
-              key: Get.nestedKey(_transactionController.routerKey),
-              onGenerateRoute: (settings) {
-                return GetPageRoute(
-                  page: () => _transactionController
-                      .pages[_transactionController.pageIndex.value],
-                );
-              },
-            )),
+              child: Navigator(
+                key: Get.nestedKey(_transactionController.routerKey),
+                onGenerateRoute: (settings) {
+                  return GetPageRoute(
+                    page: () => _transactionController
+                        .pages[_transactionController.pageIndex.value],
+                  );
+                },
+              ),
+            ),
           ),
         ],
       ),

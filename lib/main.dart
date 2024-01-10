@@ -9,6 +9,7 @@ import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
+import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
@@ -87,6 +88,11 @@ class MyApp extends StatelessWidget {
                     page: () => const DTRCorrection(),
                   ),
                 ]),
+            GetPage(
+              name: '/notification',
+              page: () => const NotificationPage(),
+              middlewares: [AuthGuard()],
+            ),
             GetPage(
               name: '/profile',
               page: () => const Profile(),

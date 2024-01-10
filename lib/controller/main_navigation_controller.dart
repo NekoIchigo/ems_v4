@@ -9,15 +9,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+class CustomPage {
+  String name;
+  Widget page;
+
+  CustomPage({required this.name, required this.page});
+}
+
 class MainNavigationController extends GetxController {
   RxInt pageIndex = 0.obs;
   final int routerKey = 0;
-  final List<Widget> pages = [
-    const Home(),
-    const TimeEntries(),
-    const Transactions(),
-    const NotificationPage(),
-    const Profile(),
+
+  final List<CustomPage> pages = [
+    CustomPage(name: '/home', page: const Home()),
+    CustomPage(name: '/time_entries', page: const TimeEntries()),
+    CustomPage(name: '/transactions', page: const Transactions()),
+    CustomPage(name: '/notification', page: const NotificationPage()),
+    CustomPage(name: '/profile', page: const Profile()),
   ];
 
   final List<TabItem> navigations = [

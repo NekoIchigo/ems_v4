@@ -34,6 +34,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               child: IconButton(
                 onPressed: () {
                   Get.back(id: _transactionController.routerKey);
+                  _transactionController.pageIndex.value = 0;
                 },
                 icon: const Icon(Icons.close),
               ),

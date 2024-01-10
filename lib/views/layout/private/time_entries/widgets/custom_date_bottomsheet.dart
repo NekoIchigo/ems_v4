@@ -88,7 +88,7 @@ class _CustomDateBottomsheetState extends State<CustomDateBottomsheet> {
                     }
                   } else {
                     if (_dates.isNotEmpty) {
-                      Get.back(result: _dates[0]);
+                      Get.back(result: _dates);
                     } else {
                       Get.snackbar(
                         "Invalid Action",
