@@ -28,6 +28,7 @@ class _ReasonInputState extends State<ReasonInput> {
           child: TextFormField(
             maxLines: 3,
             decoration: const InputDecoration(
+              hintText: "Enter here",
               contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
               border: OutlineInputBorder(),
             ),

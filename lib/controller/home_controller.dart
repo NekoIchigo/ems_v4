@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -28,7 +29,7 @@ class HomeController extends GetxController {
 
   RxString pageName = ''.obs, currentLocation = ''.obs;
   RxBool isWhite = false.obs,
-      isOustideVicinity = false.obs,
+      isInsideVicinity = false.obs,
       isLoading = false.obs,
       isClockOut = false.obs,
       isClockInOutComplete = false.obs,
@@ -100,39 +101,98 @@ class HomeController extends GetxController {
 
   Future setClockInLocation() async {
     isLoading.value = true;
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      var response = await apiCall.postRequest(
+        {
+          'latitude': position.latitude,
+          'longitude': position.longitude,
+        },
+        '/calculate-location/${authService.employee.value.id}',
+      );
 
-    currentLocation.value = 'Distance to report_at location';
+      var result = jsonDecode(response.body);
+      if (result['success']) {
+        var data = result['data'];
+        isInsideVicinity.value = data['is_inside_vicinity'];
+        currentLocation.value =
+            '${data['distance_in_km']} km away from your designated office!';
 
-    attendance.value.clockedInLocation = currentLocation.value;
-    attendance.value.clockedInLatitude = position.latitude.toString();
-    attendance.value.clockedInLongitude = position.longitude.toString();
-    attendance.value.clockedInLocationType = 'Within Vicinity';
-    attendance.value.clockedInLocationSetting = '';
-
-    isLoading.value = false;
+        attendance.value.clockedInLocation = currentLocation.value;
+        attendance.value.clockedInLatitude = position.latitude.toString();
+        attendance.value.clockedInLongitude = position.longitude.toString();
+        attendance.value.clockedInLocationType = 'Within Vicinity';
+        attendance.value.clockedInLocationSetting = '';
+      } else {
+        log('error message');
+      }
+    } catch (error) {
+      Get.dialog(GetDialog(
+        title: "Opps!",
+        hasMessage: true,
+        withCloseButton: true,
+        hasCustomWidget: false,
+        message: "Error: $error",
+        type: "error",
+        buttonNumber: 0,
+      ));
+      printError(info: 'Error Message setclockinlocation: $error');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future setClockOutLocation() async {
     isLoading.value = true;
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      var response = await apiCall.postRequest(
+        {
+          'latitude': position.latitude,
+          'longitude': position.longitude,
+        },
+        '/calculate-location/${authService.employee.value.id}',
+      );
+      var result = jsonDecode(response.body);
+      if (result['success']) {
+        var data = result['data'];
+        isInsideVicinity.value = data['is_inside_vicinity'];
+        currentLocation.value =
+            '${data['distance_in_km']} km away from your designated office!';
+
+        attendance.value.clockedOutLocation = currentLocation.value;
+        attendance.value.clockedOutLatitude = position.latitude.toString();
+        attendance.value.clockedOutLongitude = position.longitude.toString();
+        attendance.value.clockedOutLocationType = 'Within Vicinity';
+        attendance.value.clockedOutLocationSetting = '';
+      } else {
+        log('error message');
+      }
+    } catch (error) {
+      Get.dialog(GetDialog(
+        title: "Opps!",
+        hasMessage: true,
+        withCloseButton: true,
+        hasCustomWidget: false,
+        message: "Error: $error",
+        type: "error",
+        buttonNumber: 0,
+      ));
+      printError(info: 'Error Message setclockinlocation: $error');
+    } finally {
+      isLoading.value = false;
+    }
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-
-    currentLocation.value = 'EDSA Shaw Starmall, Mandaluyong City';
-
-    attendance.value.clockedOutLocation = currentLocation.value;
-    attendance.value.clockedOutLatitude = position.latitude.toString();
-    attendance.value.clockedOutLongitude = position.longitude.toString();
-    attendance.value.clockedOutLocationType = 'Within Vicinity';
-    attendance.value.clockedOutLocationSetting = '';
-    isLoading.value = false;
   }
 
-  Future clockIn(
-      {required int employeeId,
-      List healthCheck = const [],
-      String temperature = ''}) async {
+  Future clockIn({
+    required int employeeId,
+    List healthCheck = const [],
+    String temperature = '',
+  }) async {
     isLoading.value = true;
     String healthCheckStr = healthCheck.join(', ');
     try {

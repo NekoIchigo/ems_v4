@@ -38,7 +38,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Center(
                   child: Image.asset(
-                    _homeController.isOustideVicinity.isFalse
+                    _homeController.isInsideVicinity.value
                         ? "assets/images/current_location-pana.png"
                         : "assets/images/current_location-rafiki.png",
                     width: Get.width * .70,
@@ -85,7 +85,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 ),
               ),
               Visibility(
-                visible: _homeController.isOustideVicinity.value,
+                visible: _homeController.isInsideVicinity.isFalse,
                 child: Column(
                   children: [
                     Container(
@@ -248,7 +248,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                         text: 'By clicking ',
                       ),
                       TextSpan(
-                          text: _homeController.isOustideVicinity.isFalse
+                          text: _homeController.isClockOut.isFalse
                               ? 'Clock In '
                               : 'Clock Out '),
                       const TextSpan(

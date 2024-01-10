@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_corrections.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/leave.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,9 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               TransactionMenuButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const LeavePage());
+                },
                 title: "Leave",
                 child: Center(
                   child: SvgPicture.asset(

@@ -10,14 +10,14 @@ import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DTRCorrectionForm extends StatefulWidget {
-  const DTRCorrectionForm({super.key});
+class LeaveForm extends StatefulWidget {
+  const LeaveForm({super.key});
 
   @override
-  State<DTRCorrectionForm> createState() => _DTRCorrectionFormState();
+  State<LeaveForm> createState() => _LeaveFormState();
 }
 
-class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
+class _LeaveFormState extends State<LeaveForm> {
   final List<String> _list = <String>[
     'Clock in',
     'Clock out',
@@ -40,14 +40,13 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             height: Get.height * .86,
             child: SelectedItemTabs(
-              status: "Pending",
-              title: "DTR Correction",
+              title: "Leave",
               detailPage: SingleChildScrollView(
                 child: Column(
                   children: [
                     const NumberLabel(label: "Select the date", number: 1),
                     CustomDateInput(
-                      type: "single",
+                      type: "range",
                       onDateTimeChanged: (value) {
                         log(value.toString());
                       },
