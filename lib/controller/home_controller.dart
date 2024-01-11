@@ -29,12 +29,13 @@ class HomeController extends GetxController {
   ];
 
   RxString pageName = ''.obs, currentLocation = ''.obs;
-  RxBool isWhite = false.obs,
-      isInsideVicinity = false.obs,
-      isLoading = false.obs,
-      isClockOut = false.obs,
-      isClockInOutComplete = false.obs,
-      isNewShift = true.obs;
+  RxBool isWhite = false.obs;
+  RxBool isInsideVicinity = false.obs;
+  RxBool isLoading = false.obs;
+  RxBool isClockOut = false.obs;
+  RxBool isClockInOutComplete = false.obs;
+  RxBool isNewShift = true.obs;
+
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
 
   Future checkNewShift({required int employeeId}) async {
@@ -273,7 +274,7 @@ class HomeController extends GetxController {
         'clocked_out_longitude': attendance.value.clockedOutLongitude,
         'clocked_out_location_type': attendance.value.clockedOutLocationType,
         'clocked_out_location_setting':
-            attendance.value.clockedInLocationSetting,
+            attendance.value.clockedOutLocationSetting,
       }, '/clock-out');
       var result = jsonDecode(response.body);
       if (result['success']) {
@@ -294,21 +295,81 @@ class HomeController extends GetxController {
 
         pageName.value = '/home';
       }
-
-      isLoading.value = false;
     } catch (error) {
-      Get.dialog(GetDialog(
-        title: "Opps!",
-        hasMessage: true,
-        withCloseButton: true,
-        hasCustomWidget: false,
-        message: "Error clockout: $error",
-        type: "error",
-        buttonNumber: 0,
-      ));
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error clockout: $error",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
     } finally {
       isLoading.value = false;
       pageName.value = '/home';
+    }
+  }
+
+  Future additionalShiftClockin(String reason, String location) async {
+    isLoading.value = true;
+    try {
+      var response = await apiCall.postRequest({
+        'attendance_records_id': attendance.value.id,
+        'clocked_in_location': location,
+        'clocked_in_lattitude': attendance.value.clockedInLatitude,
+        'clocked_in_longitude': attendance.value.clockedInLongitude,
+        'clocked_in_location_type': attendance.value.clockedInLocationType,
+        'clocked_out_location_setting': reason,
+      }, '/additional-shift-clockin');
+      var result = jsonDecode(response.body);
+      print(result);
+    } catch (error) {
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error clockout: $error",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future additionalShiftClockout(String reason, String location) async {
+    isLoading.value = true;
+    try {
+      var response = await apiCall.postRequest({
+        'attendance_records_id': attendance.value.id,
+        'clocked_in_location': location,
+        'clocked_in_lattitude': attendance.value.clockedInLatitude,
+        'clocked_in_longitude': attendance.value.clockedInLongitude,
+        'clocked_in_location_type': attendance.value.clockedInLocationType,
+        'clocked_out_location_setting': reason,
+      }, '/additional-shift-clockout');
+      var result = jsonDecode(response.body);
+      print(result);
+    } catch (error) {
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error clockout: $error",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
+    } finally {
+      isLoading.value = false;
     }
   }
 

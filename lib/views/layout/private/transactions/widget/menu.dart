@@ -1,6 +1,9 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/dtr_corrections.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/leave.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +88,9 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               TransactionMenuButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const Overtime());
+                },
                 title: "Overtime",
                 child: const Center(
                   child: Icon(
@@ -96,7 +101,9 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               TransactionMenuButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const ChangeSchedule());
+                },
                 title: "Change Schedule",
                 child: Center(
                   child: SvgPicture.asset(
@@ -106,7 +113,9 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               TransactionMenuButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const ChangeRestday());
+                },
                 title: "Change Restday",
                 child: Center(
                   child: SvgPicture.asset(

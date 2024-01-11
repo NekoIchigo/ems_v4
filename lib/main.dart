@@ -13,7 +13,7 @@ import 'package:ems_v4/views/layout/private/notification/notification_page.dart'
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/dtr_corrections.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/layout/public/login.dart';

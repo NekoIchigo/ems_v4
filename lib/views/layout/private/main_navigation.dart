@@ -41,6 +41,7 @@ class _MainNavigationState extends State<MainNavigation> {
         body: Stack(
           children: [
             const GettingStarted(),
+            // return to using of pageview
             Navigator(
               key: Get.nestedKey(_mainNavigationController.routerKey),
               onGenerateRoute: (settings) {

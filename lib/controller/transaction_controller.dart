@@ -1,4 +1,4 @@
-import 'package:ems_v4/views/layout/private/transactions/widget/dtr_corrections.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:flutter/material.dart';

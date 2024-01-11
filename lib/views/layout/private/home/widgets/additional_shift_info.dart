@@ -16,7 +16,7 @@ class AdditionalShiftInfo extends StatefulWidget {
 class _AdditionalShiftInfoState extends State<AdditionalShiftInfo> {
   final AuthService _authViewService = Get.find<AuthService>();
   final HomeController _homeController = Get.find<HomeController>();
-  final List<bool> _isSelected = [false];
+
   bool _isNotButtonDisable = false;
 
   final List<String> _list = <String>[
@@ -24,11 +24,21 @@ class _AdditionalShiftInfoState extends State<AdditionalShiftInfo> {
     'Other Reasons',
   ];
 
+  String? selectedReason;
+
   final List<String> _location_list = <String>[
     'EDSA Starmall Shaw',
     'WCC Bldg, Shaw Blvd Cor Edsa',
     'Test Building',
   ];
+
+  String? selectedLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedReason = _list[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +86,9 @@ class _AdditionalShiftInfoState extends State<AdditionalShiftInfo> {
                   initialSelection: _list[0],
                   textStyle: const TextStyle(color: darkGray),
                   onSelected: (String? value) {
-                    if (_homeController.isClockOut.isFalse) {
-                      _homeController
-                          .attendance.value.clockedInLocationSetting = value!;
-                    } else {
-                      _homeController.attendance.value.clockedOutLocationType =
-                          value!;
-                    }
+                    setState(() {
+                      selectedReason = value;
+                    });
                   },
                   dropdownMenuEntries:
                       _list.map<DropdownMenuEntry<String>>((String value) {
@@ -100,13 +106,12 @@ class _AdditionalShiftInfoState extends State<AdditionalShiftInfo> {
                   hintText: "Select Location",
                   textStyle: const TextStyle(color: darkGray),
                   onSelected: (String? value) {
-                    if (_homeController.isClockOut.isFalse) {
-                      _homeController
-                          .attendance.value.clockedInLocationSetting = value!;
-                    } else {
-                      _homeController.attendance.value.clockedOutLocationType =
-                          value!;
-                    }
+                    setState(() {
+                      selectedLocation = value;
+                      if (selectedLocation != null && selectedReason != null) {
+                        _isNotButtonDisable = true;
+                      }
+                    });
                   },
                   dropdownMenuEntries: _location_list
                       .map<DropdownMenuEntry<String>>((String value) {
@@ -155,18 +160,20 @@ class _AdditionalShiftInfoState extends State<AdditionalShiftInfo> {
                   RoundedCustomButton(
                     onPressed: () {
                       if (_isNotButtonDisable) {
-                        if (_homeController.isClockOut.isFalse) {
-                          _homeController
-                              .clockIn(
-                            employeeId: _authViewService.employee.value.id,
-                          )
-                              .then((value) {
-                            _homeController.pageName.value = '/home/result';
-                          });
-                        }
-                      } else if (_homeController.isClockOut.isTrue) {
                         _homeController
-                            .clockOut(context: context)
+                            .additionalShiftClockin(
+                          selectedReason!,
+                          selectedLocation!,
+                        )
+                            .then((value) {
+                          _homeController.pageName.value = '/home/result';
+                        });
+                      } else if (!widget.isClockin) {
+                        _homeController
+                            .additionalShiftClockout(
+                          selectedReason!,
+                          selectedLocation!,
+                        )
                             .then((value) {
                           _homeController.pageName.value = '/home/result';
                         });

@@ -7,21 +7,21 @@ import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
+import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LeaveForm extends StatefulWidget {
-  const LeaveForm({super.key});
+class OvertimeForm extends StatefulWidget {
+  const OvertimeForm({super.key});
 
   @override
-  State<LeaveForm> createState() => _LeaveFormState();
+  State<OvertimeForm> createState() => _OvertimeFormState();
 }
 
-class _LeaveFormState extends State<LeaveForm> {
+class _OvertimeFormState extends State<OvertimeForm> {
   final List<String> _list = <String>[
-    'Leave Type 1',
-    'Leave Type 2',
-    'Leave Type 3',
+    'Clock in',
+    'Clock out',
   ];
   String? _dropdownValue;
   String _selectedTime = "-- : -- --";
@@ -41,13 +41,13 @@ class _LeaveFormState extends State<LeaveForm> {
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             height: Get.height * .86,
             child: SelectedItemTabs(
-              title: "Leave",
+              title: "Overtime",
               detailPage: SingleChildScrollView(
                 child: Column(
                   children: [
                     const NumberLabel(label: "Select the date", number: 1),
                     CustomDateInput(
-                      type: "range",
+                      type: "single",
                       onDateTimeChanged: (value) {
                         log(value.toString());
                       },
@@ -80,37 +80,35 @@ class _LeaveFormState extends State<LeaveForm> {
 
   Widget formField2() {
     return Padding(
-      padding: const EdgeInsets.only(left: 25.0),
+      padding: const EdgeInsets.only(left: 20.0),
       child: Column(
         children: [
-          DropdownMenu<String>(
-            initialSelection: _list.first,
-            width: Get.width * .84,
-            onSelected: (String? value) {
-              // This is called when the user selects an item.
-              setState(() {
-                _dropdownValue = value!;
-              });
-            },
-            dropdownMenuEntries:
-                _list.map<DropdownMenuEntry<String>>((String value) {
-              return DropdownMenuEntry<String>(
-                value: value,
-                label: value,
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.all(5),
-            color: bgSky,
-            width: Get.width * 0.85,
-            child: const Center(
-              child: Text(
-                'Total leave credits: 5',
-                style: TextStyle(color: darkGray),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Overtime Start Time'),
+              TimeInput(
+                selectedTime: (value) {},
               ),
-            ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('No. of Hours'),
+              Container(
+                decoration: const BoxDecoration(
+                    border: Border(bottom: BorderSide(color: darkGray))),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: const Text(
+                  "2 hours",
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              )
+            ],
           ),
         ],
       ),
