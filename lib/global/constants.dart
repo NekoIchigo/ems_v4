@@ -9,6 +9,7 @@ const lightGray = Color(0xFFC4C4C4);
 const darkGray = Color(0xFF404040);
 const gray = Color(0xFF888888);
 const orange = Color(0xFFF9A425);
+const red = Color(0xFFAF1E1E);
 
 const textMuted = Color(0xFF8F8F90);
 const textblack = Color(0xFF444444);

@@ -18,6 +18,7 @@ class HomeController extends GetxController {
   final AuthService authService = Get.find<AuthService>();
   final ApiCall apiCall = ApiCall();
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
+
   final int routerKey = 1;
   RxInt pageIndex = 0.obs;
   final List<Widget> pages = [
@@ -41,9 +42,10 @@ class HomeController extends GetxController {
     try {
       var response = await apiCall.getRequest('/latest-dtr/$employeeId');
       var result = jsonDecode(response.body);
-      if (result['success']) {}
-      isClockInOutComplete.value = false;
-      isClockOut.value = false;
+      if (result['success']) {
+        isClockInOutComplete.value = false;
+        isClockOut.value = false;
+      }
     } catch (error) {
       printError(info: 'Check New Shift Error: $error');
     } finally {
@@ -122,22 +124,33 @@ class HomeController extends GetxController {
         attendance.value.clockedInLocation = currentLocation.value;
         attendance.value.clockedInLatitude = position.latitude.toString();
         attendance.value.clockedInLongitude = position.longitude.toString();
-        attendance.value.clockedInLocationType = 'Within Vicinity';
-        attendance.value.clockedInLocationSetting = '';
+        attendance.value.clockedInLocationType =
+            isInsideVicinity.isTrue ? 'Within Vicinity' : 'Outside Vicinity';
       } else {
-        log('error message');
+        Get.dialog(
+          const GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error: Distance calculation unsuccessfull",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
       }
     } catch (error) {
-      Get.dialog(GetDialog(
-        title: "Opps!",
-        hasMessage: true,
-        withCloseButton: true,
-        hasCustomWidget: false,
-        message: "Error: $error",
-        type: "error",
-        buttonNumber: 0,
-      ));
-      printError(info: 'Error Message setclockinlocation: $error');
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error: Unable to get your location \n Code: $error",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
     } finally {
       isLoading.value = false;
     }
@@ -165,27 +178,36 @@ class HomeController extends GetxController {
         attendance.value.clockedOutLocation = currentLocation.value;
         attendance.value.clockedOutLatitude = position.latitude.toString();
         attendance.value.clockedOutLongitude = position.longitude.toString();
-        attendance.value.clockedOutLocationType = 'Within Vicinity';
-        attendance.value.clockedOutLocationSetting = '';
+        attendance.value.clockedOutLocationType =
+            isInsideVicinity.isTrue ? 'Within Vicinity' : 'Outside Vicinity';
       } else {
-        log('error message');
+        Get.dialog(
+          const GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error: Distance calculation unsuccessfull",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
       }
     } catch (error) {
-      Get.dialog(GetDialog(
-        title: "Opps!",
-        hasMessage: true,
-        withCloseButton: true,
-        hasCustomWidget: false,
-        message: "Error: $error",
-        type: "error",
-        buttonNumber: 0,
-      ));
-      printError(info: 'Error Message setclockinlocation: $error');
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error:  Unable to get your location \n Code: $error",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
     } finally {
       isLoading.value = false;
     }
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
   }
 
   Future clockIn({

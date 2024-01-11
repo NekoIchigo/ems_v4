@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height: Get.height * .78,
+                height: Get.height * .80,
                 child: _homeController.isLoading.isFalse
                     ? const HomePageContiner()
                     // Navigator(

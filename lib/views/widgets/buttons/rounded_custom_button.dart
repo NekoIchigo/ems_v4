@@ -5,6 +5,7 @@ class RoundedCustomButton extends StatefulWidget {
   final void Function() onPressed;
   final String label;
   final Color? bgColor;
+  final Color? borderColor;
   final Color? textColor;
   final double? radius;
   final Size size;
@@ -16,6 +17,7 @@ class RoundedCustomButton extends StatefulWidget {
     this.textColor,
     this.radius,
     required this.size,
+    this.borderColor,
   });
 
   @override
@@ -30,6 +32,9 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
       child: ElevatedButton(
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
+          side: BorderSide(
+            color: widget.borderColor ?? widget.bgColor ?? primaryBlue,
+          ),
           fixedSize: widget.size,
           alignment: Alignment.center,
           shape: RoundedRectangleBorder(

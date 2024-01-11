@@ -17,7 +17,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
   final HomeController _homeController = Get.find<HomeController>();
   final List<bool> _isSelected = [false];
   bool _isNotButtonDisable = false;
-  String? _dropdownValue;
+
   final List<String> _list = <String>[
     'Field work',
     'Office/site visit',
@@ -27,13 +27,13 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
       child: Obx(
         () => Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Center(
@@ -53,78 +53,44 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              _homeController.currentLocation.value,
-                              style: const TextStyle(color: darkGray),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Text(
-                        'View Map',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: darkGray,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
+              Text(
+                _homeController.currentLocation.value,
+                style: const TextStyle(color: darkGray),
+                textAlign: TextAlign.center,
+              ),
+              const Text(
+                'View Map',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: darkGray,
+                  fontSize: 12,
                 ),
               ),
               Visibility(
                 visible: _homeController.isInsideVicinity.isFalse,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: const Color(0xFFC4C4C4),
-                            style: BorderStyle.solid,
-                            width: 0.80),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          hint: const Text(
-                            "Select your reason/purpose here",
-                            style: TextStyle(color: gray),
-                          ),
-                          value: _dropdownValue,
-                          dropdownColor: Colors.white,
-                          elevation: 16,
-                          isExpanded: true,
-                          style: const TextStyle(color: darkGray),
-                          onChanged: (String? value) {
-                            setState(() {
-                              _dropdownValue = value!;
-                            });
-                          },
-                          items: _list
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: DropdownMenu<String>(
+                    width: Get.width * .9,
+                    hintText: "Select your reason/purpose here",
+                    textStyle: const TextStyle(color: darkGray),
+                    onSelected: (String? value) {
+                      if (_homeController.isClockOut.isFalse) {
+                        _homeController
+                            .attendance.value.clockedInLocationSetting = value!;
+                      } else {
+                        _homeController
+                            .attendance.value.clockedOutLocationType = value!;
+                      }
+                    },
+                    dropdownMenuEntries:
+                        _list.map<DropdownMenuEntry<String>>((String value) {
+                      return DropdownMenuEntry<String>(
+                        value: value,
+                        label: value,
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
               Visibility(
@@ -234,10 +200,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   ),
                 ),
               ),
-              Visibility(
-                visible: _homeController.isClockOut.isTrue,
-                child: const SizedBox(height: 10),
-              ),
+              const SizedBox(height: 20),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 0, horizontal: 5.0),
