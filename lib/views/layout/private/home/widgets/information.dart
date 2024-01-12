@@ -4,6 +4,7 @@ import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeInfoPage extends StatefulWidget {
   const HomeInfoPage({super.key});
@@ -23,6 +24,12 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
     'Office/site visit',
     'Work from home'
   ];
+
+  Future<void> _launchInBrowser(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +65,18 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 style: const TextStyle(color: darkGray),
                 textAlign: TextAlign.center,
               ),
-              const Text(
-                'View Map',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: darkGray,
-                  fontSize: 12,
+              InkWell(
+                onTap: () {
+                  _launchInBrowser('http://10.10.10.221:8000');
+                  // Get.to(() => const PlaceMap());
+                },
+                child: const Text(
+                  'View Map',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: darkGray,
+                    fontSize: 12,
+                  ),
                 ),
               ),
               Visibility(
