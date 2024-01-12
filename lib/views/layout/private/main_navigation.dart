@@ -2,9 +2,15 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:ems_v4/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/getting_started.dart';
+import 'package:ems_v4/views/layout/private/home/home.dart';
+import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
+import 'package:ems_v4/views/layout/private/profile/profile.dart';
+import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
+import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -24,7 +30,44 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
+    final pageController = PageController(initialPage: 0);
+    return Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            PageView(
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: List.generate(
+                _mainNavigationController.pages.length,
+                (index) => _mainNavigationController.pages[index],
+              ),
+            ),
+            const GettingStarted(),
+          ],
+        ),
+        extendBody: true,
+        bottomNavigationBar: ConvexAppBar(
+          backgroundColor: bgPrimaryBlue,
+          height: 55,
+          items: _mainNavigationController.navigations,
+          curveSize: 80,
+          top: -15,
+          style: TabStyle.reactCircle,
+          // cornerRadius: 5,
+          onTap: (index) {
+            pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
+        ));
+  }
+}
+ /*
+ return PopScope(
       canPop: false,
       onPopInvoked: (bool didPop) async {
         if (didPop) {
@@ -99,4 +142,5 @@ class _MainNavigationState extends State<MainNavigation> {
       },
     );
   }
-}
+ 
+  */
