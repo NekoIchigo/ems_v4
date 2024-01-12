@@ -1,4 +1,5 @@
 import 'package:ems_v4/controller/home_controller.dart';
+import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -14,6 +15,7 @@ class HomeInfoPage extends StatefulWidget {
 }
 
 class _HomeInfoPageState extends State<HomeInfoPage> {
+  final ApiCall _apiCall = ApiCall();
   final AuthService _authViewService = Get.find<AuthService>();
   final HomeController _homeController = Get.find<HomeController>();
   final List<bool> _isSelected = [false];
@@ -25,9 +27,14 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
     'Work from home'
   ];
 
-  Future<void> _launchInBrowser(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
+  Future<void> _launchInBrowser() async {
+    const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
+    // final String _baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
+    String latLong = _homeController.isClockOut.isTrue
+        ? "?latitude=${_homeController.attendance.value.clockedOutLatitude}&longitude=${_homeController.attendance.value.clockedOutLongitude}"
+        : "?latitude=${_homeController.attendance.value.clockedInLatitude}&longitude=${_homeController.attendance.value.clockedInLongitude}";
+    if (!await launchUrl(Uri.parse("$baseUrl$latLong"))) {
+      throw Exception('Could not launch $baseUrl$latLong');
     }
   }
 
@@ -67,7 +74,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               ),
               InkWell(
                 onTap: () {
-                  _launchInBrowser('http://10.10.10.221:8000');
+                  _launchInBrowser();
                   // Get.to(() => const PlaceMap());
                 },
                 child: const Text(
