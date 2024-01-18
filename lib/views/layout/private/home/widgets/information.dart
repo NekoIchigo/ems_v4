@@ -28,8 +28,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
   ];
 
   Future<void> _launchInBrowser() async {
-    const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
-    // final String _baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
+    // const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
+    const String baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
     String latLong = _homeController.isClockOut.isTrue
         ? "?latitude=${_homeController.attendance.value.clockedOutLatitude}&longitude=${_homeController.attendance.value.clockedOutLongitude}"
         : "?latitude=${_homeController.attendance.value.clockedInLatitude}&longitude=${_homeController.attendance.value.clockedInLongitude}";

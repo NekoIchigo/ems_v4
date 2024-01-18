@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+import 'package:ems_v4/controller/home_controller.dart';
+import 'package:ems_v4/controller/location_controller.dart';
+import 'package:ems_v4/controller/main_navigation_controller.dart';
+import 'package:ems_v4/controller/time_entries_controller.dart';
+import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
@@ -97,6 +102,18 @@ class AuthService extends GetxService {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
         _localStorage.clear();
+        Get.delete<HomeController>();
+        Get.delete<TimeEntriesController>();
+        Get.delete<LocationController>();
+        Get.delete<MainNavigationController>();
+        Get.delete<TransactionController>();
+
+        Get.lazyPut(() => HomeController());
+        Get.lazyPut(() => TimeEntriesController());
+        Get.lazyPut(() => LocationController());
+        Get.lazyPut(() => MainNavigationController());
+        Get.lazyPut(() => TransactionController());
+
         Get.toNamed('/login');
       });
     } catch (error) {
