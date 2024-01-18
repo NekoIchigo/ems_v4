@@ -41,8 +41,9 @@ class HomeController extends GetxController {
   Future checkNewShift({required int employeeId}) async {
     isLoading.value = true;
     try {
-      var response = await apiCall.getRequest('/latest-dtr/$employeeId');
+      var response = await apiCall.getRequest('/check-shift/$employeeId');
       var result = jsonDecode(response.body);
+      print(result);
       if (result['success']) {
         isClockInOutComplete.value = false;
         isClockOut.value = false;
