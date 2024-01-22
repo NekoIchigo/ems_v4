@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -6,7 +8,9 @@ import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/underline_input.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,6 +30,16 @@ class _LoginState extends State<Login> {
   Future<void> _launchInBrowser(String url) async {
     if (!await launchUrl(Uri.parse(url))) {
       throw Exception('Could not launch $url');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (_authService.isSupported.isTrue) {
+      log("Device supported");
+    } else {
+      log("This device is not supported");
     }
   }
 
@@ -121,6 +135,14 @@ class _LoginState extends State<Login> {
                                                   )),
                                             ],
                                           ),
+                                          // ElevatedButton(
+                                          //   onPressed: _getAvaliableBiometrics,
+                                          //   child: const Text("Get Biometrics"),
+                                          // ),
+                                          // ElevatedButton(
+                                          //   onPressed: _localAutheticate,
+                                          //   child: const Text("Autheticate"),
+                                          // ),
                                           Obx(
                                             () => RoundedCustomButton(
                                               onPressed: () async {
@@ -139,6 +161,20 @@ class _LoginState extends State<Login> {
                                               radius: 50,
                                               size: Size(Get.width, 20),
                                               bgColor: bgPrimaryBlue,
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: _localAutheticate,
+                                            child: const Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                    Icons.fingerprint_outlined),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                    'Login with phone lockscreen'),
+                                              ],
                                             ),
                                           ),
                                           SizedBox(
@@ -211,5 +247,26 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Future<void> _localAutheticate() async {
+    try {
+      List<BiometricType> availableBiomentrics =
+          await _authService.auth.getAvailableBiometrics();
+      print('object');
+      bool autheticated = await _authService.auth.authenticate(
+          localizedReason: "Autheticate to Login in the system.",
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            biometricOnly: false,
+          ));
+      if (autheticated) {
+        _authService.autheticated.value = autheticated;
+        _authService.setAuthStatus();
+        Get.offNamed('/');
+      }
+    } on PlatformException catch (e) {
+      print(e);
+    }
   }
 }

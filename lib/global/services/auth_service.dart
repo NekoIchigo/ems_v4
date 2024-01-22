@@ -5,6 +5,7 @@ import 'package:ems_v4/controller/location_controller.dart';
 import 'package:ems_v4/controller/main_navigation_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/controller/transaction_controller.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
@@ -14,7 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService extends GetxService {
   late SharedPreferences _localStorage;
+  late final LocalAuthentication auth;
   final ApiCall apiCall = ApiCall();
+  RxBool isSupported = false.obs;
 
   RxBool isLoading = false.obs;
   RxBool autheticated = false.obs;
@@ -24,6 +27,11 @@ class AuthService extends GetxService {
 
   Future<AuthService> init() async {
     _localStorage = await SharedPreferences.getInstance();
+
+    auth = LocalAuthentication();
+    auth.isDeviceSupported().then(
+        (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
+
     token = _localStorage.getString('token');
     if (token != null) {
       var response = await apiCall.getRequest('/check-token');
@@ -34,7 +42,7 @@ class AuthService extends GetxService {
         setAuthStatus();
       }
     }
-    autheticated.value = token != null;
+    // autheticated.value = token != null;
     return this;
   }
 
