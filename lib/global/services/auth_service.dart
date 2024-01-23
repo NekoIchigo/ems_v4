@@ -42,7 +42,7 @@ class AuthService extends GetxService {
         setAuthStatus();
       }
     }
-    // autheticated.value = token != null;
+    autheticated.value = token != null;
     return this;
   }
 

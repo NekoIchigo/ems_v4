@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -29,12 +28,12 @@ class HomeController extends GetxController {
   ];
 
   RxString pageName = ''.obs, currentLocation = ''.obs;
-  RxBool isWhite = false.obs;
-  RxBool isInsideVicinity = false.obs;
-  RxBool isLoading = false.obs;
-  RxBool isClockOut = false.obs;
-  RxBool isClockInOutComplete = false.obs;
-  RxBool isNewShift = true.obs;
+  RxBool isWhite = false.obs,
+      isInsideVicinity = false.obs,
+      isLoading = false.obs,
+      isClockOut = false.obs,
+      isClockInOutComplete = false.obs,
+      isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
 
@@ -43,61 +42,33 @@ class HomeController extends GetxController {
     try {
       var response = await apiCall.getRequest('/check-shift/$employeeId');
       var result = jsonDecode(response.body);
-      print(result);
+
       if (result['success']) {
-        isClockInOutComplete.value = false;
-        isClockOut.value = false;
+        var data = result['data'];
+
+        isNewShift.value = data['is_new_shift'];
+        isClockInOutComplete.value = data['is_shift_complete'];
+        isClockOut.value = data['is_clockout'];
+
+        if (data['current_attendance_record'] != null) {
+          attendance =
+              AttendanceRecord.fromJson(data['current_attendance_record']).obs;
+        }
+      } else {
+        Get.dialog(
+          const GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error Check Shift: Something went wrong",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
       }
     } catch (error) {
       printError(info: 'Check New Shift Error: $error');
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future getLatestLog({required int employeeId}) async {
-    isLoading.value = true;
-    try {
-      var response = await apiCall.getRequest('/latest-dtr/$employeeId');
-      var result = jsonDecode(response.body);
-
-      if (result['success']) {
-        if (result['data'] != null) {
-          attendance = AttendanceRecord.fromJson(result['data']).obs;
-
-          if (attendance.value.clockInAt != null &&
-              attendance.value.clockOutAt == null) {
-            isClockOut.value = true;
-            isClockInOutComplete.value = false;
-          } else {
-            isClockOut.value = false;
-          }
-        }
-      } else {
-        Get.dialog(GetDialog(
-          title: "Opps!",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Error: $result",
-          type: "error",
-          buttonNumber: 0,
-        ));
-        pageName.value = '/home';
-        printError(info: 'Error Message getLatestLog: Invalid Request');
-      }
-    } catch (error) {
-      Get.dialog(GetDialog(
-        title: "Opps!",
-        hasMessage: true,
-        withCloseButton: true,
-        hasCustomWidget: false,
-        message: "Error: $error",
-        type: "error",
-        buttonNumber: 0,
-      ));
-      pageName.value = '/home';
-      printError(info: 'Error Message getLatestLog: $error');
     } finally {
       isLoading.value = false;
     }
@@ -234,8 +205,7 @@ class HomeController extends GetxController {
       }, '/clock-in');
       var result = jsonDecode(response.body);
       if (result['success']) {
-        isClockOut.value = true;
-        getLatestLog(employeeId: authService.employee.value.id);
+        checkNewShift(employeeId: authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
           title: "Opps!",
@@ -279,10 +249,10 @@ class HomeController extends GetxController {
       }, '/clock-out');
       var result = jsonDecode(response.body);
       if (result['success']) {
-        isClockOut.value = false;
-        isClockInOutComplete.value = true;
+        // isClockOut.value = false;
+        // isClockInOutComplete.value = true;
 
-        getLatestLog(employeeId: authService.employee.value.id);
+        checkNewShift(employeeId: authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
           title: "Opps!",
@@ -388,4 +358,50 @@ class HomeController extends GetxController {
       return "?? : ??";
     }
   }
+
+  // Future getLatestLog({required int employeeId}) async {
+  //   isLoading.value = true;
+  //   try {
+  //     var response = await apiCall.getRequest('/latest-dtr/$employeeId');
+  //     var result = jsonDecode(response.body);
+
+  //     if (result['success']) {
+  //       if (result['data'] != null) {
+  //         if (attendance.value.clockInAt != null &&
+  //             attendance.value.clockOutAt == null) {
+  //           // isClockOut.value = true;
+  //           // isClockInOutComplete.value = false;
+  //         } else {
+  //           // isClockOut.value = false;
+  //         }
+  //       }
+  //     } else {
+  //       Get.dialog(GetDialog(
+  //         title: "Opps!",
+  //         hasMessage: true,
+  //         withCloseButton: true,
+  //         hasCustomWidget: false,
+  //         message: "Error: $result",
+  //         type: "error",
+  //         buttonNumber: 0,
+  //       ));
+  //       pageName.value = '/home';
+  //       printError(info: 'Error Message getLatestLog: Invalid Request');
+  //     }
+  //   } catch (error) {
+  //     Get.dialog(GetDialog(
+  //       title: "Opps!",
+  //       hasMessage: true,
+  //       withCloseButton: true,
+  //       hasCustomWidget: false,
+  //       message: "Error: $error",
+  //       type: "error",
+  //       buttonNumber: 0,
+  //     ));
+  //     pageName.value = '/home';
+  //     printError(info: 'Error Message getLatestLog: $error');
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
 }
