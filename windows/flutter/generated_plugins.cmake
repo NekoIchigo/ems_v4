@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   geolocator_windows
   local_auth_windows
+  smart_auth
   url_launcher_windows
 )
 

@@ -1,3 +1,4 @@
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/controller/main_navigation_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
@@ -7,8 +8,9 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/guards/auth_guard.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
+import 'package:ems_v4/views/layout/private/create_password/create_password.dart';
+import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
-import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
     Get.lazyPut(() => LocationController());
     Get.lazyPut(() => MainNavigationController());
     Get.lazyPut(() => TransactionController());
+    Get.lazyPut(() => CreatePasswordController());
 
     return GetMaterialApp(
       title: 'EMS V.4',
@@ -55,7 +58,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/login', page: () => const Login()),
         GetPage(
           name: '/',
-          page: () => const MainNavigation(),
+          page: () => const CreatePasswordContainer(),
           middlewares: [AuthGuard()],
           children: [
             GetPage(

@@ -5,6 +5,8 @@ import 'package:ems_v4/controller/location_controller.dart';
 import 'package:ems_v4/controller/main_navigation_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/controller/transaction_controller.dart';
+import 'package:ems_v4/views/layout/private/create_password/create_password.dart';
+import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
@@ -78,7 +80,8 @@ class AuthService extends GetxService {
         _localStorage.setString('token', result['token']);
         _localStorage.setString('user', jsonEncode(result['data']));
 
-        Get.offNamed('/');
+        Get.to(() => const CreatePasswordContainer());
+        // Get.offNamed('/');
       } else {
         Get.dialog(const GetDialog(
           title: "Opps!",
