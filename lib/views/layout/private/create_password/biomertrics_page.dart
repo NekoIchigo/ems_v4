@@ -23,15 +23,15 @@ class _BiometricsPageState extends State<BiometricsPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: lightGray),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 3),
-                  blurRadius: 2,
-                  spreadRadius: 0,
-                ),
-              ],
+              borderRadius: BorderRadius.circular(5),
+              // boxShadow: const [
+              //   BoxShadow(
+              //     color: Colors.grey,
+              //     offset: Offset(0, 3),
+              //     blurRadius: 2,
+              //     spreadRadius: 0,
+              //   ),
+              // ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

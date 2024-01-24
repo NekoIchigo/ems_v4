@@ -37,16 +37,16 @@ class _CreatePinState extends State<CreatePin> {
       ),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: gray),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(0, 3),
-            blurRadius: 2,
-            spreadRadius: 0,
-          ),
-        ],
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: lightGray),
+        // boxShadow: const [
+        //   BoxShadow(
+        //     color: Colors.grey,
+        //     offset: Offset(0, 3),
+        //     blurRadius: 2,
+        //     spreadRadius: 0,
+        //   ),
+        // ],
       ),
     );
 
@@ -102,14 +102,14 @@ class _CreatePinState extends State<CreatePin> {
                 ),
                 focusedPinTheme: defaultPinTheme.copyWith(
                   decoration: defaultPinTheme.decoration!.copyWith(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: bgPrimaryBlue),
                   ),
                 ),
                 submittedPinTheme: defaultPinTheme.copyWith(
                   decoration: defaultPinTheme.decoration!.copyWith(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(19),
+                    borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: bgPrimaryBlue),
                   ),
                 ),

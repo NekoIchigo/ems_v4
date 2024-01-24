@@ -76,17 +76,28 @@ class _ValidationTextState extends State<ValidationText> {
     return Row(
       children: [
         widget.isValid
-            ? LottieBuilder.asset(
-                'assets/lottie/thumbs-up.json',
-                repeat: false,
-                width: 25,
+            ? const Icon(
+                Icons.thumb_up,
+                color: colorSuccess,
+                size: 15,
               )
-            : LottieBuilder.asset(
-                'assets/lottie/thumbs-down.json',
-                repeat: false,
-                width: 25,
+            : const Icon(
+                Icons.thumb_down,
+                color: colorError,
+                size: 15,
               ),
-        Text(widget.label, style: TextStyle(color: gray)),
+        // ? LottieBuilder.asset(
+        //     'assets/lottie/thumbs-up.json',
+        //     repeat: false,
+        //     width: 25,
+        //   )
+        // : LottieBuilder.asset(
+        //     'assets/lottie/thumbs-down.json',
+        //     repeat: false,
+        //     width: 25,
+        //   ),
+        const SizedBox(width: 5),
+        Text(widget.label, style: const TextStyle(color: gray)),
       ],
     );
   }

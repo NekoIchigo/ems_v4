@@ -35,19 +35,24 @@ class _FloatingInputState extends State<FloatingInput> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            color: lightGray,
-            blurRadius: 3,
-            offset: Offset(0, 2), // Shadow position
-          ),
-        ],
+        // boxShadow: const [
+        //   BoxShadow(
+        //     color: lightGray,
+        //     blurRadius: 3,
+        //     offset: Offset(0, 2), // Shadow position
+        //   ),
+        // ],
       ),
       child: TextFormField(
         obscureText: widget.isPassword ? _isObscure : false,
         controller: widget.textController,
         style: const TextStyle(color: gray, fontSize: 15),
         decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: lightGray),
+          ),
           border: const OutlineInputBorder(),
           labelText: widget.label,
           labelStyle: const TextStyle(color: gray),

@@ -1,6 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/indicator/password_indicator.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
 import 'package:ems_v4/views/widgets/validation/password_valdiation.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ class _CreatePasswordState extends State<CreatePassword> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          const SizedBox(height: 10),
           FloatingInput(
             label: 'New password',
             isPassword: true,
