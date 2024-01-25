@@ -49,7 +49,19 @@ class _ForgotPasswordContainerState extends State<ForgotPasswordContainer> {
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           children: [
-            SizedBox(height: Get.height * .05),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                    )),
+              ),
+            ),
             const Text(
               "Forgot Password",
               style: TextStyle(color: primaryBlue, fontSize: 24),

@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => HomeController());
-    Get.lazyPut(() => TimeEntriesController());
-    Get.lazyPut(() => LocationController());
-    Get.lazyPut(() => MainNavigationController());
-    Get.lazyPut(() => TransactionController());
-    Get.lazyPut(() => CreatePasswordController());
+    Get.put(HomeController());
+    Get.put(TimeEntriesController());
+    Get.put(LocationController());
+    Get.put(MainNavigationController());
+    Get.put(TransactionController());
+    Get.put(CreatePasswordController());
 
     return GetMaterialApp(
       title: 'EMS V.4',

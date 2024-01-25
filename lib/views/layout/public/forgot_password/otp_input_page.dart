@@ -1,3 +1,4 @@
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/pin_input.dart';
@@ -13,6 +14,9 @@ class OTPInputPage extends StatefulWidget {
 
 class _OTPInputPageState extends State<OTPInputPage> {
   final TextEditingController _otpController = TextEditingController();
+  final CreatePasswordController _passwordController =
+      Get.find<CreatePasswordController>();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,7 +40,9 @@ class _OTPInputPageState extends State<OTPInputPage> {
           ),
           const SizedBox(height: 20),
           RoundedCustomButton(
-            onPressed: () {},
+            onPressed: () {
+              _passwordController.animateToThirdPage();
+            },
             label: "Verify",
             size: Size(Get.width * .9, 30),
             bgColor: bgPrimaryBlue,

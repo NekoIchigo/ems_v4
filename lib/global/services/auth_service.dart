@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/controller/location_controller.dart';
 import 'package:ems_v4/controller/main_navigation_controller.dart';
@@ -111,18 +112,20 @@ class AuthService extends GetxService {
   Future logout() async {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
-        _localStorage.clear();
+        _localStorage.remove('token');
         Get.delete<HomeController>();
         Get.delete<TimeEntriesController>();
         Get.delete<LocationController>();
         Get.delete<MainNavigationController>();
         Get.delete<TransactionController>();
+        Get.delete<CreatePasswordController>();
 
-        Get.lazyPut(() => HomeController());
-        Get.lazyPut(() => TimeEntriesController());
-        Get.lazyPut(() => LocationController());
-        Get.lazyPut(() => MainNavigationController());
-        Get.lazyPut(() => TransactionController());
+        Get.put(HomeController());
+        Get.put(TimeEntriesController());
+        Get.put(LocationController());
+        Get.put(MainNavigationController());
+        Get.put(TransactionController());
+        Get.put(CreatePasswordController());
 
         Get.toNamed('/login');
       });

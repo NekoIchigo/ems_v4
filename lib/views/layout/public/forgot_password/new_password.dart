@@ -15,8 +15,6 @@ class NewPassword extends StatefulWidget {
 }
 
 class _NewPasswordState extends State<NewPassword> {
-  final CreatePasswordController _createPasswordController =
-      Get.find<CreatePasswordController>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -53,8 +51,8 @@ class _NewPasswordState extends State<NewPassword> {
           const PasswordValidation(),
           const SizedBox(height: 40),
           RoundedCustomButton(
-            onPressed: () {
-              Get.dialog(
+            onPressed: () async {
+              await Get.dialog(
                 barrierDismissible: false,
                 GetDialog(
                   type: 'success',
@@ -65,12 +63,13 @@ class _NewPasswordState extends State<NewPassword> {
                   hasCustomWidget: true,
                   withCloseButton: false,
                   okPress: () {
-                    Get.offNamed("/login");
+                    Get.back();
                   },
                   okText: "Log in",
                   okButtonBGColor: bgPrimaryBlue,
                 ),
               );
+              Get.offNamed("/login");
             },
             label: "Submit",
             size: Size(Get.width * .9, 40),
