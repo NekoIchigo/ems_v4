@@ -5,12 +5,12 @@ import 'package:pinput/pinput.dart';
 class PinInput extends StatefulWidget {
   final TextEditingController pinController;
   final String label;
-  final Function(String?)? validation;
+  final Function(String?) validation;
   const PinInput({
     super.key,
     required this.pinController,
     required this.label,
-    this.validation,
+    required this.validation,
   });
 
   @override
@@ -77,7 +77,7 @@ class _PinInputState extends State<PinInput> {
                 defaultPinTheme: defaultPinTheme,
                 separatorBuilder: (index) => const SizedBox(width: 8),
                 validator: (value) {
-                  widget.validation;
+                  return widget.validation(value);
                 },
                 // onClipboardFound: (value) {
                 //   debugPrint('onClipboardFound: $value');

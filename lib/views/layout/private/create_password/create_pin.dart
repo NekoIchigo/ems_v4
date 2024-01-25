@@ -25,11 +25,13 @@ class _CreatePinState extends State<CreatePin> {
         PinInput(
           pinController: pinController,
           label: "New PIN",
+          validation: (p0) {},
         ),
         const SizedBox(height: 20),
         PinInput(
           pinController: confirmPinController,
           label: "Confirm PIN",
+          validation: (p0) {},
         ),
         const SizedBox(height: 40),
         Align(

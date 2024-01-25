@@ -11,6 +11,12 @@ class CreatePasswordController extends GetxController {
     const BiometricsPage(),
   ];
 
+  final List<Widget> forgotPasswordPages = [
+    const CreatePassword(),
+    const CreatePin(),
+    const BiometricsPage(),
+  ];
+
   late Rx<AnimationController> midController;
   late Rx<Animation<double>> midAnimation;
   late Rx<Animation<Color?>> midBackgroundColorAnimation;
