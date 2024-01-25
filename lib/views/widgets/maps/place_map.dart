@@ -1,7 +1,5 @@
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class PlaceMap extends StatelessWidget {
   const PlaceMap({super.key});
@@ -29,10 +27,10 @@ class PlaceMap extends StatelessWidget {
     //   ..loadHtmlString(
     //       "<iframe width='1000' height='800' frameborder='0' style='border:0' src='https://www.google.com/maps/embed/v1/place?key=AIzaSyAiGzgFITTlOuq5BTzbwA0Kpm3z_kOj7ms&center=14.5828,121.0535&zoom=18&q=14.5828,121.0535' allowfullscreen></iframe>");
 
-    return EMSContainer(
+    return const EMSContainer(
       child: Column(
         children: [
-          const Text("View map"),
+          Text("View map"),
           // SizedBox(
           //   height: Get.height * .5,
           //   width: Get.width,

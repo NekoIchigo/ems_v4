@@ -1,4 +1,3 @@
-import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
@@ -15,8 +14,6 @@ class DTRCorrection extends StatefulWidget {
 }
 
 class _DTRCorrectionState extends State<DTRCorrection> {
-  final TransactionController _transactionController =
-      Get.find<TransactionController>();
   @override
   Widget build(BuildContext context) {
     return EMSContainer(

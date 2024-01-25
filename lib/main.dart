@@ -5,20 +5,9 @@ import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/controller/location_controller.dart';
 import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/guards/auth_guard.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
-import 'package:ems_v4/views/layout/private/create_password/create_password.dart';
-import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
-import 'package:ems_v4/views/layout/private/home/home.dart';
-import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
-import 'package:ems_v4/views/layout/private/profile/profile.dart';
-import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
-import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
-import 'package:ems_v4/views/layout/public/login.dart';
+import 'package:ems_v4/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -53,57 +42,8 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/',
-      getPages: [
-        GetPage(name: '/login', page: () => const Login()),
-        GetPage(
-          name: '/',
-          page: () => const CreatePasswordContainer(),
-          middlewares: [AuthGuard()],
-          children: [
-            GetPage(
-              name: '/home',
-              page: () => const Home(),
-              middlewares: [AuthGuard()],
-            ),
-            GetPage(
-              name: '/time_entries',
-              page: () => const TimeEntries(),
-              middlewares: [AuthGuard()],
-            ),
-            GetPage(
-                name: '/transactions',
-                page: () => const Transactions(),
-                middlewares: [
-                  AuthGuard()
-                ],
-                children: [
-                  GetPage(
-                    name: '/menu',
-                    page: () => const Menu(),
-                  ),
-                  GetPage(
-                    name: '/time_records',
-                    page: () => const TimeRecords(),
-                  ),
-                  GetPage(
-                    name: '/dtr_correction',
-                    page: () => const DTRCorrection(),
-                  ),
-                ]),
-            GetPage(
-              name: '/notification',
-              page: () => const NotificationPage(),
-              middlewares: [AuthGuard()],
-            ),
-            GetPage(
-              name: '/profile',
-              page: () => const Profile(),
-              middlewares: [AuthGuard()],
-            ),
-          ],
-        ),
-      ],
+      initialRoute: initalRouteName,
+      getPages: routes,
     );
   }
 }

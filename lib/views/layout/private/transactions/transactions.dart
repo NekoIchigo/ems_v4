@@ -1,4 +1,3 @@
-import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +11,8 @@ class Transactions extends StatefulWidget {
 }
 
 class _TransactionsState extends State<Transactions> {
-  final TransactionController _transactionController =
-      Get.find<TransactionController>();
+  // final TransactionController _transactionController =
+  //     Get.find<TransactionController>();
 
   @override
   Widget build(BuildContext context) {
