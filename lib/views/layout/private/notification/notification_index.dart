@@ -1,3 +1,4 @@
+import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,24 +17,25 @@ class _NotificationIndexState extends State<NotificationIndex> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: const [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            child: Text("This is an example notification!"),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            child: Text(
-                "This is an example notification! test tesat test test test"),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            child: Text(
-                "This is an example notification! asdasdsadsa dasdasds sadsdasd"),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            child: Text("This is an example notification! dasdsadsd"),
-          ),
+          NoResult(),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(vertical: 5.0),
+          //   child: Text("This is an example notification!"),
+          // ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(vertical: 5.0),
+          //   child: Text(
+          //       "This is an example notification! test tesat test test test"),
+          // ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(vertical: 5.0),
+          //   child: Text(
+          //       "This is an example notification! asdasdsadsa dasdasds sadsdasd"),
+          // ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(vertical: 5.0),
+          //   child: Text("This is an example notification! dasdsadsd"),
+          // ),
         ],
       ),
     );

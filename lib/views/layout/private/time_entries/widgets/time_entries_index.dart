@@ -111,6 +111,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                     ? const ListShimmer(listLength: 10)
                     : _timeEntriesController.attendances.isNotEmpty
                         ? ListView.builder(
+                            // TODO : paginate every scroll
                             padding: EdgeInsets.zero,
                             physics: const BouncingScrollPhysics(),
                             itemCount:

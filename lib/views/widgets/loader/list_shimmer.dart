@@ -41,7 +41,9 @@ class _ListShimmerState extends State<ListShimmer> {
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     width: 50,
                     height: 50,
-                    color: primaryBlue,
+                    decoration: BoxDecoration(
+                        color: primaryBlue,
+                        borderRadius: BorderRadius.circular(5)),
                   ),
                 ),
                 Column(
@@ -51,19 +53,25 @@ class _ListShimmerState extends State<ListShimmer> {
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       width: Get.width * 0.5,
                       height: 10,
-                      color: primaryBlue,
+                      decoration: BoxDecoration(
+                          color: primaryBlue,
+                          borderRadius: BorderRadius.circular(5)),
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       width: Get.width * 0.7,
                       height: 10,
-                      color: primaryBlue,
+                      decoration: BoxDecoration(
+                          color: primaryBlue,
+                          borderRadius: BorderRadius.circular(5)),
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       width: Get.width * 0.6,
                       height: 10,
-                      color: primaryBlue,
+                      decoration: BoxDecoration(
+                          color: primaryBlue,
+                          borderRadius: BorderRadius.circular(5)),
                     ),
                   ],
                 ),
