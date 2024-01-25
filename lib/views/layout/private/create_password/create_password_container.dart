@@ -18,6 +18,31 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
       Get.find<CreatePasswordController>();
 
   @override
+  void initState() {
+    super.initState();
+    _passwordController.pageController.value = PageController(initialPage: 0);
+    _passwordController.pageController.value.addListener(() {
+      int newPage = _passwordController.pageController.value.page?.round() ?? 0;
+      if (newPage == 1) {
+        if (_passwordController.midController.value.status !=
+            AnimationStatus.completed) {
+          _passwordController.midController.value.reset();
+          _passwordController.midController.value.forward();
+        }
+        _passwordController.lastController.value.reverse();
+      } else if (newPage == 2 &&
+          _passwordController.lastController.value.status !=
+              AnimationStatus.completed) {
+        _passwordController.lastController.value.reset();
+        _passwordController.lastController.value.forward();
+      } else if (newPage == 0) {
+        _passwordController.midController.value.reverse();
+        _passwordController.lastController.value.reverse();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return EMSContainer(
       child: Padding(
@@ -56,7 +81,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             SizedBox(
               height: Get.height * .55,
               child: PageView(
-                controller: _passwordController.pageController,
+                controller: _passwordController.pageController.value,
                 children: List.generate(_passwordController.pages.length,
                     (index) => _passwordController.pages[index]),
               ),

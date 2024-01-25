@@ -126,7 +126,10 @@ class _LoginState extends State<Login> {
                                                 MainAxisAlignment.end,
                                             children: [
                                               TextButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    Get.toNamed(
+                                                        '/forgot_password');
+                                                  },
                                                   child: const Text(
                                                     'Forgot Password?',
                                                     style: TextStyle(
