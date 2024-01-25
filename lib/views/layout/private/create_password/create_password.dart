@@ -1,3 +1,4 @@
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
@@ -13,6 +14,8 @@ class CreatePassword extends StatefulWidget {
 }
 
 class _CreatePasswordState extends State<CreatePassword> {
+  final CreatePasswordController _createPasswordController =
+      Get.find<CreatePasswordController>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -39,7 +42,9 @@ class _CreatePasswordState extends State<CreatePassword> {
           const PasswordValidation(),
           const SizedBox(height: 40),
           RoundedCustomButton(
-            onPressed: () {},
+            onPressed: () {
+              _createPasswordController.animateToSecondPage();
+            },
             label: "Next",
             size: Size(Get.width * .9, 40),
             bgColor: bgPrimaryBlue,

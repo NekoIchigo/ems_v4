@@ -46,38 +46,16 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             const SizedBox(height: 20),
             PasswordIndicator(
               firstIcon: Icons.edit_note_rounded,
-              firstOnpress: () {
-                _passwordController.pageIndex.value = 0;
-                _passwordController.pageController.animateToPage(
-                  0,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-              },
               secondIcon: Icons.security,
-              secondOnpress: () {
-                _passwordController.pageIndex.value = 1;
-                _passwordController.pageController.animateToPage(
-                  1,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-              },
               thirdIcon: Icons.fingerprint_rounded,
-              thirdOnpress: () {
-                _passwordController.pageIndex.value = 2;
-                _passwordController.pageController.animateToPage(
-                  2,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-              },
+              firstOnpress: () {},
+              secondOnpress: () {},
+              thirdOnpress: () {},
             ),
             const SizedBox(height: 40),
             SizedBox(
               height: Get.height * .55,
               child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
                 controller: _passwordController.pageController,
                 children: List.generate(_passwordController.pages.length,
                     (index) => _passwordController.pages[index]),

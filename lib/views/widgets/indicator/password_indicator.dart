@@ -1,5 +1,7 @@
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PasswordIndicator extends StatefulWidget {
   final IconData firstIcon;
@@ -24,63 +26,56 @@ class PasswordIndicator extends StatefulWidget {
 
 class _PasswordIndicatorState extends State<PasswordIndicator>
     with TickerProviderStateMixin {
-  late AnimationController _midController;
-  late Animation<double> _midAnimation;
-  late Animation<Color?> _midBackgroundColorAnimation;
-  late Animation<Color?> _midIconColorAnimation;
-
-  late AnimationController _lastController;
-  late Animation<double> _lastAnimation;
-  late Animation<Color?> _lastBackgroundColorAnimation;
-  late Animation<Color?> _lastIconColorAnimation;
+  final CreatePasswordController _passwordController =
+      Get.find<CreatePasswordController>();
 
   @override
   void initState() {
     super.initState();
 
-    _midController = AnimationController(
+    _passwordController.midController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
-    );
+    ).obs;
 
-    _midAnimation = Tween<double>(
+    _passwordController.midAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(_midController);
+    ).animate(_passwordController.midController.value).obs;
 
-    _midBackgroundColorAnimation = ColorTween(
+    _passwordController.midBackgroundColorAnimation = ColorTween(
       begin: Colors.white,
       end: bgPrimaryBlue,
-    ).animate(_midController);
+    ).animate(_passwordController.midController.value).obs;
 
-    _midIconColorAnimation = ColorTween(
+    _passwordController.midIconColorAnimation = ColorTween(
       begin: bgPrimaryBlue,
       end: Colors.white,
-    ).animate(_midController);
+    ).animate(_passwordController.midController.value).obs;
 
-    _lastController = AnimationController(
+    _passwordController.lastController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
-    );
+    ).obs;
 
-    _lastAnimation = Tween<double>(
+    _passwordController.lastAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(_lastController);
+    ).animate(_passwordController.lastController.value).obs;
 
-    _lastBackgroundColorAnimation = ColorTween(
+    _passwordController.lastBackgroundColorAnimation = ColorTween(
       begin: Colors.white,
       end: bgPrimaryBlue,
-    ).animate(_lastController);
+    ).animate(_passwordController.lastController.value).obs;
 
-    _lastIconColorAnimation = ColorTween(
+    _passwordController.lastIconColorAnimation = ColorTween(
       begin: bgPrimaryBlue,
       end: Colors.white,
-    ).animate(_lastController);
+    ).animate(_passwordController.lastController.value).obs;
 
-    // _lastController.addStatusListener((status) {
+    // _passwordController.lastController.value.addStatusListener((status) {
     //   if (status == AnimationStatus.dismissed) {
-    //     _midController.reverse();
+    //     _passwordController.midController.value.reverse();
     //   }
     // });
   }
@@ -95,8 +90,7 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
             ElevatedButton(
               onPressed: () {
                 widget.firstOnpress();
-                _midController.reverse();
-                _lastController.reverse();
+                _passwordController.animateReturnToFirstPage();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: bgPrimaryBlue,
@@ -112,13 +106,14 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
               children: [
                 const SizedBox(width: 25),
                 AnimatedBuilder(
-                  animation: _midAnimation,
+                  animation: _passwordController.midAnimation.value,
                   builder: (context, child) {
                     return Row(
                       children: [
                         Container(
                           height: 5.0,
-                          width: _midAnimation.value * 25.0,
+                          width: _passwordController.midAnimation.value.value *
+                              25.0,
                           color: bgPrimaryBlue,
                         ),
                       ],
@@ -128,23 +123,21 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
               ],
             ),
             AnimatedBuilder(
-              animation: _midAnimation,
+              animation: _passwordController.midAnimation.value,
               builder: (context, child) {
                 return ElevatedButton(
                   onPressed: () {
+                    _passwordController.animateToSecondPage();
                     widget.secondOnpress();
-                    if (_midController.status != AnimationStatus.completed) {
-                      _midController.reset();
-                      _midController.forward();
-                    }
-                    _lastController.reverse();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _midBackgroundColorAnimation.value,
+                    backgroundColor: _passwordController
+                        .midBackgroundColorAnimation.value.value,
                   ),
                   child: Icon(
                     widget.secondIcon,
-                    color: _midIconColorAnimation.value,
+                    color:
+                        _passwordController.midIconColorAnimation.value.value,
                     size: 25,
                   ),
                 );
@@ -155,13 +148,14 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
               children: [
                 const SizedBox(width: 25),
                 AnimatedBuilder(
-                  animation: _lastAnimation,
+                  animation: _passwordController.lastAnimation.value,
                   builder: (context, child) {
                     return Row(
                       children: [
                         Container(
                           height: 5.0,
-                          width: _lastAnimation.value * 25.0,
+                          width: _passwordController.lastAnimation.value.value *
+                              25.0,
                           color: bgPrimaryBlue,
                         ),
                       ],
@@ -171,22 +165,23 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
               ],
             ),
             AnimatedBuilder(
-              animation: _lastBackgroundColorAnimation,
+              animation: _passwordController.lastBackgroundColorAnimation.value,
               builder: (context, child) {
                 return ElevatedButton(
                   onPressed: () {
-                    widget.thirdOnpress();
-                    if (_lastController.status != AnimationStatus.completed) {
-                      _lastController.reset();
-                      _lastController.forward();
+                    if (_passwordController.pageIndex.value == 1) {
+                      _passwordController.animateToThirdPage();
+                      widget.thirdOnpress();
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _lastBackgroundColorAnimation.value,
+                    backgroundColor: _passwordController
+                        .lastBackgroundColorAnimation.value.value,
                   ),
                   child: Icon(
                     widget.thirdIcon,
-                    color: _lastIconColorAnimation.value,
+                    color:
+                        _passwordController.lastIconColorAnimation.value.value,
                     size: 25,
                   ),
                 );
@@ -200,8 +195,8 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
 
   @override
   void dispose() {
-    _midController.dispose();
-    _lastController.dispose();
+    _passwordController.midController.value.dispose();
+    _passwordController.lastController.value.dispose();
     super.dispose();
   }
 }

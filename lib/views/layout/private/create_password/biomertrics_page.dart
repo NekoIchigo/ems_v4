@@ -75,7 +75,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
                 Get.offNamed('/');
               },
               label: "Submit",
-              size: Size(Get.width * .8, 40),
+              size: Size(Get.width * .9, 40),
               bgColor: bgPrimaryBlue,
             ),
           )
