@@ -36,7 +36,7 @@ class _EditProfileState extends State<EditProfile>
       ),
       child: ExpansionPanelList(
         elevation: 0,
-        expandedHeaderPadding: const EdgeInsets.all(0),
+        expandedHeaderPadding: EdgeInsets.zero,
         expansionCallback: (int index, bool isExpanded) {
           setState(() {
             _isExpanded = !_isExpanded;
@@ -51,8 +51,8 @@ class _EditProfileState extends State<EditProfile>
           ExpansionPanel(
             canTapOnHeader: true,
             headerBuilder: (BuildContext context, bool isExpanded) {
-              return const ListTile(
-                title: Text('Account Settings'),
+              return Container(
+                child: Text('Account Settings'),
               );
             },
             body: SlideTransition(
