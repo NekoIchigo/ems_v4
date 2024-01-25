@@ -6,11 +6,13 @@ class PinInput extends StatefulWidget {
   final TextEditingController pinController;
   final String label;
   final Function(String?) validation;
+  final bool? hasShadow;
   const PinInput({
     super.key,
     required this.pinController,
     required this.label,
     required this.validation,
+    this.hasShadow,
   });
 
   @override
@@ -40,14 +42,16 @@ class _PinInputState extends State<PinInput> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(color: lightGray),
-        // boxShadow: const [
-        //   BoxShadow(
-        //     color: Colors.grey,
-        //     offset: Offset(0, 3),
-        //     blurRadius: 2,
-        //     spreadRadius: 0,
-        //   ),
-        // ],
+        boxShadow: [
+          widget.hasShadow ?? false
+              ? const BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 3),
+                  blurRadius: 2,
+                  spreadRadius: 0,
+                )
+              : const BoxShadow(),
+        ],
       ),
     );
 

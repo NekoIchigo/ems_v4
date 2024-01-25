@@ -2,16 +2,18 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 
 class Input extends StatefulWidget {
-  final String label;
+  final String? label;
   final bool isPassword;
   final TextEditingController textController;
+  final Color? labelColor;
   final int? max;
   const Input({
     super.key,
-    required this.label,
+    this.label,
     required this.isPassword,
     required this.textController,
     this.max,
+    this.labelColor,
   });
 
   @override
@@ -32,16 +34,24 @@ class _InputState extends State<Input> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.label),
+        Visibility(
+          visible: widget.label != null,
+          child: Text(
+            widget.label ?? '',
+            style: TextStyle(color: widget.labelColor ?? darkGray),
+          ),
+        ),
         TextFormField(
           obscureText: widget.isPassword ? _isObscure : false,
           controller: widget.textController,
           style: const TextStyle(color: gray, fontSize: 14),
           decoration: InputDecoration(
+            enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: lightGray)),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(5),
             ),
             labelStyle: const TextStyle(color: gray),
             suffixIcon: widget.isPassword

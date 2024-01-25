@@ -4,6 +4,7 @@ import 'package:ems_v4/views/layout/private/profile/widgets/profile_list_button.
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileContainer extends StatefulWidget {
   const ProfileContainer({super.key});
@@ -15,6 +16,12 @@ class ProfileContainer extends StatefulWidget {
 class _ProfileContainerState extends State<ProfileContainer> {
   final AuthService authService = Get.find<AuthService>();
   bool switchVal = true;
+
+  Future<void> _launchInBrowser(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +43,25 @@ class _ProfileContainerState extends State<ProfileContainer> {
             const SizedBox(height: 30),
             ProfileListButton(
               label: 'Personal Information',
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed("/profile/personal_info");
+              },
             ),
+            const SizedBox(height: 5),
             ProfileListButton(
               label: 'Change Password',
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed("/profile/change_password");
+              },
             ),
+            const SizedBox(height: 5),
             ProfileListButton(
               label: 'Change PIN',
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed("/profile/change_pin");
+              },
             ),
+            const SizedBox(height: 5),
             ProfileListButton(
               label: 'Enable Fingerprint Authetication',
               onPressed: () {
@@ -65,15 +81,25 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
             ProfileListButton(
               label: 'Employment Details',
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed("/profile/employment_details");
+              },
             ),
+            const SizedBox(height: 5),
             ProfileListButton(
               label: 'Provacy Policy',
-              onPressed: () {},
+              onPressed: () {
+                _launchInBrowser(
+                    'https://happyhousekeepers.com.ph/privacy-policy');
+              },
             ),
+            const SizedBox(height: 5),
             ProfileListButton(
               label: 'Terms of Use',
-              onPressed: () {},
+              onPressed: () {
+                _launchInBrowser(
+                    'https://happyhousekeepers.com.ph/privacy-policy');
+              },
             ),
             const SizedBox(height: 30),
             RoundedCustomButton(

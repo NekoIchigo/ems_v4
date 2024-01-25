@@ -1,106 +1,79 @@
 import 'package:ems_v4/global/constants.dart';
-// import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EmployeeDetailsWidget extends StatefulWidget {
-  const EmployeeDetailsWidget({super.key});
+class EmployeeDetailsPage extends StatefulWidget {
+  const EmployeeDetailsPage({super.key});
 
   @override
-  State<EmployeeDetailsWidget> createState() => _EmployeeDetailsWidgetState();
+  State<EmployeeDetailsPage> createState() => _EmployeeDetailsPageState();
 }
 
-class _EmployeeDetailsWidgetState extends State<EmployeeDetailsWidget>
+class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
     with SingleTickerProviderStateMixin {
-  // final AuthService _authService = Get.find<AuthService>();
-  bool _isExpanded = false;
-
-  late AnimationController _animationController;
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        border: Border.all(color: gray),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: ExpansionPanelList(
-        elevation: 0,
-        expandedHeaderPadding: const EdgeInsets.all(0),
-        expansionCallback: (int index, bool isExpanded) {
-          setState(() {
-            _isExpanded = !_isExpanded;
-            if (_isExpanded) {
-              _animationController.forward();
-            } else {
-              _animationController.reverse();
-            }
-          });
-        },
-        children: [
-          ExpansionPanel(
-            canTapOnHeader: true,
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return const ListTile(
-                title: Text('Employment Details'),
-              );
-            },
-            body: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, -1),
-                end: const Offset(0, 0),
-              ).animate(CurvedAnimation(
-                parent: _animationController,
-                curve: Curves.easeInOut,
-              )),
-              child: SizedBox(
-                width: Get.width * .8,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Company",
-                        style: TextStyle(color: primaryBlue),
-                      ),
-                      Text("Company Name"),
-                      SizedBox(height: 10),
-                      Text(
-                        "Department",
-                        style: TextStyle(color: primaryBlue),
-                      ),
-                      Text("Department Name"),
-                      SizedBox(height: 10),
-                      Text(
-                        "Position",
-                        style: TextStyle(color: primaryBlue),
-                      ),
-                      Text("Position Title"),
-                      SizedBox(height: 10),
-                      Text(
-                        "Date Hired",
-                        style: TextStyle(color: primaryBlue),
-                      ),
-                      Text("MM/DD/YY"),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                ),
+    return EMSContainer(
+      child: SizedBox(
+        width: Get.width,
+        child: Stack(
+          children: [
+            Positioned(
+              right: 10,
+              top: 5,
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(Icons.close),
               ),
             ),
-            isExpanded: _isExpanded,
-          ),
-        ],
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 50),
+                  Center(
+                    child: Text(
+                      "Employment Details",
+                      style: TextStyle(
+                        color: darkGray,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  Text(
+                    "Company",
+                    style: TextStyle(color: primaryBlue),
+                  ),
+                  Text("Company Name"),
+                  SizedBox(height: 30),
+                  Text(
+                    "Department",
+                    style: TextStyle(color: primaryBlue),
+                  ),
+                  Text("Department Name"),
+                  SizedBox(height: 30),
+                  Text(
+                    "Position",
+                    style: TextStyle(color: primaryBlue),
+                  ),
+                  Text("Position Title"),
+                  SizedBox(height: 30),
+                  Text(
+                    "Date Hired",
+                    style: TextStyle(color: primaryBlue),
+                  ),
+                  Text("MM/DD/YY"),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -4,6 +4,10 @@ import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/change_password.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/change_pin.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/employee_details.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/personal_information.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
@@ -59,7 +63,24 @@ final List<GetPage> routes = [
         name: '/profile',
         page: () => const Profile(),
         middlewares: [AuthGuard()],
-        children: [],
+        children: [
+          GetPage(
+            name: '/personal_info',
+            page: () => const PersonalInformation(),
+          ),
+          GetPage(
+            name: '/change_password',
+            page: () => const ChangePassword(),
+          ),
+          GetPage(
+            name: '/change_pin',
+            page: () => const ChangePin(),
+          ),
+          GetPage(
+            name: '/employment_details',
+            page: () => const EmployeeDetailsPage(),
+          ),
+        ],
       ),
     ],
   ),
