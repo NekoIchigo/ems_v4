@@ -1,7 +1,9 @@
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BiometricsPage extends StatefulWidget {
   const BiometricsPage({super.key});
@@ -12,7 +14,8 @@ class BiometricsPage extends StatefulWidget {
 
 class _BiometricsPageState extends State<BiometricsPage> {
   bool _switch = true;
-
+  final CreatePasswordController _createPasswordController =
+      Get.find<CreatePasswordController>();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -72,7 +75,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
             alignment: Alignment.bottomCenter,
             child: RoundedCustomButton(
               onPressed: () {
-                Get.offNamed('/');
+                _createPasswordController.enableBioMetrics(_switch);
               },
               label: "Submit",
               size: Size(Get.width * .9, 40),

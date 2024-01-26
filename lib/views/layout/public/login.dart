@@ -247,14 +247,11 @@ class _LoginState extends State<Login> {
 
   Future<void> _localAutheticate() async {
     try {
-      List<BiometricType> availableBiomentrics =
-          await _authService.auth.getAvailableBiometrics();
-      print(availableBiomentrics);
       bool autheticated = await _authService.auth.authenticate(
           localizedReason: "Autheticate to Login in the system.",
           options: const AuthenticationOptions(
             stickyAuth: true,
-            biometricOnly: false,
+            biometricOnly: true,
           ));
       if (autheticated) {
         _authService.autheticated.value = autheticated;

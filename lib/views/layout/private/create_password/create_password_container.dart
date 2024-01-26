@@ -70,6 +70,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             ),
             const SizedBox(height: 20),
             PasswordIndicator(
+              hasNavigation: false,
               firstIcon: Icons.edit_note_rounded,
               secondIcon: Icons.security,
               thirdIcon: Icons.fingerprint_rounded,

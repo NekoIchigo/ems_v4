@@ -6,7 +6,6 @@ import 'package:ems_v4/controller/location_controller.dart';
 import 'package:ems_v4/controller/main_navigation_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/controller/transaction_controller.dart';
-import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
@@ -20,6 +19,7 @@ class AuthService extends GetxService {
   late final LocalAuthentication auth;
   final ApiCall apiCall = ApiCall();
   RxBool isSupported = false.obs;
+  String userEmail = '';
 
   RxBool isLoading = false.obs;
   RxBool autheticated = false.obs;
@@ -29,10 +29,8 @@ class AuthService extends GetxService {
 
   Future<AuthService> init() async {
     _localStorage = await SharedPreferences.getInstance();
-
-    auth = LocalAuthentication();
-    auth.isDeviceSupported().then(
-        (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
+    if (_localStorage.getBool('auth_biometrics') ?? false) {}
+    ;
 
     token = _localStorage.getString('token');
     if (token != null) {
@@ -60,14 +58,23 @@ class AuthService extends GetxService {
     }
   }
 
+  Future<void> setLocalAuth() async {
+    auth = LocalAuthentication();
+    auth.isDeviceSupported().then(
+        (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
+    List<BiometricType> availableBiomentrics =
+        await auth.getAvailableBiometrics();
+    print(availableBiomentrics);
+  }
+
   Future login(String email, String password) async {
     isLoading.value = true;
     try {
       final response = await apiCall
           .postRequest({'email': email, 'password': password}, '/login');
       final result = jsonDecode(response.body);
-
       if (result['success']) {
+        userEmail = email;
         autheticated.value = result['success'];
 
         var userData = result['data'];
@@ -79,9 +86,11 @@ class AuthService extends GetxService {
 
         _localStorage.setString('token', result['token']);
         _localStorage.setString('user', jsonEncode(result['data']));
-
-        Get.to(() => const CreatePasswordContainer());
-        // Get.offNamed('/');
+        if (result['is_first_login']) {
+          Get.offNamed('/create_password');
+        } else {
+          Get.offNamed('/');
+        }
       } else {
         Get.dialog(
           GetDialog(
@@ -102,7 +111,7 @@ class AuthService extends GetxService {
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,
-        message: "Error: $error",
+        message: "Error login: $error",
         type: "error",
         buttonNumber: 0,
       ));

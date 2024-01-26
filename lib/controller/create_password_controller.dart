@@ -11,8 +11,11 @@ import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreatePasswordController extends GetxController {
+  late SharedPreferences _localStorage;
+
   final ApiCall apiCall = ApiCall();
   final RxBool isLoading = false.obs;
 
@@ -249,6 +252,138 @@ class CreatePasswordController extends GetxController {
           withCloseButton: true,
           hasCustomWidget: false,
           message: "Error Forgot Password: $e !",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future createNewPassword(
+    String password,
+    String confirmPassword,
+  ) async {
+    isLoading.value = true;
+    try {
+      var response = await apiCall.postRequest({
+        'password': password,
+        'password_confirmation': confirmPassword,
+      }, '/change-password');
+
+      var result = jsonDecode(response.body);
+
+      if (result['success']) {
+        animateToSecondPage();
+      } else {
+        Get.dialog(
+          GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error Create Password: ${result['errorMessages']}",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
+      }
+    } catch (e) {
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error Create Password: $e !",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future changePIN(
+    String pin,
+    String confirmPin,
+  ) async {
+    isLoading.value = true;
+    try {
+      var response = await apiCall.postRequest({
+        'pin': pin,
+        'pin_confirmation': confirmPin,
+      }, '/change-pin');
+
+      var result = jsonDecode(response.body);
+
+      if (result['success']) {
+        animateToThirdPage();
+      } else {
+        Get.dialog(
+          GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error Create PIN: ${result['errorMessages']}",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
+      }
+    } catch (e) {
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error Create PIN: $e !",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future enableBioMetrics(bool biometrics) async {
+    _localStorage = await SharedPreferences.getInstance();
+    isLoading.value = true;
+
+    try {
+      var response = await apiCall.getRequest('/first-login');
+      _localStorage.setBool('auth_biometrics', biometrics);
+
+      var result = jsonDecode(response.body);
+
+      if (result['success']) {
+        Get.offNamed('/');
+      } else {
+        Get.dialog(
+          GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error Create PIN: ${result['errorMessages']}",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
+      }
+    } catch (e) {
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error Create PIN: $e !",
           type: "error",
           buttonNumber: 0,
         ),
