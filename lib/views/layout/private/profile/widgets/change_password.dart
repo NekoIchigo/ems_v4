@@ -1,5 +1,6 @@
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_caontainer.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,9 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  final CreatePasswordController _createPasswordController =
+      Get.find<CreatePasswordController>();
+
   final TextEditingController _currentPassword = TextEditingController();
   final TextEditingController _newPassword = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
@@ -75,7 +79,10 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
           Center(
             child: RoundedCustomButton(
-              onPressed: () {},
+              onPressed: () {
+                _createPasswordController.createNewPassword(_newPassword.text,
+                    _confirmPassword.text, _currentPassword.text);
+              },
               label: 'Update',
               radius: 5,
               size: Size(Get.width * .4, 30),

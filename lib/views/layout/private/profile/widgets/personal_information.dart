@@ -1,9 +1,11 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_caontainer.dart';
+import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 
 class PersonalInformation extends StatefulWidget {
   const PersonalInformation({super.key});
@@ -13,13 +15,22 @@ class PersonalInformation extends StatefulWidget {
 }
 
 class _PersonalInformationState extends State<PersonalInformation> {
+  final AuthService authService = Get.find<AuthService>();
+  bool isNotEdit = true;
   final TextEditingController _contactNumber = TextEditingController();
   final TextEditingController _email = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _contactNumber.setText('ads');
+    _email.setText('ads');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ProfilePageContainer(
-      title: "Change Password",
+      title: "Personal Information",
       child: Column(
         children: [
           Padding(
@@ -30,26 +41,24 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 Center(
                   child: Column(
                     children: [
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: lightGray, width: 1.5),
-                          shape: BoxShape.circle,
-                          // boxShadow: const [
-                          //   BoxShadow(
-                          //     color: Colors.grey,
-                          //     offset: Offset(0, 5),
-                          //     blurRadius: 6,
-                          //     spreadRadius: 0,
-                          //   ),
-                          // ],
-                        ),
-                        child: const Icon(
-                          Icons.image_search,
-                          size: 30,
-                          color: gray,
+                      OutlinedButton(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsetsDirectional.all(0),
+                            side: const BorderSide(
+                              color: lightGray,
+                            )),
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.image_search,
+                            size: 30,
+                            color: gray,
+                          ),
                         ),
                       ),
                       const Padding(
@@ -77,9 +86,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Input(
-                    isPassword: true,
+                    isPassword: false,
+                    disabled: isNotEdit,
                     textController: _contactNumber,
                     labelColor: primaryBlue,
+                    icon: Icons.phone_android_rounded,
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -92,9 +103,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 ),
                 const SizedBox(height: 5),
                 Input(
-                  isPassword: true,
+                  isPassword: false,
+                  disabled: isNotEdit,
                   textController: _email,
                   labelColor: primaryBlue,
+                  icon: Icons.email_rounded,
                 ),
                 const SizedBox(height: 30),
               ],
@@ -102,10 +115,14 @@ class _PersonalInformationState extends State<PersonalInformation> {
           ),
           Center(
             child: RoundedCustomButton(
-              onPressed: () {},
-              label: 'Update',
+              onPressed: () {
+                setState(() {
+                  isNotEdit = false;
+                });
+              },
+              label: isNotEdit ? 'Update' : 'Submit',
               radius: 5,
-              size: Size(Get.width * .4, 30),
+              size: Size(Get.width * .35, 30),
               bgColor: bgPrimaryBlue,
             ),
           ),

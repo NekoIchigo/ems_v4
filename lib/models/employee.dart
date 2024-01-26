@@ -1,3 +1,4 @@
+import 'package:ems_v4/models/employee_contact.dart';
 import 'package:ems_v4/models/employee_details.dart';
 
 class Employee {
@@ -13,6 +14,7 @@ class Employee {
   final String gender;
   final String civilStatus;
   final EmployeeDetails employeeDetails;
+  final EmployeeContact employeeContact;
 
   Employee({
     required this.id,
@@ -27,23 +29,24 @@ class Employee {
     required this.gender,
     required this.civilStatus,
     required this.employeeDetails,
+    required this.employeeContact,
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-      id: json['id'] as int,
-      companyId: json['company_id'] as int,
-      userId: json['user_id'] as int,
-      accountStatusId: json['account_status_id'] as int,
-      firstName: json['first_name'] as String,
-      middleName: json['middle_name'] as String?,
-      lastName: json['last_name'] as String,
-      dailyTimeRecord: json['daily_time_record'] as String,
-      birthday: json['birthday'] as String,
-      gender: json['gender'] as String,
-      civilStatus: json['civil_status'] as String,
-      employeeDetails: EmployeeDetails.fromJson(json['employee_details']),
-    );
+        id: json['id'] as int,
+        companyId: json['company_id'] as int,
+        userId: json['user_id'] as int,
+        accountStatusId: json['account_status_id'] as int,
+        firstName: json['first_name'] as String,
+        middleName: json['middle_name'] as String?,
+        lastName: json['last_name'] as String,
+        dailyTimeRecord: json['daily_time_record'] as String,
+        birthday: json['birthday'] as String,
+        gender: json['gender'] as String,
+        civilStatus: json['civil_status'] as String,
+        employeeDetails: EmployeeDetails.fromJson(json['employee_details']),
+        employeeContact: EmployeeContact.fromJson(json['employee_contact']));
   }
 
   Map<String, dynamic> toMap() {
@@ -60,6 +63,7 @@ class Employee {
       'gender': gender,
       'civil_status': civilStatus,
       'employee_details': employeeDetails.toMap(),
+      'employee_contact': employeeContact.toMap(),
     };
   }
 }

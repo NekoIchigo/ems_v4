@@ -95,7 +95,7 @@ class CreatePasswordController extends GetxController {
         var response =
             await apiCall.postRequest({'email': email}, '/mail-reset-otp');
         var result = jsonDecode(response.body);
-        if (result['success']) {
+        if (result.containsKey('success') && result['success']) {
           await Get.dialog(
             barrierDismissible: false,
             GetDialog(
@@ -154,24 +154,7 @@ class CreatePasswordController extends GetxController {
         'email': _userEmail,
       }, '/otp-validition');
       var result = jsonDecode(response.body);
-      if (result['success']) {
-        // await Get.dialog(
-        //   barrierDismissible: false,
-        //   GetDialog(
-        //     type: 'success',
-        //     title: 'OTP Verified',
-        //     hasMessage: true,
-        //     message: "An OTP has been sent to verify your email address",
-        //     buttonNumber: 1,
-        //     hasCustomWidget: true,
-        //     withCloseButton: false,
-        //     okPress: () {
-        //       Get.back();
-        //     },
-        //     okText: "Close",
-        //     okButtonBGColor: gray,
-        //   ),
-        // );
+      if (result.containsKey('success') && result['success']) {
         animateToThirdPage();
       } else {
         Get.dialog(
@@ -212,7 +195,7 @@ class CreatePasswordController extends GetxController {
         'email': _userEmail
       }, '/reset-password');
       var result = jsonDecode(response.body);
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         await Get.dialog(
           barrierDismissible: false,
           GetDialog(
@@ -264,18 +247,37 @@ class CreatePasswordController extends GetxController {
   Future createNewPassword(
     String password,
     String confirmPassword,
+    String? currentPassword,
   ) async {
     isLoading.value = true;
     try {
       var response = await apiCall.postRequest({
         'password': password,
         'password_confirmation': confirmPassword,
+        'current_password': currentPassword,
       }, '/change-password');
 
       var result = jsonDecode(response.body);
-
-      if (result['success']) {
-        animateToSecondPage();
+      print(result);
+      if (result.containsKey('success') && result['success']) {
+        await Get.dialog(
+          barrierDismissible: false,
+          GetDialog(
+            type: 'success',
+            title: 'Password Updated',
+            hasMessage: true,
+            message: "You can now log in using your new password.",
+            buttonNumber: 1,
+            hasCustomWidget: true,
+            withCloseButton: false,
+            okPress: () {
+              Get.back();
+            },
+            okText: "Log in",
+            okButtonBGColor: bgPrimaryBlue,
+          ),
+        );
+        Get.offNamed("/login");
       } else {
         Get.dialog(
           GetDialog(
@@ -283,7 +285,7 @@ class CreatePasswordController extends GetxController {
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
-            message: "Error Create Password: ${result['errorMessages']}",
+            message: "Error Create Password: ${result['message']}",
             type: "error",
             buttonNumber: 0,
           ),
@@ -318,8 +320,7 @@ class CreatePasswordController extends GetxController {
       }, '/change-pin');
 
       var result = jsonDecode(response.body);
-
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         animateToThirdPage();
       } else {
         Get.dialog(

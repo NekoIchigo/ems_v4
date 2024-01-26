@@ -50,12 +50,14 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
           children: [
             Visibility(
               visible: widget.isLoading ?? false,
-              child: LoadingAnimationWidget.threeRotatingDots(
-                color: Colors.white,
-                size: 20,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: LoadingAnimationWidget.threeRotatingDots(
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
             ),
-            const SizedBox(width: 10),
             Text(
               widget.label,
               style: TextStyle(

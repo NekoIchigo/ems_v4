@@ -55,6 +55,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                 _createPasswordController.createNewPassword(
                   _passwordController.text,
                   _confirmPasswordController.text,
+                  null,
                 );
               } else {
                 Get.dialog(

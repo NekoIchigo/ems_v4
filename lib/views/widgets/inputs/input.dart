@@ -8,6 +8,8 @@ class Input extends StatefulWidget {
   final Color? labelColor;
   final int? max;
   final String? errorText;
+  final IconData? icon;
+  final bool? disabled;
 
   const Input({
     super.key,
@@ -17,6 +19,8 @@ class Input extends StatefulWidget {
     this.max,
     this.labelColor,
     this.errorText,
+    this.icon,
+    this.disabled,
   });
 
   @override
@@ -47,8 +51,13 @@ class _InputState extends State<Input> {
         TextFormField(
           obscureText: widget.isPassword ? _isObscure : false,
           controller: widget.textController,
+          readOnly: widget.disabled ?? false,
           style: const TextStyle(color: gray, fontSize: 14),
           decoration: InputDecoration(
+            filled: true,
+            fillColor: widget.disabled ?? false
+                ? lightGray.withOpacity(0.5)
+                : Colors.white,
             error: hasError(),
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: lightGray)),
@@ -66,9 +75,9 @@ class _InputState extends State<Input> {
                       color: gray,
                     ),
                   )
-                : const SizedBox(
-                    width: 1,
-                    height: 1,
+                : Icon(
+                    widget.icon,
+                    color: gray,
                   ),
           ),
           validator: (String? value) {
