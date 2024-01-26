@@ -1,3 +1,4 @@
+import 'package:ems_v4/controller/profile_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
@@ -17,6 +18,7 @@ class PersonalInformation extends StatefulWidget {
 
 class _PersonalInformationState extends State<PersonalInformation> {
   final AuthService _authService = Get.find<AuthService>();
+  final ProfileController _profileController = Get.find<ProfileController>();
   final ImagePicker picker = ImagePicker();
   bool isNotEdit = true;
   final TextEditingController _contactNumber = TextEditingController();
@@ -46,9 +48,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     children: [
                       OutlinedButton(
                         onPressed: () async {
-                          final XFile? image = await picker.pickImage(
-                              source: ImageSource.gallery);
-                          print(image);
+                          if (!isNotEdit) {
+                            final XFile? image = await picker.pickImage(
+                                source: ImageSource.gallery);
+                            print(image);
+                          }
                         },
                         style: OutlinedButton.styleFrom(
                             padding: const EdgeInsetsDirectional.all(0),
@@ -123,6 +127,12 @@ class _PersonalInformationState extends State<PersonalInformation> {
           Center(
             child: RoundedCustomButton(
               onPressed: () {
+                if (!isNotEdit) {
+                  _profileController.updateContacts(
+                    _email.text,
+                    _contactNumber.text,
+                  );
+                }
                 setState(() {
                   isNotEdit = false;
                 });
