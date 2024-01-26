@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class RoundedCustomButton extends StatefulWidget {
   final void Function() onPressed;
@@ -9,6 +10,7 @@ class RoundedCustomButton extends StatefulWidget {
   final Color? textColor;
   final double? radius;
   final Size size;
+  final bool? isLoading;
   const RoundedCustomButton({
     super.key,
     required this.onPressed,
@@ -18,6 +20,7 @@ class RoundedCustomButton extends StatefulWidget {
     this.radius,
     required this.size,
     this.borderColor,
+    this.isLoading,
   });
 
   @override
@@ -42,12 +45,25 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
                   BorderRadius.all(Radius.circular(widget.radius ?? 50))),
           backgroundColor: widget.bgColor ?? primaryBlue,
         ),
-        child: Text(
-          widget.label,
-          style: TextStyle(
-            color: widget.textColor ?? Colors.white,
-            fontSize: 15,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Visibility(
+              visible: widget.isLoading ?? false,
+              child: LoadingAnimationWidget.threeRotatingDots(
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              widget.label,
+              style: TextStyle(
+                color: widget.textColor ?? Colors.white,
+                fontSize: 15,
+              ),
+            ),
+          ],
         ),
       ),
     );

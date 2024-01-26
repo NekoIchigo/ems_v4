@@ -138,14 +138,6 @@ class _LoginState extends State<Login> {
                                                   )),
                                             ],
                                           ),
-                                          // ElevatedButton(
-                                          //   onPressed: _getAvaliableBiometrics,
-                                          //   child: const Text("Get Biometrics"),
-                                          // ),
-                                          // ElevatedButton(
-                                          //   onPressed: _localAutheticate,
-                                          //   child: const Text("Autheticate"),
-                                          // ),
                                           Obx(
                                             () => RoundedCustomButton(
                                               onPressed: () async {
@@ -157,6 +149,8 @@ class _LoginState extends State<Login> {
                                                   );
                                                 }
                                               },
+                                              isLoading:
+                                                  _authService.isLoading.value,
                                               label:
                                                   _authService.isLoading.isFalse
                                                       ? 'Log In'
@@ -175,8 +169,7 @@ class _LoginState extends State<Login> {
                                                 Icon(
                                                     Icons.fingerprint_outlined),
                                                 SizedBox(width: 5),
-                                                Text(
-                                                    'Login with phone lockscreen'),
+                                                Text('Login with fingerprint'),
                                               ],
                                             ),
                                           ),
@@ -254,9 +247,9 @@ class _LoginState extends State<Login> {
 
   Future<void> _localAutheticate() async {
     try {
-      // List<BiometricType> availableBiomentrics =
-      //     await _authService.auth.getAvailableBiometrics();
-      // print('object');
+      List<BiometricType> availableBiomentrics =
+          await _authService.auth.getAvailableBiometrics();
+      print(availableBiomentrics);
       bool autheticated = await _authService.auth.authenticate(
           localizedReason: "Autheticate to Login in the system.",
           options: const AuthenticationOptions(
