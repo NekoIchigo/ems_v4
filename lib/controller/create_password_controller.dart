@@ -16,6 +16,9 @@ class CreatePasswordController extends GetxController {
   final ApiCall apiCall = ApiCall();
   final RxBool isLoading = false.obs;
 
+  RxString password = ''.obs;
+  RxString confirmPassword = ''.obs;
+
   final List<Widget> pages = [
     const CreatePassword(),
     const CreatePin(),
@@ -37,6 +40,7 @@ class CreatePasswordController extends GetxController {
   late Rx<Animation<double>> lastAnimation;
   late Rx<Animation<Color?>> lastBackgroundColorAnimation;
   late Rx<Animation<Color?>> lastIconColorAnimation;
+  String _userEmail = '';
 
   final List<String> titles = [
     "Create Password",
@@ -83,6 +87,7 @@ class CreatePasswordController extends GetxController {
   Future sendForgotPasswordRequest(String? email) async {
     isLoading.value = true;
     if (email != null) {
+      _userEmail = email;
       try {
         var response =
             await apiCall.postRequest({'email': email}, '/mail-reset-otp');
@@ -134,6 +139,122 @@ class CreatePasswordController extends GetxController {
       } finally {
         isLoading.value = false;
       }
+    }
+  }
+
+  Future verifyOTP(String? OTPin) async {
+    isLoading.value = true;
+
+    try {
+      var response = await apiCall.postRequest({
+        'OTPin': OTPin,
+        'email': _userEmail,
+      }, '/otp-validition');
+      var result = jsonDecode(response.body);
+      if (result['success']) {
+        // await Get.dialog(
+        //   barrierDismissible: false,
+        //   GetDialog(
+        //     type: 'success',
+        //     title: 'OTP Verified',
+        //     hasMessage: true,
+        //     message: "An OTP has been sent to verify your email address",
+        //     buttonNumber: 1,
+        //     hasCustomWidget: true,
+        //     withCloseButton: false,
+        //     okPress: () {
+        //       Get.back();
+        //     },
+        //     okText: "Close",
+        //     okButtonBGColor: gray,
+        //   ),
+        // );
+        animateToThirdPage();
+      } else {
+        Get.dialog(
+          GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error OTP: ${result['errorMessages']}",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
+      }
+    } catch (e) {
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error Forgot Password: $e !",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future setNewPassword(String? password, String? confirmPassword) async {
+    isLoading.value = true;
+    try {
+      var response = await apiCall.postRequest({
+        'password': password,
+        'password_confirmation': confirmPassword,
+        'email': _userEmail
+      }, '/reset-password');
+      var result = jsonDecode(response.body);
+      if (result['success']) {
+        await Get.dialog(
+          barrierDismissible: false,
+          GetDialog(
+            type: 'success',
+            title: 'Password Updated',
+            hasMessage: true,
+            message: "You can now log in using your new password.",
+            buttonNumber: 1,
+            hasCustomWidget: true,
+            withCloseButton: false,
+            okPress: () {
+              Get.back();
+            },
+            okText: "Log in",
+            okButtonBGColor: bgPrimaryBlue,
+          ),
+        );
+        Get.offNamed("/login");
+      } else {
+        Get.dialog(
+          GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error New Password: ${result['errorMessages']}",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
+      }
+    } catch (e) {
+      Get.dialog(
+        GetDialog(
+          title: "Opps!",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Error Forgot Password: $e !",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
+    } finally {
+      isLoading.value = false;
     }
   }
 }

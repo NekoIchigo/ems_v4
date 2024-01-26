@@ -10,6 +10,7 @@ class PasswordIndicator extends StatefulWidget {
   final Function() firstOnpress;
   final Function() secondOnpress;
   final Function() thirdOnpress;
+  final bool? hasNavigation;
   const PasswordIndicator({
     super.key,
     required this.firstIcon,
@@ -18,6 +19,7 @@ class PasswordIndicator extends StatefulWidget {
     required this.firstOnpress,
     required this.secondOnpress,
     required this.thirdOnpress,
+    this.hasNavigation,
   });
 
   @override
@@ -89,8 +91,10 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
           children: [
             ElevatedButton(
               onPressed: () {
-                widget.firstOnpress();
-                _passwordController.animateReturnToFirstPage();
+                if (widget.hasNavigation ?? true) {
+                  widget.firstOnpress();
+                  _passwordController.animateReturnToFirstPage();
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: bgPrimaryBlue,
@@ -127,8 +131,10 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
               builder: (context, child) {
                 return ElevatedButton(
                   onPressed: () {
-                    _passwordController.animateToSecondPage();
-                    widget.secondOnpress();
+                    if (widget.hasNavigation ?? true) {
+                      _passwordController.animateToSecondPage();
+                      widget.secondOnpress();
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _passwordController
@@ -169,9 +175,11 @@ class _PasswordIndicatorState extends State<PasswordIndicator>
               builder: (context, child) {
                 return ElevatedButton(
                   onPressed: () {
-                    if (_passwordController.pageIndex.value == 1) {
-                      _passwordController.animateToThirdPage();
-                      widget.thirdOnpress();
+                    if (widget.hasNavigation ?? true) {
+                      if (_passwordController.pageIndex.value == 1) {
+                        _passwordController.animateToThirdPage();
+                        widget.thirdOnpress();
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(

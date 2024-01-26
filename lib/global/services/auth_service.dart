@@ -83,15 +83,17 @@ class AuthService extends GetxService {
         Get.to(() => const CreatePasswordContainer());
         // Get.offNamed('/');
       } else {
-        Get.dialog(const GetDialog(
-          title: "Opps!",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Invalid username or password.",
-          type: "error",
-          buttonNumber: 0,
-        ));
+        Get.dialog(
+          GetDialog(
+            title: "Opps!",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: result['message'],
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
       }
       isLoading.value = false;
     } catch (error) {

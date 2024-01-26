@@ -39,15 +39,19 @@ class _OTPInputPageState extends State<OTPInputPage> {
             validation: (p0) {},
           ),
           const SizedBox(height: 20),
-          RoundedCustomButton(
-            onPressed: () {
-              _passwordController.animateToThirdPage();
-            },
-            label: "Verify",
-            size: Size(Get.width * .9, 30),
-            bgColor: bgPrimaryBlue,
-          ),
-          Container(),
+          Obx(
+            () => RoundedCustomButton(
+              onPressed: () {
+                _passwordController.verifyOTP(_otpController.text);
+                // _passwordController.animateToThirdPage();
+              },
+              isLoading: _passwordController.isLoading.value,
+              label:
+                  _passwordController.isLoading.isTrue ? "Verifying" : "Verify",
+              size: Size(Get.width * .9, 30),
+              bgColor: bgPrimaryBlue,
+            ),
+          )
         ],
       ),
     );

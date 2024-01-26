@@ -1,7 +1,6 @@
 import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
 import 'package:ems_v4/views/widgets/validation/password_valdiation.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,8 @@ class NewPassword extends StatefulWidget {
 }
 
 class _NewPasswordState extends State<NewPassword> {
+  final CreatePasswordController _createPasswordController =
+      Get.find<CreatePasswordController>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -40,38 +41,33 @@ class _NewPasswordState extends State<NewPassword> {
             isPassword: true,
             textController: _passwordController,
             icon: Icons.visibility,
+            onChanged: (value) {
+              _createPasswordController.password.value = value;
+            },
           ),
           FloatingInput(
             label: 'Confirm password',
             isPassword: true,
             textController: _confirmPasswordController,
             icon: Icons.visibility,
+            onChanged: (value) {
+              _createPasswordController.confirmPassword.value = value;
+            },
           ),
           const SizedBox(height: 20),
           const PasswordValidation(),
           const SizedBox(height: 40),
           RoundedCustomButton(
+            isLoading: _createPasswordController.isLoading.value,
             onPressed: () async {
-              await Get.dialog(
-                barrierDismissible: false,
-                GetDialog(
-                  type: 'success',
-                  title: 'Password Updated',
-                  hasMessage: true,
-                  message: "You can now log in using your new password.",
-                  buttonNumber: 1,
-                  hasCustomWidget: true,
-                  withCloseButton: false,
-                  okPress: () {
-                    Get.back();
-                  },
-                  okText: "Log in",
-                  okButtonBGColor: bgPrimaryBlue,
-                ),
+              _createPasswordController.setNewPassword(
+                _createPasswordController.password.value,
+                _createPasswordController.confirmPassword.value,
               );
-              Get.offNamed("/login");
             },
-            label: "Submit",
+            label: _createPasswordController.isLoading.isTrue
+                ? "Submitting..."
+                : "Submit",
             size: Size(Get.width * .9, 40),
             bgColor: bgPrimaryBlue,
           ),

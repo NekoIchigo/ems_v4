@@ -1,3 +1,4 @@
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,47 +12,73 @@ class PasswordValidation extends StatefulWidget {
 }
 
 class _PasswordValidationState extends State<PasswordValidation> {
-  List<Validation> validations = [
-    Validation(label: "10 characters", regExp: RegExp(r'.{10,}')),
-    Validation(label: "1 uppercase letter", regExp: RegExp(r'(?=.*[A-Z])')),
-    Validation(label: "1 lowercase letter", regExp: RegExp(r'(?=.*[a-z])')),
-    Validation(label: "1 number", regExp: RegExp(r'(?=.*\d)')),
-    Validation(label: "1 symbol", regExp: RegExp(r'(?=.*[^A-Za-z0-9])')),
-    Validation(label: "10 characters", regExp: RegExp(r'.{10,}')),
-  ];
+  final CreatePasswordController _createPasswordController =
+      Get.find<CreatePasswordController>();
+
+  RegExp minimumChar = RegExp(r'.{10,}');
+  RegExp hasUpperCase = RegExp(r'(?=.*[A-Z])');
+  RegExp hasLowerCase = RegExp(r'(?=.*[a-z])');
+  RegExp hasNumber = RegExp(r'(?=.*\d)');
+  RegExp hasSymbol = RegExp(r'(?=.*[^A-Za-z0-9])');
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: Get.width,
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Password must contain at least",
             style: TextStyle(color: gray),
           ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ValidationText(label: "10 characters", isValid: true),
-                  ValidationText(label: "1 uppercase letter", isValid: false),
-                  ValidationText(label: "1 lowercase letter", isValid: true),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ValidationText(label: "1 symbol", isValid: true),
-                  ValidationText(label: "1 number", isValid: true),
-                  ValidationText(label: "Match Password", isValid: false),
-                ],
-              )
-            ],
+          const SizedBox(height: 10),
+          Obx(
+            () => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ValidationText(
+                      label: "10 characters",
+                      isValid: minimumChar
+                          .hasMatch(_createPasswordController.password.value),
+                    ),
+                    ValidationText(
+                      label: "1 uppercase letter",
+                      isValid: hasUpperCase
+                          .hasMatch(_createPasswordController.password.value),
+                    ),
+                    ValidationText(
+                      label: "1 lowercase letter",
+                      isValid: hasLowerCase
+                          .hasMatch(_createPasswordController.password.value),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ValidationText(
+                      label: "1 symbol",
+                      isValid: hasSymbol
+                          .hasMatch(_createPasswordController.password.value),
+                    ),
+                    ValidationText(
+                      label: "1 number",
+                      isValid: hasNumber
+                          .hasMatch(_createPasswordController.password.value),
+                    ),
+                    ValidationText(
+                      label: "Match Password",
+                      isValid: _createPasswordController.password.value ==
+                          _createPasswordController.confirmPassword.value,
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -59,21 +86,16 @@ class _PasswordValidationState extends State<PasswordValidation> {
   }
 }
 
-class ValidationText extends StatefulWidget {
+class ValidationText extends StatelessWidget {
   final String label;
   final bool isValid;
   const ValidationText({super.key, required this.label, required this.isValid});
 
   @override
-  State<ValidationText> createState() => _ValidationTextState();
-}
-
-class _ValidationTextState extends State<ValidationText> {
-  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        widget.isValid
+        isValid
             ? const Icon(
                 Icons.thumb_up,
                 color: colorSuccess,
@@ -95,17 +117,8 @@ class _ValidationTextState extends State<ValidationText> {
         //     width: 25,
         //   ),
         const SizedBox(width: 5),
-        Text(widget.label, style: const TextStyle(color: gray)),
+        Text(label, style: const TextStyle(color: gray)),
       ],
     );
   }
-}
-
-class Validation {
-  String label;
-  RegExp regExp;
-  Validation({
-    required this.label,
-    required this.regExp,
-  });
 }

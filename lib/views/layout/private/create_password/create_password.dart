@@ -31,12 +31,18 @@ class _CreatePasswordState extends State<CreatePassword> {
             isPassword: true,
             textController: _passwordController,
             icon: Icons.visibility,
+            onChanged: (value) {
+              _createPasswordController.password.value = value;
+            },
           ),
           FloatingInput(
             label: 'Confirm password',
             isPassword: true,
             textController: _confirmPasswordController,
             icon: Icons.visibility,
+            onChanged: (value) {
+              _createPasswordController.confirmPassword.value = value;
+            },
           ),
           const SizedBox(height: 20),
           const PasswordValidation(),

@@ -68,6 +68,7 @@ class _ForgotPasswordContainerState extends State<ForgotPasswordContainer> {
             ),
             const SizedBox(height: 20),
             PasswordIndicator(
+              hasNavigation: false,
               firstIcon: Icons.email,
               secondIcon: Icons.security,
               thirdIcon: Icons.lock,
@@ -92,3 +93,4 @@ class _ForgotPasswordContainerState extends State<ForgotPasswordContainer> {
     );
   }
 }
+// Asd123456*

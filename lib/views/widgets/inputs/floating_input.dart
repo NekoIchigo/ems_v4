@@ -7,6 +7,7 @@ class FloatingInput extends StatefulWidget {
   final IconData icon;
   final TextEditingController textController;
   final String? errorText;
+  final Function(String) onChanged;
 
   const FloatingInput({
     super.key,
@@ -15,6 +16,7 @@ class FloatingInput extends StatefulWidget {
     required this.textController,
     required this.icon,
     this.errorText,
+    required this.onChanged,
   });
 
   @override
@@ -49,6 +51,7 @@ class _FloatingInputState extends State<FloatingInput> {
         obscureText: widget.isPassword ? _isObscure : false,
         controller: widget.textController,
         style: const TextStyle(color: gray, fontSize: 15),
+        onChanged: widget.onChanged,
         decoration: InputDecoration(
           error: hasError(),
           contentPadding:
