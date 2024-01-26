@@ -1,3 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:ems_v4/models/deparment.dart';
+import 'package:ems_v4/models/position.dart';
+
 class EmployeeDetails {
   final int id;
   final int employeeId;
@@ -19,6 +23,8 @@ class EmployeeDetails {
   final String phicNumber;
   final String hdmfNumber;
   final String tinNumber;
+  final Position position;
+  final Department department;
 
   EmployeeDetails({
     required this.id,
@@ -41,6 +47,8 @@ class EmployeeDetails {
     required this.phicNumber,
     required this.hdmfNumber,
     required this.tinNumber,
+    required this.position,
+    required this.department,
   });
 
   factory EmployeeDetails.fromJson(Map<String, dynamic> json) {
@@ -65,6 +73,8 @@ class EmployeeDetails {
       phicNumber: json['phic_number'] as String,
       hdmfNumber: json['hdmf_number'] as String,
       tinNumber: json['tin_number'] as String,
+      department: Department.fromJson(json['department']),
+      position: Position.fromJson(json['position']),
     );
   }
 
@@ -90,6 +100,8 @@ class EmployeeDetails {
       'phic_number': phicNumber,
       'hdmf_number': hdmfNumber,
       'tin_number': tinNumber,
+      'deparment': department.toMap(),
+      'position': position.toMap(),
     };
   }
 }
