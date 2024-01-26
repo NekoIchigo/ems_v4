@@ -7,6 +7,8 @@ class Input extends StatefulWidget {
   final TextEditingController textController;
   final Color? labelColor;
   final int? max;
+  final String? errorText;
+
   const Input({
     super.key,
     this.label,
@@ -14,6 +16,7 @@ class Input extends StatefulWidget {
     required this.textController,
     this.max,
     this.labelColor,
+    this.errorText,
   });
 
   @override
@@ -46,6 +49,7 @@ class _InputState extends State<Input> {
           controller: widget.textController,
           style: const TextStyle(color: gray, fontSize: 14),
           decoration: InputDecoration(
+            error: hasError(),
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: lightGray)),
             contentPadding:
@@ -77,5 +81,21 @@ class _InputState extends State<Input> {
         ),
       ],
     );
+  }
+
+  Widget? hasError() {
+    if (widget.errorText != null) {
+      return Row(
+        children: [
+          const Icon(
+            Icons.warning_rounded,
+            color: colorError,
+          ),
+          Text(widget.errorText!)
+        ],
+      );
+    }
+
+    return null;
   }
 }

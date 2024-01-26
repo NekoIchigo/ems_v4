@@ -6,12 +6,14 @@ class UnderlineInput extends StatefulWidget {
   final bool isPassword;
   final IconData icon;
   final TextEditingController textController;
+  final String? errorText;
   const UnderlineInput({
     super.key,
     required this.label,
     required this.isPassword,
     required this.icon,
     required this.textController,
+    this.errorText,
   });
 
   @override
@@ -39,6 +41,7 @@ class _UnderlineInputState extends State<UnderlineInput> {
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: darkGray),
         ),
+        error: hasError(),
         labelText: widget.label,
         labelStyle: const TextStyle(color: darkGray),
         suffixIcon: !widget.isPassword
@@ -61,5 +64,21 @@ class _UnderlineInputState extends State<UnderlineInput> {
       },
       autovalidateMode: AutovalidateMode.disabled,
     );
+  }
+
+  Widget? hasError() {
+    if (widget.errorText != null) {
+      return Row(
+        children: [
+          const Icon(
+            Icons.warning_rounded,
+            color: colorError,
+          ),
+          Text(widget.errorText!)
+        ],
+      );
+    }
+
+    return null;
   }
 }

@@ -6,6 +6,7 @@ class FloatingInput extends StatefulWidget {
   final bool isPassword;
   final IconData icon;
   final TextEditingController textController;
+  final String? errorText;
 
   const FloatingInput({
     super.key,
@@ -13,6 +14,7 @@ class FloatingInput extends StatefulWidget {
     required this.isPassword,
     required this.textController,
     required this.icon,
+    this.errorText,
   });
 
   @override
@@ -48,6 +50,7 @@ class _FloatingInputState extends State<FloatingInput> {
         controller: widget.textController,
         style: const TextStyle(color: gray, fontSize: 15),
         decoration: InputDecoration(
+          error: hasError(),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           enabledBorder: const OutlineInputBorder(
@@ -82,5 +85,21 @@ class _FloatingInputState extends State<FloatingInput> {
         autovalidateMode: AutovalidateMode.disabled,
       ),
     );
+  }
+
+  Widget? hasError() {
+    if (widget.errorText != null) {
+      return Row(
+        children: [
+          const Icon(
+            Icons.warning_rounded,
+            color: colorError,
+          ),
+          Text(widget.errorText!)
+        ],
+      );
+    }
+
+    return null;
   }
 }
