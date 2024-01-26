@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,8 @@ class PersonalInformation extends StatefulWidget {
 }
 
 class _PersonalInformationState extends State<PersonalInformation> {
-  final AuthService authService = Get.find<AuthService>();
+  final AuthService _authService = Get.find<AuthService>();
+  final ImagePicker picker = ImagePicker();
   bool isNotEdit = true;
   final TextEditingController _contactNumber = TextEditingController();
   final TextEditingController _email = TextEditingController();
@@ -23,8 +25,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
   @override
   void initState() {
     super.initState();
-    _contactNumber.setText('ads');
-    _email.setText('ads');
+    _contactNumber
+        .setText(_authService.employee.value.employeeContact.contactNumber);
+    _email.setText(_authService.employee.value.employeeContact.email);
   }
 
   @override
@@ -42,7 +45,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   child: Column(
                     children: [
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final XFile? image = await picker.pickImage(
+                              source: ImageSource.gallery);
+                          print(image);
+                        },
                         style: OutlinedButton.styleFrom(
                             padding: const EdgeInsetsDirectional.all(0),
                             side: const BorderSide(
