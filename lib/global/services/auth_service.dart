@@ -29,8 +29,16 @@ class AuthService extends GetxService {
 
   Future<AuthService> init() async {
     _localStorage = await SharedPreferences.getInstance();
-    if (_localStorage.getBool('auth_biometrics') ?? false) {}
-    ;
+    auth = LocalAuthentication();
+
+    if (_localStorage.getBool('auth_biometrics') ?? false) {
+      auth.isDeviceSupported().then(
+          (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
+      List<BiometricType> availableBiomentrics =
+          await auth.getAvailableBiometrics();
+      print(availableBiomentrics);
+      setLocalAuth();
+    }
 
     token = _localStorage.getString('token');
     if (token != null) {

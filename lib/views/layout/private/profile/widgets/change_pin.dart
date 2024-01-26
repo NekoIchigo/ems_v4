@@ -1,3 +1,4 @@
+import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -13,6 +14,8 @@ class ChangePin extends StatefulWidget {
 }
 
 class _ChangePinState extends State<ChangePin> {
+  final CreatePasswordController _createPasswordController =
+      Get.find<CreatePasswordController>();
   final TextEditingController _currentPin = TextEditingController();
   final TextEditingController _newPin = TextEditingController();
   final TextEditingController _confirmPin = TextEditingController();
@@ -75,7 +78,13 @@ class _ChangePinState extends State<ChangePin> {
           ),
           Center(
             child: RoundedCustomButton(
-              onPressed: () {},
+              onPressed: () {
+                _createPasswordController.changePIN(
+                  _newPin.text,
+                  _confirmPin.text,
+                  currentpin: _currentPin.text,
+                );
+              },
               label: 'Update',
               radius: 5,
               size: Size(Get.width * .4, 30),

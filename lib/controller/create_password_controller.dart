@@ -258,7 +258,7 @@ class CreatePasswordController extends GetxController {
       }, '/change-password');
 
       var result = jsonDecode(response.body);
-      print(result);
+
       if (result.containsKey('success') && result['success']) {
         await Get.dialog(
           barrierDismissible: false,
@@ -310,18 +310,42 @@ class CreatePasswordController extends GetxController {
 
   Future changePIN(
     String pin,
-    String confirmPin,
-  ) async {
+    String confirmPin, {
+    String? currentpin,
+  }) async {
     isLoading.value = true;
     try {
       var response = await apiCall.postRequest({
         'pin': pin,
         'pin_confirmation': confirmPin,
+        'current_pin': currentpin,
       }, '/change-pin');
 
       var result = jsonDecode(response.body);
+      print(result);
       if (result.containsKey('success') && result['success']) {
-        animateToThirdPage();
+        if (currentpin != null) {
+          await Get.dialog(
+            barrierDismissible: false,
+            GetDialog(
+              type: 'success',
+              title: 'PIN Updated',
+              hasMessage: true,
+              message: "You can now log in using your new PIN.",
+              buttonNumber: 1,
+              hasCustomWidget: true,
+              withCloseButton: false,
+              okPress: () {
+                Get.back();
+              },
+              okText: "Log in",
+              okButtonBGColor: bgPrimaryBlue,
+            ),
+          );
+          Get.offNamed("/login");
+        } else {
+          animateToThirdPage();
+        }
       } else {
         Get.dialog(
           GetDialog(
@@ -329,7 +353,7 @@ class CreatePasswordController extends GetxController {
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
-            message: "Error Create PIN: ${result['errorMessages']}",
+            message: "Error Create PIN: ${result['message']}",
             type: "error",
             buttonNumber: 0,
           ),
