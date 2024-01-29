@@ -116,6 +116,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
           Center(
             child: RoundedCustomButton(
               onPressed: () {
+                if (!isNotEdit) {}
                 setState(() {
                   isNotEdit = false;
                 });
