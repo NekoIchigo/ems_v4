@@ -1,5 +1,6 @@
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
+import 'package:ems_v4/views/widgets/coming_soon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,7 +25,8 @@ class _TransactionsState extends State<Transactions> {
           SizedBox(
             height: Get.height * .78,
             child: const Center(
-              child: Menu(),
+              child: ComingSoon(),
+              // Menu(),
               //   Navigator(
               //     key: Get.nestedKey(_transactionController.routerKey),
               //     onGenerateRoute: (settings) {

@@ -4,6 +4,7 @@ import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
+import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -15,7 +16,7 @@ class MainNavigationController extends GetxController {
   final List<Widget> pages = [
     const Home(),
     const TimeEntries(),
-    // const Transactions(),
+    const Transactions(),
     const NotificationPage(),
     const Profile(),
   ];
@@ -61,13 +62,13 @@ class MainNavigationController extends GetxController {
         ),
       ),
     ),
-    // const TabItem(
-    //   icon: Icons.edit_document,
-    //   activeIcon: Icon(
-    //     Icons.edit_document,
-    //     color: darkGray,
-    //   ),
-    // ),
+    const TabItem(
+      icon: Icons.edit_document,
+      activeIcon: Icon(
+        Icons.edit_document,
+        color: darkGray,
+      ),
+    ),
     TabItem(
       icon: ColorFiltered(
         colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
