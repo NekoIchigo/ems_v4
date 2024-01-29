@@ -163,7 +163,7 @@ class CreatePasswordController extends GetxController {
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
-            message: "Error OTP: ${result['errorMessages']}",
+            message: "Error OTP: ${result['messages']}",
             type: "error",
             buttonNumber: 0,
           ),
@@ -260,24 +260,28 @@ class CreatePasswordController extends GetxController {
       var result = jsonDecode(response.body);
 
       if (result.containsKey('success') && result['success']) {
-        await Get.dialog(
-          barrierDismissible: false,
-          GetDialog(
-            type: 'success',
-            title: 'Password Updated',
-            hasMessage: true,
-            message: "You can now log in using your new password.",
-            buttonNumber: 1,
-            hasCustomWidget: true,
-            withCloseButton: false,
-            okPress: () {
-              Get.back();
-            },
-            okText: "Log in",
-            okButtonBGColor: bgPrimaryBlue,
-          ),
-        );
-        Get.offNamed("/login");
+        if (currentPassword != null) {
+          await Get.dialog(
+            barrierDismissible: false,
+            GetDialog(
+              type: 'success',
+              title: 'Password Updated',
+              hasMessage: true,
+              message: "You can now log in using your new password.",
+              buttonNumber: 1,
+              hasCustomWidget: true,
+              withCloseButton: false,
+              okPress: () {
+                Get.back();
+              },
+              okText: "Log in",
+              okButtonBGColor: bgPrimaryBlue,
+            ),
+          );
+          Get.offNamed("/login");
+        } else {
+          animateToSecondPage();
+        }
       } else {
         Get.dialog(
           GetDialog(
@@ -322,7 +326,7 @@ class CreatePasswordController extends GetxController {
       }, '/change-pin');
 
       var result = jsonDecode(response.body);
-      print(result);
+
       if (result.containsKey('success') && result['success']) {
         if (currentpin != null) {
           await Get.dialog(
@@ -386,7 +390,7 @@ class CreatePasswordController extends GetxController {
 
       var result = jsonDecode(response.body);
 
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         Get.offNamed('/');
       } else {
         Get.dialog(
@@ -395,7 +399,7 @@ class CreatePasswordController extends GetxController {
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
-            message: "Error Create PIN: ${result['errorMessages']}",
+            message: "Error Create PIN: ${result['message']}",
             type: "error",
             buttonNumber: 0,
           ),

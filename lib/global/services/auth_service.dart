@@ -44,13 +44,14 @@ class AuthService extends GetxService {
     if (token != null) {
       var response = await apiCall.getRequest('/check-token');
       var result = jsonDecode(response.body);
+      autheticated.value = result['token'];
+
       if (!result['token']) {
         Get.toNamed('/login');
       } else {
         setAuthStatus();
       }
     }
-    autheticated.value = token != null;
     return this;
   }
 
@@ -86,6 +87,7 @@ class AuthService extends GetxService {
         autheticated.value = result['success'];
 
         var userData = result['data'];
+        _localStorage.setString('user', jsonEncode(userData));
         var employeeData = userData['employee'];
         var companyData = employeeData['company'];
 
@@ -131,7 +133,7 @@ class AuthService extends GetxService {
   Future logout() async {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
-        _localStorage.remove('token');
+        // _localStorage.remove('token');
         Get.delete<HomeController>();
         Get.delete<TimeEntriesController>();
         Get.delete<LocationController>();
