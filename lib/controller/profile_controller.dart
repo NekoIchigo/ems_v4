@@ -10,13 +10,14 @@ class ProfileController extends GetxController {
   RxBool isLoading = false.obs;
 
   Future<void> updatePersonalInformation(
-      String contactNumber, String email) async {
+      String contactNumber, String email, String image) async {
     isLoading.value = true;
 
     try {
       var response = await apiCall.postRequest({
         'contact_number': contactNumber,
         'email': email,
+        'image': image,
       }, '/otp-validition');
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
