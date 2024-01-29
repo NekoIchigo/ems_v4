@@ -1,24 +1,35 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:get/get.dart';
 import 'package:ems_v4/global/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileController extends GetxController {
+  final ImagePicker _imagePicker = ImagePicker();
+  late SharedPreferences _localStorage;
+
   final ApiCall apiCall = ApiCall();
   RxBool isLoading = false.obs;
+  RxString profileImage = ''.obs;
 
   Future<void> updatePersonalInformation(
-      String contactNumber, String email, String image) async {
+      String contactNumber, String email) async {
+    _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
-
+    var userData = jsonDecode(_localStorage.getString('user')!);
+    String? image = profileImage.value != '' ? profileImage.value : null;
     try {
       var response = await apiCall.postRequest({
+        'id': userData['id'],
         'contact_number': contactNumber,
         'email': email,
         'image': image,
-      }, '/otp-validition');
+      }, '/update-personal-info');
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         await Get.dialog(
@@ -67,4 +78,22 @@ class ProfileController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  String? convertToBase64(XFile? image) {
+    if (image != null) {
+      File file = File(image.path);
+      List<int> imageBytes = file.readAsBytesSync();
+      String base64String = base64Encode(Uint8List.fromList(imageBytes));
+      // log(base64String);
+      return base64String;
+    }
+    return null;
+  }
+
+  Future selectProfileImage() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+    profileImage.value = convertToBase64(image) ?? '';
+  }
+
+  void setState(Null Function() param0) {}
 }

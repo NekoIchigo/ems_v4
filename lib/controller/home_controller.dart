@@ -43,7 +43,7 @@ class HomeController extends GetxController {
       var response = await apiCall.getRequest('/check-shift/$employeeId');
       var result = jsonDecode(response.body);
 
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         var data = result['data'];
 
         isNewShift.value = data['is_new_shift'];
@@ -56,12 +56,12 @@ class HomeController extends GetxController {
         }
       } else {
         Get.dialog(
-          const GetDialog(
+          GetDialog(
             title: "Opps!",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
-            message: "Error Check Shift: Something went wrong",
+            message: "Error Check Shift: ${result['message']}",
             type: "error",
             buttonNumber: 0,
           ),
@@ -88,7 +88,7 @@ class HomeController extends GetxController {
       );
 
       var result = jsonDecode(response.body);
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         var data = result['data'];
         isInsideVicinity.value = data['is_inside_vicinity'];
         currentLocation.value =
@@ -142,7 +142,7 @@ class HomeController extends GetxController {
         '/calculate-location/${authService.employee.value.id}',
       );
       var result = jsonDecode(response.body);
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         var data = result['data'];
         isInsideVicinity.value = data['is_inside_vicinity'];
         currentLocation.value =
@@ -204,7 +204,7 @@ class HomeController extends GetxController {
         'health_temperature': temperature,
       }, '/clock-in');
       var result = jsonDecode(response.body);
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         checkNewShift(employeeId: authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
@@ -248,7 +248,7 @@ class HomeController extends GetxController {
             attendance.value.clockedOutLocationSetting,
       }, '/clock-out');
       var result = jsonDecode(response.body);
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         // isClockOut.value = false;
         // isClockInOutComplete.value = true;
 

@@ -33,7 +33,7 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton(
-        onPressed: widget.onPressed,
+        onPressed: widget.isLoading ?? false ? () {} : widget.onPressed,
         style: ElevatedButton.styleFrom(
           side: BorderSide(
             color: widget.borderColor ?? widget.bgColor ?? primaryBlue,
