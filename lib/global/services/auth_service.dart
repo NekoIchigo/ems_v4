@@ -6,6 +6,7 @@ import 'package:ems_v4/controller/location_controller.dart';
 import 'package:ems_v4/controller/main_navigation_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/controller/transaction_controller.dart';
+import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
@@ -44,10 +45,8 @@ class AuthService extends GetxService {
     if (token != null) {
       var response = await apiCall.getRequest('/check-token');
       var result = jsonDecode(response.body);
-      autheticated.value = result['token'];
-
-      if (!result['token']) {
-        Get.toNamed('/login');
+      if (!result.containsKey('token')) {
+        autheticated.value = false;
       } else {
         setAuthStatus();
       }
@@ -58,6 +57,7 @@ class AuthService extends GetxService {
   Future<void> setAuthStatus() async {
     String? userData = _localStorage.getString('user');
     if (userData != null) {
+      autheticated.value = true;
       var data = jsonDecode(userData);
       var employeeData = data['employee'];
       var companyData = employeeData['company'];
@@ -128,6 +128,24 @@ class AuthService extends GetxService {
       ));
       isLoading.value = false;
       printError(info: 'Error Message Login: $error');
+    }
+  }
+
+  Future<void> localAutheticate() async {
+    try {
+      bool local_autheticated = await auth.authenticate(
+          localizedReason: "Autheticate to Login in the system.",
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            biometricOnly: true,
+          ));
+      if (local_autheticated) {
+        autheticated.value = local_autheticated;
+        setAuthStatus();
+        Get.offNamed('/');
+      }
+    } on PlatformException catch (e) {
+      print(e);
     }
   }
 

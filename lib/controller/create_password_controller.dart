@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/create_password/biomertrics_page.dart';
 import 'package:ems_v4/views/layout/private/create_password/create_password.dart';
-import 'package:ems_v4/views/layout/private/create_password/create_pin.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/email_otp.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/new_password.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/otp_input_page.dart';
@@ -24,7 +23,7 @@ class CreatePasswordController extends GetxController {
 
   final List<Widget> pages = [
     const CreatePassword(),
-    const CreatePin(),
+    // const CreatePin(),
     const BiometricsPage(),
   ];
 
@@ -116,12 +115,12 @@ class CreatePasswordController extends GetxController {
           animateToSecondPage();
         } else {
           Get.dialog(
-            const GetDialog(
+            GetDialog(
               title: "Opps!",
               hasMessage: true,
               withCloseButton: true,
               hasCustomWidget: false,
-              message: "Error Forgot Password: Something went wrong!",
+              message: "Error Forgot Password: ${result['message']}!",
               type: "error",
               buttonNumber: 0,
             ),
@@ -145,12 +144,12 @@ class CreatePasswordController extends GetxController {
     }
   }
 
-  Future verifyOTP(String? OTPin) async {
+  Future verifyOTP(String? otpPin) async {
     isLoading.value = true;
 
     try {
       var response = await apiCall.postRequest({
-        'OTPin': OTPin,
+        'OTPin': otpPin,
         'email': _userEmail,
       }, '/otp-validition');
       var result = jsonDecode(response.body);
