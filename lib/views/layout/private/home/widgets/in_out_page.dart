@@ -69,39 +69,39 @@ class _InOutPageState extends State<InOutPage> {
           Text(
             greetings,
             style: const TextStyle(
-              color: darkGray,
+              color: gray,
               fontWeight: FontWeight.w500,
-              fontSize: 20,
+              fontSize: 18,
             ),
           ),
+          SizedBox(height: 8),
           Text(
             '${_authViewService.employee.value.firstName}!',
             style: const TextStyle(
-              color: darkGray,
+              color: gray,
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: 18,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: Text(
-              _homeController.isClockInOutComplete.isTrue
-                  ? 'See you tomorrow'
-                  : _homeController.isClockOut.isTrue
-                      ? 'Have a great day at work!'
-                      : 'Begin another day by clocking in.',
-              style: const TextStyle(color: darkGray),
-            ),
+          SizedBox(height: 8),
+          Text(
+            _homeController.isClockInOutComplete.isTrue
+                ? 'See you tomorrow'
+                : _homeController.isClockOut.isTrue
+                    ? 'Have a great day at work!'
+                    : 'Begin another day by clocking in.',
+            style: const TextStyle(color: gray, fontSize: 13),
           ),
+          SizedBox(height: 8),
           const Row(
             children: [
               Text(
                 'Today\'s Schedule : ',
-                style: TextStyle(color: darkGray, fontWeight: FontWeight.bold),
+                style: TextStyle(color: gray, fontWeight: FontWeight.bold),
               ),
               Text(
                 '08:30 am to 05:30 pm',
-                style: TextStyle(color: darkGray),
+                style: TextStyle(color: gray),
               ),
             ],
           ),
@@ -112,11 +112,9 @@ class _InOutPageState extends State<InOutPage> {
 
   Widget buttonSection() {
     return SizedBox(
-      height: Get.height * .35,
+      height: Get.height * .38,
       child: Stack(
         alignment: Alignment.center,
-        // make use og obx here to visibility
-
         children: [
           _homeController.isClockInOutComplete.isTrue
               ? Positioned(
@@ -186,18 +184,20 @@ class _InOutPageState extends State<InOutPage> {
             bottom: 0,
             child: Column(
               children: [
+                SizedBox(height: 8),
                 Text(
                   DateFormat("hh:mm a").format(_settings.currentTime.value),
                   style: const TextStyle(
-                    color: darkGray,
+                    color: gray,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                SizedBox(height: 8),
                 Text(
                   date,
                   style: const TextStyle(
-                    color: darkGray,
+                    color: gray,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
@@ -213,8 +213,7 @@ class _InOutPageState extends State<InOutPage> {
   Widget detailsSection() {
     return Container(
       margin: const EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.all(10),
-      color: Colors.white,
+      padding: const EdgeInsets.only(top: 20),
       height: Get.height * .14,
       width: Get.width,
       child: Row(
@@ -228,12 +227,12 @@ class _InOutPageState extends State<InOutPage> {
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
                   _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
-                  style: const TextStyle(color: darkGray),
+                  style: const TextStyle(color: gray, fontSize: 13),
                 ),
               ),
               const Text(
                 'Clock In',
-                style: TextStyle(color: darkGray),
+                style: TextStyle(color: gray, fontSize: 13),
               ),
             ],
           ),
@@ -244,12 +243,12 @@ class _InOutPageState extends State<InOutPage> {
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
                   _dateTimeUtils.formatTime(dateTime: attendance.clockOutAt),
-                  style: const TextStyle(color: darkGray),
+                  style: const TextStyle(color: gray, fontSize: 13),
                 ),
               ),
               const Text(
                 'Clock Out',
-                style: TextStyle(color: darkGray),
+                style: TextStyle(color: gray, fontSize: 13),
               ),
             ],
           ),
@@ -275,12 +274,12 @@ class _InOutPageState extends State<InOutPage> {
                   _homeController.getWorkingHrs(
                       dateTimeIn: attendance.clockInAt,
                       dateTimeOut: attendance.clockOutAt),
-                  style: const TextStyle(color: darkGray),
+                  style: const TextStyle(color: gray, fontSize: 13),
                 ),
               ),
               const Text(
                 'Working Hrs',
-                style: TextStyle(color: darkGray),
+                style: TextStyle(color: gray, fontSize: 13),
               ),
             ],
           ),
