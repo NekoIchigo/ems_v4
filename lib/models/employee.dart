@@ -13,6 +13,7 @@ class Employee {
   final String birthday;
   final String gender;
   final String civilStatus;
+  final String profileBase64;
   final EmployeeDetails employeeDetails;
   final EmployeeContact employeeContact;
 
@@ -28,6 +29,7 @@ class Employee {
     required this.birthday,
     required this.gender,
     required this.civilStatus,
+    required this.profileBase64,
     required this.employeeDetails,
     required this.employeeContact,
   });
@@ -45,6 +47,7 @@ class Employee {
         birthday: json['birthday'] as String,
         gender: json['gender'] as String,
         civilStatus: json['civil_status'] as String,
+        profileBase64: json['image_path'] as String,
         employeeDetails: EmployeeDetails.fromJson(json['employee_details']),
         employeeContact: EmployeeContact.fromJson(json['employee_contact']));
   }
@@ -62,6 +65,7 @@ class Employee {
       'birthday': birthday,
       'gender': gender,
       'civil_status': civilStatus,
+      'image_path': profileBase64,
       'employee_details': employeeDetails.toMap(),
       'employee_contact': employeeContact.toMap(),
     };

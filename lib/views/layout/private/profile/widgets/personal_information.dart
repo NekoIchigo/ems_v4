@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ems_v4/controller/profile_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -17,9 +19,8 @@ class PersonalInformation extends StatefulWidget {
 }
 
 class _PersonalInformationState extends State<PersonalInformation> {
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthService authService = Get.find<AuthService>();
   final ProfileController _profileController = Get.find<ProfileController>();
-  final ImagePicker picker = ImagePicker();
   bool isNotEdit = true;
   final TextEditingController _contactNumber = TextEditingController();
   final TextEditingController _email = TextEditingController();
@@ -27,9 +28,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
   @override
   void initState() {
     super.initState();
+    _profileController.profileImage.value =
+        authService.employee.value.profileBase64;
     _contactNumber
-        .setText(_authService.employee.value.employeeContact.contactNumber);
-    _email.setText(_authService.employee.value.employeeContact.email);
+        .setText(authService.employee.value.employeeContact.workContactNumber);
+    _email.setText(authService.employee.value.employeeContact.email);
   }
 
   @override
@@ -47,11 +50,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   child: Column(
                     children: [
                       OutlinedButton(
-                        onPressed: () async {
+                        onPressed: () {
                           if (!isNotEdit) {
-                            final XFile? image = await picker.pickImage(
-                                source: ImageSource.gallery);
-                            print(image);
+                            _profileController.selectProfileImage();
                           }
                         },
                         style: OutlinedButton.styleFrom(
@@ -65,10 +66,20 @@ class _PersonalInformationState extends State<PersonalInformation> {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
-                            Icons.image_search,
-                            size: 30,
-                            color: gray,
+                          child: ClipOval(
+                            child: Obx(
+                              () => _profileController.profileImage.value != ''
+                                  ? Image.memory(
+                                      base64.decode(_profileController
+                                          .profileImage.value),
+                                      fit: BoxFit.contain,
+                                    )
+                                  : const Icon(
+                                      Icons.image_search,
+                                      size: 30,
+                                      color: gray,
+                                    ),
+                            ),
                           ),
                         ),
                       ),
@@ -125,22 +136,23 @@ class _PersonalInformationState extends State<PersonalInformation> {
             ),
           ),
           Center(
-            child: RoundedCustomButton(
-              onPressed: () {
-                if (!isNotEdit) {
-                  _profileController.updateContacts(
-                    _email.text,
-                    _contactNumber.text,
-                  );
-                }
-                setState(() {
-                  isNotEdit = false;
-                });
-              },
-              label: isNotEdit ? 'Update' : 'Submit',
-              radius: 5,
-              size: Size(Get.width * .35, 30),
-              bgColor: bgPrimaryBlue,
+            child: Obx(
+              () => RoundedCustomButton(
+                isLoading: _profileController.isLoading.value,
+                onPressed: () {
+                  if (!isNotEdit) {
+                    _profileController.updatePersonalInformation(
+                        _contactNumber.text, _email.text);
+                  }
+                  setState(() {
+                    isNotEdit = false;
+                  });
+                },
+                label: isNotEdit ? 'Update' : 'Submit',
+                radius: 5,
+                size: Size(Get.width * .35, 30),
+                bgColor: bgPrimaryBlue,
+              ),
             ),
           ),
         ],
