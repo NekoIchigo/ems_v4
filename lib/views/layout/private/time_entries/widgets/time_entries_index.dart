@@ -159,7 +159,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                                 "??/??/??/ | ??:??",
                                             style: const TextStyle(
                                               color: primaryBlue,
-                                              fontSize: 14,
+                                              fontSize: 13,
                                             ),
                                           ),
                                           const SizedBox(width: 5),
@@ -171,8 +171,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               style: const TextStyle(
-                                                color: darkGray,
-                                                fontSize: 14,
+                                                color: gray,
+                                                fontSize: 13,
                                               ),
                                             ),
                                           ),
@@ -195,7 +195,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                                   "??/??/??/ | ??:??",
                                               style: const TextStyle(
                                                 color: primaryBlue,
-                                                fontSize: 14,
+                                                fontSize: 13,
                                               ),
                                             ),
                                             const SizedBox(width: 5),
@@ -207,8 +207,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
-                                                  color: darkGray,
-                                                  fontSize: 14,
+                                                  color: gray,
+                                                  fontSize: 13,
                                                 ),
                                               ),
                                             ),

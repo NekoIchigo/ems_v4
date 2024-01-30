@@ -1,5 +1,6 @@
 import 'package:ems_v4/views/layout/private/notification/notification_container.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
+import 'package:ems_v4/views/widgets/coming_soon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,8 +20,8 @@ class _NotificationPageState extends State<NotificationPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: Get.height * .78,
-            child: const NotificationContainer(),
+            height: Get.height * .78, child: const ComingSoon(),
+            // const NotificationContainer(),
           ),
         ],
       ),

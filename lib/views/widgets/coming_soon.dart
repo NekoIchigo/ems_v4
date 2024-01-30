@@ -19,7 +19,7 @@ class ComingSoon extends StatelessWidget {
           top: 100,
           child: Image.asset(
             'assets/images/coming_soon.jpg',
-            width: Get.width * .80,
+            width: Get.width * .70,
           ),
         ),
       ],

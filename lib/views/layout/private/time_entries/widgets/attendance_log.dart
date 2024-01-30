@@ -51,10 +51,10 @@ class _AttendanceLogState extends State<AttendanceLog> {
               top: 13,
               child: Container(
                 width: Get.width * .9,
-                height: Get.height * .35,
+                height: Get.height * .28,
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: gray),
+                    border: Border.all(width: 1, color: lightGray),
                     borderRadius: BorderRadius.circular(20)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,19 +64,28 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       selectedRecord.formattedClockIn ?? "??/??/??/ | ??:??",
                       style: const TextStyle(
                         color: primaryBlue,
-                        fontSize: 16,
+                        fontSize: 13,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Reports at:'),
+                        const Text(
+                          'Reports at:',
+                          style: TextStyle(
+                            color: gray,
+                            fontSize: 13,
+                          ),
+                        ),
                         const SizedBox(width: 50),
                         Flexible(
                           child: Text(
                             _authService.company.value.name,
-                            style: const TextStyle(color: primaryBlue),
+                            style: const TextStyle(
+                              color: primaryBlue,
+                              fontSize: 13,
+                            ),
                           ),
                         )
                       ],
@@ -84,7 +93,13 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(selectedRecord.clockedInLocationType ?? ""),
+                        Text(
+                          selectedRecord.clockedInLocationType ?? "",
+                          style: const TextStyle(
+                            color: gray,
+                            fontSize: 13,
+                          ),
+                        ),
                         const SizedBox(width: 30),
                         InkWell(
                           onTap: () {
@@ -98,6 +113,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                             style: TextStyle(
                               color: primaryBlue,
                               decoration: TextDecoration.underline,
+                              fontSize: 13,
                             ),
                           ),
                         )
@@ -106,12 +122,21 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('GPS Location:'),
+                        const Text(
+                          'GPS Location:',
+                          style: TextStyle(
+                            color: gray,
+                            fontSize: 13,
+                          ),
+                        ),
                         const SizedBox(width: 30),
                         Expanded(
                           child: Text(
                             selectedRecord.clockedInLocation ?? "",
-                            style: const TextStyle(color: primaryBlue),
+                            style: const TextStyle(
+                              color: primaryBlue,
+                              fontSize: 13,
+                            ),
                           ),
                         )
                       ],
@@ -133,6 +158,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                               style: TextStyle(
                                 color: primaryBlue,
                                 decoration: TextDecoration.underline,
+                                fontSize: 13,
                               ),
                             ),
                           )
@@ -144,15 +170,15 @@ class _AttendanceLogState extends State<AttendanceLog> {
               ),
             ),
             Positioned(
-              top: Get.height * .40,
+              top: Get.height * .35,
               child: Visibility(
                 visible: selectedRecord.clockOutAt != null,
                 child: Container(
                   width: Get.width * .9,
-                  height: Get.height * .35,
+                  height: Get.height * .28,
                   padding: const EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: gray),
+                      border: Border.all(width: 1, color: lightGray),
                       borderRadius: BorderRadius.circular(20)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,19 +188,28 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         selectedRecord.formattedClockOut ?? "??/??/??/ | ??:??",
                         style: const TextStyle(
                           color: primaryBlue,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Reports at:'),
+                          const Text(
+                            'Reports at:',
+                            style: TextStyle(
+                              color: gray,
+                              fontSize: 13,
+                            ),
+                          ),
                           const SizedBox(width: 50),
                           Flexible(
                             child: Text(
                               _authService.company.value.name,
-                              style: const TextStyle(color: primaryBlue),
+                              style: const TextStyle(
+                                color: primaryBlue,
+                                fontSize: 13,
+                              ),
                             ),
                           )
                         ],
@@ -182,7 +217,13 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(selectedRecord.clockedOutLocationType ?? ""),
+                          Text(
+                            selectedRecord.clockedOutLocationType ?? "",
+                            style: const TextStyle(
+                              color: gray,
+                              fontSize: 13,
+                            ),
+                          ),
                           const SizedBox(width: 30),
                           InkWell(
                             onTap: () {
@@ -196,6 +237,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                               style: TextStyle(
                                 color: primaryBlue,
                                 decoration: TextDecoration.underline,
+                                fontSize: 13,
                               ),
                             ),
                           )
@@ -204,12 +246,21 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('GPS Location:'),
+                          const Text(
+                            'GPS Location:',
+                            style: TextStyle(
+                              color: gray,
+                              fontSize: 13,
+                            ),
+                          ),
                           const SizedBox(width: 30),
                           Expanded(
                             child: Text(
                               selectedRecord.clockedOutLocation ?? "",
-                              style: const TextStyle(color: primaryBlue),
+                              style: const TextStyle(
+                                color: primaryBlue,
+                                fontSize: 13,
+                              ),
                             ),
                           )
                         ],
@@ -219,7 +270,13 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Health Cheack:'),
+                            const Text(
+                              'Health Cheack:',
+                              style: TextStyle(
+                                color: gray,
+                                fontSize: 13,
+                              ),
+                            ),
                             const SizedBox(width: 23),
                             InkWell(
                               onTap: () {
@@ -231,6 +288,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                                 style: TextStyle(
                                   color: primaryBlue,
                                   decoration: TextDecoration.underline,
+                                  fontSize: 13,
                                 ),
                               ),
                             )
@@ -262,7 +320,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
               ),
             ),
             Positioned(
-              top: Get.height * .385,
+              top: Get.height * .333,
               left: 40,
               child: Visibility(
                 visible: selectedRecord.clockOutAt != null,
