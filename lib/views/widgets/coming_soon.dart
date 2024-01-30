@@ -11,9 +11,9 @@ class ComingSoon extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Positioned(
-          bottom: 50,
+          bottom: 80,
           child: Lottie.asset("assets/lottie/coming_soon.json",
-              width: Get.width * .7),
+              width: Get.width * .55),
         ),
         Positioned(
           top: 100,

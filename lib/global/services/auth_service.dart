@@ -82,7 +82,7 @@ class AuthService extends GetxService {
       final response = await apiCall
           .postRequest({'email': email, 'password': password}, '/login');
       final result = jsonDecode(response.body);
-      if (result['success']) {
+      if (result.containsKey('success') && result['success']) {
         userEmail = email;
         autheticated.value = result['success'];
 
@@ -96,7 +96,7 @@ class AuthService extends GetxService {
 
         _localStorage.setString('token', result['token']);
         _localStorage.setString('user', jsonEncode(result['data']));
-        if (result['is_first_login']) {
+        if (result.containsKey('is_first_login') && result['is_first_login']) {
           Get.offNamed('/create_password');
         } else {
           Get.offNamed('/');

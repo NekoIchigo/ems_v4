@@ -1,9 +1,12 @@
+import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/models/attendance_record.dart';
+import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AttendanceLog extends StatefulWidget {
   const AttendanceLog({super.key});
@@ -15,7 +18,20 @@ class AttendanceLog extends StatefulWidget {
 class _AttendanceLogState extends State<AttendanceLog> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
+  final HomeController _homeController = Get.find<HomeController>();
   final AuthService _authService = Get.find<AuthService>();
+  bool isClockIn = false;
+
+  Future<void> _launchInBrowser() async {
+    // const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
+    const String baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
+    String latLong = !isClockIn
+        ? "?latitude=${_homeController.attendance.value.clockedOutLatitude}&longitude=${_homeController.attendance.value.clockedOutLongitude}"
+        : "?latitude=${_homeController.attendance.value.clockedInLatitude}&longitude=${_homeController.attendance.value.clockedInLongitude}";
+    if (!await launchUrl(Uri.parse("$baseUrl$latLong"))) {
+      throw Exception('Could not launch $baseUrl$latLong');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +86,19 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       children: [
                         Text(selectedRecord.clockedInLocationType ?? ""),
                         const SizedBox(width: 30),
-                        const Text(
-                          "View Map",
-                          style: TextStyle(
-                            color: primaryBlue,
-                            decoration: TextDecoration.underline,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isClockIn = true;
+                            });
+                            _launchInBrowser();
+                          },
+                          child: const Text(
+                            "View Map",
+                            style: TextStyle(
+                              color: primaryBlue,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         )
                       ],
@@ -92,19 +116,28 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         )
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Health Cheack:'),
-                        const SizedBox(width: 23),
-                        Text(
-                          selectedRecord.healthCheck ?? 'View Symptoms',
-                          style: const TextStyle(
-                            color: primaryBlue,
-                            decoration: TextDecoration.underline,
-                          ),
-                        )
-                      ],
+                    Visibility(
+                      visible: selectedRecord.healthCheck != null,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Health Cheack:'),
+                          const SizedBox(width: 23),
+                          InkWell(
+                            onTap: () {
+                              Get.to(
+                                  () => const TimeEntriesHealthDeclaration());
+                            },
+                            child: const Text(
+                              'View Symptoms',
+                              style: TextStyle(
+                                color: primaryBlue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -151,11 +184,19 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         children: [
                           Text(selectedRecord.clockedOutLocationType ?? ""),
                           const SizedBox(width: 30),
-                          const Text(
-                            "View Map",
-                            style: TextStyle(
-                              color: primaryBlue,
-                              decoration: TextDecoration.underline,
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                isClockIn = false;
+                              });
+                              _launchInBrowser();
+                            },
+                            child: const Text(
+                              "View Map",
+                              style: TextStyle(
+                                color: primaryBlue,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           )
                         ],
@@ -173,19 +214,28 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           )
                         ],
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Health Cheack:'),
-                          const SizedBox(width: 23),
-                          Text(
-                            selectedRecord.healthCheck ?? 'View Symptoms',
-                            style: const TextStyle(
-                              color: primaryBlue,
-                              decoration: TextDecoration.underline,
-                            ),
-                          )
-                        ],
+                      Visibility(
+                        visible: selectedRecord.healthCheck != null,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Health Cheack:'),
+                            const SizedBox(width: 23),
+                            InkWell(
+                              onTap: () {
+                                Get.to(
+                                    () => const TimeEntriesHealthDeclaration());
+                              },
+                              child: const Text(
+                                'View Symptoms',
+                                style: TextStyle(
+                                  color: primaryBlue,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
