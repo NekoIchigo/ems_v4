@@ -82,6 +82,7 @@ class AuthService extends GetxService {
       final response = await apiCall
           .postRequest({'email': email, 'password': password}, '/login');
       final result = jsonDecode(response.body);
+
       if (result.containsKey('success') && result['success']) {
         userEmail = email;
         autheticated.value = result['success'];
@@ -108,7 +109,7 @@ class AuthService extends GetxService {
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
-            message: result['message'],
+            message: "Error login: ${result['message']}",
             type: "error",
             buttonNumber: 0,
           ),
