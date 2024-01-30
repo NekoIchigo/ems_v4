@@ -46,6 +46,15 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 50),
+              Text(
+                _authViewService.company.value.name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: primaryBlue,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Center(
@@ -53,23 +62,11 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     _homeController.isInsideVicinity.value
                         ? "assets/images/current_location-pana.png"
                         : "assets/images/current_location-rafiki.png",
-                    width: Get.width * .70,
+                    width: Get.width * .50,
                   ),
                 ),
               ),
-              Text(
-                _authViewService.company.value.name,
-                style: const TextStyle(
-                  color: primaryBlue,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                _homeController.currentLocation.value,
-                style: const TextStyle(color: darkGray),
-                textAlign: TextAlign.center,
-              ),
+              const SizedBox(height: 8),
               InkWell(
                 onTap: () {
                   _launchInBrowser();
@@ -79,38 +76,94 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   'View Map',
                   style: TextStyle(
                     decoration: TextDecoration.underline,
-                    color: darkGray,
+                    color: gray,
                     fontSize: 12,
                   ),
                 ),
               ),
+              const SizedBox(height: 8),
+              Text(
+                _homeController.currentLocation.value,
+                style: const TextStyle(color: gray, fontSize: 13),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
               Visibility(
                 visible: _homeController.isInsideVicinity.isFalse,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: DropdownMenu<String>(
-                    width: Get.width * .9,
-                    hintText: "Select your reason/purpose here",
-                    textStyle: const TextStyle(color: darkGray),
-                    onSelected: (String? value) {
-                      if (_homeController.isClockOut.isFalse) {
-                        _homeController
-                            .attendance.value.clockedInLocationSetting = value!;
-                      } else {
-                        _homeController
-                            .attendance.value.clockedOutLocationType = value!;
-                      }
-                    },
-                    dropdownMenuEntries:
-                        _list.map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                        value: value,
-                        label: value,
-                      );
-                    }).toList(),
+                child:
+                    // DropdownButtonHideUnderline(
+                    //   child: ButtonTheme(
+                    //       alignedDropdown: true,
+                    //       shape: RoundedRectangleBorder(
+                    //         side: BorderSide(color: lightGray, width: 1),
+                    //       ),
+                    //       child: DropdownButton(
+                    //         hint: Text(
+                    //           "Select your reason/purpose here ",
+                    //           style: TextStyle(color: primaryBlue, fontSize: 12),
+                    //         ),
+                    //         items:
+                    //             _list.map<DropdownMenuItem<String>>((String value) {
+                    //           return DropdownMenuItem(
+                    //             value: value,
+                    //             child: Row(
+                    //               children: [
+                    //                 Text(value),
+                    //               ],
+                    //             ),
+                    //           );
+                    //         }).toList(),
+                    //         onChanged: (value) {
+                    //           if (_homeController.isClockOut.isFalse) {
+                    //             _homeController.attendance.value
+                    //                 .clockedInLocationSetting = value!;
+                    //           } else {
+                    //             _homeController.attendance.value
+                    //                 .clockedOutLocationType = value!;
+                    //           }
+                    //         },
+                    //       )
+                    DropdownMenu<String>(
+                  width: Get.width * .710,
+                  hintText: "Select your reason/purpose here",
+                  textStyle: const TextStyle(color: primaryBlue, fontSize: 12),
+                  inputDecorationTheme: const InputDecorationTheme(
+                    hintStyle: TextStyle(color: primaryBlue, fontSize: 12),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
                   ),
+                  onSelected: (String? value) {
+                    if (_homeController.isClockOut.isFalse) {
+                      _homeController
+                          .attendance.value.clockedInLocationSetting = value!;
+                    } else {
+                      _homeController.attendance.value.clockedOutLocationType =
+                          value!;
+                    }
+                  },
+                  menuStyle: const MenuStyle(
+                    surfaceTintColor: MaterialStatePropertyAll(Colors.white),
+                    backgroundColor: MaterialStatePropertyAll(Colors.white),
+                    // padding: MaterialStatePropertyAll()
+                  ),
+                  dropdownMenuEntries:
+                      _list.map<DropdownMenuEntry<String>>((String value) {
+                    return DropdownMenuEntry<String>(
+                      value: value,
+                      label: value,
+                      labelWidget: Text(
+                        value,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                      style: const ButtonStyle(
+                        foregroundColor: MaterialStatePropertyAll(primaryBlue),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
+              SizedBox(height: 20),
               Visibility(
                 visible: _homeController.isClockOut.isFalse,
                 child: Padding(
@@ -126,8 +179,9 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             Text(
                               'How are you feeling today?',
                               style: TextStyle(
-                                color: darkGray,
-                                fontWeight: FontWeight.w600,
+                                color: gray,
+                                fontSize: 13,
+                                // fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -140,7 +194,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             borderRadius: BorderRadius.circular(10),
                             fillColor: Colors.white,
                             borderColor: lightGray,
-                            borderWidth: 2,
                             selectedBorderColor: primaryBlue,
                             onPressed: (int index) {
                               setState(() {
@@ -164,10 +217,10 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 10),
                                       child: Text(
-                                        "I am perfectly fine",
+                                        "Healthy",
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: darkGray,
+                                          color: gray,
                                         ),
                                       ),
                                     ),
@@ -183,13 +236,13 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                                   '/home/health_declaration';
                             },
                             style: OutlinedButton.styleFrom(
-                              side:
-                                  const BorderSide(width: 2, color: lightGray),
+                              side: const BorderSide(color: lightGray),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                             ),
                             child: const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 2.5),
                               child: Column(
                                 children: [
                                   Image(
@@ -200,11 +253,11 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                                   Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: Text(
-                                      "I feel unwell today",
+                                      "Sick",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: darkGray,
+                                        color: gray,
                                       ),
                                     ),
                                   ),
@@ -221,7 +274,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               const SizedBox(height: 20),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 5.0),
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 15.0),
                 child: Text.rich(
                   TextSpan(
                     children: [
@@ -238,7 +291,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     ],
                   ),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: darkGray, fontSize: 12),
+                  style: const TextStyle(color: gray, fontSize: 12),
                 ),
               ),
               Row(

@@ -46,7 +46,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
           children: [
             const SizedBox(height: 20),
             const Text(
-              "Accounts and Proflie Info",
+              "Accounts and Profile Info",
               style: TextStyle(
                 color: primaryBlue,
                 fontWeight: FontWeight.bold,
@@ -136,7 +136,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
             const SizedBox(height: 5),
             ProfileListButton(
-              label: 'Provacy Policy',
+              label: 'Privacy Policy',
               onPressed: () {
                 _launchInBrowser(
                     'https://happyhousekeepers.com.ph/privacy-policy');

@@ -18,7 +18,7 @@ class _EMSContainerState extends State<EMSContainer> {
         height: Get.height,
         width: Get.width,
         child: Stack(
-          alignment: Alignment.topCenter,
+          alignment: Alignment.topLeft,
           children: [
             Positioned(
               top: 0,

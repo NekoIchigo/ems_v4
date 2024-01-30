@@ -108,7 +108,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Input(
                     isPassword: false,
-                    disabled: isNotEdit,
+                    disabled: true,
                     textController: _contactNumber,
                     labelColor: primaryBlue,
                     icon: Icons.phone_android_rounded,
@@ -125,7 +125,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 const SizedBox(height: 5),
                 Input(
                   isPassword: false,
-                  disabled: isNotEdit,
+                  disabled: true,
                   textController: _email,
                   labelColor: primaryBlue,
                   icon: Icons.email_rounded,
@@ -147,7 +147,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     isNotEdit = false;
                   });
                 },
-                label: isNotEdit ? 'Update' : 'Submit',
+                label: isNotEdit ? 'Edit' : 'Submit',
                 radius: 5,
                 size: Size(Get.width * .35, 30),
                 bgColor: bgPrimaryBlue,

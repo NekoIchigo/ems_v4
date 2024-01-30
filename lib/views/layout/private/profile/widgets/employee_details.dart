@@ -50,7 +50,10 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                     "Company",
                     style: TextStyle(color: primaryBlue),
                   ),
-                  Text("Company Name"),
+                  Text(
+                    "Company Name",
+                    style: TextStyle(color: gray),
+                  ),
                   SizedBox(height: 30),
                   Text(
                     "Department",

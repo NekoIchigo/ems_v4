@@ -10,6 +10,7 @@ class Input extends StatefulWidget {
   final String? errorText;
   final IconData? icon;
   final bool? disabled;
+  final bool? hasFocus;
 
   const Input({
     super.key,
@@ -21,6 +22,7 @@ class Input extends StatefulWidget {
     this.errorText,
     this.icon,
     this.disabled,
+    this.hasFocus,
   });
 
   @override
@@ -55,6 +57,9 @@ class _InputState extends State<Input> {
           style: const TextStyle(color: gray, fontSize: 14),
           decoration: InputDecoration(
             filled: true,
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: lightGray),
+            ),
             fillColor: widget.disabled ?? false
                 ? lightGray.withOpacity(0.5)
                 : Colors.white,

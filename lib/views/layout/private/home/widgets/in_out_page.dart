@@ -189,7 +189,7 @@ class _InOutPageState extends State<InOutPage> {
                   DateFormat("hh:mm a").format(_settings.currentTime.value),
                   style: const TextStyle(
                     color: gray,
-                    fontSize: 28,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -198,7 +198,6 @@ class _InOutPageState extends State<InOutPage> {
                   date,
                   style: const TextStyle(
                     color: gray,
-                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
