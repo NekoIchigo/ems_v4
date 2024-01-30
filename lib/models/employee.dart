@@ -36,20 +36,21 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-        id: json['id'] as int,
-        companyId: json['company_id'] as int,
-        userId: json['user_id'] as int,
-        accountStatusId: json['account_status_id'] as int,
-        firstName: json['first_name'] as String,
-        middleName: json['middle_name'] as String?,
-        lastName: json['last_name'] as String,
-        dailyTimeRecord: json['daily_time_record'] as String,
-        birthday: json['birthday'] as String,
-        gender: json['gender'] as String,
-        civilStatus: json['civil_status'] as String,
-        profileBase64: json['image_path'] as String,
-        employeeDetails: EmployeeDetails.fromJson(json['employee_details']),
-        employeeContact: EmployeeContact.fromJson(json['employee_contact']));
+      id: json['id'] as int,
+      companyId: json['company_id'] as int,
+      userId: json['user_id'] as int,
+      accountStatusId: json['account_status_id'] as int,
+      firstName: json['first_name'] as String,
+      middleName: json['middle_name'] as String?,
+      lastName: json['last_name'] as String,
+      dailyTimeRecord: json['daily_time_record'] as String,
+      birthday: json['birthday'] as String,
+      gender: json['gender'] as String,
+      civilStatus: json['civil_status'] as String,
+      profileBase64: json['image_path'] as String,
+      employeeDetails: EmployeeDetails.fromJson(json['employee_details']),
+      employeeContact: EmployeeContact.fromJson(json['employee_contact']),
+    );
   }
 
   Map<String, dynamic> toMap() {

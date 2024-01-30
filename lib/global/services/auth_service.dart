@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ems_v4/controller/create_password_controller.dart';
 import 'package:ems_v4/controller/home_controller.dart';
@@ -68,7 +69,6 @@ class AuthService extends GetxService {
   }
 
   Future<void> setLocalAuth() async {
-    auth = LocalAuthentication();
     auth.isDeviceSupported().then(
         (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
     List<BiometricType> availableBiomentrics =
@@ -82,7 +82,7 @@ class AuthService extends GetxService {
       final response = await apiCall
           .postRequest({'email': email, 'password': password}, '/login');
       final result = jsonDecode(response.body);
-
+      log(result.toString());
       if (result.containsKey('success') && result['success']) {
         userEmail = email;
         autheticated.value = result['success'];
@@ -153,19 +153,19 @@ class AuthService extends GetxService {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
         // _localStorage.remove('token');
-        Get.delete<HomeController>();
-        Get.delete<TimeEntriesController>();
-        Get.delete<LocationController>();
-        Get.delete<MainNavigationController>();
-        Get.delete<TransactionController>();
-        Get.delete<CreatePasswordController>();
+        // Get.delete<HomeController>();
+        // Get.delete<TimeEntriesController>();
+        // Get.delete<LocationController>();
+        // Get.delete<MainNavigationController>();
+        // Get.delete<TransactionController>();
+        // Get.delete<CreatePasswordController>();
 
-        Get.put(HomeController());
-        Get.put(TimeEntriesController());
-        Get.put(LocationController());
-        Get.put(MainNavigationController());
-        Get.put(TransactionController());
-        Get.put(CreatePasswordController());
+        // Get.put(HomeController());
+        // Get.put(TimeEntriesController());
+        // Get.put(LocationController());
+        // Get.put(MainNavigationController());
+        // Get.put(TransactionController());
+        // Get.put(CreatePasswordController());
 
         Get.toNamed('/login');
       });

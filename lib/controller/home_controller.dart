@@ -49,7 +49,7 @@ class HomeController extends GetxController {
         isNewShift.value = data['is_new_shift'];
         isClockInOutComplete.value = data['is_shift_complete'];
         isClockOut.value = data['is_clockout'];
-
+        print(result);
         if (data['current_attendance_record'] != null) {
           attendance =
               AttendanceRecord.fromJson(data['current_attendance_record']).obs;
@@ -147,7 +147,6 @@ class HomeController extends GetxController {
         isInsideVicinity.value = data['is_inside_vicinity'];
         currentLocation.value =
             '${data['distance_in_km']} km away from designated office!';
-
         attendance.value.clockedOutLocation = currentLocation.value;
         attendance.value.clockedOutLatitude = position.latitude.toString();
         attendance.value.clockedOutLongitude = position.longitude.toString();

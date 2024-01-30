@@ -1,3 +1,6 @@
+import 'package:ems_v4/models/department.dart';
+import 'package:ems_v4/models/position.dart';
+
 class EmployeeDetails {
   final int id;
   final int employeeId;
@@ -19,6 +22,8 @@ class EmployeeDetails {
   final String phicNumber;
   final String hdmfNumber;
   final String tinNumber;
+  final Position position;
+  final Department department;
 
   EmployeeDetails({
     required this.id,
@@ -34,6 +39,8 @@ class EmployeeDetails {
     required this.groupId,
     this.costCenterId,
     this.clientName,
+    required this.position,
+    required this.department,
     required this.reportsAt,
     required this.reportsTo,
     required this.supervisor,
@@ -65,6 +72,8 @@ class EmployeeDetails {
       phicNumber: json['phic_number'] as String,
       hdmfNumber: json['hdmf_number'] as String,
       tinNumber: json['tin_number'] as String,
+      position: Position.fromJson(json['position']),
+      department: Department.fromJson(json['department']),
     );
   }
 
@@ -90,6 +99,8 @@ class EmployeeDetails {
       'phic_number': phicNumber,
       'hdmf_number': hdmfNumber,
       'tin_number': tinNumber,
+      'position': position.toMap(),
+      'department': department.toMap(),
     };
   }
 }

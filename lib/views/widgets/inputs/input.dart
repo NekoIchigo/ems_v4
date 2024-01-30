@@ -11,6 +11,7 @@ class Input extends StatefulWidget {
   final IconData? icon;
   final bool? disabled;
   final bool? hasFocus;
+  final Function(String)? onChanged;
 
   const Input({
     super.key,
@@ -23,6 +24,7 @@ class Input extends StatefulWidget {
     this.icon,
     this.disabled,
     this.hasFocus,
+    this.onChanged,
   });
 
   @override
@@ -54,6 +56,7 @@ class _InputState extends State<Input> {
           obscureText: widget.isPassword ? _isObscure : false,
           controller: widget.textController,
           readOnly: widget.disabled ?? false,
+          onChanged: widget.onChanged,
           style: const TextStyle(color: gray, fontSize: 14),
           decoration: InputDecoration(
             filled: true,

@@ -3,6 +3,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
+import 'package:ems_v4/views/widgets/validation/password_valdiation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -59,6 +60,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   isPassword: true,
                   textController: _newPassword,
                   labelColor: primaryBlue,
+                  onChanged: (value) {
+                    _createPasswordController.password.value = value;
+                  },
                 ),
                 const SizedBox(height: 30),
                 const Text(
@@ -72,11 +76,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                   isPassword: true,
                   textController: _confirmPassword,
                   labelColor: primaryBlue,
+                  onChanged: (value) {
+                    _createPasswordController.confirmPassword.value = value;
+                  },
                 ),
                 const SizedBox(height: 30),
               ],
             ),
           ),
+          const PasswordValidation(),
+          const SizedBox(height: 30),
           Center(
             child: RoundedCustomButton(
               onPressed: () {

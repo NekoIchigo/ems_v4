@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,8 @@ class EmployeeDetailsPage extends StatefulWidget {
 
 class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
     with SingleTickerProviderStateMixin {
+  final AuthService _authService = Get.find<AuthService>();
+
   @override
   Widget build(BuildContext context) {
     return EMSContainer(
@@ -29,13 +32,13 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                 icon: const Icon(Icons.close),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 50),
-                  Center(
+                  const SizedBox(height: 50),
+                  const Center(
                     child: Text(
                       "Employment Details",
                       style: TextStyle(
@@ -45,33 +48,42 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                       ),
                     ),
                   ),
-                  SizedBox(height: 40),
-                  Text(
+                  const SizedBox(height: 40),
+                  const Text(
                     "Company",
                     style: TextStyle(color: primaryBlue),
                   ),
                   Text(
-                    "Company Name",
-                    style: TextStyle(color: gray),
+                    _authService.company.value.name,
+                    style: const TextStyle(color: gray),
                   ),
-                  SizedBox(height: 30),
-                  Text(
+                  const SizedBox(height: 30),
+                  const Text(
                     "Department",
                     style: TextStyle(color: primaryBlue),
                   ),
-                  Text("Department Name"),
-                  SizedBox(height: 30),
                   Text(
+                    _authService.employee.value.employeeDetails.department.name,
+                    style: const TextStyle(color: gray),
+                  ),
+                  const SizedBox(height: 30),
+                  const Text(
                     "Position",
                     style: TextStyle(color: primaryBlue),
                   ),
-                  Text("Position Title"),
-                  SizedBox(height: 30),
                   Text(
+                    _authService.employee.value.employeeDetails.position.name,
+                    style: const TextStyle(color: gray),
+                  ),
+                  const SizedBox(height: 30),
+                  const Text(
                     "Date Hired",
                     style: TextStyle(color: primaryBlue),
                   ),
-                  Text("MM/DD/YY"),
+                  Text(
+                    _authService.employee.value.employeeDetails.dateHired,
+                    style: const TextStyle(color: gray),
+                  ),
                 ],
               ),
             ),

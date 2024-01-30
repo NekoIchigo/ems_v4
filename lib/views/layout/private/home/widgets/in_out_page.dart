@@ -165,7 +165,7 @@ class _InOutPageState extends State<InOutPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 24,
+                            fontSize: 20,
                             color: Colors.white,
                             shadows: <Shadow>[
                               Shadow(

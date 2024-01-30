@@ -1,4 +1,3 @@
-
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -35,8 +34,8 @@ class _HomeResultPageState extends State<HomeResultPage> {
             // "Successful ${widget.isClockIn ? "clock-in" : "clock-out"}",
             "Successful ${_homeController.isClockOut.isFalse ? 'clock-out' : 'clock-in'}",
             style: const TextStyle(
-              fontSize: 14,
-              color: darkGray,
+              fontSize: 13,
+              color: gray,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -44,7 +43,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
         Text(
           DateFormat('MMM d, yyyy, hh:mm a').format(DateTime.now()),
           style: const TextStyle(
-              fontSize: 14, fontWeight: FontWeight.bold, color: darkGray),
+              fontSize: 13, fontWeight: FontWeight.bold, color: gray),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -55,7 +54,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
             },
             label: 'Close',
             size: Size(Get.width * .8, 40),
-            bgColor: primaryBlue,
+            bgColor: bgPrimaryBlue,
             radius: 10,
           ),
         ),
