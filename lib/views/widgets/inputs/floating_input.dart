@@ -10,6 +10,7 @@ class FloatingInput extends StatefulWidget {
   final double? borderRadius;
   final Color? iconColor;
   final Function(String) onChanged;
+  final Function()? onIconPressed;
 
   const FloatingInput({
     super.key,
@@ -21,6 +22,7 @@ class FloatingInput extends StatefulWidget {
     required this.onChanged,
     this.borderRadius,
     this.iconColor,
+    this.onIconPressed,
   });
 
   @override
@@ -71,7 +73,12 @@ class _FloatingInputState extends State<FloatingInput> {
           labelText: widget.label,
           labelStyle: const TextStyle(color: gray),
           suffixIcon: !widget.isPassword
-              ? Icon(widget.icon, color: widget.iconColor ?? gray)
+              ? InkWell(
+                  onTap: widget.onIconPressed,
+                  child: Icon(
+                    widget.icon,
+                    color: widget.iconColor ?? gray,
+                  ))
               : InkWell(
                   onTap: _togglePasswordView,
                   child: Icon(

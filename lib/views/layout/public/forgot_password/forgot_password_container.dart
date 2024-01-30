@@ -80,6 +80,7 @@ class _ForgotPasswordContainerState extends State<ForgotPasswordContainer> {
             SizedBox(
               height: Get.height * .55,
               child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _passwordController.pageController.value,
                 children: List.generate(
                   _passwordController.forgotPasswordPages.length,

@@ -14,11 +14,12 @@ class _EMSContainerState extends State<EMSContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SizedBox(
         height: Get.height,
         width: Get.width,
         child: Stack(
-          alignment: Alignment.topLeft,
+          alignment: Alignment.topCenter,
           children: [
             Positioned(
               top: 0,

@@ -73,8 +73,13 @@ class _LoginState extends State<Login> {
                   label: '',
                   isPassword: false,
                   textController: _emailController,
-                  icon: Icons.mail,
+                  icon: _authService.isBioEnabled.isTrue
+                      ? Icons.fingerprint
+                      : Icons.mail,
                   iconColor: lightGray,
+                  onIconPressed: () {
+                    _authService.localAutheticate();
+                  },
                   onChanged: (p0) {},
                 ),
                 const Text(

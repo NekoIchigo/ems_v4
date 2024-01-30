@@ -82,6 +82,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             SizedBox(
               height: Get.height * .55,
               child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _passwordController.pageController.value,
                 children: List.generate(_passwordController.pages.length,
                     (index) => _passwordController.pages[index]),

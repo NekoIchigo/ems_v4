@@ -1,12 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:ems_v4/controller/create_password_controller.dart';
-import 'package:ems_v4/controller/home_controller.dart';
-import 'package:ems_v4/controller/location_controller.dart';
-import 'package:ems_v4/controller/main_navigation_controller.dart';
-import 'package:ems_v4/controller/time_entries_controller.dart';
-import 'package:ems_v4/controller/transaction_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:ems_v4/global/api.dart';
@@ -25,6 +19,7 @@ class AuthService extends GetxService {
 
   RxBool isLoading = false.obs;
   RxBool autheticated = false.obs;
+  RxBool isBioEnabled = false.obs;
   String? token;
   late Rx<Company> company;
   late Rx<Employee> employee;
@@ -33,15 +28,6 @@ class AuthService extends GetxService {
     _localStorage = await SharedPreferences.getInstance();
     auth = LocalAuthentication();
 
-    if (_localStorage.getBool('auth_biometrics') ?? false) {
-      auth.isDeviceSupported().then(
-          (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
-      List<BiometricType> availableBiomentrics =
-          await auth.getAvailableBiometrics();
-      print(availableBiomentrics);
-      setLocalAuth();
-    }
-
     token = _localStorage.getString('token');
     if (token != null) {
       var response = await apiCall.getRequest('/check-token');
@@ -49,6 +35,15 @@ class AuthService extends GetxService {
       if (!result.containsKey('token')) {
         autheticated.value = false;
       } else {
+        if (_localStorage.getBool('auth_biometrics') ?? false) {
+          isBioEnabled.value = true;
+          auth.isDeviceSupported().then((bool isDeviceSupported) =>
+              isSupported.value = isDeviceSupported);
+          List<BiometricType> availableBiomentrics =
+              await auth.getAvailableBiometrics();
+          print(availableBiomentrics);
+          setLocalAuth();
+        }
         setAuthStatus();
       }
     }
