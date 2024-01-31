@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -50,6 +51,7 @@ class HomeController extends GetxController {
         isClockInOutComplete.value = data['is_shift_complete'];
         isClockOut.value = data['is_clockout'];
         // print(result);
+        log(result.toString());
         if (data['current_attendance_record'] != null) {
           attendance =
               AttendanceRecord.fromJson(data['current_attendance_record']).obs;
@@ -248,9 +250,6 @@ class HomeController extends GetxController {
       }, '/clock-out');
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
-        // isClockOut.value = false;
-        // isClockInOutComplete.value = true;
-
         checkNewShift(employeeId: authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(

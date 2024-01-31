@@ -81,7 +81,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
             const SizedBox(height: 5),
             ProfileListButton(
-              label: 'Enable Fingerprint Authetication',
+              label: 'Enable Fingerprint Authentication',
               onPressed: () {
                 setState(() {
                   switchVal = !switchVal;

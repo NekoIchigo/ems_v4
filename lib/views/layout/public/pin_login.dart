@@ -1,30 +1,26 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
-
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
+import 'package:ems_v4/views/widgets/inputs/pin_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class PINLogin extends StatefulWidget {
+  const PINLogin({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<PINLogin> createState() => _PINLoginState();
 }
 
-class _LoginState extends State<Login> {
+class _PINLoginState extends State<PINLogin> {
   final AuthService _authService = Get.find<AuthService>();
   final ApiCall apiCall = ApiCall();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
           height: Get.height,
           width: Get.width,
@@ -52,59 +48,23 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                const Text(
-                  'Username',
-                  style: TextStyle(color: gray, fontSize: 12),
-                ),
-                const SizedBox(height: 10),
-                Obx(
-                  () => FloatingInput(
-                    label: '',
-                    isPassword: false,
-                    textController: _emailController,
-                    icon: _authService.isBioEnabled.isTrue
-                        ? Icons.fingerprint
-                        : Icons.mail,
-                    iconColor: lightGray,
-                    onIconPressed: () {
-                      _authService.localAutheticate();
-                    },
-                    onChanged: (p0) {},
+                const Center(
+                  child: Text(
+                    'Enter your 6-digit PIN',
+                    style: TextStyle(color: gray, fontSize: 12),
                   ),
                 ),
-                const Text(
-                  'Password',
-                  style: TextStyle(color: gray, fontSize: 12),
-                ),
-                const SizedBox(height: 10),
-                FloatingInput(
+                PinInput(
+                  pinController: _passwordController,
                   label: '',
-                  isPassword: true,
-                  textController: _passwordController,
-                  iconColor: lightGray,
-                  icon: Icons.visibility,
-                  onChanged: (p0) {},
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Get.toNamed('/forgot_password');
-                      },
-                      child: const Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: gray, fontSize: 12),
-                      ),
-                    ),
-                  ],
+                  validation: (p0) {},
                 ),
                 Obx(
                   () => RoundedCustomButton(
                     onPressed: () async {
                       if (_authService.isLoading.isFalse) {
                         _authService.login(
-                          _emailController.text,
+                          null,
                           _passwordController.text,
                         );
                       }
@@ -120,17 +80,18 @@ class _LoginState extends State<Login> {
                 ),
                 Center(
                   child: TextButton(
-                      onPressed: () {
-                        Get.toNamed('/pin_login');
-                      },
-                      child: const Text(
-                        'Use PIN',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: gray,
-                          fontSize: 12,
-                        ),
-                      )),
+                    onPressed: () {
+                      Get.toNamed('/login');
+                    },
+                    child: const Text(
+                      'Use password',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: gray,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

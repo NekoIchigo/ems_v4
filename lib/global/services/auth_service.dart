@@ -14,7 +14,7 @@ class AuthService extends GetxService {
   late final LocalAuthentication auth;
   final ApiCall apiCall = ApiCall();
   RxBool isSupported = false.obs;
-  String userEmail = '';
+  String? userEmail;
 
   RxBool isLoading = false.obs;
   RxBool autheticated = false.obs;
@@ -56,7 +56,7 @@ class AuthService extends GetxService {
 
   Future<void> setLocalAuth() async {
     bool? bio = _localStorage.getBool('auth_biometrics');
-    print(bio);
+
     isBioEnabled.value = bio ?? false;
     auth.isDeviceSupported().then(
         (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
@@ -65,45 +65,64 @@ class AuthService extends GetxService {
     print(availableBiomentrics);
   }
 
-  Future login(String email, String password) async {
+  Future<String?> isEmailSaved() async {
+    String? userData = _localStorage.getString('user');
+    if (userData != null) {
+      autheticated.value = true;
+      var data = jsonDecode(userData);
+      var employeeData = data['employee'];
+      var companyData = employeeData['company'];
+
+      employee = Employee.fromJson(employeeData).obs;
+      company = Company.fromJson(companyData).obs;
+      return employee.value.employeeContact.email;
+    }
+    return null;
+  }
+
+  Future login(String? email, String password) async {
     isLoading.value = true;
     try {
-      final response = await apiCall
-          .postRequest({'email': email, 'password': password}, '/login');
-      final result = jsonDecode(response.body);
+      email ??= await isEmailSaved();
+      if (email != null) {
+        final response = await apiCall
+            .postRequest({'email': email, 'password': password}, '/login');
+        final result = jsonDecode(response.body);
 
-      if (result.containsKey('success') && result['success']) {
-        userEmail = email;
-        autheticated.value = result['success'];
+        if (result.containsKey('success') && result['success']) {
+          autheticated.value = result['success'];
 
-        var userData = result['data'];
-        _localStorage.setString('user', jsonEncode(userData));
-        var employeeData = userData['employee'];
-        var companyData = employeeData['company'];
+          var userData = result['data'];
+          _localStorage.setString('user', jsonEncode(userData));
+          var employeeData = userData['employee'];
+          var companyData = employeeData['company'];
 
-        employee = Employee.fromJson(employeeData).obs;
-        company = Company.fromJson(companyData).obs;
+          employee = Employee.fromJson(employeeData).obs;
+          company = Company.fromJson(companyData).obs;
 
-        _localStorage.setString('token', result['token']);
-        _localStorage.setString('user', jsonEncode(result['data']));
-        if (result.containsKey('is_first_login') && result['is_first_login']) {
-          Get.offNamed('/create_password');
+          _localStorage.setString('token', result['token']);
+          _localStorage.setString('user', jsonEncode(result['data']));
+          if (result.containsKey('is_first_login') &&
+              result['is_first_login']) {
+            Get.offNamed('/create_password');
+          } else {
+            Get.offNamed('/');
+          }
         } else {
-          Get.offNamed('/');
+          Get.dialog(
+            GetDialog(
+              title: "Oopps",
+              hasMessage: true,
+              withCloseButton: true,
+              hasCustomWidget: false,
+              message: "Error login: ${result['message']}",
+              type: "error",
+              buttonNumber: 0,
+            ),
+          );
         }
-      } else {
-        Get.dialog(
-          GetDialog(
-            title: "Oopps",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Error login: ${result['message']}",
-            type: "error",
-            buttonNumber: 0,
-          ),
-        );
       }
+
       isLoading.value = false;
     } catch (error) {
       Get.dialog(GetDialog(

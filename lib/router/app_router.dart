@@ -15,12 +15,14 @@ import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_container.dart';
 import 'package:ems_v4/views/layout/public/login.dart';
+import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:get/get.dart';
 
 const String initalRouteName = '/login';
 
 final List<GetPage> routes = [
   GetPage(name: '/login', page: () => const Login()),
+  GetPage(name: '/pin_login', page: () => const PINLogin()),
   GetPage(
     name: '/forgot_password',
     page: () => const ForgotPasswordContainer(),
