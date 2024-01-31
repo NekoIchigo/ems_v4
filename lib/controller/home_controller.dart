@@ -49,7 +49,7 @@ class HomeController extends GetxController {
         isNewShift.value = data['is_new_shift'];
         isClockInOutComplete.value = data['is_shift_complete'];
         isClockOut.value = data['is_clockout'];
-        print(result);
+        // print(result);
         if (data['current_attendance_record'] != null) {
           attendance =
               AttendanceRecord.fromJson(data['current_attendance_record']).obs;

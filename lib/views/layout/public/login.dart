@@ -69,18 +69,20 @@ class _LoginState extends State<Login> {
                   style: TextStyle(color: gray, fontSize: 12),
                 ),
                 const SizedBox(height: 10),
-                FloatingInput(
-                  label: '',
-                  isPassword: false,
-                  textController: _emailController,
-                  icon: _authService.isBioEnabled.isTrue
-                      ? Icons.fingerprint
-                      : Icons.mail,
-                  iconColor: lightGray,
-                  onIconPressed: () {
-                    _authService.localAutheticate();
-                  },
-                  onChanged: (p0) {},
+                Obx(
+                  () => FloatingInput(
+                    label: '',
+                    isPassword: false,
+                    textController: _emailController,
+                    icon: _authService.isBioEnabled.isTrue
+                        ? Icons.fingerprint
+                        : Icons.mail,
+                    iconColor: lightGray,
+                    onIconPressed: () {
+                      _authService.localAutheticate();
+                    },
+                    onChanged: (p0) {},
+                  ),
                 ),
                 const Text(
                   'Password',

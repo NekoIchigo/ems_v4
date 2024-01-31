@@ -34,6 +34,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
 
   Future initLocalStorage() async {
     _localStorage = await SharedPreferences.getInstance();
+    bool? data = _localStorage.getBool('auth_biometrics');
+    print(data);
+    setState(() {
+      switchVal = data ?? false;
+    });
   }
 
   @override
@@ -78,53 +83,20 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ProfileListButton(
               label: 'Enable Fingerprint Authetication',
               onPressed: () {
-                _localStorage.setBool('auth_biometrics', switchVal);
-                Get.dialog(
-                  barrierDismissible: false,
-                  GetDialog(
-                    type: 'success',
-                    title: 'Fingerprint Authetication Updated',
-                    hasMessage: false,
-                    message: "You can now log in using your new password.",
-                    buttonNumber: 1,
-                    hasCustomWidget: false,
-                    withCloseButton: false,
-                    okPress: () {
-                      Get.back();
-                    },
-                    okText: "Close",
-                    okButtonBGColor: bgPrimaryBlue,
-                  ),
-                );
                 setState(() {
                   switchVal = !switchVal;
                 });
+                updateFingerprintState(switchVal);
               },
               leading: Switch(
                 value: switchVal,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 onChanged: (value) {
-                  _localStorage.setBool('auth_biometrics', value);
-                  Get.dialog(
-                    barrierDismissible: false,
-                    GetDialog(
-                      type: 'success',
-                      title: 'Fingerprint Authetication Updated',
-                      hasMessage: false,
-                      message: "You can now log in using your new password.",
-                      buttonNumber: 1,
-                      hasCustomWidget: false,
-                      withCloseButton: false,
-                      okPress: () {
-                        Get.back();
-                      },
-                      okText: "Close",
-                      okButtonBGColor: bgPrimaryBlue,
-                    ),
-                  );
+                  print(value);
                   setState(() {
                     switchVal = value;
                   });
+                  updateFingerprintState(switchVal);
                 },
               ),
             ),
@@ -163,6 +135,28 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  updateFingerprintState(bool value) {
+    print(value);
+    _localStorage.setBool('auth_biometrics', value);
+    Get.dialog(
+      barrierDismissible: false,
+      GetDialog(
+        type: 'success',
+        title: 'Fingerprint Authetication Updated',
+        hasMessage: false,
+        message: "You can now log in using your new password.",
+        buttonNumber: 1,
+        hasCustomWidget: false,
+        withCloseButton: false,
+        okPress: () {
+          Get.back();
+        },
+        okText: "Close",
+        okButtonBGColor: bgPrimaryBlue,
       ),
     );
   }

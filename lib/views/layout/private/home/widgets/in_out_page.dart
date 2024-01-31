@@ -100,7 +100,7 @@ class _InOutPageState extends State<InOutPage> {
                 style: TextStyle(color: gray, fontWeight: FontWeight.bold),
               ),
               Text(
-                '08:30 am to 05:30 pm',
+                '08:30 am to 06:30 pm',
                 style: TextStyle(color: gray),
               ),
             ],
