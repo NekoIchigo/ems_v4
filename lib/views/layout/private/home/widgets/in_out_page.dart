@@ -74,7 +74,7 @@ class _InOutPageState extends State<InOutPage> {
               fontSize: 18,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             '${_authViewService.employee.value.firstName}!',
             style: const TextStyle(
@@ -83,7 +83,7 @@ class _InOutPageState extends State<InOutPage> {
               fontSize: 18,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             _homeController.isClockInOutComplete.isTrue
                 ? 'See you tomorrow'
@@ -92,7 +92,7 @@ class _InOutPageState extends State<InOutPage> {
                     : 'Begin another day by clocking in.',
             style: const TextStyle(color: gray, fontSize: 13),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           const Row(
             children: [
               Text(
@@ -184,7 +184,7 @@ class _InOutPageState extends State<InOutPage> {
             bottom: 0,
             child: Column(
               children: [
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   DateFormat("hh:mm a").format(_settings.currentTime.value),
                   style: const TextStyle(
@@ -193,7 +193,7 @@ class _InOutPageState extends State<InOutPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   date,
                   style: const TextStyle(

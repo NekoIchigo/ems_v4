@@ -14,7 +14,6 @@ class _EMSContainerState extends State<EMSContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SizedBox(
         height: Get.height,
         width: Get.width,
@@ -36,7 +35,7 @@ class _EMSContainerState extends State<EMSContainer> {
               ),
             ),
             Positioned(
-              bottom: 0,
+              bottom: 0, //MediaQuery.of(context).viewInsets.bottom,
               right: 0,
               left: 0,
               child: Center(

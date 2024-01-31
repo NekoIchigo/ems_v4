@@ -63,8 +63,8 @@
         {
           "path": "assets/images/hdf/none.png", 
           "state" : false,
-          "descriptionEnglish": "None of the Above",
-          "descriptionTagalog": "Wala sa nabanggit"
+          "descriptionEnglish": "Others",
+          "descriptionTagalog": "Iba pa"
         }
     ]
 }

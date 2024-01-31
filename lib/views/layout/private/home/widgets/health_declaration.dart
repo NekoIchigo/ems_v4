@@ -5,6 +5,7 @@ import 'package:ems_v4/global/utils/json_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
+import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -23,8 +24,9 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
 
   List _symptoms = [];
   List checkedSymptoms = [];
-  TextEditingController temperatureController = TextEditingController();
-
+  final TextEditingController _temperatureController = TextEditingController();
+  final TextEditingController _otherSymptom = TextEditingController();
+  bool isOthersCheck = false;
   @override
   void initState() {
     super.initState();
@@ -89,7 +91,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                             ),
                             child: CheckboxListTile(
                               activeColor: primaryBlue,
-                              tileColor: darkGray,
+                              tileColor: lightGray,
                               contentPadding: const EdgeInsets.all(0),
                               controlAffinity: ListTileControlAffinity.leading,
                               title: Row(
@@ -143,6 +145,11 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                                     checkedSymptoms.add(
                                         _symptoms[index]["descriptionEnglish"]);
                                   }
+                                  if (_symptoms[index]["descriptionEnglish"] ==
+                                      "Others") {
+                                    isOthersCheck = !isOthersCheck;
+                                    print(isOthersCheck);
+                                  }
                                   _symptoms[index]["state"] = value;
                                 });
                               },
@@ -153,8 +160,17 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                     ),
                   )
                 : Container(),
+            Visibility(
+              visible: isOthersCheck,
+              child: Input(
+                isPassword: false,
+                textController: _otherSymptom,
+                hintText: 'Other symptoms',
+              ),
+            ),
+            const SizedBox(height: 10),
             TextFormField(
-              controller: temperatureController,
+              controller: _temperatureController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
@@ -162,20 +178,20 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                     RegExp(r'^\d{0,2}\.?\d{0,2}')),
               ],
               decoration: const InputDecoration(
-                labelText: 'Enter your body temperature in degree celsius',
-                labelStyle: TextStyle(color: gray),
+                labelText: 'Enter temperature',
+                labelStyle: TextStyle(color: lightGray),
                 hintText: "--.--",
                 prefixIcon: Icon(
                   Icons.thermostat_sharp,
-                  color: darkGray,
+                  color: gray,
                 ),
                 hintStyle: TextStyle(color: gray),
                 contentPadding: EdgeInsets.all(0),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: gray),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: lightGray),
                 ),
+                border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                  gapPadding: 0.0,
                   borderSide: BorderSide(color: primaryBlue),
                 ),
               ),
@@ -199,7 +215,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 RoundedCustomButton(
                   onPressed: () {
                     if (checkedSymptoms.isEmpty ||
-                        temperatureController.text == "") {
+                        _temperatureController.text == "") {
                       EMSDialog(
                         title: "Oopps",
                         hasMessage: true,
@@ -212,12 +228,12 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                       ).show(context);
                     } else {
                       debugPrint(checkedSymptoms.join(", "));
-                      debugPrint(temperatureController.text);
+                      debugPrint(_temperatureController.text);
                       _homeController
                           .clockIn(
                         employeeId: _authService.employee.value.id,
                         healthCheck: checkedSymptoms,
-                        temperature: temperatureController.text,
+                        temperature: _temperatureController.text,
                       )
                           .then((value) {
                         _homeController.pageName.value = '/home/result';

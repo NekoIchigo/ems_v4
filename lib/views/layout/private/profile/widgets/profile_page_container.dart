@@ -48,7 +48,10 @@ class _ProfilePageContainerState extends State<ProfilePageContainer> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  widget.child,
+                  SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: widget.child,
+                  ),
                 ],
               ),
             ),

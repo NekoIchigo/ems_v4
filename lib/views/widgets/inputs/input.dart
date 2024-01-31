@@ -8,6 +8,7 @@ class Input extends StatefulWidget {
   final Color? labelColor;
   final int? max;
   final String? errorText;
+  final String? hintText;
   final IconData? icon;
   final bool? disabled;
   final bool? hasFocus;
@@ -25,6 +26,7 @@ class Input extends StatefulWidget {
     this.disabled,
     this.hasFocus,
     this.onChanged,
+    this.hintText,
   });
 
   @override
@@ -74,7 +76,8 @@ class _InputState extends State<Input> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
-            labelStyle: const TextStyle(color: gray),
+            labelText: widget.hintText,
+            labelStyle: const TextStyle(color: lightGray),
             suffixIcon: widget.isPassword
                 ? InkWell(
                     onTap: _togglePasswordView,

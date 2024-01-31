@@ -34,6 +34,7 @@ class HomeController extends GetxController {
       isLoading = false.obs,
       isClockOut = false.obs,
       isClockInOutComplete = false.obs,
+      isUserSick = false.obs,
       isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
@@ -193,6 +194,14 @@ class HomeController extends GetxController {
   }) async {
     isLoading.value = true;
     String healthCheckStr = healthCheck.join(', ');
+    double userTemperature = double.parse(temperature);
+
+    if (healthCheck.isNotEmpty || userTemperature >= 37.8) {
+      isUserSick.value = true;
+    } else {
+      isUserSick.value = false;
+    }
+
     try {
       // print('called');
       var response = await apiCall.postRequest({
