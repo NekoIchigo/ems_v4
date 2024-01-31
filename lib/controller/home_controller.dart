@@ -55,6 +55,8 @@ class HomeController extends GetxController {
         if (data['current_attendance_record'] != null) {
           attendance =
               AttendanceRecord.fromJson(data['current_attendance_record']).obs;
+        } else {
+          attendance = AttendanceRecord().obs;
         }
       } else {
         Get.dialog(
