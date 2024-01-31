@@ -97,18 +97,14 @@ class CreatePasswordController extends GetxController {
         if (result.containsKey('success') && result['success']) {
           await Get.dialog(
             barrierDismissible: false,
-            GetDialog(
+            const GetDialog(
               type: 'success',
               title: 'One-Time Pin Sent',
               hasMessage: true,
               message: "An OTP has been sent to verify your email address",
-              buttonNumber: 1,
-              hasCustomWidget: true,
-              withCloseButton: false,
-              okPress: () {
-                Get.back();
-              },
-              okText: "Close",
+              buttonNumber: 0,
+              hasCustomWidget: false,
+              withCloseButton: true,
               okButtonBGColor: gray,
             ),
           );
