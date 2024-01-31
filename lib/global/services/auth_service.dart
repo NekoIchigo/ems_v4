@@ -80,13 +80,68 @@ class AuthService extends GetxService {
     return null;
   }
 
-  Future login(String? email, String password) async {
+  Future login(String email, String password) async {
     isLoading.value = true;
     try {
-      email ??= await isEmailSaved();
+      final response = await apiCall
+          .postRequest({'email': email, 'password': password}, '/login');
+      final result = jsonDecode(response.body);
+
+      if (result.containsKey('success') && result['success']) {
+        autheticated.value = result['success'];
+
+        var userData = result['data'];
+        _localStorage.setString('user', jsonEncode(userData));
+        var employeeData = userData['employee'];
+        var companyData = employeeData['company'];
+
+        employee = Employee.fromJson(employeeData).obs;
+        company = Company.fromJson(companyData).obs;
+
+        _localStorage.setString('token', result['token']);
+        _localStorage.setString('user', jsonEncode(result['data']));
+        if (result.containsKey('is_first_login') && result['is_first_login']) {
+          Get.offNamed('/create_password');
+        } else {
+          Get.offNamed('/');
+        }
+      } else {
+        Get.dialog(
+          GetDialog(
+            title: "Oopps",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Error login: ${result['message']}",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
+      }
+
+      isLoading.value = false;
+    } catch (error) {
+      Get.dialog(GetDialog(
+        title: "Oopps",
+        hasMessage: true,
+        withCloseButton: true,
+        hasCustomWidget: false,
+        message: "Error login: $error",
+        type: "error",
+        buttonNumber: 0,
+      ));
+      isLoading.value = false;
+      printError(info: 'Error Message Login: $error');
+    }
+  }
+
+  Future pinAuth(String password) async {
+    isLoading.value = true;
+    try {
+      String? email = await isEmailSaved();
       if (email != null) {
         final response = await apiCall
-            .postRequest({'email': email, 'password': password}, '/login');
+            .postRequest({'email': email, 'password': password}, '/pin-auth');
         final result = jsonDecode(response.body);
 
         if (result.containsKey('success') && result['success']) {

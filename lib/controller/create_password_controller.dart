@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/create_password/biomertrics_page.dart';
 import 'package:ems_v4/views/layout/private/create_password/create_password.dart';
+import 'package:ems_v4/views/layout/private/create_password/create_pin.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/email_otp.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/new_password.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/otp_input_page.dart';
@@ -23,7 +24,7 @@ class CreatePasswordController extends GetxController {
   String? _errorText;
   final List<Widget> pages = [
     const CreatePassword(),
-    // const CreatePin(),
+    const CreatePin(),
     const BiometricsPage(),
   ];
 

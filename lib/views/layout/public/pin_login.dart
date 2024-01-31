@@ -59,12 +59,12 @@ class _PINLoginState extends State<PINLogin> {
                   label: '',
                   validation: (p0) {},
                 ),
+                const SizedBox(height: 50),
                 Obx(
                   () => RoundedCustomButton(
                     onPressed: () async {
                       if (_authService.isLoading.isFalse) {
-                        _authService.login(
-                          null,
+                        _authService.pinAuth(
                           _passwordController.text,
                         );
                       }
