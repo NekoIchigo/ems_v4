@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -29,21 +28,13 @@ class AuthService extends GetxService {
     auth = LocalAuthentication();
 
     token = _localStorage.getString('token');
+    setLocalAuth();
     if (token != null) {
       var response = await apiCall.getRequest('/check-token');
       var result = jsonDecode(response.body);
       if (!result.containsKey('token')) {
         autheticated.value = false;
       } else {
-        if (_localStorage.getBool('auth_biometrics') ?? false) {
-          isBioEnabled.value = true;
-          auth.isDeviceSupported().then((bool isDeviceSupported) =>
-              isSupported.value = isDeviceSupported);
-          List<BiometricType> availableBiomentrics =
-              await auth.getAvailableBiometrics();
-          print(availableBiomentrics);
-          setLocalAuth();
-        }
         setAuthStatus();
       }
     }
@@ -64,6 +55,9 @@ class AuthService extends GetxService {
   }
 
   Future<void> setLocalAuth() async {
+    bool? bio = _localStorage.getBool('auth_biometrics');
+    print(bio);
+    isBioEnabled.value = bio ?? false;
     auth.isDeviceSupported().then(
         (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
     List<BiometricType> availableBiomentrics =
@@ -77,7 +71,7 @@ class AuthService extends GetxService {
       final response = await apiCall
           .postRequest({'email': email, 'password': password}, '/login');
       final result = jsonDecode(response.body);
-      log(result.toString());
+
       if (result.containsKey('success') && result['success']) {
         userEmail = email;
         autheticated.value = result['success'];
@@ -147,21 +141,7 @@ class AuthService extends GetxService {
   Future logout() async {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
-        // _localStorage.remove('token');
-        // Get.delete<HomeController>();
-        // Get.delete<TimeEntriesController>();
-        // Get.delete<LocationController>();
-        // Get.delete<MainNavigationController>();
-        // Get.delete<TransactionController>();
-        // Get.delete<CreatePasswordController>();
-
-        // Get.put(HomeController());
-        // Get.put(TimeEntriesController());
-        // Get.put(LocationController());
-        // Get.put(MainNavigationController());
-        // Get.put(TransactionController());
-        // Get.put(CreatePasswordController());
-
+        setLocalAuth();
         Get.toNamed('/login');
       });
     } catch (error) {
