@@ -20,7 +20,7 @@ class CreatePasswordController extends GetxController {
 
   RxString password = ''.obs;
   RxString confirmPassword = ''.obs;
-
+  String? _errorText;
   final List<Widget> pages = [
     const CreatePassword(),
     // const CreatePin(),
@@ -114,17 +114,7 @@ class CreatePasswordController extends GetxController {
           );
           animateToSecondPage();
         } else {
-          Get.dialog(
-            GetDialog(
-              title: "Opps!",
-              hasMessage: true,
-              withCloseButton: true,
-              hasCustomWidget: false,
-              message: "Error Forgot Password: ${result['message']}!",
-              type: "error",
-              buttonNumber: 0,
-            ),
-          );
+          _errorText = result['message'];
         }
       } catch (e) {
         Get.dialog(
@@ -142,6 +132,7 @@ class CreatePasswordController extends GetxController {
         isLoading.value = false;
       }
     }
+    return _errorText;
   }
 
   Future verifyOTP(String? otpPin) async {

@@ -1,4 +1,5 @@
 import 'package:ems_v4/models/department.dart';
+import 'package:ems_v4/models/location.dart';
 import 'package:ems_v4/models/position.dart';
 
 class EmployeeDetails {
@@ -23,6 +24,7 @@ class EmployeeDetails {
   final String hdmfNumber;
   final String tinNumber;
   final Position position;
+  final Location location;
   final Department department;
 
   EmployeeDetails({
@@ -40,6 +42,7 @@ class EmployeeDetails {
     this.costCenterId,
     this.clientName,
     required this.position,
+    required this.location,
     required this.department,
     required this.reportsAt,
     required this.reportsTo,
@@ -72,6 +75,7 @@ class EmployeeDetails {
       phicNumber: json['phic_number'] as String,
       hdmfNumber: json['hdmf_number'] as String,
       tinNumber: json['tin_number'] as String,
+      location: Location.fromJson(json['location']),
       position: Position.fromJson(json['position']),
       department: Department.fromJson(json['department']),
     );
@@ -99,6 +103,7 @@ class EmployeeDetails {
       'phic_number': phicNumber,
       'hdmf_number': hdmfNumber,
       'tin_number': tinNumber,
+      'location': location.toMap(),
       'position': position.toMap(),
       'department': department.toMap(),
     };

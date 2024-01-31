@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
                 ),
                 const SizedBox(height: 50),
                 const Text(
-                  'Email',
+                  'Username',
                   style: TextStyle(color: gray, fontSize: 12),
                 ),
                 const SizedBox(height: 10),

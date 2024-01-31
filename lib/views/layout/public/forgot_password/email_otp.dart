@@ -16,6 +16,7 @@ class _EmailOTPState extends State<EmailOTP> {
   final TextEditingController _emailController = TextEditingController();
   final CreatePasswordController _passwordController =
       Get.find<CreatePasswordController>();
+  String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -38,21 +39,35 @@ class _EmailOTPState extends State<EmailOTP> {
             isPassword: false,
             icon: Icons.email_outlined,
             textController: _emailController,
+            errorText: errorText,
+            onChanged: (value) {
+              setState(() {
+                errorText = null;
+              });
+            },
           ),
           const SizedBox(height: 20),
           Obx(
             () => RoundedCustomButton(
               onPressed: () async {
-                _passwordController.sendForgotPasswordRequest(
+                await _passwordController
+                    .sendForgotPasswordRequest(
                   _emailController.text,
-                );
+                )
+                    .then((value) {
+                  setState(() {
+                    errorText = value;
+                  });
+                  print(errorText != null);
+                });
               },
+              disabled: errorText != null,
               isLoading: _passwordController.isLoading.value,
               label: _passwordController.isLoading.isTrue
                   ? "Sending OTP..."
                   : "Send One-Time Pin",
               size: Size(Get.width * .9, 40),
-              bgColor: bgPrimaryBlue,
+              bgColor: errorText != null ? lightGray : bgPrimaryBlue,
             ),
           ),
         ],

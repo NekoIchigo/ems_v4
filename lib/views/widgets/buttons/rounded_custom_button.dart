@@ -11,6 +11,7 @@ class RoundedCustomButton extends StatefulWidget {
   final double? radius;
   final Size size;
   final bool? isLoading;
+  final bool? disabled;
   const RoundedCustomButton({
     super.key,
     required this.onPressed,
@@ -21,6 +22,7 @@ class RoundedCustomButton extends StatefulWidget {
     required this.size,
     this.borderColor,
     this.isLoading,
+    this.disabled,
   });
 
   @override
@@ -33,7 +35,9 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton(
-        onPressed: widget.isLoading ?? false ? () {} : widget.onPressed,
+        onPressed: (widget.isLoading ?? false) || (widget.disabled ?? false)
+            ? () {}
+            : widget.onPressed,
         style: ElevatedButton.styleFrom(
           side: BorderSide(
             color: widget.borderColor ?? widget.bgColor ?? primaryBlue,
