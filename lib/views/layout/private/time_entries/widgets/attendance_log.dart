@@ -146,7 +146,13 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Health Cheack:'),
+                          const Text(
+                            'Health Check:',
+                            style: TextStyle(
+                              color: gray,
+                              fontSize: 13,
+                            ),
+                          ),
                           const SizedBox(width: 23),
                           InkWell(
                             onTap: () {
@@ -271,7 +277,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Health Cheack:',
+                              'Health Check:',
                               style: TextStyle(
                                 color: gray,
                                 fontSize: 13,
