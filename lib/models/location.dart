@@ -31,7 +31,7 @@ class Location {
       logo: json['logo'] as String,
       latitude: json['latitude'] as String,
       longitude: json['longitude'] as String,
-      radius: json['radius'] as double,
+      radius: json['radius'].toDouble(),
       address: json['address'] as String,
       city: json['city'] as String,
       province: json['province'] as String,
