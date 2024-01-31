@@ -18,7 +18,7 @@ class GetDialog extends StatelessWidget {
   final bool withCloseButton;
   final Color? okButtonBGColor;
   final void Function()? okPress;
-
+  final void Function()? onClose;
   final void Function()? cancelPress;
   final String? cancelText;
 
@@ -38,6 +38,7 @@ class GetDialog extends StatelessWidget {
     this.okPress,
     this.cancelPress,
     this.cancelText,
+    this.onClose,
   });
 
   @override
@@ -73,7 +74,7 @@ class GetDialog extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: InkWell(
                           onTap: () {
-                            // Navigator.of(context, rootNavigator: true).pop();
+                            onClose;
                             Navigator.of(context).pop();
                           },
                           child: const Icon(
@@ -101,7 +102,7 @@ class GetDialog extends StatelessWidget {
                     child: Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.outfit(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: type == "success"
@@ -124,8 +125,8 @@ class GetDialog extends StatelessWidget {
                       child: Text(
                         message ?? "",
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.plusJakartaSans(
-                            fontSize: 14,
+                        style: GoogleFonts.outfit(
+                            fontSize: 11,
                             color: textblack,
                             fontWeight: FontWeight.w300),
                       ),
@@ -159,7 +160,7 @@ class GetDialog extends StatelessWidget {
                                       horizontal: 5.0, vertical: 10.0),
                                   child: Text(
                                     cancelText ?? "Cancel",
-                                    style: GoogleFonts.plusJakartaSans(
+                                    style: GoogleFonts.outfit(
                                       textStyle: const TextStyle(
                                           fontSize: 14.0,
                                           color: textblack,
@@ -188,7 +189,7 @@ class GetDialog extends StatelessWidget {
                                     horizontal: 5.0, vertical: 10.0),
                                 child: Text(
                                   okText ?? "OK",
-                                  style: GoogleFonts.plusJakartaSans(
+                                  style: GoogleFonts.outfit(
                                     textStyle: const TextStyle(
                                         fontSize: 14.0,
                                         color: Colors.white,

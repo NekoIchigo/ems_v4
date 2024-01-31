@@ -60,7 +60,7 @@ class _CreatePasswordState extends State<CreatePassword> {
               } else {
                 Get.dialog(
                   const GetDialog(
-                    title: "Opps!",
+                    title: "Oopps",
                     hasMessage: true,
                     withCloseButton: true,
                     hasCustomWidget: false,

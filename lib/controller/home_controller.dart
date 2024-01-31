@@ -57,7 +57,7 @@ class HomeController extends GetxController {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -102,7 +102,7 @@ class HomeController extends GetxController {
       } else {
         Get.dialog(
           const GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -115,7 +115,7 @@ class HomeController extends GetxController {
     } catch (error) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -155,7 +155,7 @@ class HomeController extends GetxController {
       } else {
         Get.dialog(
           const GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -168,7 +168,7 @@ class HomeController extends GetxController {
     } catch (error) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -207,7 +207,7 @@ class HomeController extends GetxController {
         checkNewShift(employeeId: authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -218,7 +218,7 @@ class HomeController extends GetxController {
       }
     } catch (error) {
       Get.dialog(GetDialog(
-        title: "Opps!",
+        title: "Oopps",
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,
@@ -254,7 +254,7 @@ class HomeController extends GetxController {
         checkNewShift(employeeId: authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -268,7 +268,7 @@ class HomeController extends GetxController {
     } catch (error) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -299,7 +299,7 @@ class HomeController extends GetxController {
     } catch (error) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -329,7 +329,7 @@ class HomeController extends GetxController {
     } catch (error) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -376,7 +376,7 @@ class HomeController extends GetxController {
   //       }
   //     } else {
   //       Get.dialog(GetDialog(
-  //         title: "Opps!",
+  //         title: "Oopps",
   //         hasMessage: true,
   //         withCloseButton: true,
   //         hasCustomWidget: false,
@@ -389,7 +389,7 @@ class HomeController extends GetxController {
   //     }
   //   } catch (error) {
   //     Get.dialog(GetDialog(
-  //       title: "Opps!",
+  //       title: "Oopps",
   //       hasMessage: true,
   //       withCloseButton: true,
   //       hasCustomWidget: false,

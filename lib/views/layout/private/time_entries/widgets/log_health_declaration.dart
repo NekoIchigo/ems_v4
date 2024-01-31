@@ -201,7 +201,7 @@ class _LogHealthDeclarationState extends State<LogHealthDeclaration> {
                     if (checkedSymptoms.isEmpty ||
                         temperatureController.text == "") {
                       EMSDialog(
-                        title: "Opps!",
+                        title: "Oopps",
                         hasMessage: true,
                         withCloseButton: true,
                         hasCustomWidget: false,

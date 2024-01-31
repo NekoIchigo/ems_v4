@@ -38,7 +38,7 @@ class TimeEntriesController extends GetxController {
         // print(attendances.length);
       } else {
         Get.dialog(GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -49,7 +49,7 @@ class TimeEntriesController extends GetxController {
       }
     } catch (error) {
       Get.dialog(GetDialog(
-        title: "Opps!",
+        title: "Oopps",
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,

@@ -94,7 +94,7 @@ class AuthService extends GetxService {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -107,7 +107,7 @@ class AuthService extends GetxService {
       isLoading.value = false;
     } catch (error) {
       Get.dialog(GetDialog(
-        title: "Opps!",
+        title: "Oopps",
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,
@@ -121,20 +121,22 @@ class AuthService extends GetxService {
   }
 
   Future<void> localAutheticate() async {
-    try {
-      bool local_autheticated = await auth.authenticate(
-          localizedReason: "Autheticate to Login in the system.",
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-            biometricOnly: true,
-          ));
-      if (local_autheticated) {
-        autheticated.value = local_autheticated;
-        setAuthStatus();
-        Get.offNamed('/');
+    if (isBioEnabled.isTrue) {
+      try {
+        bool localAutheticated = await auth.authenticate(
+            localizedReason: "Autheticate to Login in the system.",
+            options: const AuthenticationOptions(
+              stickyAuth: true,
+              biometricOnly: true,
+            ));
+        if (localAutheticated) {
+          autheticated.value = localAutheticated;
+          setAuthStatus();
+          Get.offNamed('/');
+        }
+      } on PlatformException catch (e) {
+        print(e);
       }
-    } on PlatformException catch (e) {
-      print(e);
     }
   }
 
@@ -146,7 +148,7 @@ class AuthService extends GetxService {
       });
     } catch (error) {
       Get.dialog(GetDialog(
-        title: "Opps!",
+        title: "Oopps",
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,

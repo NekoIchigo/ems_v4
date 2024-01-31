@@ -119,7 +119,7 @@ class CreatePasswordController extends GetxController {
       } catch (e) {
         Get.dialog(
           GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -149,7 +149,7 @@ class CreatePasswordController extends GetxController {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -162,7 +162,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -188,18 +188,14 @@ class CreatePasswordController extends GetxController {
       if (result.containsKey('success') && result['success']) {
         await Get.dialog(
           barrierDismissible: false,
-          GetDialog(
+          const GetDialog(
             type: 'success',
-            title: 'Password Updated',
+            title: 'Success!',
             hasMessage: true,
             message: "You can now log in using your new password.",
-            buttonNumber: 1,
-            hasCustomWidget: true,
-            withCloseButton: false,
-            okPress: () {
-              Get.back();
-            },
-            okText: "Log in",
+            buttonNumber: 0,
+            hasCustomWidget: false,
+            withCloseButton: true,
             okButtonBGColor: bgPrimaryBlue,
           ),
         );
@@ -207,7 +203,7 @@ class CreatePasswordController extends GetxController {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -220,7 +216,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -253,18 +249,14 @@ class CreatePasswordController extends GetxController {
         if (currentPassword != null) {
           await Get.dialog(
             barrierDismissible: false,
-            GetDialog(
+            const GetDialog(
               type: 'success',
-              title: 'Password Updated',
+              title: 'Success',
               hasMessage: true,
               message: "You can now log in using your new password.",
-              buttonNumber: 1,
-              hasCustomWidget: true,
-              withCloseButton: false,
-              okPress: () {
-                Get.back();
-              },
-              okText: "Log in",
+              buttonNumber: 0,
+              hasCustomWidget: false,
+              withCloseButton: true,
               okButtonBGColor: bgPrimaryBlue,
             ),
           );
@@ -275,7 +267,7 @@ class CreatePasswordController extends GetxController {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -288,7 +280,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -321,18 +313,14 @@ class CreatePasswordController extends GetxController {
         if (currentpin != null) {
           await Get.dialog(
             barrierDismissible: false,
-            GetDialog(
+            const GetDialog(
               type: 'success',
-              title: 'PIN Updated',
+              title: 'Success',
               hasMessage: true,
               message: "You can now log in using your new PIN.",
-              buttonNumber: 1,
-              hasCustomWidget: true,
-              withCloseButton: false,
-              okPress: () {
-                Get.back();
-              },
-              okText: "Log in",
+              buttonNumber: 0,
+              hasCustomWidget: false,
+              withCloseButton: true,
               okButtonBGColor: bgPrimaryBlue,
             ),
           );
@@ -343,7 +331,7 @@ class CreatePasswordController extends GetxController {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -356,7 +344,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -385,7 +373,7 @@ class CreatePasswordController extends GetxController {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Opps!",
+            title: "Oopps",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -398,7 +386,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Opps!",
+          title: "Oopps",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,

@@ -47,7 +47,7 @@ class _CreatePinState extends State<CreatePin> {
               } else {
                 Get.dialog(
                   const GetDialog(
-                    title: "Opps!",
+                    title: "Oopps",
                     hasMessage: true,
                     withCloseButton: true,
                     hasCustomWidget: false,
