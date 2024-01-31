@@ -19,21 +19,20 @@ class _EMSContainerState extends State<EMSContainer> {
         height: Get.height,
         width: Get.width,
         child: Stack(
-          alignment: Alignment.topCenter,
+          alignment: Alignment.topLeft,
           children: [
+            Container(
+              height: Get.height * .16,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 120, vertical: 35),
+              color: bgPrimaryBlue,
+            ),
             Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: Get.height * .16,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 120, vertical: 35),
-                color: bgPrimaryBlue,
-                child: Image.asset(
-                  'assets/images/EMS_logo.png',
-                  height: 50,
-                ),
+              top: 45,
+              left: 10,
+              child: Image.asset(
+                'assets/images/EMS_logo.png',
+                height: 45,
               ),
             ),
             Positioned(
@@ -43,7 +42,7 @@ class _EMSContainerState extends State<EMSContainer> {
               child: Center(
                 child: Container(
                   alignment: Alignment.center,
-                  height: Get.height * .86,
+                  height: Get.height * .87,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:
