@@ -45,7 +45,7 @@ class _EMSContainerState extends State<EMSContainer> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
+                        BorderRadius.vertical(top: Radius.circular(25)),
                   ),
                   child: widget.child,
                 ),

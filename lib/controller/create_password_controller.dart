@@ -7,6 +7,7 @@ import 'package:ems_v4/views/layout/private/create_password/create_pin.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/email_otp.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/new_password.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/otp_input_page.dart';
+import 'package:ems_v4/views/layout/public/forgot_pin/new_pin.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/api.dart';
@@ -22,6 +23,8 @@ class CreatePasswordController extends GetxController {
   RxString password = ''.obs;
   RxString confirmPassword = ''.obs;
   String? _errorText;
+  RxBool isForgotPin = false.obs;
+
   final List<Widget> pages = [
     const CreatePassword(),
     const CreatePin(),
@@ -32,6 +35,12 @@ class CreatePasswordController extends GetxController {
     const EmailOTP(),
     const OTPInputPage(),
     const NewPassword(),
+  ];
+
+  final List<Widget> forgotPINPages = [
+    const EmailOTP(),
+    const OTPInputPage(),
+    const NewPIN(),
   ];
 
   late Rx<AnimationController> midController;
@@ -297,6 +306,7 @@ class CreatePasswordController extends GetxController {
     String? currentpin,
   }) async {
     isLoading.value = true;
+
     try {
       var response = await apiCall.postRequest({
         'pin': pin,
@@ -322,6 +332,21 @@ class CreatePasswordController extends GetxController {
             ),
           );
           Get.offNamed("/login");
+        } else if (isForgotPin.isTrue) {
+          await Get.dialog(
+            barrierDismissible: false,
+            const GetDialog(
+              type: 'success',
+              title: 'Success',
+              hasMessage: true,
+              message: "You can now log in using your new PIN.",
+              buttonNumber: 0,
+              hasCustomWidget: false,
+              withCloseButton: true,
+              okButtonBGColor: bgPrimaryBlue,
+            ),
+          );
+          Get.offNamed("/pin_login");
         } else {
           animateToThirdPage();
         }

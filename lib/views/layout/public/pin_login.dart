@@ -59,7 +59,21 @@ class _PINLoginState extends State<PINLogin> {
                   label: '',
                   validation: (p0) {},
                 ),
-                const SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Get.toNamed('/forgot_pin');
+                      },
+                      child: const Text(
+                        'Forgot PIN?',
+                        style: TextStyle(color: gray, fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
                 Obx(
                   () => RoundedCustomButton(
                     onPressed: () async {

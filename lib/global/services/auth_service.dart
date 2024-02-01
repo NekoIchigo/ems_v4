@@ -67,6 +67,7 @@ class AuthService extends GetxService {
 
   Future<String?> isEmailSaved() async {
     String? userData = _localStorage.getString('user');
+
     if (userData != null) {
       autheticated.value = true;
       var data = jsonDecode(userData);
@@ -137,8 +138,10 @@ class AuthService extends GetxService {
 
   Future pinAuth(String password) async {
     isLoading.value = true;
+
     try {
       String? email = await isEmailSaved();
+
       if (email != null) {
         final response = await apiCall
             .postRequest({'email': email, 'password': password}, '/pin-auth');
@@ -170,27 +173,40 @@ class AuthService extends GetxService {
               hasMessage: true,
               withCloseButton: true,
               hasCustomWidget: false,
-              message: "Error login: ${result['message']}",
+              message: "Error pin: ${result['message']}",
               type: "error",
               buttonNumber: 0,
             ),
           );
         }
+      } else {
+        Get.dialog(
+          const GetDialog(
+            title: "Oopps",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Something went wrong! Login by password.",
+            type: "error",
+            buttonNumber: 0,
+          ),
+        );
       }
-
-      isLoading.value = false;
     } catch (error) {
-      Get.dialog(GetDialog(
-        title: "Oopps",
-        hasMessage: true,
-        withCloseButton: true,
-        hasCustomWidget: false,
-        message: "Error login: $error",
-        type: "error",
-        buttonNumber: 0,
-      ));
+      await Get.dialog(
+        const GetDialog(
+          title: "Oopps",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Something went wrong! Login by password.",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
+      Get.offNamed('/login');
+    } finally {
       isLoading.value = false;
-      printError(info: 'Error Message Login: $error');
     }
   }
 
@@ -218,7 +234,7 @@ class AuthService extends GetxService {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
         setLocalAuth();
-        Get.toNamed('/login');
+        Get.offNamed('/login');
       });
     } catch (error) {
       Get.dialog(GetDialog(
