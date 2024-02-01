@@ -1,7 +1,7 @@
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
-import 'package:ems_v4/global/utils/map_luncher.dart';
+import 'package:ems_v4/global/utils/map_launcher.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
   final AuthService _authService = Get.find<AuthService>();
-  final MapLuncher _mapLuncher = MapLuncher();
+  final MapLauncher _mapLuncher = MapLauncher();
   bool isClockIn = false;
 
   @override
@@ -94,7 +94,9 @@ class _AttendanceLogState extends State<AttendanceLog> {
                             setState(() {
                               isClockIn = true;
                             });
-                            _mapLuncher.launchMap();
+                            _mapLuncher.launchMap(
+                                attendanceRecord: selectedRecord,
+                                isclockin: true);
                           },
                           child: const Text(
                             "View Map",
@@ -141,11 +143,12 @@ class _AttendanceLogState extends State<AttendanceLog> {
                               fontSize: 13,
                             ),
                           ),
-                          const SizedBox(width: 23),
+                          const SizedBox(width: 30),
                           InkWell(
                             onTap: () {
-                              Get.to(
-                                  () => const TimeEntriesHealthDeclaration());
+                              Get.to(() => TimeEntriesHealthDeclaration(
+                                    attendanceRecord: selectedRecord,
+                                  ));
                             },
                             child: const Text(
                               'View Symptoms',
@@ -224,7 +227,9 @@ class _AttendanceLogState extends State<AttendanceLog> {
                               setState(() {
                                 isClockIn = false;
                               });
-                              _mapLuncher.launchMap();
+                              _mapLuncher.launchMap(
+                                  attendanceRecord: selectedRecord,
+                                  isclockin: false);
                             },
                             child: const Text(
                               "View Map",
@@ -259,36 +264,36 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           )
                         ],
                       ),
-                      Visibility(
-                        visible: selectedRecord.healthCheck != null,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Health Check:',
-                              style: TextStyle(
-                                color: gray,
-                                fontSize: 13,
-                              ),
-                            ),
-                            const SizedBox(width: 23),
-                            InkWell(
-                              onTap: () {
-                                Get.to(
-                                    () => const TimeEntriesHealthDeclaration());
-                              },
-                              child: const Text(
-                                'View Symptoms',
-                                style: TextStyle(
-                                  color: primaryBlue,
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 13,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                      // Visibility(
+                      //   visible: selectedRecord.healthCheck != null,
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       const Text(
+                      //         'Health Check:',
+                      //         style: TextStyle(
+                      //           color: gray,
+                      //           fontSize: 13,
+                      //         ),
+                      //       ),
+                      //       const SizedBox(width: 30),
+                      //       InkWell(
+                      //         onTap: () {
+                      //           Get.to(
+                      //               () => const TimeEntriesHealthDeclaration());
+                      //         },
+                      //         child: const Text(
+                      //           'View Symptoms',
+                      //           style: TextStyle(
+                      //             color: primaryBlue,
+                      //             decoration: TextDecoration.underline,
+                      //             fontSize: 13,
+                      //           ),
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

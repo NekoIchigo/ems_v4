@@ -172,32 +172,25 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
     return Row(
       children: [
         const SizedBox(width: 20),
-        Container(
-          width: Get.width * .48,
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          decoration: BoxDecoration(
-              // border: Border.all(color: lightGray),
-              borderRadius: BorderRadius.circular(5)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                clockType,
-                style: const TextStyle(
-                  color: gray,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
+        Row(
+          children: [
+            Text(
+              clockType,
+              style: const TextStyle(
+                color: gray,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
               ),
-              Text(
-                dateTime,
-                style: const TextStyle(
-                  color: gray,
-                  fontSize: 13,
-                ),
+            ),
+            SizedBox(width: clockType == 'IN' ? 35 : 20),
+            Text(
+              dateTime,
+              style: const TextStyle(
+                color: gray,
+                fontSize: 13,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         const SizedBox(width: 25),
         ColorFiltered(

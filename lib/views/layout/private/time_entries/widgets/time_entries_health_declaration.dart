@@ -2,6 +2,7 @@ import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/json_utils.dart';
+import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -9,9 +10,12 @@ import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 
 class TimeEntriesHealthDeclaration extends StatefulWidget {
-  const TimeEntriesHealthDeclaration({super.key});
+  const TimeEntriesHealthDeclaration(
+      {super.key, required this.attendanceRecord});
+  final AttendanceRecord attendanceRecord;
 
   @override
   State<TimeEntriesHealthDeclaration> createState() =>
@@ -33,8 +37,18 @@ class _TimeEntriesHealthDeclarationState
     super.initState();
     _jsonUtils.readJson('assets/json/symptoms.json').then((value) {
       setState(() {
-        // print(value);
         _symptoms = value['symptoms'];
+        if (widget.attendanceRecord.healthCheck != null) {
+          List syptomsArr = widget.attendanceRecord.healthCheck!.split(', ');
+          _symptoms.asMap().forEach((index, element) {
+            if (syptomsArr.contains(_symptoms[index]['descriptionEnglish'])) {
+              checkedSymptoms.add(_symptoms[index]['descriptionEnglish']);
+              _symptoms[index]['state'] = true;
+            }
+          });
+        }
+        temperatureController
+            .setText(widget.attendanceRecord.healthTemperature ?? "37.0");
       });
     });
   }
