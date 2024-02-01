@@ -92,7 +92,6 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 value: switchVal,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 onChanged: (value) {
-                  print(value);
                   setState(() {
                     switchVal = value;
                   });
@@ -110,16 +109,16 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ProfileListButton(
               label: 'Privacy Policy',
               onPressed: () {
-                _launchInBrowser(
-                    'https://happyhousekeepers.com.ph/privacy-policy');
+                // _launchInBrowser(
+                //     'https://happyhousekeepers.com.ph/privacy-policy');
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Terms of Use',
               onPressed: () {
-                _launchInBrowser(
-                    'https://happyhousekeepers.com.ph/privacy-policy');
+                // _launchInBrowser(
+                //     'https://happyhousekeepers.com.ph/privacy-policy');
               },
             ),
             const SizedBox(height: 30),
@@ -140,22 +139,17 @@ class _ProfileContainerState extends State<ProfileContainer> {
   }
 
   updateFingerprintState(bool value) {
-    print(value);
     _localStorage.setBool('auth_biometrics', value);
     Get.dialog(
       barrierDismissible: false,
-      GetDialog(
+      const GetDialog(
         type: 'success',
-        title: 'Fingerprint Authetication Updated',
-        hasMessage: false,
-        message: "You can now log in using your new password.",
-        buttonNumber: 1,
+        title: 'Success',
+        hasMessage: true,
+        message: "You can now log in using your fingerprint.",
+        buttonNumber: 0,
         hasCustomWidget: false,
-        withCloseButton: false,
-        okPress: () {
-          Get.back();
-        },
-        okText: "Close",
+        withCloseButton: true,
         okButtonBGColor: bgPrimaryBlue,
       ),
     );

@@ -147,12 +147,15 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       "IN",
                                     ),
                                     const SizedBox(height: 10),
-                                    listItem(
-                                      attendance.formattedClockOut ??
-                                          "??/??/??/ | ??:??",
-                                      attendance.clockedInLocationType ==
-                                          'Within Vicinity',
-                                      "OUT",
+                                    Visibility(
+                                      visible: attendance.clockOutAt != null,
+                                      child: listItem(
+                                        attendance.formattedClockOut ??
+                                            "??/??/??/ | ??:??",
+                                        attendance.clockedInLocationType ==
+                                            'Within Vicinity',
+                                        "OUT",
+                                      ),
                                     ),
                                   ],
                                 ),

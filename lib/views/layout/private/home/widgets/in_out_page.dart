@@ -32,7 +32,7 @@ class _InOutPageState extends State<InOutPage> {
     super.initState();
     attendance = _homeController.attendance.value;
     currentTime = _settings.currentTime.value;
-    date = DateFormat("EEE, MMM dd").format(currentTime);
+    date = DateFormat("EEE, MMM dd y").format(currentTime);
     greetings = _settings.getGreeting();
   }
 
