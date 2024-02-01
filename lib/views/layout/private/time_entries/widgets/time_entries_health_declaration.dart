@@ -63,14 +63,28 @@ class _TimeEntriesHealthDeclarationState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Text("Health Declaration",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: primaryBlue,
-                    )),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text("Health Declaration",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: primaryBlue,
+                        )),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                  ),
+                ],
               ),
               const Row(
                 children: [
@@ -207,8 +221,7 @@ class _TimeEntriesHealthDeclarationState
                   const Expanded(child: SizedBox()),
                   RoundedCustomButton(
                     onPressed: () {
-                      _homeController.isWhite.value = false;
-                      _homeController.pageName.value = '/home';
+                      Get.back();
                       // context.router.navigate(const HomepageRouter());
                     },
                     label: 'Close',
