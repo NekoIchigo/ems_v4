@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
@@ -14,7 +15,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  final AuthService authService = Get.find<AuthService>();
+  final AuthService _authService = Get.find<AuthService>();
+  final TimeEntriesController _timeEntriesController =
+      Get.find<TimeEntriesController>();
+
   final ApiCall apiCall = ApiCall();
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
 
@@ -87,7 +91,7 @@ class HomeController extends GetxController {
           'latitude': position.latitude,
           'longitude': position.longitude,
         },
-        '/calculate-location/${authService.employee.value.id}',
+        '/calculate-location/${_authService.employee.value.id}',
       );
 
       var result = jsonDecode(response.body);
@@ -142,7 +146,7 @@ class HomeController extends GetxController {
           'latitude': position.latitude,
           'longitude': position.longitude,
         },
-        '/calculate-location/${authService.employee.value.id}',
+        '/calculate-location/${_authService.employee.value.id}',
       );
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
@@ -217,7 +221,9 @@ class HomeController extends GetxController {
       }, '/clock-in');
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
-        checkNewShift(employeeId: authService.employee.value.id);
+        _timeEntriesController.getAttendanceList(
+            employeeId: _authService.employee.value.id, months: 1);
+        checkNewShift(employeeId: _authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
           title: "Oopps",
@@ -261,7 +267,9 @@ class HomeController extends GetxController {
       }, '/clock-out');
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
-        checkNewShift(employeeId: authService.employee.value.id);
+        _timeEntriesController.getAttendanceList(
+            employeeId: _authService.employee.value.id, months: 1);
+        checkNewShift(employeeId: _authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
           title: "Oopps",
