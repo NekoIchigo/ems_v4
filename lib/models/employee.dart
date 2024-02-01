@@ -13,7 +13,7 @@ class Employee {
   final String birthday;
   final String gender;
   final String civilStatus;
-  final String profileBase64;
+  String profileBase64;
   final EmployeeDetails employeeDetails;
   final EmployeeContact employeeContact;
 
@@ -70,5 +70,9 @@ class Employee {
       'employee_details': employeeDetails.toMap(),
       'employee_contact': employeeContact.toMap(),
     };
+  }
+
+  setProfileBase64(String newProfileBase64) {
+    profileBase64 = newProfileBase64;
   }
 }

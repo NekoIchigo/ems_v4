@@ -24,6 +24,8 @@ class CreatePasswordController extends GetxController {
   RxString confirmPassword = ''.obs;
   String? _errorText;
   RxBool isForgotPin = false.obs;
+  RxBool inValid = false.obs;
+  RxBool incorrectPassword = false.obs;
 
   final List<Widget> pages = [
     const CreatePassword(),
@@ -271,17 +273,22 @@ class CreatePasswordController extends GetxController {
           animateToSecondPage();
         }
       } else {
-        Get.dialog(
-          GetDialog(
-            title: "Oopps",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Error Create Password: ${result['message']}",
-            type: "error",
-            buttonNumber: 0,
-          ),
-        );
+        if (result['message'].contains("current")) {
+          incorrectPassword.value = true;
+        } else {
+          inValid.value = true;
+        }
+        // Get.dialog(
+        //   GetDialog(
+        //     title: "Oopps",
+        //     hasMessage: true,
+        //     withCloseButton: true,
+        //     hasCustomWidget: false,
+        //     message: "Error Create Password: ${result['message']}",
+        //     type: "error",
+        //     buttonNumber: 0,
+        //   ),
+        // );
       }
     } catch (e) {
       Get.dialog(
@@ -290,7 +297,7 @@ class CreatePasswordController extends GetxController {
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
-          message: "Error Create Password: $e !",
+          message: "Error Create Password: $e.",
           type: "error",
           buttonNumber: 0,
         ),

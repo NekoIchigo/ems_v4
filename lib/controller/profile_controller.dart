@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ems_v4/global/constants.dart';
@@ -10,6 +11,7 @@ import 'package:ems_v4/global/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileController extends GetxController {
+  final AuthService authService = Get.find<AuthService>();
   final ImagePicker _imagePicker = ImagePicker();
   late SharedPreferences _localStorage;
 
@@ -17,8 +19,7 @@ class ProfileController extends GetxController {
   RxBool isLoading = false.obs;
   RxString profileImage = ''.obs;
 
-  Future<void> updatePersonalInformation(
-      String contactNumber, String email) async {
+  Future<void> updatePersonalInformation() async {
     _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
     var userData = jsonDecode(_localStorage.getString('user')!);
@@ -26,26 +27,23 @@ class ProfileController extends GetxController {
     try {
       var response = await apiCall.postRequest({
         'id': userData['id'],
-        'contact_number': contactNumber,
-        'email': email,
         'image': image,
       }, '/update-personal-info');
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
+        if (profileImage.value != '') {
+          authService.employee.value.profileBase64 = profileImage.value;
+        }
         await Get.dialog(
           barrierDismissible: false,
-          GetDialog(
+          const GetDialog(
             type: 'success',
-            title: 'Personal Information Updated',
+            title: 'Success',
             hasMessage: true,
             message: "You successfully updated your personal information.",
-            buttonNumber: 1,
-            hasCustomWidget: true,
-            withCloseButton: false,
-            okPress: () {
-              Get.back();
-            },
-            okText: "Close",
+            buttonNumber: 0,
+            hasCustomWidget: false,
+            withCloseButton: true,
             okButtonBGColor: bgPrimaryBlue,
           ),
         );
@@ -93,6 +91,9 @@ class ProfileController extends GetxController {
   Future selectProfileImage() async {
     XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
     profileImage.value = convertToBase64(image) ?? '';
+    if (image != null) {
+      updatePersonalInformation();
+    }
   }
 
   void setState(Null Function() param0) {}

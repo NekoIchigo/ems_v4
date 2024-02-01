@@ -33,26 +33,30 @@ class _ProfilePageContainerState extends State<ProfilePageContainer> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 50),
-                  Center(
-                    child: Text(
-                      widget.title,
-                      style: const TextStyle(
-                        color: gray,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+              child: SizedBox(
+                height: Get.height * .9,
+                child: SingleChildScrollView(
+                  padding: EdgeInsetsDirectional.zero,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 50),
+                      Center(
+                        child: Text(
+                          widget.title,
+                          style: const TextStyle(
+                            color: gray,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 40),
+                      widget.child,
+                    ],
                   ),
-                  const SizedBox(height: 40),
-                  SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: widget.child,
-                  ),
-                ],
+                ),
               ),
             ),
           ],

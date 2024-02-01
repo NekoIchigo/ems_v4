@@ -13,6 +13,7 @@ class Input extends StatefulWidget {
   final bool? disabled;
   final bool? hasFocus;
   final Function(String)? onChanged;
+  final Function(String?) validator;
 
   const Input({
     super.key,
@@ -27,6 +28,7 @@ class Input extends StatefulWidget {
     this.hasFocus,
     this.onChanged,
     this.hintText,
+    required this.validator,
   });
 
   @override
@@ -91,11 +93,8 @@ class _InputState extends State<Input> {
                     color: gray,
                   ),
           ),
-          validator: (String? value) {
-            if (value == null || value == '') {
-              return '';
-            }
-            return null;
+          validator: (value) {
+            return widget.validator(value);
           },
           autovalidateMode: AutovalidateMode.disabled,
         ),
@@ -110,8 +109,16 @@ class _InputState extends State<Input> {
           const Icon(
             Icons.warning_rounded,
             color: colorError,
+            size: 18,
           ),
-          Text(widget.errorText!)
+          const SizedBox(width: 10),
+          Text(
+            widget.errorText!,
+            style: const TextStyle(
+              color: colorError,
+              fontSize: 12,
+            ),
+          )
         ],
       );
     }

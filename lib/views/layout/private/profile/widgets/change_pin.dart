@@ -83,11 +83,13 @@ class _ChangePinState extends State<ChangePin> {
           Center(
             child: RoundedCustomButton(
               onPressed: () {
-                _createPasswordController.changePIN(
-                  _newPin.text,
-                  _confirmPin.text,
-                  currentpin: _currentPin.text,
-                );
+                if (_currentPin.text != '') {
+                  _createPasswordController.changePIN(
+                    _newPin.text,
+                    _confirmPin.text,
+                    currentpin: _currentPin.text,
+                  );
+                }
               },
               label: 'Update',
               radius: 5,

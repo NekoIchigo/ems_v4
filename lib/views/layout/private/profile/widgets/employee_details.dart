@@ -42,7 +42,7 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                     child: Text(
                       "Employment Details",
                       style: TextStyle(
-                        color: darkGray,
+                        color: gray,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),

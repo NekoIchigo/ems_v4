@@ -106,14 +106,19 @@ class _FloatingInputState extends State<FloatingInput> {
   }
 
   Widget? hasError() {
-    if (widget.errorText != null) {
+    if (widget.errorText != null && widget.errorText != '') {
       return Row(
         children: [
           const Icon(
             Icons.warning_rounded,
             color: colorError,
+            size: 18,
           ),
-          Text(widget.errorText!)
+          const SizedBox(width: 5),
+          Text(
+            widget.errorText!,
+            style: const TextStyle(color: colorError, fontSize: 12),
+          )
         ],
       );
     }

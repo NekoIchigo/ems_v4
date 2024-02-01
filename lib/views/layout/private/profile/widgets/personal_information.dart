@@ -4,7 +4,6 @@ import 'package:ems_v4/controller/profile_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
-import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,38 +47,52 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 Center(
                   child: Column(
                     children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          if (!isNotEdit) {
-                            _profileController.selectProfileImage();
-                          }
-                        },
-                        style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsetsDirectional.all(0),
-                            side: const BorderSide(
-                              color: lightGray,
-                            )),
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipOval(
-                            child: Obx(
-                              () => _profileController.profileImage.value != ''
-                                  ? Image.memory(
-                                      base64.decode(_profileController
-                                          .profileImage.value),
-                                      fit: BoxFit.contain,
-                                    )
-                                  : const Icon(
-                                      Icons.image_search,
-                                      size: 30,
-                                      color: gray,
-                                    ),
+                      SizedBox(
+                        width: 110,
+                        height: 110,
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: lightGray),
+                              ),
+                              child: ClipOval(
+                                child: Obx(
+                                  () => _profileController.profileImage.value !=
+                                          ''
+                                      ? Image.memory(
+                                          base64.decode(_profileController
+                                              .profileImage.value),
+                                          fit: BoxFit.contain,
+                                        )
+                                      : const Icon(
+                                          Icons.image_search,
+                                          size: 30,
+                                          color: gray,
+                                        ),
+                                ),
+                              ),
                             ),
-                          ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: IconButton(
+                                style: IconButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    backgroundColor: Colors.white),
+                                onPressed: () {
+                                  _profileController.selectProfileImage();
+                                },
+                                icon: const Icon(
+                                  Icons.camera_enhance_rounded,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const Padding(
@@ -107,6 +120,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Input(
+                    validator: (p0) {},
                     isPassword: false,
                     disabled: true,
                     textController: _contactNumber,
@@ -124,6 +138,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 ),
                 const SizedBox(height: 5),
                 Input(
+                  validator: (p0) {},
                   isPassword: false,
                   disabled: true,
                   textController: _email,
@@ -134,26 +149,26 @@ class _PersonalInformationState extends State<PersonalInformation> {
               ],
             ),
           ),
-          Center(
-            child: Obx(
-              () => RoundedCustomButton(
-                isLoading: _profileController.isLoading.value,
-                onPressed: () {
-                  if (!isNotEdit) {
-                    _profileController.updatePersonalInformation(
-                        _contactNumber.text, _email.text);
-                  }
-                  setState(() {
-                    isNotEdit = false;
-                  });
-                },
-                label: isNotEdit ? 'Edit' : 'Submit',
-                radius: 5,
-                size: Size(Get.width * .35, 30),
-                bgColor: bgPrimaryBlue,
-              ),
-            ),
-          ),
+          // Center(
+          //   child: Obx(
+          //     () => RoundedCustomButton(
+          //       isLoading: _profileController.isLoading.value,
+          //       onPressed: () {
+          //         if (!isNotEdit) {
+          //           _profileController.updatePersonalInformation(
+          //               _contactNumber.text, _email.text);
+          //         }
+          //         setState(() {
+          //           isNotEdit = false;
+          //         });
+          //       },
+          //       label: isNotEdit ? 'Edit' : 'Submit',
+          //       radius: 5,
+          //       size: Size(Get.width * .35, 30),
+          //       bgColor: bgPrimaryBlue,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

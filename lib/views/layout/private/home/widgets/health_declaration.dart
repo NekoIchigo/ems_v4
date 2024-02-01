@@ -177,6 +177,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
             Visibility(
               visible: isOthersCheck,
               child: Input(
+                validator: (p0) {},
                 isPassword: false,
                 textController: _otherSymptom,
                 hintText: 'Other symptoms',
