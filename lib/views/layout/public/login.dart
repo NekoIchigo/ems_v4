@@ -19,6 +19,10 @@ class _LoginState extends State<Login> {
   final ApiCall apiCall = ApiCall();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? _userNameError;
+  String? _passwordError;
 
   @override
   Widget build(BuildContext context) {
@@ -36,90 +40,125 @@ class _LoginState extends State<Login> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Get.height * .15),
-                Center(
-                  child: SizedBox(
-                    height: Get.height * 0.15,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: Image.asset(
-                        'assets/images/EMS_logo_Blue.png',
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: Get.height * .15),
+                  Center(
+                    child: SizedBox(
+                      height: Get.height * 0.15,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 25.0),
+                        child: Image.asset(
+                          'assets/images/EMS_logo_Blue.png',
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 50),
-                const Text(
-                  'Username',
-                  style: TextStyle(color: gray, fontSize: 12),
-                ),
-                const SizedBox(height: 10),
-                Obx(
-                  () => FloatingInput(
-                    label: '',
-                    isPassword: false,
-                    textController: _emailController,
-                    icon: _authService.isBioEnabled.isTrue
-                        ? Icons.fingerprint
-                        : Icons.mail,
-                    iconColor: lightGray,
-                    onIconPressed: () {
-                      _authService.localAutheticate();
-                    },
-                    onChanged: (p0) {},
+                  const SizedBox(height: 50),
+                  const Text(
+                    'Username',
+                    style: TextStyle(color: gray, fontSize: 12),
                   ),
-                ),
-                const Text(
-                  'Password',
-                  style: TextStyle(color: gray, fontSize: 12),
-                ),
-                const SizedBox(height: 10),
-                FloatingInput(
-                  label: '',
-                  isPassword: true,
-                  textController: _passwordController,
-                  iconColor: lightGray,
-                  icon: Icons.visibility,
-                  onChanged: (p0) {},
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Get.toNamed('/forgot_password');
+                  const SizedBox(height: 10),
+                  Obx(
+                    () => FloatingInput(
+                      label: '',
+                      isPassword: false,
+                      errorText: _userNameError,
+                      textController: _emailController,
+                      icon: _authService.isBioEnabled.isTrue
+                          ? Icons.fingerprint
+                          : Icons.mail,
+                      iconColor: lightGray,
+                      onIconPressed: () {
+                        _authService.localAutheticate();
                       },
-                      child: const Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: gray, fontSize: 12),
-                      ),
+                      onChanged: (p0) {
+                        setState(() {
+                          _userNameError = null;
+                        });
+                      },
+                      validator: (value) {
+                        setState(() {
+                          if (value == null || value.isEmpty) {
+                            _userNameError = 'Please enter a value';
+                          }
+                        });
+                      },
                     ),
-                  ],
-                ),
-                Obx(
-                  () => RoundedCustomButton(
-                    onPressed: () async {
-                      if (_authService.isLoading.isFalse) {
-                        _authService.login(
-                          _emailController.text,
-                          _passwordController.text,
-                        );
-                      }
-                    },
-                    isLoading: _authService.isLoading.value,
-                    label: _authService.isLoading.isFalse
-                        ? 'Log In'
-                        : 'Logging In...',
-                    radius: 50,
-                    size: Size(Get.width, 20),
-                    bgColor: bgPrimaryBlue,
                   ),
-                ),
-                Center(
-                  child: TextButton(
+                  const Text(
+                    'Password',
+                    style: TextStyle(color: gray, fontSize: 12),
+                  ),
+                  const SizedBox(height: 10),
+                  FloatingInput(
+                    label: '',
+                    isPassword: true,
+                    errorText: _passwordError,
+                    textController: _passwordController,
+                    iconColor: lightGray,
+                    icon: Icons.visibility,
+                    onChanged: (p0) {
+                      setState(() {
+                        _passwordError = null;
+                      });
+                    },
+                    validator: (value) {
+                      setState(() {
+                        if (value == null || value.isEmpty) {
+                          _passwordError = 'Please enter a value';
+                        }
+                      });
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Get.toNamed('/forgot_password');
+                        },
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: gray, fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Obx(
+                    () => RoundedCustomButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {});
+                          if (_authService.isLoading.isFalse) {
+                            var error = await _authService.login(
+                              _emailController.text,
+                              _passwordController.text,
+                            );
+                            if (error != null) {
+                              setState(() {
+                                _userNameError = error['email'][0];
+                                _passwordError = error['password'][0];
+                              });
+                            }
+                          }
+                        }
+                      },
+                      isLoading: _authService.isLoading.value,
+                      label: _authService.isLoading.isFalse
+                          ? 'Log In'
+                          : 'Logging In...',
+                      radius: 50,
+                      size: Size(Get.width, 20),
+                      bgColor: bgPrimaryBlue,
+                    ),
+                  ),
+                  Center(
+                    child: TextButton(
                       onPressed: () {
                         Get.toNamed('/pin_login');
                       },
@@ -130,9 +169,11 @@ class _LoginState extends State<Login> {
                           color: gray,
                           fontSize: 12,
                         ),
-                      )),
-                ),
-              ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

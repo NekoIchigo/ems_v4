@@ -43,6 +43,7 @@ class _CreatePasswordState extends State<CreatePassword> {
             onChanged: (value) {
               _createPasswordController.password.value = value;
             },
+            validator: (p0) {},
           ),
           FloatingInput(
             label: 'Confirm password',
@@ -52,6 +53,7 @@ class _CreatePasswordState extends State<CreatePassword> {
             onChanged: (value) {
               _createPasswordController.confirmPassword.value = value;
             },
+            validator: (p0) {},
           ),
           const SizedBox(height: 20),
           const PasswordValidation(),

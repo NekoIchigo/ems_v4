@@ -11,6 +11,7 @@ class FloatingInput extends StatefulWidget {
   final Color? iconColor;
   final Function(String) onChanged;
   final Function()? onIconPressed;
+  final Function(String?) validator;
 
   const FloatingInput({
     super.key,
@@ -23,6 +24,7 @@ class FloatingInput extends StatefulWidget {
     this.borderRadius,
     this.iconColor,
     this.onIconPressed,
+    required this.validator,
   });
 
   @override
@@ -95,10 +97,7 @@ class _FloatingInputState extends State<FloatingInput> {
           }),
         ),
         validator: (String? value) {
-          if (value == null || value == '') {
-            return '';
-          }
-          return null;
+          return widget.validator(value);
         },
         autovalidateMode: AutovalidateMode.disabled,
       ),

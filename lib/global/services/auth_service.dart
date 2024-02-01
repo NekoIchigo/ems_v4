@@ -110,17 +110,24 @@ class AuthService extends GetxService {
           Get.offAllNamed('/');
         }
       } else {
-        Get.dialog(
-          GetDialog(
-            title: "Oopps",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Error login: ${result['message']}",
-            type: "error",
-            buttonNumber: 0,
-          ),
-        );
+        if (!result.containsKey('errors')) {
+          result['errors'] = {
+            'email': [result['message']],
+            'password': [result['message']],
+          };
+          // Get.dialog(
+          //   GetDialog(
+          //     title: "Oopps",
+          //     hasMessage: true,
+          //     withCloseButton: true,
+          //     hasCustomWidget: false,
+          //     message: "Error login: ${result['message']}",
+          //     type: "error",
+          //     buttonNumber: 0,
+          //   ),
+          // );
+        }
+        return result['errors'];
       }
 
       isLoading.value = false;
@@ -136,7 +143,10 @@ class AuthService extends GetxService {
       ));
       isLoading.value = false;
       printError(info: 'Error Message Login: $error');
+    } finally {
+      isLoading.value = false;
     }
+    return null;
   }
 
   Future pinAuth(String password) async {
@@ -170,17 +180,17 @@ class AuthService extends GetxService {
             Get.offAllNamed('/');
           }
         } else {
-          Get.dialog(
-            GetDialog(
-              title: "Oopps",
-              hasMessage: true,
-              withCloseButton: true,
-              hasCustomWidget: false,
-              message: "Error pin: ${result['message']}",
-              type: "error",
-              buttonNumber: 0,
-            ),
-          );
+          // Get.dialog(
+          //   GetDialog(
+          //     title: "Oopps",
+          //     hasMessage: true,
+          //     withCloseButton: true,
+          //     hasCustomWidget: false,
+          //     message: "Error pin: ${result['message']}",
+          //     type: "error",
+          //     buttonNumber: 0,
+          //   ),
+          // );
         }
       } else {
         Get.dialog(
