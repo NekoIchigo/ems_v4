@@ -34,6 +34,7 @@ class AuthService extends GetxService {
       var result = jsonDecode(response.body);
       if (!result.containsKey('token')) {
         autheticated.value = false;
+        isBioEnabled.value = false;
       } else {
         setAuthStatus();
       }
@@ -56,13 +57,15 @@ class AuthService extends GetxService {
 
   Future<void> setLocalAuth() async {
     bool? bio = _localStorage.getBool('auth_biometrics');
-
-    isBioEnabled.value = bio ?? false;
-    auth.isDeviceSupported().then(
-        (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
-    List<BiometricType> availableBiomentrics =
-        await auth.getAvailableBiometrics();
-    print(availableBiomentrics);
+    String? userData = _localStorage.getString('user');
+    if (userData != null) {
+      isBioEnabled.value = bio ?? false;
+      auth.isDeviceSupported().then(
+          (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
+      List<BiometricType> availableBiomentrics =
+          await auth.getAvailableBiometrics();
+      print(availableBiomentrics);
+    }
   }
 
   Future<String?> isEmailSaved() async {
