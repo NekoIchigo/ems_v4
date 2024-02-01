@@ -47,14 +47,28 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text("Health Declaration",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: primaryBlue,
-                  )),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text("Health Declaration",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: primaryBlue,
+                      )),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    onPressed: () {
+                      _homeController.pageName.value = '/home/info';
+                    },
+                    icon: const Icon(Icons.close),
+                  ),
+                ),
+              ],
             ),
             const Row(
               children: [
