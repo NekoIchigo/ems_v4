@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
@@ -51,8 +50,7 @@ class HomeController extends GetxController {
         isNewShift.value = data['is_new_shift'];
         isClockInOutComplete.value = data['is_shift_complete'];
         isClockOut.value = data['is_clockout'];
-        // print(result);
-        log(result.toString());
+
         if (data['current_attendance_record'] != null) {
           attendance =
               AttendanceRecord.fromJson(data['current_attendance_record']).obs;
@@ -190,12 +188,14 @@ class HomeController extends GetxController {
   Future clockIn({
     required int employeeId,
     List healthCheck = const [],
-    String temperature = '',
+    String? temperature,
   }) async {
     isLoading.value = true;
     String healthCheckStr = healthCheck.join(', ');
-    double userTemperature = double.parse(temperature);
-
+    double userTemperature = 37.0;
+    if (temperature != null) {
+      userTemperature = double.parse(temperature);
+    }
     if (healthCheck.isNotEmpty || userTemperature >= 37.8) {
       isUserSick.value = true;
     } else {
