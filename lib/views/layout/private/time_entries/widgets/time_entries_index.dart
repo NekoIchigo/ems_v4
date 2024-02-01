@@ -170,29 +170,31 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
 
   Widget listItem(String dateTime, bool inOut, String clockType) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const SizedBox(width: 20),
-        Row(
-          children: [
-            Text(
-              clockType,
-              style: const TextStyle(
-                color: gray,
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
+        SizedBox(
+          width: Get.width * .55,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                clockType,
+                style: const TextStyle(
+                  color: gray,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
               ),
-            ),
-            SizedBox(width: clockType == 'IN' ? 35 : 20),
-            Text(
-              dateTime,
-              style: const TextStyle(
-                color: gray,
-                fontSize: 13,
+              Text(
+                dateTime,
+                style: const TextStyle(
+                  color: gray,
+                  fontSize: 13,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        const SizedBox(width: 25),
         ColorFiltered(
           colorFilter: ColorFilter.mode(
               inOut ? colorSuccess : colorError, BlendMode.srcIn),
