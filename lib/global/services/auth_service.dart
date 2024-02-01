@@ -102,9 +102,9 @@ class AuthService extends GetxService {
         _localStorage.setString('token', result['token']);
         _localStorage.setString('user', jsonEncode(result['data']));
         if (result.containsKey('is_first_login') && result['is_first_login']) {
-          Get.offNamed('/create_password');
+          Get.offAllNamed('/create_password');
         } else {
-          Get.offNamed('/');
+          Get.offAllNamed('/');
         }
       } else {
         Get.dialog(
@@ -162,9 +162,9 @@ class AuthService extends GetxService {
           _localStorage.setString('user', jsonEncode(result['data']));
           if (result.containsKey('is_first_login') &&
               result['is_first_login']) {
-            Get.offNamed('/create_password');
+            Get.offAllNamed('/create_password');
           } else {
-            Get.offNamed('/');
+            Get.offAllNamed('/');
           }
         } else {
           Get.dialog(
@@ -204,7 +204,7 @@ class AuthService extends GetxService {
           buttonNumber: 0,
         ),
       );
-      Get.offNamed('/login');
+      Get.offAllNamed('/login');
     } finally {
       isLoading.value = false;
     }
@@ -222,7 +222,7 @@ class AuthService extends GetxService {
         if (localAutheticated) {
           autheticated.value = localAutheticated;
           setAuthStatus();
-          Get.offNamed('/');
+          Get.offAllNamed('/');
         }
       } on PlatformException catch (e) {
         print(e);
@@ -234,7 +234,7 @@ class AuthService extends GetxService {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
         setLocalAuth();
-        Get.offNamed('/login');
+        Get.offAllNamed('/login');
       });
     } catch (error) {
       Get.dialog(GetDialog(
