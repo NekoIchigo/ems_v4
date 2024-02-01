@@ -25,7 +25,18 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: 0);
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) {
+          return;
+        }
+        final bool? shouldPop = await showExitConfirmationDialog(context);
+        if (shouldPop ?? false) {
+          if (mounted) Navigator.of(context).pop();
+        }
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         body: Stack(
@@ -58,7 +69,33 @@ class _MainNavigationState extends State<MainNavigation> {
               curve: Curves.easeInOut,
             );
           },
-        ));
+        ),
+      ),
+    );
+  }
+
+  Future<bool?> showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Exit'),
+          content: const Text('Do you want to exit the app?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () =>
+                  Navigator.of(context).pop(false), // User doesn't want to exit
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () =>
+                  Navigator.of(context).pop(true), // User wants to exit
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
  /*
