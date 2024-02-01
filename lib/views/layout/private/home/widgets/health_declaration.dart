@@ -227,8 +227,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                         buttonNumber: 0,
                       ).show(context);
                     } else {
-                      debugPrint(checkedSymptoms.join(", "));
-                      debugPrint(_temperatureController.text);
+                      checkedSymptoms.add(_otherSymptom.text);
                       _homeController
                           .clockIn(
                         employeeId: _authService.employee.value.id,

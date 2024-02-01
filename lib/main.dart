@@ -26,13 +26,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomeController());
     Get.put(TimeEntriesController());
     Get.put(LocationController());
     Get.put(MainNavigationController());
     Get.put(TransactionController());
     Get.put(CreatePasswordController());
     Get.put(ProfileController());
+    Get.put(HomeController());
 
     return GetMaterialApp(
       title: 'EMS V.4',

@@ -5,6 +5,7 @@ import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bot
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class TimeEntriesIndex extends StatefulWidget {
@@ -112,7 +113,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                     : _timeEntriesController.attendances.isNotEmpty
                         ? ListView.builder(
                             // TODO : paginate every scroll
-                            padding: EdgeInsets.zero,
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             physics: const BouncingScrollPhysics(),
                             itemCount:
                                 _timeEntriesController.attendances.length,
@@ -120,108 +121,40 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                               final attendance =
                                   _timeEntriesController.attendances[index];
 
-                              return Container(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                height: 70,
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    bottom:
-                                        BorderSide(width: 1, color: lightGray),
+                              return ElevatedButton(
+                                onPressed: () {
+                                  _timeEntriesController.pageName.value =
+                                      '/atttendance-log';
+                                  _timeEntriesController.attendanceIndex.value =
+                                      index;
+                                  _timeEntriesController.hasClose.value = true;
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  elevation: 0,
+                                  shape: LinearBorder.bottom(
+                                    side: const BorderSide(color: lightGray),
                                   ),
                                 ),
-                                child: ListTile(
-                                  onTap: () {
-                                    _timeEntriesController.pageName.value =
-                                        '/atttendance-log';
-                                    _timeEntriesController
-                                        .attendanceIndex.value = index;
-                                    _timeEntriesController.hasClose.value =
-                                        true;
-                                  },
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.access_time,
-                                            color: primaryBlue,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 15),
-                                          Text(
-                                            attendance.formattedClockIn ??
-                                                "??/??/??/ | ??:??",
-                                            style: const TextStyle(
-                                              color: primaryBlue,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Expanded(
-                                            child: Text(
-                                              attendance
-                                                      .clockedInLocationType ??
-                                                  "",
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: const TextStyle(
-                                                color: gray,
-                                                fontSize: 13,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Visibility(
-                                        visible: attendance.clockOutAt != null,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            const Icon(
-                                              Icons.access_time_filled,
-                                              color: primaryBlue,
-                                              size: 20,
-                                            ),
-                                            const SizedBox(width: 15),
-                                            Text(
-                                              attendance.formattedClockOut ??
-                                                  "??/??/??/ | ??:??",
-                                              style: const TextStyle(
-                                                color: primaryBlue,
-                                                fontSize: 13,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Expanded(
-                                              child: Text(
-                                                attendance
-                                                        .clockedOutLocationType ??
-                                                    "",
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  color: gray,
-                                                  fontSize: 13,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: const Icon(
-                                    Icons.navigate_next,
-                                    color: gray,
-                                    size: 20,
-                                  ),
+                                child: Column(
+                                  children: [
+                                    listItem(
+                                      attendance.formattedClockIn ??
+                                          "??/??/??/ | ??:??",
+                                      attendance.clockedInLocationType ==
+                                          'Within Vicinity',
+                                      "IN",
+                                    ),
+                                    const SizedBox(height: 10),
+                                    listItem(
+                                      attendance.formattedClockOut ??
+                                          "??/??/??/ | ??:??",
+                                      attendance.clockedInLocationType ==
+                                          'Within Vicinity',
+                                      "OUT",
+                                    ),
+                                  ],
                                 ),
                               );
                             },
@@ -232,6 +165,52 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget listItem(String dateTime, bool inOut, String clockType) {
+    return Row(
+      children: [
+        const SizedBox(width: 20),
+        Container(
+          width: Get.width * .48,
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          decoration: BoxDecoration(
+              // border: Border.all(color: lightGray),
+              borderRadius: BorderRadius.circular(5)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                clockType,
+                style: const TextStyle(
+                  color: gray,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
+              ),
+              Text(
+                dateTime,
+                style: const TextStyle(
+                  color: gray,
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 25),
+        ColorFiltered(
+          colorFilter: ColorFilter.mode(
+              inOut ? colorSuccess : colorError, BlendMode.srcIn),
+          child: SvgPicture.asset(
+            inOut
+                ? "assets/svg/within_vicinity.svg"
+                : "assets/svg/outside_vicinity.svg",
+            height: 25,
+          ),
+        ),
+      ],
     );
   }
 }
