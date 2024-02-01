@@ -32,7 +32,11 @@ class _CreatePinState extends State<CreatePin> {
         PinInput(
           pinController: confirmPinController,
           label: "Confirm PIN",
-          validation: (p0) {},
+          validation: (value) {
+            if (pinController.text != value) {
+              return 'PIN not match';
+            }
+          },
         ),
         const SizedBox(height: 40),
         Align(

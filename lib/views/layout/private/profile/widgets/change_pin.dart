@@ -70,7 +70,11 @@ class _ChangePinState extends State<ChangePin> {
                   pinController: _confirmPin,
                   label: '',
                   hasShadow: true,
-                  validation: (p0) {},
+                  validation: (value) {
+                    if (_newPin.text != value) {
+                      return 'PIN not match';
+                    }
+                  },
                 ),
                 const SizedBox(height: 40),
               ],

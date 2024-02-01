@@ -346,6 +346,7 @@ class CreatePasswordController extends GetxController {
               okButtonBGColor: bgPrimaryBlue,
             ),
           );
+          isForgotPin.value = false;
           Get.offNamed("/pin_login");
         } else {
           animateToThirdPage();

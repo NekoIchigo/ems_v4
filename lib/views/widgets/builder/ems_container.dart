@@ -35,7 +35,7 @@ class _EMSContainerState extends State<EMSContainer> {
               ),
             ),
             Positioned(
-              bottom: 0, //MediaQuery.of(context).viewInsets.bottom,
+              top: Get.height * .12, //MediaQuery.of(context).viewInsets.bottom,
               right: 0,
               left: 0,
               child: Center(

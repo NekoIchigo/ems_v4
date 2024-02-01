@@ -22,6 +22,14 @@ class _CreatePasswordState extends State<CreatePassword> {
       TextEditingController();
 
   @override
+  void initState() {
+    _createPasswordController.password.value = '';
+    _createPasswordController.confirmPassword.value = '';
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
