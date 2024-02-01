@@ -1,10 +1,10 @@
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/utils/map_luncher.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomeInfoPage extends StatefulWidget {
   const HomeInfoPage({super.key});
@@ -16,6 +16,8 @@ class HomeInfoPage extends StatefulWidget {
 class _HomeInfoPageState extends State<HomeInfoPage> {
   final AuthService _authViewService = Get.find<AuthService>();
   final HomeController _homeController = Get.find<HomeController>();
+  final MapLuncher _mapLuncher = MapLuncher();
+
   final List<bool> _isSelected = [false];
   bool _isNotButtonDisable = false;
 
@@ -24,34 +26,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
     'Office/site visit',
     'Work from home'
   ];
-
-  Future<void> _launchInBrowser() async {
-    // const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
-    const String baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
-
-    String destinationLat =
-        _authViewService.employee.value.employeeDetails.location.latitude;
-    String destinationLong =
-        _authViewService.employee.value.employeeDetails.location.longitude;
-
-    String? originLat;
-    String? originLong;
-
-    if (_homeController.isClockOut.isTrue) {
-      originLat = _homeController.attendance.value.clockedInLatitude;
-      originLong = _homeController.attendance.value.clockedInLongitude;
-    } else {
-      originLat = _homeController.attendance.value.clockedOutLatitude;
-      originLong = _homeController.attendance.value.clockedOutLongitude;
-    }
-
-    String latLong =
-        "?originLat=$originLat&originLon=$originLong&destinationLat=$destinationLat&destinationLong=$destinationLong";
-
-    if (!await launchUrl(Uri.parse("$baseUrl$latLong"))) {
-      throw Exception('Could not launch $baseUrl$latLong');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +60,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               const SizedBox(height: 8),
               InkWell(
                 onTap: () {
-                  _launchInBrowser();
+                  _mapLuncher.launchMap();
                 },
                 child: const Text(
                   'View Map',

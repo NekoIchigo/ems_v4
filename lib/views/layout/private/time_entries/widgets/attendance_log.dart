@@ -1,12 +1,11 @@
-import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/utils/map_luncher.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AttendanceLog extends StatefulWidget {
   const AttendanceLog({super.key});
@@ -18,20 +17,9 @@ class AttendanceLog extends StatefulWidget {
 class _AttendanceLogState extends State<AttendanceLog> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
-  final HomeController _homeController = Get.find<HomeController>();
   final AuthService _authService = Get.find<AuthService>();
+  final MapLuncher _mapLuncher = MapLuncher();
   bool isClockIn = false;
-
-  Future<void> _launchInBrowser() async {
-    // const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
-    const String baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
-    String latLong = !isClockIn
-        ? "?latitude=${_homeController.attendance.value.clockedOutLatitude}&longitude=${_homeController.attendance.value.clockedOutLongitude}"
-        : "?latitude=${_homeController.attendance.value.clockedInLatitude}&longitude=${_homeController.attendance.value.clockedInLongitude}";
-    if (!await launchUrl(Uri.parse("$baseUrl$latLong"))) {
-      throw Exception('Could not launch $baseUrl$latLong');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +94,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                             setState(() {
                               isClockIn = true;
                             });
-                            _launchInBrowser();
+                            _mapLuncher.launchMap();
                           },
                           child: const Text(
                             "View Map",
@@ -236,7 +224,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                               setState(() {
                                 isClockIn = false;
                               });
-                              _launchInBrowser();
+                              _mapLuncher.launchMap();
                             },
                             child: const Text(
                               "View Map",
