@@ -29,9 +29,25 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
     // const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
     const String baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
 
-    String latLong = _homeController.isClockOut.isTrue
-        ? "?latitude=${_homeController.attendance.value.clockedOutLatitude}&longitude=${_homeController.attendance.value.clockedOutLongitude}"
-        : "?latitude=${_homeController.attendance.value.clockedInLatitude}&longitude=${_homeController.attendance.value.clockedInLongitude}";
+    String destinationLat =
+        _authViewService.employee.value.employeeDetails.location.latitude;
+    String destinationLong =
+        _authViewService.employee.value.employeeDetails.location.longitude;
+
+    String? originLat;
+    String? originLong;
+
+    if (_homeController.isClockOut.isTrue) {
+      originLat = _homeController.attendance.value.clockedInLatitude;
+      originLong = _homeController.attendance.value.clockedInLongitude;
+    } else {
+      originLat = _homeController.attendance.value.clockedOutLatitude;
+      originLong = _homeController.attendance.value.clockedOutLongitude;
+    }
+
+    String latLong =
+        "?originLat=$originLat&originLon=$originLong&destinationLat=$destinationLat&destinationLong=$destinationLong";
+
     if (!await launchUrl(Uri.parse("$baseUrl$latLong"))) {
       throw Exception('Could not launch $baseUrl$latLong');
     }
@@ -71,7 +87,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               InkWell(
                 onTap: () {
                   _launchInBrowser();
-                  // Get.to(() => const PlaceMap());
                 },
                 child: const Text(
                   'View Map',
@@ -91,40 +106,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               const SizedBox(height: 8),
               Visibility(
                 visible: _homeController.isInsideVicinity.isFalse,
-                child:
-                    // DropdownButtonHideUnderline(
-                    //   child: ButtonTheme(
-                    //       alignedDropdown: true,
-                    //       shape: RoundedRectangleBorder(
-                    //         side: BorderSide(color: lightGray, width: 1),
-                    //       ),
-                    //       child: DropdownButton(
-                    //         hint: Text(
-                    //           "Select your reason/purpose here ",
-                    //           style: TextStyle(color: primaryBlue, fontSize: 12),
-                    //         ),
-                    //         items:
-                    //             _list.map<DropdownMenuItem<String>>((String value) {
-                    //           return DropdownMenuItem(
-                    //             value: value,
-                    //             child: Row(
-                    //               children: [
-                    //                 Text(value),
-                    //               ],
-                    //             ),
-                    //           );
-                    //         }).toList(),
-                    //         onChanged: (value) {
-                    //           if (_homeController.isClockOut.isFalse) {
-                    //             _homeController.attendance.value
-                    //                 .clockedInLocationSetting = value!;
-                    //           } else {
-                    //             _homeController.attendance.value
-                    //                 .clockedOutLocationType = value!;
-                    //           }
-                    //         },
-                    //       )
-                    DropdownMenu<String>(
+                child: DropdownMenu<String>(
                   width: Get.width * .710,
                   hintText: "Select your reason/purpose here",
                   textStyle: const TextStyle(color: primaryBlue, fontSize: 12),
