@@ -1,12 +1,9 @@
-import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/json_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,8 +21,6 @@ class TimeEntriesHealthDeclaration extends StatefulWidget {
 
 class _TimeEntriesHealthDeclarationState
     extends State<TimeEntriesHealthDeclaration> {
-  final HomeController _homeController = Get.find<HomeController>();
-  final AuthService _authService = Get.find<AuthService>();
   final JsonUtils _jsonUtils = JsonUtils();
 
   List _symptoms = [];
@@ -35,13 +30,14 @@ class _TimeEntriesHealthDeclarationState
   @override
   void initState() {
     super.initState();
+    print(widget.attendanceRecord.healthCheck);
     _jsonUtils.readJson('assets/json/symptoms.json').then((value) {
       setState(() {
         _symptoms = value['symptoms'];
         if (widget.attendanceRecord.healthCheck != null) {
-          List syptomsArr = widget.attendanceRecord.healthCheck!.split(', ');
           _symptoms.asMap().forEach((index, element) {
-            if (syptomsArr.contains(_symptoms[index]['descriptionEnglish'])) {
+            if (widget.attendanceRecord.healthCheck!
+                .contains(_symptoms[index]['descriptionEnglish'])) {
               checkedSymptoms.add(_symptoms[index]['descriptionEnglish']);
               _symptoms[index]['state'] = true;
             }
@@ -121,7 +117,8 @@ class _TimeEntriesHealthDeclarationState
                               ),
                               child: CheckboxListTile(
                                 activeColor: primaryBlue,
-                                tileColor: darkGray,
+                                tileColor: lightGray,
+                                enabled: false,
                                 contentPadding: const EdgeInsets.all(0),
                                 controlAffinity:
                                     ListTileControlAffinity.leading,
@@ -190,6 +187,7 @@ class _TimeEntriesHealthDeclarationState
                   : Container(),
               TextFormField(
                 controller: temperatureController,
+                readOnly: true,
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [
@@ -197,7 +195,7 @@ class _TimeEntriesHealthDeclarationState
                       RegExp(r'^\d{0,2}\.?\d{0,2}')),
                 ],
                 decoration: const InputDecoration(
-                  labelText: 'Enter your body temperature in degree celsius',
+                  labelText: 'Enter temperature in °C',
                   labelStyle: TextStyle(color: gray),
                   hintText: "--.--",
                   prefixIcon: Icon(
@@ -215,56 +213,17 @@ class _TimeEntriesHealthDeclarationState
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Expanded(child: SizedBox()),
-                  RoundedCustomButton(
-                    onPressed: () {
-                      Get.back();
-                      // context.router.navigate(const HomepageRouter());
-                    },
-                    label: 'Close',
-                    bgColor: darkGray,
-                    radius: 8,
-                    size: Size(Get.width * .4, 40),
-                  ),
-                  const Expanded(child: SizedBox()),
-                  RoundedCustomButton(
-                    onPressed: () {
-                      if (checkedSymptoms.isEmpty ||
-                          temperatureController.text == "") {
-                        EMSDialog(
-                          title: "Oopps",
-                          hasMessage: true,
-                          withCloseButton: true,
-                          hasCustomWidget: false,
-                          message:
-                              "Check a symptoms and enter your current temperature",
-                          type: "error",
-                          buttonNumber: 0,
-                        ).show(context);
-                      } else {
-                        debugPrint(checkedSymptoms.join(", "));
-                        debugPrint(temperatureController.text);
-                        _homeController
-                            .clockIn(
-                          employeeId: _authService.employee.value.id,
-                          healthCheck: checkedSymptoms,
-                          temperature: temperatureController.text,
-                        )
-                            .then((value) {
-                          _homeController.pageName.value = '/home/result';
-                        });
-                      }
-                    },
-                    label: 'Clock In',
-                    bgColor: colorSuccess,
-                    radius: 8,
-                    size: Size(Get.width * .4, 40),
-                  ),
-                  const Expanded(child: SizedBox()),
-                ],
+              Center(
+                child: RoundedCustomButton(
+                  onPressed: () {
+                    Get.back();
+                    // context.router.navigate(const HomepageRouter());
+                  },
+                  label: 'Close',
+                  bgColor: darkGray,
+                  radius: 8,
+                  size: Size(Get.width * .4, 40),
+                ),
               ),
             ],
           ),

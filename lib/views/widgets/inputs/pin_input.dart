@@ -7,12 +7,16 @@ class PinInput extends StatefulWidget {
   final String label;
   final Function(String?) validation;
   final bool? hasShadow;
+  final String? errorText;
+  final bool? obscureText;
   const PinInput({
     super.key,
     required this.pinController,
     required this.label,
     required this.validation,
     this.hasShadow,
+    this.errorText,
+    this.obscureText,
   });
 
   @override
@@ -65,7 +69,7 @@ class _PinInputState extends State<PinInput> {
           children: [
             Text(
               widget.label,
-              style: TextStyle(color: gray),
+              style: const TextStyle(color: gray),
             ),
             const SizedBox(height: 5),
             Directionality(
@@ -73,7 +77,12 @@ class _PinInputState extends State<PinInput> {
               textDirection: TextDirection.ltr,
               child: Pinput(
                 length: 6,
+                obscureText: widget.obscureText ?? false,
                 controller: widget.pinController,
+                forceErrorState: widget.errorText != null,
+                errorText: widget.errorText,
+                errorTextStyle:
+                    const TextStyle(fontSize: 12, color: colorError),
                 focusNode: focusNode,
                 androidSmsAutofillMethod:
                     AndroidSmsAutofillMethod.smsUserConsentApi,

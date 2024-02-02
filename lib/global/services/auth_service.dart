@@ -19,6 +19,7 @@ class AuthService extends GetxService {
   RxBool isLoading = false.obs;
   RxBool autheticated = false.obs;
   RxBool isBioEnabled = false.obs;
+  RxString pinError = ''.obs;
   String? token;
   late Rx<Company> company;
   late Rx<Employee> employee;
@@ -157,7 +158,7 @@ class AuthService extends GetxService {
 
       if (email != null) {
         final response = await apiCall
-            .postRequest({'email': email, 'password': password}, '/pin-auth');
+            .postRequest({'email': email, 'pin': password}, '/pin-auth');
         final result = jsonDecode(response.body);
 
         if (result.containsKey('success') && result['success']) {
@@ -180,6 +181,7 @@ class AuthService extends GetxService {
             Get.offAllNamed('/');
           }
         } else {
+          print(result);
           // Get.dialog(
           //   GetDialog(
           //     title: "Oopps",
@@ -191,6 +193,7 @@ class AuthService extends GetxService {
           //     buttonNumber: 0,
           //   ),
           // );
+          return result['message'];
         }
       } else {
         Get.dialog(

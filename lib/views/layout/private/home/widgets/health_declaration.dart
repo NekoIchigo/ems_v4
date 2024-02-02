@@ -162,7 +162,6 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                                   if (_symptoms[index]["descriptionEnglish"] ==
                                       "Others") {
                                     isOthersCheck = !isOthersCheck;
-                                    print(isOthersCheck);
                                   }
                                   _symptoms[index]["state"] = value;
                                 });
@@ -193,7 +192,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                     RegExp(r'^\d{0,2}\.?\d{0,2}')),
               ],
               decoration: const InputDecoration(
-                labelText: 'Enter temperature',
+                labelText: 'Enter temperature °C',
                 labelStyle: TextStyle(color: lightGray),
                 hintText: "--.--",
                 prefixIcon: Icon(

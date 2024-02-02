@@ -20,6 +20,8 @@ class _ChangePinState extends State<ChangePin> {
   final TextEditingController _newPin = TextEditingController();
   final TextEditingController _confirmPin = TextEditingController();
 
+  String? errorPin;
+
   @override
   Widget build(BuildContext context) {
     return ProfilePageContainer(
@@ -41,6 +43,7 @@ class _ChangePinState extends State<ChangePin> {
                 PinInput(
                   pinController: _currentPin,
                   label: '',
+                  errorText: errorPin,
                   hasShadow: true,
                   validation: (p0) {},
                 ),
@@ -82,13 +85,14 @@ class _ChangePinState extends State<ChangePin> {
           ),
           Center(
             child: RoundedCustomButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_currentPin.text != '') {
-                  _createPasswordController.changePIN(
+                  errorPin = await _createPasswordController.changePIN(
                     _newPin.text,
                     _confirmPin.text,
                     currentpin: _currentPin.text,
                   );
+                  setState(() {});
                 }
               },
               label: 'Update',

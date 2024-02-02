@@ -17,6 +17,9 @@ class _PINLoginState extends State<PINLogin> {
   final AuthService _authService = Get.find<AuthService>();
   final ApiCall apiCall = ApiCall();
   final TextEditingController _passwordController = TextEditingController();
+
+  String? errorText;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +60,8 @@ class _PINLoginState extends State<PINLogin> {
                 PinInput(
                   pinController: _passwordController,
                   label: '',
+                  obscureText: true,
+                  errorText: errorText,
                   validation: (p0) {},
                 ),
                 Row(
@@ -78,9 +83,10 @@ class _PINLoginState extends State<PINLogin> {
                   () => RoundedCustomButton(
                     onPressed: () async {
                       if (_authService.isLoading.isFalse) {
-                        _authService.pinAuth(
+                        errorText = await _authService.pinAuth(
                           _passwordController.text,
                         );
+                        setState(() {});
                       }
                     },
                     isLoading: _authService.isLoading.value,

@@ -359,17 +359,18 @@ class CreatePasswordController extends GetxController {
           animateToThirdPage();
         }
       } else {
-        Get.dialog(
-          GetDialog(
-            title: "Oopps",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Error Create PIN: ${result['message']}",
-            type: "error",
-            buttonNumber: 0,
-          ),
-        );
+        return result['message'];
+        // Get.dialog(
+        //   GetDialog(
+        //     title: "Oopps",
+        //     hasMessage: true,
+        //     withCloseButton: true,
+        //     hasCustomWidget: false,
+        //     message: "Error Create PIN: ${result['message']}",
+        //     type: "error",
+        //     buttonNumber: 0,
+        //   ),
+        // );
       }
     } catch (e) {
       Get.dialog(
