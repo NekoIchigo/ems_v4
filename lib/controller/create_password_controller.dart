@@ -24,8 +24,6 @@ class CreatePasswordController extends GetxController {
   RxString confirmPassword = ''.obs;
   String? _errorText;
   RxBool isForgotPin = false.obs;
-  RxBool inValid = false.obs;
-  RxBool incorrectPassword = false.obs;
 
   final List<Widget> pages = [
     const CreatePassword(),
@@ -274,11 +272,8 @@ class CreatePasswordController extends GetxController {
           animateToSecondPage();
         }
       } else {
-        if (result['message'].contains("current")) {
-          incorrectPassword.value = true;
-        } else {
-          inValid.value = true;
-        }
+        print(result);
+        return result;
         // Get.dialog(
         //   GetDialog(
         //     title: "Oopps",

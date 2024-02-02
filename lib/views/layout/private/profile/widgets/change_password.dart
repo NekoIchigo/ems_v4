@@ -32,7 +32,6 @@ class _ChangePasswordState extends State<ChangePassword> {
   void initState() {
     _createPasswordController.password.value = '';
     _createPasswordController.confirmPassword.value = '';
-
     super.initState();
   }
 
@@ -67,16 +66,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                           _currentPasswordError = null;
                         });
                       },
-                      errorText: _currentPasswordError,
+                      // errorText: _currentPasswordError,
                       validator: (value) {
                         setState(() {
                           if (value == null || value.isEmpty) {
                             _currentPasswordError = 'Please enter a value';
-                          } else if (_createPasswordController
-                              .incorrectPassword.isTrue) {
-                            _currentPasswordError = 'Incorrect Password';
+                          } else if (_currentPasswordError != null) {
+                            _currentPasswordError = _currentPasswordError;
                           }
                         });
+                        return _currentPasswordError;
                       },
                     ),
                   ),
@@ -92,7 +91,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     isPassword: true,
                     textController: _newPassword,
                     labelColor: primaryBlue,
-                    errorText: _newPasswordError,
+                    // errorText: _newPasswordError,
                     onChanged: (value) {
                       setState(() {
                         _newPasswordError = null;
@@ -103,10 +102,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                       setState(() {
                         if (value == null || value.isEmpty) {
                           _newPasswordError = 'Please enter a value';
-                        } else if (_createPasswordController.inValid.isTrue) {
-                          _newPasswordError = 'Invalid new password';
+                        } else if (_newPasswordError != null) {
+                          _newPasswordError = _newPasswordError;
                         }
                       });
+                      return _newPasswordError;
                     },
                   ),
                   const SizedBox(height: 30),
@@ -121,7 +121,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     isPassword: true,
                     textController: _confirmPassword,
                     labelColor: primaryBlue,
-                    errorText: _confirmPasswordError,
+                    // errorText: _confirmPasswordError,
                     onChanged: (value) {
                       setState(() {
                         _confirmPasswordError = null;
@@ -136,6 +136,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           _confirmPasswordError = 'Password not match';
                         }
                       });
+                      return _confirmPasswordError;
                     },
                   ),
                   const SizedBox(height: 30),
@@ -147,13 +148,20 @@ class _ChangePasswordState extends State<ChangePassword> {
           const SizedBox(height: 30),
           Center(
             child: RoundedCustomButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  // If the form is valid, perform any actions here
-                  // _formKey.currentState!.save();
-                  _createPasswordController.createNewPassword(_newPassword.text,
-                      _confirmPassword.text, _currentPassword.text);
+                  var errors =
+                      await _createPasswordController.createNewPassword(
+                          _newPassword.text,
+                          _confirmPassword.text,
+                          _currentPassword.text);
+                  if (errors['message'].contains("current")) {
+                    _currentPasswordError = errors['message'];
+                  } else if (errors.containsKey('errors')) {
+                    _newPasswordError = errors['errors']['password'][0];
+                  }
                 }
+                setState(() {});
               },
               label: 'Update',
               radius: 5,
