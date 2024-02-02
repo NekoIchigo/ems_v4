@@ -20,6 +20,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
   final AuthService authService = Get.find<AuthService>();
   final ProfileController _profileController = Get.find<ProfileController>();
   bool isNotEdit = true;
+  final TextEditingController _name = TextEditingController();
   final TextEditingController _contactNumber = TextEditingController();
   final TextEditingController _email = TextEditingController();
 
@@ -31,6 +32,8 @@ class _PersonalInformationState extends State<PersonalInformation> {
     _contactNumber
         .setText(authService.employee.value.employeeContact.workContactNumber);
     _email.setText(authService.employee.value.employeeContact.email);
+    _name.setText(
+        "${authService.employee.value.firstName} ${authService.employee.value.lastName}");
   }
 
   @override
@@ -106,6 +109,26 @@ class _PersonalInformationState extends State<PersonalInformation> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Name",
+                  style: TextStyle(
+                    color: primaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Input(
+                    validator: (p0) {},
+                    isPassword: false,
+                    disabled: true,
+                    textController: _name,
+                    labelColor: primaryBlue,
+                    icon: Icons.phone_android_rounded,
                   ),
                 ),
                 const SizedBox(height: 10),

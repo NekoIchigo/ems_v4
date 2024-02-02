@@ -65,6 +65,12 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 Get.toNamed("/profile/personal_info");
               },
             ),
+            ProfileListButton(
+              label: 'Employment Details',
+              onPressed: () {
+                Get.toNamed("/profile/employment_details");
+              },
+            ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Change Password',
@@ -98,12 +104,6 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   updateFingerprintState(switchVal);
                 },
               ),
-            ),
-            ProfileListButton(
-              label: 'Employment Details',
-              onPressed: () {
-                Get.toNamed("/profile/employment_details");
-              },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
