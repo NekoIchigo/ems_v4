@@ -19,6 +19,8 @@ class _NewPINState extends State<NewPIN> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  String? errorText;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -44,6 +46,7 @@ class _NewPINState extends State<NewPIN> {
               PinInput(
                 pinController: _passwordController,
                 label: '',
+                errorText: errorText,
                 hasShadow: true,
                 validation: (p0) {},
               ),
@@ -69,10 +72,13 @@ class _NewPINState extends State<NewPIN> {
             isLoading: _createPasswordController.isLoading.value,
             onPressed: () async {
               _createPasswordController.isForgotPin.value = true;
-              _createPasswordController.changePIN(
+              var error = await _createPasswordController.changePIN(
                 _passwordController.text,
                 _confirmPasswordController.text,
               );
+
+              errorText = error['message'];
+              setState(() {});
             },
             label: _createPasswordController.isLoading.isTrue
                 ? "Submitting..."

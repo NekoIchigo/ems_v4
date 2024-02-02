@@ -17,6 +17,8 @@ class _OTPInputPageState extends State<OTPInputPage> {
   final CreatePasswordController _passwordController =
       Get.find<CreatePasswordController>();
 
+  String? otpError;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,13 +39,17 @@ class _OTPInputPageState extends State<OTPInputPage> {
             pinController: _otpController,
             label: '',
             validation: (p0) {},
+            errorText: otpError,
           ),
           const SizedBox(height: 20),
           Obx(
             () => RoundedCustomButton(
-              onPressed: () {
-                _passwordController.verifyOTP(_otpController.text);
+              onPressed: () async {
+                var error =
+                    await _passwordController.verifyOTP(_otpController.text);
                 // _passwordController.animateToThirdPage();
+                otpError = error['message'];
+                setState(() {});
               },
               isLoading: _passwordController.isLoading.value,
               label:
