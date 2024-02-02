@@ -155,17 +155,18 @@ class CreatePasswordController extends GetxController {
       if (result.containsKey('success') && result['success']) {
         animateToThirdPage();
       } else {
-        Get.dialog(
-          GetDialog(
-            title: "Oopps",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Error OTP: ${result['messages']}",
-            type: "error",
-            buttonNumber: 0,
-          ),
-        );
+        // Get.dialog(
+        //   GetDialog(
+        //     title: "Oopps",
+        //     hasMessage: true,
+        //     withCloseButton: true,
+        //     hasCustomWidget: false,
+        //     message: "Error OTP: ${result['message']}",
+        //     type: "error",
+        //     buttonNumber: 0,
+        //   ),
+        // );
+        return result;
       }
     } catch (e) {
       Get.dialog(
@@ -359,7 +360,7 @@ class CreatePasswordController extends GetxController {
           animateToThirdPage();
         }
       } else {
-        return result['message'];
+        return result;
         // Get.dialog(
         //   GetDialog(
         //     title: "Oopps",
