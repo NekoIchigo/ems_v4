@@ -21,19 +21,35 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   final AuthService _authService = Get.find<AuthService>();
 
   final List _list = [
-    {'month': 1, 'label': 'Last month'},
-    {'month': 6, 'label': 'Last 6 months'},
-    {'month': 12, 'label': 'Last 12 months'},
-    {'month': 24, 'label': 'Last 24 months'},
-    {'month': 0, 'label': 'Custom date range'},
+    {'day': 1, 'label': 'Today'},
+    {'day': 7, 'label': 'Last 7 days'},
+    {'day': 30, 'label': 'Last 30 days'},
+    {'day': 90, 'label': 'Last 3 months'},
+    {'day': 0, 'label': 'Custom date range'},
   ];
+
+  ScrollController _scrollController = ScrollController();
 
   late Object dropdownValue;
   @override
   void initState() {
     super.initState();
     dropdownValue = _list[0];
+    _scrollController.addListener(_scrollListener);
     // _timeEntriesController.hasClose.value = false;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _timeEntriesController.getNextListPage();
+    }
   }
 
   @override
@@ -53,7 +69,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
               margin: const EdgeInsets.symmetric(vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: bgSecondaryBlue,
+                color: Colors.white,
+                border: Border.all(color: lightGray),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: DropdownButtonHideUnderline(
@@ -64,25 +81,27 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                   //   style: TextStyle(color: Colors.white),
                   // ),
                   value: dropdownValue,
-                  dropdownColor: bgSecondaryBlue,
+                  dropdownColor: Colors.white,
                   elevation: 16,
                   isExpanded: true,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: gray),
                   onChanged: (value) async {
-                    if (value["month"] == 0) {
-                      List dates = await Get.bottomSheet(
+                    if (value["day"] == 0) {
+                      List? dates = await Get.bottomSheet(
                         const CustomDateBottomsheet(type: "range"),
                       );
-                      _timeEntriesController.getAttendanceList(
-                        employeeId: _authService.employee.value.id,
-                        months: value["month"],
-                        startDate: dates[0],
-                        endDate: dates[1],
-                      );
+                      if (dates != null) {
+                        _timeEntriesController.getAttendanceList(
+                          employeeId: _authService.employee.value.id,
+                          days: value["day"],
+                          startDate: dates[0],
+                          endDate: dates[1],
+                        );
+                      }
                     } else {
                       _timeEntriesController.getAttendanceList(
                         employeeId: _authService.employee.value.id,
-                        months: value["month"],
+                        days: value["day"],
                       );
                     }
                     setState(() {
@@ -94,8 +113,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                       value: value,
                       child: Row(
                         children: [
-                          const Icon(Icons.date_range_rounded,
-                              color: Colors.white),
+                          const Icon(Icons.date_range_rounded, color: gray),
                           const SizedBox(width: 10),
                           Text(value['label']),
                         ],
@@ -112,7 +130,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                     ? const ListShimmer(listLength: 10)
                     : _timeEntriesController.attendances.isNotEmpty
                         ? ListView.builder(
-                            // TODO : paginate every scroll
+                            controller: _scrollController,
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             physics: const BouncingScrollPhysics(),
                             itemCount:
@@ -147,15 +165,14 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       "IN",
                                     ),
                                     const SizedBox(height: 10),
-                                    Visibility(
-                                      visible: attendance.clockOutAt != null,
-                                      child: listItem(
-                                        attendance.formattedClockOut ??
-                                            "??/??/??/ | ??:??",
-                                        attendance.clockedInLocationType ==
-                                            'Within Vicinity',
-                                        "OUT",
-                                      ),
+                                    listItem(
+                                      attendance.clockOutAt != null
+                                          ? attendance.formattedClockOut ??
+                                              "No Record"
+                                          : "No Record",
+                                      attendance.clockedInLocationType ==
+                                          'Within Vicinity',
+                                      "OUT",
                                     ),
                                   ],
                                 ),
@@ -188,24 +205,36 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                   fontSize: 13,
                 ),
               ),
-              Text(
-                dateTime,
-                style: const TextStyle(
-                  color: gray,
-                  fontSize: 13,
-                ),
-              ),
+              dateTime != "No Record"
+                  ? Text(
+                      dateTime,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        color: gray,
+                        fontSize: 13,
+                      ),
+                    )
+                  : Expanded(
+                      child: Row(
+                      children: [
+                        SizedBox(width: Get.width * .105),
+                        const Text("No record", style: TextStyle(color: gray)),
+                      ],
+                    )),
             ],
           ),
         ),
-        ColorFiltered(
-          colorFilter: ColorFilter.mode(
-              inOut ? colorSuccess : colorError, BlendMode.srcIn),
-          child: SvgPicture.asset(
-            inOut
-                ? "assets/svg/within_vicinity.svg"
-                : "assets/svg/outside_vicinity.svg",
-            height: 25,
+        Visibility(
+          visible: dateTime != "No Record",
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(
+                inOut ? colorSuccess : colorError, BlendMode.srcIn),
+            child: SvgPicture.asset(
+              inOut
+                  ? "assets/svg/within_vicinity.svg"
+                  : "assets/svg/outside_vicinity.svg",
+              height: 25,
+            ),
           ),
         ),
       ],

@@ -74,14 +74,14 @@ class _TimeEntriesListState extends State<TimeEntriesList> {
                       );
                       _timeEntriesController.getAttendanceList(
                         employeeId: _authService.employee.value.id,
-                        months: value["month"],
+                        days: value["month"],
                         startDate: dates[0],
                         endDate: dates[1],
                       );
                     } else {
                       _timeEntriesController.getAttendanceList(
                         employeeId: _authService.employee.value.id,
-                        months: value["month"],
+                        days: value["month"],
                       );
                     }
                     setState(() {

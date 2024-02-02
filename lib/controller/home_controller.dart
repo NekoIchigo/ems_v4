@@ -222,7 +222,7 @@ class HomeController extends GetxController {
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         _timeEntriesController.getAttendanceList(
-            employeeId: _authService.employee.value.id, months: 1);
+            employeeId: _authService.employee.value.id, days: 1);
         checkNewShift(employeeId: _authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
@@ -268,7 +268,7 @@ class HomeController extends GetxController {
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         _timeEntriesController.getAttendanceList(
-            employeeId: _authService.employee.value.id, months: 1);
+            employeeId: _authService.employee.value.id, days: 1);
         checkNewShift(employeeId: _authService.employee.value.id);
       } else {
         Get.dialog(GetDialog(
