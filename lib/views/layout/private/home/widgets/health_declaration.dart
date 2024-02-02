@@ -192,7 +192,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                     RegExp(r'^\d{0,2}\.?\d{0,2}')),
               ],
               decoration: const InputDecoration(
-                labelText: 'Enter temperature °C',
+                labelText: 'Enter temperature in °C',
                 labelStyle: TextStyle(color: lightGray),
                 hintText: "--.--",
                 prefixIcon: Icon(
