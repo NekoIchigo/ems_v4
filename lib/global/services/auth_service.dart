@@ -181,7 +181,6 @@ class AuthService extends GetxService {
             Get.offAllNamed('/');
           }
         } else {
-          print(result);
           // Get.dialog(
           //   GetDialog(
           //     title: "Oopps",
