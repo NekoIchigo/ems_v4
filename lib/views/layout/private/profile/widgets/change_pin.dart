@@ -21,6 +21,8 @@ class _ChangePinState extends State<ChangePin> {
   final TextEditingController _confirmPin = TextEditingController();
 
   String? errorPin;
+  String? currentPin;
+  bool isCurrentEmpty = true;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +45,12 @@ class _ChangePinState extends State<ChangePin> {
                 PinInput(
                   pinController: _currentPin,
                   label: '',
-                  errorText: errorPin,
+                  errorText: currentPin,
                   hasShadow: true,
+                  onChanged: (p0) {
+                    isCurrentEmpty = false;
+                    setState(() {});
+                  },
                   validation: (p0) {},
                 ),
                 const SizedBox(height: 30),
@@ -56,7 +62,9 @@ class _ChangePinState extends State<ChangePin> {
                   ),
                 ),
                 PinInput(
+                  readOnly: isCurrentEmpty,
                   pinController: _newPin,
+                  errorText: errorPin,
                   label: '',
                   hasShadow: true,
                   validation: (p0) {},
@@ -71,6 +79,7 @@ class _ChangePinState extends State<ChangePin> {
                 ),
                 PinInput(
                   pinController: _confirmPin,
+                  readOnly: isCurrentEmpty,
                   label: '',
                   hasShadow: true,
                   validation: (value) {
@@ -87,11 +96,17 @@ class _ChangePinState extends State<ChangePin> {
             child: RoundedCustomButton(
               onPressed: () async {
                 if (_currentPin.text != '') {
-                  errorPin = await _createPasswordController.changePIN(
+                  var error = await _createPasswordController.changePIN(
                     _newPin.text,
                     _confirmPin.text,
                     currentpin: _currentPin.text,
                   );
+                  print(error);
+                  if (error.containsKey('errors')) {
+                    errorPin = error['errors']['pin'][0];
+                  } else {
+                    currentPin = error['message'];
+                  }
                   setState(() {});
                 }
               },

@@ -9,6 +9,8 @@ class PinInput extends StatefulWidget {
   final bool? hasShadow;
   final String? errorText;
   final bool? obscureText;
+  final bool? readOnly;
+  final Function(String)? onChanged;
   const PinInput({
     super.key,
     required this.pinController,
@@ -17,6 +19,8 @@ class PinInput extends StatefulWidget {
     this.hasShadow,
     this.errorText,
     this.obscureText,
+    this.readOnly,
+    this.onChanged,
   });
 
   @override
@@ -76,6 +80,7 @@ class _PinInputState extends State<PinInput> {
               // Specify direction if desired
               textDirection: TextDirection.ltr,
               child: Pinput(
+                readOnly: widget.readOnly ?? false,
                 length: 6,
                 obscureText: widget.obscureText ?? false,
                 controller: widget.pinController,
@@ -100,9 +105,7 @@ class _PinInputState extends State<PinInput> {
                 onCompleted: (pin) {
                   debugPrint('onCompleted: $pin');
                 },
-                onChanged: (value) {
-                  debugPrint('onChanged: $value');
-                },
+                onChanged: widget.onChanged,
                 cursor: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
