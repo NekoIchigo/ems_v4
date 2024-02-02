@@ -84,6 +84,15 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                     _authService.employee.value.employeeDetails.dateHired,
                     style: const TextStyle(color: gray),
                   ),
+                  const SizedBox(height: 30),
+                  const Text(
+                    "Employee ID",
+                    style: TextStyle(color: primaryBlue),
+                  ),
+                  Text(
+                    _authService.employee.value.employeeDetails.employeeNumber,
+                    style: const TextStyle(color: gray),
+                  ),
                 ],
               ),
             ),
