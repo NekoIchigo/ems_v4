@@ -46,13 +46,18 @@ class _BiometricsPageState extends State<BiometricsPage> {
                   ),
                 ),
                 const SizedBox(width: 5),
-                Switch(
-                  value: _switch,
-                  onChanged: (value) {
-                    setState(() {
-                      _switch = value;
-                    });
-                  },
+                SizedBox(
+                  width: 40,
+                  child: FittedBox(
+                    child: Switch(
+                      value: _switch,
+                      onChanged: (value) {
+                        setState(() {
+                          _switch = value;
+                        });
+                      },
+                    ),
+                  ),
                 )
               ],
             ),

@@ -87,15 +87,20 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 });
                 updateFingerprintState(switchVal);
               },
-              leading: Switch(
-                value: switchVal,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (value) {
-                  setState(() {
-                    switchVal = value;
-                  });
-                  updateFingerprintState(switchVal);
-                },
+              leading: SizedBox(
+                width: 40,
+                child: FittedBox(
+                  child: Switch(
+                    value: switchVal,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    onChanged: (value) {
+                      setState(() {
+                        switchVal = value;
+                      });
+                      updateFingerprintState(switchVal);
+                    },
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 5),

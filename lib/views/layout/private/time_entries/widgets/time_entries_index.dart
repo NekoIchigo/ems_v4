@@ -193,11 +193,11 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: Get.width * .55,
+          width: Get.width * .68,
           child: Row(
             children: [
               SizedBox(
-                width: 30,
+                width: 50,
                 child: Text(
                   clockType,
                   style: const TextStyle(
