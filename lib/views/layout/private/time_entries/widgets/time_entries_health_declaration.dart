@@ -256,7 +256,7 @@ class _TimeEntriesHealthDeclarationState
                     // context.router.navigate(const HomepageRouter());
                   },
                   label: 'Close',
-                  bgColor: darkGray,
+                  bgColor: gray,
                   radius: 8,
                   size: Size(Get.width * .4, 40),
                 ),
