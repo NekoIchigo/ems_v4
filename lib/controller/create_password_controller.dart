@@ -208,17 +208,7 @@ class CreatePasswordController extends GetxController {
         );
         Get.offNamed("/login");
       } else {
-        Get.dialog(
-          GetDialog(
-            title: "Oopps",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Error New Password: ${result['errorMessages']}",
-            type: "error",
-            buttonNumber: 0,
-          ),
-        );
+        return result;
       }
     } catch (e) {
       Get.dialog(

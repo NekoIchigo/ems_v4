@@ -4,6 +4,7 @@ import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
+import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -25,23 +26,31 @@ class _TimeEntriesHealthDeclarationState
 
   List _symptoms = [];
   List checkedSymptoms = [];
-  TextEditingController temperatureController = TextEditingController();
+  final TextEditingController temperatureController = TextEditingController();
+  final TextEditingController _otherSymptom = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    print(widget.attendanceRecord.healthCheck);
+
     _jsonUtils.readJson('assets/json/symptoms.json').then((value) {
       setState(() {
         _symptoms = value['symptoms'];
         if (widget.attendanceRecord.healthCheck != null) {
-          _symptoms.asMap().forEach((index, element) {
-            if (widget.attendanceRecord.healthCheck!
-                .contains(_symptoms[index]['descriptionEnglish'])) {
-              checkedSymptoms.add(_symptoms[index]['descriptionEnglish']);
-              _symptoms[index]['state'] = true;
-            }
-          });
+          _symptoms.asMap().forEach(
+            (index, element) {
+              if (widget.attendanceRecord.healthCheck!
+                  .contains(_symptoms[index]['descriptionEnglish'])) {
+                checkedSymptoms.add(_symptoms[index]['descriptionEnglish']);
+                _symptoms[index]['state'] = true;
+              }
+            },
+          );
+          if (widget.attendanceRecord.healthCheck!.contains("Others")) {
+            List tempArr = widget.attendanceRecord.healthCheck!.split(', ');
+
+            _otherSymptom.setText(tempArr[tempArr.length - 1]);
+          }
         }
         temperatureController
             .setText(widget.attendanceRecord.healthTemperature ?? "37.0");
@@ -185,34 +194,61 @@ class _TimeEntriesHealthDeclarationState
                       ),
                     )
                   : Container(),
-              TextFormField(
-                controller: temperatureController,
-                readOnly: true,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(
-                      RegExp(r'^\d{0,2}\.?\d{0,2}')),
-                ],
-                decoration: const InputDecoration(
-                  labelText: 'Enter temperature in °C',
-                  labelStyle: TextStyle(color: gray),
-                  hintText: "--.--",
-                  prefixIcon: Icon(
-                    Icons.thermostat_sharp,
-                    color: darkGray,
-                  ),
-                  hintStyle: TextStyle(color: gray),
-                  contentPadding: EdgeInsets.all(0),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: gray),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    gapPadding: 0.0,
-                    borderSide: BorderSide(color: primaryBlue),
+              Visibility(
+                visible: true,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: Input(
+                    disabled: true,
+                    validator: (p0) {},
+                    isPassword: false,
+                    textController: _otherSymptom,
+                    hintText: 'Other symptoms',
                   ),
                 ),
               ),
+              Input(
+                isPassword: false,
+                disabled: true,
+                textController: temperatureController,
+                validator: (p0) {},
+                prefixIcon: const Icon(
+                  Icons.thermostat_rounded,
+                  color: gray,
+                ),
+              ),
+              // TextFormField(
+              //   controller: temperatureController,
+              //   readOnly: true,
+              //   keyboardType:
+              //       const TextInputType.numberWithOptions(decimal: true),
+              //   inputFormatters: [
+              //     FilteringTextInputFormatter.allow(
+              //         RegExp(r'^\d{0,2}\.?\d{0,2}')),
+              //   ],
+              //   decoration: const InputDecoration(
+              //     labelText: 'Enter temperature in °C',
+              //     labelStyle: TextStyle(color: gray),
+              //     hintText: "--.--",
+              //     fillColor: gray,
+              //     prefixIcon: Icon(
+              //       Icons.thermostat_sharp,
+              //       color: gray,
+              //     ),
+              //     hintStyle: TextStyle(color: gray),
+              //     contentPadding: EdgeInsets.all(0),
+              //     enabledBorder: OutlineInputBorder(
+              //       borderSide: BorderSide(color: lightGray),
+              //     ),
+              //     border: OutlineInputBorder(
+              //       borderSide: BorderSide(color: gray),
+              //     ),
+              //     focusedBorder: OutlineInputBorder(
+              //       gapPadding: 0.0,
+              //       borderSide: BorderSide(color: primaryBlue),
+              //     ),
+              //   ),
+              // ),
               Center(
                 child: RoundedCustomButton(
                   onPressed: () {

@@ -6,7 +6,6 @@ import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ProfileContainer extends StatefulWidget {
   const ProfileContainer({super.key});
@@ -19,12 +18,6 @@ class _ProfileContainerState extends State<ProfileContainer> {
   late SharedPreferences _localStorage;
   final AuthService authService = Get.find<AuthService>();
   bool switchVal = true;
-
-  Future<void> _launchInBrowser(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
-    }
-  }
 
   @override
   initState() {
@@ -142,11 +135,13 @@ class _ProfileContainerState extends State<ProfileContainer> {
     _localStorage.setBool('auth_biometrics', value);
     Get.dialog(
       barrierDismissible: false,
-      const GetDialog(
+      GetDialog(
         type: 'success',
         title: 'Success',
         hasMessage: true,
-        message: "You can now log in using your fingerprint.",
+        message: value
+            ? "You can now log in using your fingerprint."
+            : "Your fingerprint login has been successfully disabled.",
         buttonNumber: 0,
         hasCustomWidget: false,
         withCloseButton: true,

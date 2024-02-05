@@ -128,7 +128,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     disabled: true,
                     textController: _name,
                     labelColor: primaryBlue,
-                    icon: Icons.phone_android_rounded,
+                    icon: Icons.person,
                   ),
                 ),
                 const SizedBox(height: 10),

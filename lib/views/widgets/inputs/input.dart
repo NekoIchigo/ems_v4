@@ -14,6 +14,7 @@ class Input extends StatefulWidget {
   final bool? hasFocus;
   final Function(String)? onChanged;
   final Function(String?) validator;
+  final Widget? prefixIcon;
 
   const Input({
     super.key,
@@ -29,6 +30,7 @@ class Input extends StatefulWidget {
     this.onChanged,
     this.hintText,
     required this.validator,
+    this.prefixIcon,
   });
 
   @override
@@ -79,7 +81,8 @@ class _InputState extends State<Input> {
               borderRadius: BorderRadius.circular(5),
             ),
             labelText: widget.hintText,
-            labelStyle: const TextStyle(color: lightGray),
+            labelStyle: const TextStyle(color: gray),
+            prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? InkWell(
                     onTap: _togglePasswordView,

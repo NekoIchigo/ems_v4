@@ -20,6 +20,9 @@ class _NewPasswordState extends State<NewPassword> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  String? passwordError;
+  String? confrimPasswordError;
+
   @override
   void initState() {
     _createPasswordController.password.value = '';
@@ -45,12 +48,16 @@ class _NewPasswordState extends State<NewPassword> {
           ),
           const SizedBox(height: 40),
           FloatingInput(
+            errorText: passwordError,
             label: 'New password',
             isPassword: true,
             textController: _passwordController,
             icon: Icons.visibility,
             onChanged: (value) {
               _createPasswordController.password.value = value;
+              setState(() {
+                passwordError = null;
+              });
             },
             validator: (p0) {},
           ),
@@ -70,10 +77,15 @@ class _NewPasswordState extends State<NewPassword> {
           RoundedCustomButton(
             isLoading: _createPasswordController.isLoading.value,
             onPressed: () async {
-              _createPasswordController.setNewPassword(
+              var error = await _createPasswordController.setNewPassword(
                 _createPasswordController.password.value,
                 _createPasswordController.confirmPassword.value,
               );
+              passwordError = error['errors']['password'][0];
+              // if (_passwordController.text != _confirmPasswordController.text) {
+              //   confrimPasswordError = 'Password not match';
+              // }
+              setState(() {});
             },
             label: _createPasswordController.isLoading.isTrue
                 ? "Submitting..."

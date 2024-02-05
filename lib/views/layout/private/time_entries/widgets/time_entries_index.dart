@@ -195,32 +195,27 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
         SizedBox(
           width: Get.width * .55,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                clockType,
-                style: const TextStyle(
-                  color: gray,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
+              SizedBox(
+                width: 30,
+                child: Text(
+                  clockType,
+                  style: const TextStyle(
+                    color: gray,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 ),
               ),
-              dateTime != "No Record"
-                  ? Text(
-                      dateTime,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        color: gray,
-                        fontSize: 13,
-                      ),
-                    )
-                  : Expanded(
-                      child: Row(
-                      children: [
-                        SizedBox(width: Get.width * .105),
-                        const Text("No record", style: TextStyle(color: gray)),
-                      ],
-                    )),
+              const SizedBox(width: 50),
+              Text(
+                dateTime,
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                  color: gray,
+                  fontSize: 13,
+                ),
+              )
             ],
           ),
         ),

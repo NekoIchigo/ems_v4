@@ -69,7 +69,8 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         const SizedBox(width: 50),
                         Flexible(
                           child: Text(
-                            _authService.company.value.name,
+                            _authService
+                                .employee.value.employeeDetails.location.name,
                             style: const TextStyle(
                               color: primaryBlue,
                               fontSize: 13,

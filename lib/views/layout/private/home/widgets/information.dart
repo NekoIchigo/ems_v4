@@ -240,8 +240,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       ),
                       TextSpan(
                           text: _homeController.isClockOut.isFalse
-                              ? 'Clock In '
-                              : 'Clock Out '),
+                              ? 'Clock In'
+                              : 'Clock Out'),
                       const TextSpan(
                           text:
                               ', you confirm your location and affirm your health condition.')
