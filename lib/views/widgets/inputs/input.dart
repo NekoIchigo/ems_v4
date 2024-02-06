@@ -81,7 +81,7 @@ class _InputState extends State<Input> {
               borderRadius: BorderRadius.circular(5),
             ),
             labelText: widget.hintText,
-            labelStyle: const TextStyle(color: gray),
+            labelStyle: const TextStyle(color: gray, fontSize: 13),
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? InkWell(

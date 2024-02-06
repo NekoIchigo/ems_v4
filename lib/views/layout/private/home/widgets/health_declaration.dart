@@ -87,89 +87,98 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
             _symptoms.isNotEmpty
                 ? Padding(
                     padding: EdgeInsets.symmetric(vertical: Get.height * .01),
-                    child: ColumnBuilder(
-                      itemCount: _symptoms.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: Get.width * .01),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color(0xFF2465C7),
-                                style: BorderStyle.solid,
-                                width: 0.5,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: lightGray,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ColumnBuilder(
+                        itemCount: _symptoms.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding:
+                                EdgeInsets.symmetric(vertical: Get.width * .01),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: CheckboxListTile(
-                              activeColor: primaryBlue,
-                              side: BorderSide(color: gray, width: 2),
-                              contentPadding: const EdgeInsets.all(0),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              title: Row(
-                                children: [
-                                  Image(
-                                    height: Get.height * .05,
-                                    image: AssetImage(_symptoms[index]["path"]),
-                                  ),
-                                  Flexible(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: Get.width * .02),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            _symptoms[index]
-                                                ["descriptionEnglish"],
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: gray,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2.5),
-                                          Text(
-                                            _symptoms[index]
-                                                ["descriptionTagalog"],
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: gray,
-                                            ),
-                                            textWidthBasis:
-                                                TextWidthBasis.longestLine,
-                                          ),
-                                        ],
-                                      ),
+                              child: CheckboxListTile(
+                                activeColor: primaryBlue,
+                                side: const BorderSide(color: gray, width: 1),
+                                contentPadding: const EdgeInsets.all(0),
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Row(
+                                  children: [
+                                    Image(
+                                      height: 40,
+                                      image:
+                                          AssetImage(_symptoms[index]["path"]),
                                     ),
-                                  )
-                                ],
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: Get.width * .02),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              _symptoms[index]
+                                                  ["descriptionEnglish"],
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: gray,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2.5),
+                                            Text(
+                                              _symptoms[index]
+                                                  ["descriptionTagalog"],
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: gray,
+                                              ),
+                                              textWidthBasis:
+                                                  TextWidthBasis.longestLine,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                value: _symptoms[index]["state"],
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (checkedSymptoms.contains(
+                                        _symptoms[index]
+                                            ["descriptionEnglish"])) {
+                                      checkedSymptoms.remove((_symptoms[index]
+                                          ["descriptionEnglish"]));
+                                    } else {
+                                      checkedSymptoms.add(_symptoms[index]
+                                          ["descriptionEnglish"]);
+                                    }
+                                    if (_symptoms[index]
+                                            ["descriptionEnglish"] ==
+                                        "Others") {
+                                      isOthersCheck = !isOthersCheck;
+                                    }
+                                    _symptoms[index]["state"] = value;
+                                  });
+                                },
                               ),
-                              value: _symptoms[index]["state"],
-                              onChanged: (value) {
-                                setState(() {
-                                  if (checkedSymptoms.contains(
-                                      _symptoms[index]["descriptionEnglish"])) {
-                                    checkedSymptoms.remove((_symptoms[index]
-                                        ["descriptionEnglish"]));
-                                  } else {
-                                    checkedSymptoms.add(
-                                        _symptoms[index]["descriptionEnglish"]);
-                                  }
-                                  if (_symptoms[index]["descriptionEnglish"] ==
-                                      "Others") {
-                                    isOthersCheck = !isOthersCheck;
-                                  }
-                                  _symptoms[index]["state"] = value;
-                                });
-                              },
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   )
                 : Container(),
@@ -193,7 +202,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
               ],
               decoration: const InputDecoration(
                 labelText: 'Enter temperature in °C',
-                labelStyle: TextStyle(color: lightGray),
+                labelStyle: TextStyle(color: lightGray, fontSize: 13),
                 hintText: "--.--",
                 prefixIcon: Icon(
                   Icons.thermostat_sharp,
@@ -262,7 +271,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
               ],
             ),
             Container(
-              height: MediaQuery.of(context).viewInsets.bottom + 30,
+              height: MediaQuery.of(context).viewInsets.bottom + 80,
             ),
           ],
         ),
