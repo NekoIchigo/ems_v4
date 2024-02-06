@@ -88,8 +88,8 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 ? Padding(
                     padding: EdgeInsets.symmetric(vertical: Get.height * .01),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: lightGray,

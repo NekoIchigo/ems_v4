@@ -108,22 +108,21 @@ class _TimeEntriesHealthDeclarationState
               _symptoms.isNotEmpty
                   ? Padding(
                       padding: EdgeInsets.symmetric(vertical: Get.height * .01),
-                      child: ColumnBuilder(
-                        itemCount: _symptoms.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding:
-                                EdgeInsets.symmetric(vertical: Get.width * .01),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color(0xFF2465C7),
-                                  style: BorderStyle.solid,
-                                  width: 0.5,
-                                ),
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: lightGray,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ColumnBuilder(
+                          itemCount: _symptoms.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Get.width * .01),
                               child: CheckboxListTile(
                                 activeColor: primaryBlue,
                                 tileColor: lightGray,
@@ -188,9 +187,9 @@ class _TimeEntriesHealthDeclarationState
                                   });
                                 },
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     )
                   : Container(),
