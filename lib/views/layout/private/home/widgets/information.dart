@@ -53,7 +53,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     _homeController.isInsideVicinity.value
                         ? "assets/images/current_location-pana.png"
                         : "assets/images/current_location-rafiki.png",
-                    width: Get.width * .50,
+                    width: Get.width * .60,
                   ),
                 ),
               ),
@@ -95,8 +95,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       _homeController
                           .attendance.value.clockedInLocationSetting = value!;
                     } else {
-                      _homeController.attendance.value.clockedOutLocationType =
-                          value!;
+                      _homeController
+                          .attendance.value.clockedOutLocationSetting = value!;
                     }
                   },
                   menuStyle: const MenuStyle(
@@ -270,20 +270,22 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     onPressed: () {
                       if (_isNotButtonDisable) {
                         if (_homeController.isClockOut.isFalse) {
+                          if (_homeController.isInsideVicinity.isTrue) {
+                            _homeController
+                                .clockIn(
+                              employeeId: _authViewService.employee.value.id,
+                            )
+                                .then((value) {
+                              _homeController.pageName.value = '/home/result';
+                            });
+                          } else {}
+                        } else if (_homeController.isClockOut.isTrue) {
                           _homeController
-                              .clockIn(
-                            employeeId: _authViewService.employee.value.id,
-                          )
+                              .clockOut(context: context)
                               .then((value) {
                             _homeController.pageName.value = '/home/result';
                           });
                         }
-                      } else if (_homeController.isClockOut.isTrue) {
-                        _homeController
-                            .clockOut(context: context)
-                            .then((value) {
-                          _homeController.pageName.value = '/home/result';
-                        });
                       }
                     },
                     label: _homeController.isClockOut.isTrue

@@ -22,6 +22,15 @@ class _AttendanceLogState extends State<AttendanceLog> {
   bool isClockIn = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(_timeEntriesController
+        .attendances[_timeEntriesController.attendanceIndex.value]
+        .clockedOutLocationSetting);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final AttendanceRecord selectedRecord = _timeEntriesController
         .attendances[_timeEntriesController.attendanceIndex.value];
@@ -90,23 +99,35 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           ),
                         ),
                         const SizedBox(width: 30),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              isClockIn = true;
-                            });
-                            _mapLuncher.launchMap(
-                                attendanceRecord: selectedRecord,
-                                isclockin: true);
-                          },
-                          child: const Text(
-                            "View Map",
-                            style: TextStyle(
-                              color: primaryBlue,
-                              decoration: TextDecoration.underline,
-                              fontSize: 13,
+                        Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isClockIn = true;
+                                });
+                                _mapLuncher.launchMap(
+                                    attendanceRecord: selectedRecord,
+                                    isclockin: true);
+                              },
+                              child: const Text(
+                                "View Map",
+                                style: TextStyle(
+                                  color: primaryBlue,
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 13,
+                                ),
+                              ),
                             ),
-                          ),
+                            Text(
+                              selectedRecord.clockedInLocationSetting ?? "",
+                              style: const TextStyle(
+                                color: primaryBlue,
+                                decoration: TextDecoration.underline,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),
@@ -224,23 +245,35 @@ class _AttendanceLogState extends State<AttendanceLog> {
                             ),
                           ),
                           const SizedBox(width: 30),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                isClockIn = false;
-                              });
-                              _mapLuncher.launchMap(
-                                  attendanceRecord: selectedRecord,
-                                  isclockin: false);
-                            },
-                            child: const Text(
-                              "View Map",
-                              style: TextStyle(
-                                color: primaryBlue,
-                                decoration: TextDecoration.underline,
-                                fontSize: 13,
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isClockIn = true;
+                                  });
+                                  _mapLuncher.launchMap(
+                                      attendanceRecord: selectedRecord,
+                                      isclockin: true);
+                                },
+                                child: const Text(
+                                  "View Map",
+                                  style: TextStyle(
+                                    color: primaryBlue,
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Text(
+                                selectedRecord.clockedOutLocationSetting ?? "",
+                                style: const TextStyle(
+                                  color: primaryBlue,
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
                           )
                         ],
                       ),
