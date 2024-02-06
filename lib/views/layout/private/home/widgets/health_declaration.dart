@@ -261,6 +261,9 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 const Expanded(child: SizedBox()),
               ],
             ),
+            Container(
+              height: MediaQuery.of(context).viewInsets.bottom,
+            ),
           ],
         ),
       ),

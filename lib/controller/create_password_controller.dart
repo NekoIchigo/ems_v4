@@ -206,7 +206,7 @@ class CreatePasswordController extends GetxController {
             okButtonBGColor: bgPrimaryBlue,
           ),
         );
-        Get.offNamed("/login");
+        Get.offAllNamed("/login");
       } else {
         return result;
       }
@@ -257,12 +257,11 @@ class CreatePasswordController extends GetxController {
               okButtonBGColor: bgPrimaryBlue,
             ),
           );
-          Get.offNamed("/login");
+          Get.offAllNamed("/login");
         } else {
           animateToSecondPage();
         }
       } else {
-        print(result);
         return result;
         // Get.dialog(
         //   GetDialog(
@@ -324,7 +323,7 @@ class CreatePasswordController extends GetxController {
               okButtonBGColor: bgPrimaryBlue,
             ),
           );
-          Get.offNamed("/login");
+          Get.offAllNamed("/login");
         } else if (isForgotPin.isTrue) {
           await Get.dialog(
             barrierDismissible: false,
@@ -340,7 +339,7 @@ class CreatePasswordController extends GetxController {
             ),
           );
           isForgotPin.value = false;
-          Get.offNamed("/pin_login");
+          Get.offAllNamed("/pin_login");
         } else {
           animateToThirdPage();
         }
@@ -386,7 +385,24 @@ class CreatePasswordController extends GetxController {
       var result = jsonDecode(response.body);
 
       if (result.containsKey('success') && result['success']) {
-        Get.offNamed('/');
+        await Get.dialog(
+          barrierDismissible: false,
+          GetDialog(
+            type: 'success',
+            title: 'You are all set!',
+            hasMessage: true,
+            message: "Tap the login button to access your account.",
+            buttonNumber: 1,
+            hasCustomWidget: false,
+            withCloseButton: true,
+            okPress: () {
+              Get.back();
+            },
+            okText: 'Log in',
+            okButtonBGColor: bgPrimaryBlue,
+          ),
+        );
+        Get.offAllNamed("/login");
       } else {
         Get.dialog(
           GetDialog(

@@ -50,7 +50,18 @@ class _PINLoginState extends State<PINLogin> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 20),
+                Center(
+                  child: Text(
+                    'Hello, ${_authService.employee.value.firstName}!',
+                    style: const TextStyle(
+                      color: gray,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
                 const Center(
                   child: Text(
                     'Enter your 6-digit PIN',

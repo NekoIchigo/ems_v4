@@ -20,6 +20,7 @@ class AuthService extends GetxService {
   RxBool isLoading = false.obs;
   RxBool autheticated = false.obs;
   RxBool isBioEnabled = false.obs;
+  RxBool hasUser = false.obs;
   RxString pinError = ''.obs;
   String? token;
   late Rx<Company> company;
@@ -46,6 +47,7 @@ class AuthService extends GetxService {
   Future<void> setAuthStatus() async {
     String? userData = _localStorage.getString('user');
     if (userData != null) {
+      hasUser.value = true;
       autheticated.value = true;
       var data = jsonDecode(userData);
       var employeeData = data['employee'];

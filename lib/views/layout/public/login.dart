@@ -129,6 +129,17 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      width: Get.width * .55,
+                      child: const Text(
+                        "By logging in, you agree to our Privacy Policy and Terms of Use.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: gray),
+                      ),
+                    ),
+                  ),
                   Obx(
                     () => RoundedCustomButton(
                       onPressed: () async {
@@ -157,17 +168,22 @@ class _LoginState extends State<Login> {
                       bgColor: bgPrimaryBlue,
                     ),
                   ),
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        Get.toNamed('/pin_login');
-                      },
-                      child: const Text(
-                        'Use PIN',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: gray,
-                          fontSize: 12,
+                  Obx(
+                    () => Visibility(
+                      visible: _authService.hasUser.isTrue,
+                      child: Center(
+                        child: TextButton(
+                          onPressed: () {
+                            Get.toNamed('/pin_login');
+                          },
+                          child: const Text(
+                            'Use PIN',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: gray,
+                              fontSize: 12,
+                            ),
+                          ),
                         ),
                       ),
                     ),
