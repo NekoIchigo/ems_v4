@@ -7,7 +7,7 @@ class EmployeeContact {
   final String email;
   final String houseNumber;
   final String? subdivisionName;
-  final String streetName;
+  final String? streetName;
   final String barangay;
   final String city;
   final String province;
@@ -41,7 +41,7 @@ class EmployeeContact {
       email: json['email'] as String,
       houseNumber: json['house_number'] as String,
       subdivisionName: json['subdivision_name'] as String?,
-      streetName: json['street_name'] as String,
+      streetName: json['street_name'] as String?,
       barangay: json['barangay'] as String,
       city: json['city'] as String,
       province: json['province'] as String,

@@ -41,8 +41,8 @@ class AttendanceRecord {
 
   factory AttendanceRecord.fromJson(Map<String, dynamic> json) {
     return AttendanceRecord(
-      id: json['id'] as int,
-      employeeId: json['employee_id'] as int,
+      id: json['id'] as int?,
+      employeeId: json['employee_id'] as int?,
       clockInAt: json['clock_in_at'] != null
           ? DateTime.parse(json['clock_in_at'] as String)
           : null,

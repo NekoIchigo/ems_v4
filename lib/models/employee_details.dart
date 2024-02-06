@@ -7,22 +7,22 @@ class EmployeeDetails {
   final int employeeId;
   final String employeeNumber;
   final String dateHired;
-  final String skillType;
+  final String? skillType;
   final int employeeTypeId;
   final int employeeStatusId;
   final int companyId;
   final int departmentId;
   final int positionId;
-  final int groupId;
+  final int? groupId;
   final int? costCenterId;
   final String? clientName;
   final int reportsAt;
   final String reportsTo;
-  final String supervisor;
-  final String sssNumber;
-  final String phicNumber;
-  final String hdmfNumber;
-  final String tinNumber;
+  final String? supervisor;
+  final String? sssNumber;
+  final String? phicNumber;
+  final String? hdmfNumber;
+  final String? tinNumber;
   final Position position;
   final Location location;
   final Department department;
@@ -59,22 +59,22 @@ class EmployeeDetails {
       employeeId: json['employee_id'] as int,
       employeeNumber: json['employee_number'] as String,
       dateHired: json['date_hired'] as String,
-      skillType: json['skill_type'] as String,
+      skillType: json['skill_type'] as String?,
       employeeTypeId: json['employee_type_id'] as int,
       employeeStatusId: json['employee_status_id'] as int,
       companyId: json['company_id'] as int,
       departmentId: json['department_id'] as int,
       positionId: json['position_id'] as int,
-      groupId: json['group_id'] as int,
+      groupId: json['group_id'] as int?,
       costCenterId: json['cost_center_id'] as int?,
       clientName: json['client_name'] as String?,
       reportsAt: json['reports_at'] as int,
       reportsTo: json['reports_to'] as String,
-      supervisor: json['supervisor'] as String,
-      sssNumber: json['sss_number'] as String,
-      phicNumber: json['phic_number'] as String,
-      hdmfNumber: json['hdmf_number'] as String,
-      tinNumber: json['tin_number'] as String,
+      supervisor: json['supervisor'] as String?,
+      sssNumber: json['sss_number'] as String?,
+      phicNumber: json['phic_number'] as String?,
+      hdmfNumber: json['hdmf_number'] as String?,
+      tinNumber: json['tin_number'] as String?,
       location: Location.fromJson(json['location']),
       position: Position.fromJson(json['position']),
       department: Department.fromJson(json['department']),

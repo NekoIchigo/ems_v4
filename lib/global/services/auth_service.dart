@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -91,7 +92,7 @@ class AuthService extends GetxService {
       final response = await apiCall
           .postRequest({'email': email, 'password': password}, '/login');
       final result = jsonDecode(response.body);
-
+      log(result['data']['employee']['employee_details'].toString());
       if (result.containsKey('success') && result['success']) {
         autheticated.value = result['success'];
 
