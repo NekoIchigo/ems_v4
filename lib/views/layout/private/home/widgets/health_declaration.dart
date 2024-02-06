@@ -105,7 +105,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                             ),
                             child: CheckboxListTile(
                               activeColor: primaryBlue,
-                              tileColor: lightGray,
+                              side: BorderSide(color: gray, width: 2),
                               contentPadding: const EdgeInsets.all(0),
                               controlAffinity: ListTileControlAffinity.leading,
                               title: Row(
@@ -221,7 +221,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                     // context.router.navigate(const HomepageRouter());
                   },
                   label: 'Close',
-                  bgColor: darkGray,
+                  bgColor: gray,
                   radius: 8,
                   size: Size(Get.width * .4, 40),
                 ),
@@ -262,7 +262,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
               ],
             ),
             Container(
-              height: MediaQuery.of(context).viewInsets.bottom,
+              height: MediaQuery.of(context).viewInsets.bottom + 30,
             ),
           ],
         ),

@@ -5,6 +5,7 @@ import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/pin_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PINLogin extends StatefulWidget {
   const PINLogin({super.key});
@@ -14,6 +15,8 @@ class PINLogin extends StatefulWidget {
 }
 
 class _PINLoginState extends State<PINLogin> {
+  late SharedPreferences _localStorage;
+
   final AuthService _authService = Get.find<AuthService>();
   final ApiCall apiCall = ApiCall();
   final TextEditingController _passwordController = TextEditingController();
@@ -78,7 +81,43 @@ class _PINLoginState extends State<PINLogin> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    const Text(
+                      "Not your account? ",
+                      style: TextStyle(
+                        color: gray,
+                        fontSize: 12,
+                      ),
+                    ),
                     TextButton(
+                      onPressed: () async {
+                        _localStorage = await SharedPreferences.getInstance();
+                        _localStorage.setBool('auth_biometrics', false);
+                        Get.toNamed('/login');
+                      },
+                      style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(0)),
+                      child: const Text(
+                        'Switch now',
+                        style: TextStyle(
+                          color: primaryBlue,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Text(
+                        "|",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: gray,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(0)),
                       onPressed: () {
                         Get.toNamed('/forgot_pin');
                       },

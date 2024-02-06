@@ -79,7 +79,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
               onPressed: () {
                 _createPasswordController.enableBioMetrics(_switch);
               },
-              label: "Next",
+              label: "Submit",
               size: Size(Get.width * .9, 40),
               bgColor: bgPrimaryBlue,
             ),
