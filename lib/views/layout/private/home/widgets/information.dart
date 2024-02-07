@@ -27,6 +27,17 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
     'Work from home'
   ];
 
+  String? reason;
+  String? reasonError;
+
+  @override
+  void initState() {
+    if (_homeController.isClockOut.isTrue) {
+      _isNotButtonDisable = true;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -83,6 +94,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 child: DropdownMenu<String>(
                   width: Get.width * .710,
                   hintText: "Select your reason/purpose here",
+                  errorText: reasonError,
                   textStyle: const TextStyle(color: primaryBlue, fontSize: 12),
                   inputDecorationTheme: const InputDecorationTheme(
                     hintStyle: TextStyle(color: primaryBlue, fontSize: 12),
@@ -91,6 +103,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     ),
                   ),
                   onSelected: (String? value) {
+                    reason = value;
                     if (_homeController.isClockOut.isFalse) {
                       _homeController
                           .attendance.value.clockedInLocationSetting = value!;
@@ -98,6 +111,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       _homeController
                           .attendance.value.clockedOutLocationSetting = value!;
                     }
+                    reasonError = null;
+                    setState(() {});
                   },
                   menuStyle: const MenuStyle(
                     surfaceTintColor: MaterialStatePropertyAll(Colors.white),
@@ -120,114 +135,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 20),
-              Visibility(
-                visible: _homeController.isClockOut.isFalse,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'How are you feeling today?',
-                              style: TextStyle(
-                                color: gray,
-                                fontSize: 13,
-                                // fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ToggleButtons(
-                            borderRadius: BorderRadius.circular(10),
-                            fillColor: Colors.white,
-                            borderColor: lightGray,
-                            selectedBorderColor: primaryBlue,
-                            onPressed: (int index) {
-                              setState(() {
-                                _isSelected[index] = !_isSelected[index];
-                                _isNotButtonDisable = !_isNotButtonDisable;
-                              });
-                            },
-                            isSelected: _isSelected,
-                            children: const [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 14),
-                                child: Column(
-                                  children: [
-                                    Image(
-                                      image:
-                                          AssetImage('assets/images/happy.png'),
-                                      width: 25,
-                                      height: 25,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        "Healthy",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: gray,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 15),
-                          OutlinedButton(
-                            onPressed: () {
-                              _homeController.pageName.value =
-                                  '/home/health_declaration';
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: lightGray),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 2.5),
-                              child: Column(
-                                children: [
-                                  Image(
-                                    image: AssetImage('assets/images/sad.png'),
-                                    width: 25,
-                                    height: 25,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 10),
-                                    child: Text(
-                                      "Sick",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: gray,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              const SizedBox(height: 20),
+              howAreYouFeeling(),
               const SizedBox(height: 20),
               Padding(
                 padding:
@@ -252,59 +161,180 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   style: const TextStyle(color: gray, fontSize: 12),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  RoundedCustomButton(
-                    onPressed: () {
-                      _homeController.isWhite.value = false;
-                      _homeController.pageName.value = '/home';
-                      // Get.back(id: _homeController.routerKey);
-                    },
-                    label: 'Close',
-                    radius: 8,
-                    bgColor: darkGray,
-                    size: Size(Get.width * .4, 40),
-                  ),
-                  RoundedCustomButton(
-                    onPressed: () {
-                      if (_isNotButtonDisable) {
-                        if (_homeController.isClockOut.isFalse) {
-                          if (_homeController.isInsideVicinity.isTrue) {
-                            _homeController
-                                .clockIn(
-                              employeeId: _authViewService.employee.value.id,
-                            )
-                                .then((value) {
-                              _homeController.pageName.value = '/home/result';
-                            });
-                          } else {}
-                        } else if (_homeController.isClockOut.isTrue) {
-                          _homeController
-                              .clockOut(context: context)
-                              .then((value) {
-                            _homeController.pageName.value = '/home/result';
-                          });
-                        }
-                      }
-                    },
-                    label: _homeController.isClockOut.isTrue
-                        ? 'Clock out'
-                        : 'Clock in',
-                    radius: 8,
-                    bgColor: _homeController.isClockOut.isTrue
-                        ? colorError
-                        : _isNotButtonDisable
-                            ? colorSuccess
-                            : lightGray,
-                    size: Size(Get.width * .4, 40),
-                  ),
-                ],
-              )
+              bottomButtons(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget howAreYouFeeling() {
+    return Visibility(
+      visible: _homeController.isClockOut.isFalse,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'How are you feeling today?',
+                    style: TextStyle(
+                      color: gray,
+                      fontSize: 13,
+                      // fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ToggleButtons(
+                  borderRadius: BorderRadius.circular(10),
+                  fillColor: Colors.white,
+                  borderColor: lightGray,
+                  selectedBorderColor: primaryBlue,
+                  onPressed: (int index) {
+                    setState(() {
+                      _isSelected[index] = !_isSelected[index];
+                      _isNotButtonDisable = !_isNotButtonDisable;
+                    });
+                  },
+                  isSelected: _isSelected,
+                  children: const [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+                      child: Column(
+                        children: [
+                          Image(
+                            image: AssetImage('assets/images/happy.png'),
+                            width: 25,
+                            height: 25,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Healthy",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: gray,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 15),
+                OutlinedButton(
+                  onPressed: () {
+                    if (reason != null) {
+                      _homeController.pageName.value =
+                          '/home/health_declaration';
+                    } else {
+                      reasonError = "Reason/pusrpose field is required";
+                    }
+                    setState(() {});
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: lightGray),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 2.5),
+                    child: Column(
+                      children: [
+                        Image(
+                          image: AssetImage('assets/images/sad.png'),
+                          width: 25,
+                          height: 25,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Sick",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: gray,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget bottomButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        RoundedCustomButton(
+          onPressed: () {
+            _homeController.isWhite.value = false;
+            _homeController.pageName.value = '/home';
+            // Get.back(id: _homeController.routerKey);
+          },
+          label: 'Close',
+          radius: 8,
+          bgColor: darkGray,
+          size: Size(Get.width * .4, 40),
+        ),
+        RoundedCustomButton(
+          onPressed: () {
+            if (_isNotButtonDisable) {
+              if (_homeController.isInsideVicinity.isTrue) {
+                clockInOut();
+              } else {
+                if (reason != null) {
+                  clockInOut();
+                } else {
+                  reasonError = "Reason/pusrpose field is required";
+                }
+              }
+            }
+            setState(() {});
+          },
+          label: _homeController.isClockOut.isTrue ? 'Clock out' : 'Clock in',
+          radius: 8,
+          bgColor: _homeController.isClockOut.isTrue
+              ? colorError
+              : _isNotButtonDisable
+                  ? colorSuccess
+                  : lightGray,
+          size: Size(Get.width * .4, 40),
+        ),
+      ],
+    );
+  }
+
+  void clockInOut() {
+    if (_homeController.isClockOut.isFalse) {
+      _homeController.clockIn().then((value) {
+        _homeController.pageName.value = '/home/result';
+      });
+    } else if (_homeController.isClockOut.isTrue) {
+      _homeController.clockOut(context: context).then((value) {
+        _homeController.pageName.value = '/home/result';
+      });
+    }
   }
 }

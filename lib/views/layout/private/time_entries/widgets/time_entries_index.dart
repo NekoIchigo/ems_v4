@@ -170,7 +170,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                           ? attendance.formattedClockOut ??
                                               "No Record"
                                           : "No Record",
-                                      attendance.clockedInLocationType ==
+                                      attendance.clockedOutLocationType ==
                                           'Within Vicinity',
                                       "OUT",
                                     ),

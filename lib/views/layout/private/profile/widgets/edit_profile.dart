@@ -51,9 +51,7 @@ class _EditProfileState extends State<EditProfile>
           ExpansionPanel(
             canTapOnHeader: true,
             headerBuilder: (BuildContext context, bool isExpanded) {
-              return Container(
-                child: Text('Account Settings'),
-              );
+              return const Text('Account Settings');
             },
             body: SlideTransition(
               position: Tween<Offset>(

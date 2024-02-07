@@ -225,7 +225,7 @@ class AuthService extends GetxService {
           Get.offAllNamed('/');
         }
       } on PlatformException catch (e) {
-        print(e);
+        printError(info: e.toString());
       }
     }
   }

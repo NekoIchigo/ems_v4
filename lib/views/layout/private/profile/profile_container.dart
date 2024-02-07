@@ -28,7 +28,6 @@ class _ProfileContainerState extends State<ProfileContainer> {
   Future initLocalStorage() async {
     _localStorage = await SharedPreferences.getInstance();
     bool? data = _localStorage.getBool('auth_biometrics');
-    print(data);
     setState(() {
       switchVal = data ?? false;
     });

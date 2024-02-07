@@ -1,6 +1,5 @@
 import 'package:ems_v4/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/json_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -19,7 +18,6 @@ class HealthDeclaration extends StatefulWidget {
 
 class _HealthDeclarationState extends State<HealthDeclaration> {
   final HomeController _homeController = Get.find<HomeController>();
-  final AuthService _authService = Get.find<AuthService>();
   final JsonUtils _jsonUtils = JsonUtils();
 
   List _symptoms = [];
@@ -253,7 +251,6 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                       checkedSymptoms.add(_otherSymptom.text);
                       _homeController
                           .clockIn(
-                        employeeId: _authService.employee.value.id,
                         healthCheck: checkedSymptoms,
                         temperature: _temperatureController.text,
                       )

@@ -58,7 +58,6 @@ class _EmailOTPState extends State<EmailOTP> {
                   setState(() {
                     errorText = value;
                   });
-                  print(errorText != null);
                 });
               },
               disabled: errorText != null,

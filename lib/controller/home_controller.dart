@@ -95,6 +95,7 @@ class HomeController extends GetxController {
       );
 
       var result = jsonDecode(response.body);
+
       if (result.containsKey('success') && result['success']) {
         var data = result['data'];
         isInsideVicinity.value = data['is_inside_vicinity'];
@@ -190,7 +191,6 @@ class HomeController extends GetxController {
   }
 
   Future clockIn({
-    required int employeeId,
     List healthCheck = const [],
     String? temperature,
   }) async {
@@ -209,7 +209,7 @@ class HomeController extends GetxController {
     try {
       // print('called');
       var response = await apiCall.postRequest({
-        'employee_id': employeeId,
+        'employee_id': _authService.employee.value.id,
         'clocked_in_location': attendance.value.clockedInLocation,
         'clocked_in_lattitude': attendance.value.clockedInLatitude,
         'clocked_in_longitude': attendance.value.clockedInLongitude,

@@ -25,51 +25,38 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: 0);
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (bool didPop) async {
-        if (didPop) {
-          return;
-        }
-        final bool? shouldPop = await showExitConfirmationDialog(context);
-        if (shouldPop ?? false) {
-          if (mounted) Navigator.of(context).pop();
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: Stack(
-          children: [
-            PageView(
-              controller: pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: List.generate(
-                _mainNavigationController.pages.length,
-                (index) => _mainNavigationController.pages[index],
-              ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          PageView(
+            controller: pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: List.generate(
+              _mainNavigationController.pages.length,
+              (index) => _mainNavigationController.pages[index],
             ),
-            const GettingStarted(),
-          ],
-        ),
-        extendBody: true,
-        bottomNavigationBar: ConvexAppBar(
-          backgroundColor: bgPrimaryBlue,
-          height: 55,
-          items: _mainNavigationController.navigations,
-          curveSize: 80,
-          top: -15,
-          style: TabStyle.reactCircle,
-          // cornerRadius: 5,
-          onTap: (index) {
-            print(index);
-            pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
-          },
-        ),
+          ),
+          const GettingStarted(),
+        ],
+      ),
+      extendBody: true,
+      bottomNavigationBar: ConvexAppBar(
+        backgroundColor: bgPrimaryBlue,
+        height: 55,
+        items: _mainNavigationController.navigations,
+        curveSize: 80,
+        top: -15,
+        style: TabStyle.reactCircle,
+        // cornerRadius: 5,
+        onTap: (index) {
+          pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
       ),
     );
   }
