@@ -234,6 +234,7 @@ class AuthService extends GetxService {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
         setLocalAuth();
+        init();
         Get.offAllNamed('/login');
       });
     } catch (error) {
