@@ -299,36 +299,6 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           )
                         ],
                       ),
-                      // Visibility(
-                      //   visible: selectedRecord.healthCheck != null,
-                      //   child: Row(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       const Text(
-                      //         'Health Check:',
-                      //         style: TextStyle(
-                      //           color: gray,
-                      //           fontSize: 13,
-                      //         ),
-                      //       ),
-                      //       const SizedBox(width: 30),
-                      //       InkWell(
-                      //         onTap: () {
-                      //           Get.to(
-                      //               () => const TimeEntriesHealthDeclaration());
-                      //         },
-                      //         child: const Text(
-                      //           'View Symptoms',
-                      //           style: TextStyle(
-                      //             color: primaryBlue,
-                      //             decoration: TextDecoration.underline,
-                      //             fontSize: 13,
-                      //           ),
-                      //         ),
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

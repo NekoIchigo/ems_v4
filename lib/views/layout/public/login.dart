@@ -150,14 +150,15 @@ class _LoginState extends State<Login> {
                               _emailController.text,
                               _passwordController.text,
                             );
-                            print(error);
-                            if (error.containsKey('errors')) {
-                              // _userNameError = error['errors']['email'][0];
-                              // _passwordError = error['errors']['password'][0];
-                            } else if (error.containsKey('success') &&
-                                error.containsKey('message')) {
-                              _userNameError = error['message'];
-                              _passwordError = error['message'];
+                            if (error != null) {
+                              if (error.containsKey('errors')) {
+                                // _userNameError = error['errors']['email'][0];
+                                // _passwordError = error['errors']['password'][0];
+                              } else if (error.containsKey('success') &&
+                                  error.containsKey('message')) {
+                                _userNameError = error['message'];
+                                _passwordError = error['message'];
+                              }
                             }
                           }
                           setState(() {});

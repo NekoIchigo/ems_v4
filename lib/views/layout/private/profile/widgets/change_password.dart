@@ -155,10 +155,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                           _newPassword.text,
                           _confirmPassword.text,
                           _currentPassword.text);
-                  if (errors['message'].contains("current")) {
-                    _currentPasswordError = errors['message'];
-                  } else if (errors.containsKey('errors')) {
-                    _newPasswordError = errors['errors']['password'][0];
+                  if (errors != null) {
+                    {
+                      if (errors['message'].contains("current")) {
+                        _currentPasswordError = errors['message'];
+                      } else if (errors.containsKey('errors')) {
+                        _newPasswordError = errors['errors']['password'][0];
+                      }
+                    }
                   }
                 }
                 setState(() {});

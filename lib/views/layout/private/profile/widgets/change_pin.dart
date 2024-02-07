@@ -101,8 +101,7 @@ class _ChangePinState extends State<ChangePin> {
                     _confirmPin.text,
                     currentpin: _currentPin.text,
                   );
-                  print(error);
-                  if (error.containsKey('errors')) {
+                  if (error != null) {
                     errorPin = error['errors']['pin'][0];
                   } else {
                     currentPin = error['message'];

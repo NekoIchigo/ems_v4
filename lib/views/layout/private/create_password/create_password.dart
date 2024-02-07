@@ -72,7 +72,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                 null,
               );
 
-              if (error.containsKey('errors')) {
+              if (error != null) {
                 passwordError = error['errors']['password'][0];
               }
               setState(() {});

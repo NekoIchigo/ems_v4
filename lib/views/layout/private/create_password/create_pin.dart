@@ -48,7 +48,7 @@ class _CreatePinState extends State<CreatePin> {
                 pinController.text,
                 confirmPinController.text,
               );
-              if (error.containsKey('errors')) {
+              if (error != null) {
                 pinError = error['errors']['pin'][0];
               }
               setState(() {});
