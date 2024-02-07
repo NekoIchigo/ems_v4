@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
                       child: const Text(
                         "By logging in, you agree to our Privacy Policy and Terms of Use.",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: gray),
+                        style: TextStyle(color: gray, fontSize: 12),
                       ),
                     ),
                   ),
@@ -184,7 +184,6 @@ class _LoginState extends State<Login> {
                           child: const Text(
                             'Use PIN',
                             style: TextStyle(
-                              decoration: TextDecoration.underline,
                               color: gray,
                               fontSize: 12,
                             ),

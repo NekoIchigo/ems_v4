@@ -47,7 +47,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 10),
               Text(
                 _authViewService.employee.value.employeeDetails.location.name,
                 textAlign: TextAlign.center,
@@ -64,7 +64,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     _homeController.isInsideVicinity.value
                         ? "assets/images/current_location-pana.png"
                         : "assets/images/current_location-rafiki.png",
-                    width: Get.width * .60,
+                    width: Get.width * .65,
                   ),
                 ),
               ),
@@ -117,7 +117,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   menuStyle: const MenuStyle(
                     surfaceTintColor: MaterialStatePropertyAll(Colors.white),
                     backgroundColor: MaterialStatePropertyAll(Colors.white),
-                    // padding: MaterialStatePropertyAll()
                   ),
                   dropdownMenuEntries:
                       _list.map<DropdownMenuEntry<String>>((String value) {
@@ -135,7 +134,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   }).toList(),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               howAreYouFeeling(),
               const SizedBox(height: 20),
               Padding(
@@ -208,11 +207,12 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     });
                   },
                   isSelected: _isSelected,
-                  children: const [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 14),
-                      child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 2.5),
+                      width: 100,
+                      child: const Column(
                         children: [
                           Image(
                             image: AssetImage('assets/images/happy.png'),
@@ -237,31 +237,36 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 const SizedBox(width: 15),
                 OutlinedButton(
                   onPressed: () {
-                    if (reason != null) {
+                    if (_homeController.isInsideVicinity.isTrue) {
                       _homeController.pageName.value =
                           '/home/health_declaration';
                     } else {
-                      reasonError = "Reason/pusrpose field is required";
+                      if (reason != null) {
+                        _homeController.pageName.value =
+                            '/home/health_declaration';
+                      } else {
+                        reasonError = "Reason/purpose field is required";
+                      }
                     }
                     setState(() {});
                   },
                   style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     side: const BorderSide(color: lightGray),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: const Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 2.5),
-                    child: Column(
-                      children: [
-                        Image(
-                          image: AssetImage('assets/images/sad.png'),
-                          width: 25,
-                          height: 25,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10),
+                  child: const Column(
+                    children: [
+                      Image(
+                        image: AssetImage('assets/images/sad.png'),
+                        width: 25,
+                        height: 25,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: SizedBox(
+                          width: 100,
                           child: Text(
                             "Sick",
                             textAlign: TextAlign.center,
@@ -271,8 +276,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -295,7 +300,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
           },
           label: 'Close',
           radius: 8,
-          bgColor: darkGray,
+          bgColor: gray,
           size: Size(Get.width * .4, 40),
         ),
         RoundedCustomButton(
@@ -307,7 +312,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 if (reason != null) {
                   clockInOut();
                 } else {
-                  reasonError = "Reason/pusrpose field is required";
+                  reasonError = "Reason/purpose field is required";
                 }
               }
             }

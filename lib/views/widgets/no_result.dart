@@ -1,3 +1,4 @@
+import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 
 class NoResult extends StatelessWidget {
@@ -11,7 +12,10 @@ class NoResult extends StatelessWidget {
           'assets/images/no_data.png',
           width: 400,
         ),
-        const Text('No Records'),
+        const Text(
+          'No Records',
+          style: TextStyle(color: gray),
+        ),
       ],
     );
   }

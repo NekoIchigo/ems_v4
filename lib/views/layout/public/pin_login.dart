@@ -117,7 +117,7 @@ class _PINLoginState extends State<PINLogin> {
                     ),
                     TextButton(
                       style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(0)),
+                          padding: const EdgeInsets.symmetric(horizontal: 1)),
                       onPressed: () {
                         Get.toNamed('/forgot_pin');
                       },
@@ -156,7 +156,6 @@ class _PINLoginState extends State<PINLogin> {
                     child: const Text(
                       'Use password',
                       style: TextStyle(
-                        decoration: TextDecoration.underline,
                         color: gray,
                         fontSize: 12,
                       ),
