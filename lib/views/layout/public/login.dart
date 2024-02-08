@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Image.asset(
-                          'assets/images/EMS_logo_Blue.png',
+                          'assets/images/GEMS4blue.png',
                         ),
                       ),
                     ),

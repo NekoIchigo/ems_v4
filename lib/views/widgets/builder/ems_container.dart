@@ -30,7 +30,7 @@ class _EMSContainerState extends State<EMSContainer> {
               top: 45,
               left: 10,
               child: Image.asset(
-                'assets/images/EMS_logo.png',
+                'assets/images/GEMS4white.png',
                 height: 45,
               ),
             ),
