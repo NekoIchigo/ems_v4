@@ -17,7 +17,7 @@ class EmployeeDetails {
   final int? costCenterId;
   final String? clientName;
   final int reportsAt;
-  final String reportsTo;
+  final String? reportsTo;
   final String? supervisor;
   final String? sssNumber;
   final String? phicNumber;
@@ -45,8 +45,8 @@ class EmployeeDetails {
     required this.location,
     required this.department,
     required this.reportsAt,
-    required this.reportsTo,
-    required this.supervisor,
+    this.reportsTo,
+    this.supervisor,
     required this.sssNumber,
     required this.phicNumber,
     required this.hdmfNumber,
@@ -69,7 +69,7 @@ class EmployeeDetails {
       costCenterId: json['cost_center_id'] as int?,
       clientName: json['client_name'] as String?,
       reportsAt: json['reports_at'] as int,
-      reportsTo: json['reports_to'] as String,
+      reportsTo: json['reports_to'] as String?,
       supervisor: json['supervisor'] as String?,
       sssNumber: json['sss_number'] as String?,
       phicNumber: json['phic_number'] as String?,

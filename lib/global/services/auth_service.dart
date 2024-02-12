@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:ems_v4/global/api.dart';
@@ -177,6 +178,23 @@ class AuthService extends GetxService {
           //     buttonNumber: 0,
           //   ),
           // );
+          if (result.containsKey('deactive') && result['deactive']) {
+            Get.dialog(
+              GetDialog(
+                title: "Oopps",
+                hasMessage: true,
+                withCloseButton: true,
+                hasCustomWidget: true,
+                customWidget:
+                    Image.asset('assets/images/no_data.png', width: 400),
+                message:
+                    "Your account has been deactivated. You will not be able to login.",
+                type: "error",
+                buttonNumber: 0,
+              ),
+            );
+            return null;
+          }
           return result['message'];
         }
       } else {
