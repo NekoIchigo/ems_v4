@@ -14,6 +14,7 @@ class GetDialog extends StatelessWidget {
   final int buttonNumber;
   final String? okText;
   final bool hasCustomWidget;
+  final bool? hasLottie;
   final Widget? customWidget;
   final bool withCloseButton;
   final Color? okButtonBGColor;
@@ -39,6 +40,7 @@ class GetDialog extends StatelessWidget {
     this.cancelPress,
     this.cancelText,
     this.onClose,
+    this.hasLottie,
   });
 
   @override
@@ -84,18 +86,21 @@ class GetDialog extends StatelessWidget {
                           ),
                         )),
                   ),
-                  Lottie.asset(
-                    type == "question"
-                        ? 'assets/lottie/question.json'
-                        : type == "error"
-                            ? 'assets/lottie/error-icon-2.json'
-                            : type == "success"
-                                ? 'assets/lottie/success-icon-4.json'
-                                : "assets/lottie/info.json",
-                    repeat: false,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.fill,
+                  Visibility(
+                    visible: hasLottie ?? true,
+                    child: Lottie.asset(
+                      type == "question"
+                          ? 'assets/lottie/question.json'
+                          : type == "error"
+                              ? 'assets/lottie/error-icon-2.json'
+                              : type == "success"
+                                  ? 'assets/lottie/success-icon-4.json'
+                                  : "assets/lottie/info.json",
+                      repeat: false,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),

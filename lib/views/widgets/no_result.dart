@@ -8,6 +8,7 @@ class NoResult extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 20),
         Image.asset(
           'assets/images/no_data.png',
           width: 400,

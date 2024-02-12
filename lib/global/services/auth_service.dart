@@ -114,6 +114,27 @@ class AuthService extends GetxService {
           Get.offAllNamed('/');
         }
       } else {
+        if (result.containsKey('deactive') && result['deactive']) {
+          Get.dialog(
+            GetDialog(
+              title: "Oopps",
+              hasMessage: true,
+              hasLottie: false,
+              withCloseButton: true,
+              hasCustomWidget: true,
+              customWidget: Column(
+                children: [
+                  Image.asset('assets/images/no_data.png', width: 400),
+                ],
+              ),
+              message:
+                  "Your account has been deactivated. You will not be able to login.",
+              type: "error",
+              buttonNumber: 0,
+            ),
+          );
+          return null;
+        }
         return result;
       }
 
