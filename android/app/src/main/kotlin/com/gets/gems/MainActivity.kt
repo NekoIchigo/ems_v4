@@ -1,4 +1,4 @@
-package com.example.ems_v4
+package com.gets.gems
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
