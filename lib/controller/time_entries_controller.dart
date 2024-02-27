@@ -59,7 +59,7 @@ class TimeEntriesController extends GetxController {
         // print(attendances.length);
       } else {
         Get.dialog(GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -70,7 +70,7 @@ class TimeEntriesController extends GetxController {
       }
     } catch (error) {
       Get.dialog(GetDialog(
-        title: "Oopps",
+        title: "Oops",
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,
@@ -109,7 +109,7 @@ class TimeEntriesController extends GetxController {
           // print(attendances.length);
         } else {
           Get.dialog(GetDialog(
-            title: "Oopps",
+            title: "Oops",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -120,7 +120,7 @@ class TimeEntriesController extends GetxController {
         }
       } catch (e) {
         Get.dialog(GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,

@@ -50,7 +50,7 @@ class ProfileController extends GetxController {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Oopps",
+            title: "Oops",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -63,7 +63,7 @@ class ProfileController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,

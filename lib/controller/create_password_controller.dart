@@ -125,7 +125,7 @@ class CreatePasswordController extends GetxController {
       } catch (e) {
         Get.dialog(
           GetDialog(
-            title: "Oopps",
+            title: "Oops",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -155,7 +155,7 @@ class CreatePasswordController extends GetxController {
       } else {
         // Get.dialog(
         //   GetDialog(
-        //     title: "Oopps",
+        //     title: "Oops",
         //     hasMessage: true,
         //     withCloseButton: true,
         //     hasCustomWidget: false,
@@ -169,7 +169,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -213,7 +213,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -265,7 +265,7 @@ class CreatePasswordController extends GetxController {
         return result;
         // Get.dialog(
         //   GetDialog(
-        //     title: "Oopps",
+        //     title: "Oops",
         //     hasMessage: true,
         //     withCloseButton: true,
         //     hasCustomWidget: false,
@@ -278,7 +278,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -347,7 +347,7 @@ class CreatePasswordController extends GetxController {
         return result;
         // Get.dialog(
         //   GetDialog(
-        //     title: "Oopps",
+        //     title: "Oops",
         //     hasMessage: true,
         //     withCloseButton: true,
         //     hasCustomWidget: false,
@@ -360,7 +360,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -406,7 +406,7 @@ class CreatePasswordController extends GetxController {
       } else {
         Get.dialog(
           GetDialog(
-            title: "Oopps",
+            title: "Oops",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -419,7 +419,7 @@ class CreatePasswordController extends GetxController {
     } catch (e) {
       Get.dialog(
         GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,

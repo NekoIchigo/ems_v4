@@ -91,11 +91,12 @@ class AuthService extends GetxService {
     return null;
   }
 
-  Future login(String email, String password) async {
+  Future login(String email, String password, String code) async {
     isLoading.value = true;
     try {
-      final response = await apiCall
-          .postRequest({'email': email, 'password': password}, '/login');
+      final response = await apiCall.postRequest(
+          {'email': email, 'password': password, 'code': code.toUpperCase()},
+          '/login');
       final result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         authenticated.value = result['success'];
@@ -116,10 +117,10 @@ class AuthService extends GetxService {
           Get.offAllNamed('/');
         }
       } else {
-        if (result.containsKey('deactive') && result['deactive']) {
+        if (result.containsKey('deactivate') && result['deactivate'] == 1) {
           Get.dialog(
             GetDialog(
-              title: "Oopps",
+              title: "",
               hasMessage: true,
               hasLottie: false,
               withCloseButton: true,
@@ -130,7 +131,7 @@ class AuthService extends GetxService {
                 ],
               ),
               message:
-                  "Your account has been deactivated. You will not be able to login.",
+                  "Your account has been deactivated.\n You will not be able to login.",
               type: "error",
               buttonNumber: 0,
             ),
@@ -143,7 +144,7 @@ class AuthService extends GetxService {
       isLoading.value = false;
     } catch (error) {
       Get.dialog(GetDialog(
-        title: "Oopps",
+        title: "Oops",
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,
@@ -192,7 +193,7 @@ class AuthService extends GetxService {
         } else {
           // Get.dialog(
           //   GetDialog(
-          //     title: "Oopps",
+          //     title: "Oops",
           //     hasMessage: true,
           //     withCloseButton: true,
           //     hasCustomWidget: false,
@@ -204,7 +205,7 @@ class AuthService extends GetxService {
           if (result.containsKey('deactive') && result['deactive']) {
             Get.dialog(
               GetDialog(
-                title: "Oopps",
+                title: "Oops",
                 hasMessage: true,
                 withCloseButton: true,
                 hasCustomWidget: true,
@@ -223,7 +224,7 @@ class AuthService extends GetxService {
       } else {
         Get.dialog(
           const GetDialog(
-            title: "Oopps",
+            title: "Oops",
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
@@ -236,7 +237,7 @@ class AuthService extends GetxService {
     } catch (error) {
       await Get.dialog(
         const GetDialog(
-          title: "Oopps",
+          title: "Oops",
           hasMessage: true,
           withCloseButton: true,
           hasCustomWidget: false,
@@ -281,7 +282,7 @@ class AuthService extends GetxService {
       });
     } catch (error) {
       Get.dialog(GetDialog(
-        title: "Oopps",
+        title: "Oops",
         hasMessage: true,
         withCloseButton: true,
         hasCustomWidget: false,
