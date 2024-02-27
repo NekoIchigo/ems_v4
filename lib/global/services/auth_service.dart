@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -249,22 +250,23 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<void> localAutheticate() async {
+  Future<void> localAuthenticate() async {
+    await setLocalAuth();
     if (isBioEnabled.isTrue) {
       try {
-        bool localauthenticated = await auth.authenticate(
-            localizedReason: "Autheticate to Login in the system.",
+        bool localAuthenticated = await auth.authenticate(
+            localizedReason: "Authenticate to Login in the system.",
             options: const AuthenticationOptions(
               stickyAuth: true,
               biometricOnly: true,
             ));
-        if (localauthenticated) {
-          authenticated.value = localauthenticated;
+        if (localAuthenticated) {
+          authenticated.value = localAuthenticated;
           setAuthStatus();
           Get.offAllNamed('/');
         }
       } on PlatformException catch (e) {
-        printError(info: e.toString());
+        log(e.toString());
       }
     }
   }
@@ -274,7 +276,7 @@ class AuthService extends GetxService {
       apiCall.postRequest({}, '/logout').then((value) {
         setAuthStatus();
         setLocalAuth();
-        // Get.offAllNamed('/login');
+        Get.offAllNamed('/login');
       });
     } catch (error) {
       Get.dialog(GetDialog(

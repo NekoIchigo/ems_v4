@@ -71,10 +71,15 @@ class _PINLoginState extends State<PINLogin> {
                     visible: _authService.isBioEnabled.isTrue,
                     child: Column(
                       children: [
-                        Icon(
-                          Icons.fingerprint_rounded,
-                          size: 40,
-                          color: gray,
+                        IconButton(
+                          onPressed: () {
+                            _authService.localAuthenticate();
+                          },
+                          icon: const Icon(
+                            Icons.fingerprint_rounded,
+                            size: 40,
+                            color: gray,
+                          ),
                         ),
                         const SizedBox(height: 15),
                       ],

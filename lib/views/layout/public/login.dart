@@ -74,7 +74,7 @@ class _LoginState extends State<Login> {
                           : Icons.mail,
                       iconColor: lightGray,
                       onIconPressed: () {
-                        _authService.localAutheticate();
+                        _authService.localAuthenticate();
                       },
                       onChanged: (p0) {
                         setState(() {
