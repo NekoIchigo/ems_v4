@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "666415488056",
+    "project_id": "gems-time-and-attendance",
+    "storage_bucket": "gems-time-and-attendance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666415488056:android:476b9891e64bc94b4c9acd",
+        "android_client_info": {
+          "package_name": "com.gets.gems"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe0H8bvMQiAH1JdYsjo-ornRyiUyh2gS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
