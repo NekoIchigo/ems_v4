@@ -4,6 +4,7 @@ import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/pin_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,7 +57,7 @@ class _PINLoginState extends State<PINLogin> {
                 const SizedBox(height: 20),
                 Center(
                   child: Text(
-                    'Hello, ${_authService.employee.value.firstName}!',
+                    'Hello, ${_authService.employee != null ? _authService.employee?.value.firstName : ''}!',
                     style: const TextStyle(
                       color: gray,
                       fontSize: 20,
@@ -64,7 +65,22 @@ class _PINLoginState extends State<PINLogin> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 15),
+                Center(
+                  child: Visibility(
+                    visible: _authService.isBioEnabled.isTrue,
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.fingerprint_rounded,
+                          size: 40,
+                          color: gray,
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
+                  ),
+                ),
                 const Center(
                   child: Text(
                     'Enter your 6-digit PIN',

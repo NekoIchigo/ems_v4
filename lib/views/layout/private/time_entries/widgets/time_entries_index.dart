@@ -92,7 +92,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                       );
                       if (dates != null) {
                         _timeEntriesController.getAttendanceList(
-                          employeeId: _authService.employee.value.id,
+                          employeeId: _authService.employee!.value.id,
                           days: value["day"],
                           startDate: dates[0],
                           endDate: dates[1],
@@ -100,7 +100,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                       }
                     } else {
                       _timeEntriesController.getAttendanceList(
-                        employeeId: _authService.employee.value.id,
+                        employeeId: _authService.employee!.value.id,
                         days: value["day"],
                       );
                     }

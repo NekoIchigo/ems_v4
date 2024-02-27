@@ -26,9 +26,9 @@ class _GettingStartedState extends State<GettingStarted> {
   void initState() {
     super.initState();
     // _homeController.getLatestLog(employeeId: _authService.employee.value.id);
-    _homeController.checkNewShift(employeeId: _authService.employee.value.id);
+    _homeController.checkNewShift(employeeId: _authService.employee!.value.id);
     _timeEntriesController.getAttendanceList(
-        employeeId: _authService.employee.value.id, days: 1);
+        employeeId: _authService.employee!.value.id, days: 1);
     _locationController.checkLocationPermission();
   }
 

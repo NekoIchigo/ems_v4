@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/guards/auth_guard.dart';
+import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
@@ -19,7 +20,8 @@ import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:get/get.dart';
 
-const String initalRouteName = '/login';
+final AuthService authService = Get.find<AuthService>();
+String initialRouteName = authService.hasUser.isTrue ? '/pin_login' : '/login';
 
 final List<GetPage> routes = [
   GetPage(name: '/login', page: () => const Login()),

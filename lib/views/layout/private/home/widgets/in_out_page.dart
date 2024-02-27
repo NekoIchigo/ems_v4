@@ -76,7 +76,7 @@ class _InOutPageState extends State<InOutPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            '${_authViewService.employee.value.firstName}!',
+            '${_authViewService.employee!.value.firstName}!',
             style: const TextStyle(
               color: gray,
               fontWeight: FontWeight.bold,

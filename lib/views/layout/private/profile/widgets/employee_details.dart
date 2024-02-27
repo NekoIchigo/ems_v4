@@ -63,7 +63,8 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                     style: TextStyle(color: primaryBlue),
                   ),
                   Text(
-                    _authService.employee.value.employeeDetails.department.name,
+                    _authService
+                        .employee!.value.employeeDetails.department.name,
                     style: const TextStyle(color: gray),
                   ),
                   const SizedBox(height: 30),
@@ -72,7 +73,7 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                     style: TextStyle(color: primaryBlue),
                   ),
                   Text(
-                    _authService.employee.value.employeeDetails.position.name,
+                    _authService.employee!.value.employeeDetails.position.name,
                     style: const TextStyle(color: gray),
                   ),
                   const SizedBox(height: 30),
@@ -81,7 +82,7 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                     style: TextStyle(color: primaryBlue),
                   ),
                   Text(
-                    _authService.employee.value.employeeDetails.dateHired,
+                    _authService.employee!.value.employeeDetails.dateHired,
                     style: const TextStyle(color: gray),
                   ),
                   const SizedBox(height: 30),
@@ -90,7 +91,7 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                     style: TextStyle(color: primaryBlue),
                   ),
                   Text(
-                    _authService.employee.value.employeeDetails.employeeNumber,
+                    _authService.employee!.value.employeeDetails.employeeNumber,
                     style: const TextStyle(color: gray),
                   ),
                 ],

@@ -73,14 +73,14 @@ class _TimeEntriesListState extends State<TimeEntriesList> {
                         const CustomDateBottomsheet(type: "range"),
                       );
                       _timeEntriesController.getAttendanceList(
-                        employeeId: _authService.employee.value.id,
+                        employeeId: _authService.employee!.value.id,
                         days: value["month"],
                         startDate: dates[0],
                         endDate: dates[1],
                       );
                     } else {
                       _timeEntriesController.getAttendanceList(
-                        employeeId: _authService.employee.value.id,
+                        employeeId: _authService.employee!.value.id,
                         days: value["month"],
                       );
                     }

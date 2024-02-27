@@ -18,13 +18,13 @@ class AuthService extends GetxService {
   String? userEmail;
 
   RxBool isLoading = false.obs;
-  RxBool autheticated = false.obs;
+  RxBool authenticated = false.obs;
   RxBool isBioEnabled = false.obs;
   RxBool hasUser = false.obs;
   RxString pinError = ''.obs;
   String? token;
   late Rx<Company> company;
-  late Rx<Employee> employee;
+  Rx<Employee>? employee;
 
   Future<AuthService> init() async {
     _localStorage = await SharedPreferences.getInstance();
@@ -35,7 +35,7 @@ class AuthService extends GetxService {
       var response = await apiCall.getRequest('/check-token');
       var result = jsonDecode(response.body);
       if (!result.containsKey('token')) {
-        autheticated.value = false;
+        authenticated.value = false;
         isBioEnabled.value = false;
       } else {
         setAuthStatus();
@@ -48,7 +48,7 @@ class AuthService extends GetxService {
     String? userData = _localStorage.getString('user');
     if (userData != null) {
       hasUser.value = true;
-      autheticated.value = true;
+      authenticated.value = true;
       var data = jsonDecode(userData);
       var employeeData = data['employee'];
       var companyData = employeeData['company'];
@@ -62,11 +62,12 @@ class AuthService extends GetxService {
     bool? bio = _localStorage.getBool('auth_biometrics');
     String? userData = _localStorage.getString('user');
     if (userData != null) {
+      hasUser.value = true;
       auth.isDeviceSupported().then(
           (bool isDeviceSupported) => isSupported.value = isDeviceSupported);
-      List<BiometricType> availableBiomentrics =
+      List<BiometricType> availableBiometrics =
           await auth.getAvailableBiometrics();
-      if (availableBiomentrics.isNotEmpty) {
+      if (availableBiometrics.isNotEmpty && isSupported.isTrue) {
         isBioEnabled.value = bio ?? false;
       }
     }
@@ -76,14 +77,14 @@ class AuthService extends GetxService {
     String? userData = _localStorage.getString('user');
 
     if (userData != null) {
-      autheticated.value = true;
+      authenticated.value = true;
       var data = jsonDecode(userData);
       var employeeData = data['employee'];
       var companyData = employeeData['company'];
 
       employee = Employee.fromJson(employeeData).obs;
       company = Company.fromJson(companyData).obs;
-      return employee.value.employeeContact.email;
+      return employee!.value.employeeContact.email;
     }
     return null;
   }
@@ -94,9 +95,8 @@ class AuthService extends GetxService {
       final response = await apiCall
           .postRequest({'email': email, 'password': password}, '/login');
       final result = jsonDecode(response.body);
-
       if (result.containsKey('success') && result['success']) {
-        autheticated.value = result['success'];
+        authenticated.value = result['success'];
 
         var userData = result['data'];
         _localStorage.setString('user', jsonEncode(userData));
@@ -169,7 +169,7 @@ class AuthService extends GetxService {
         final result = jsonDecode(response.body);
 
         if (result.containsKey('success') && result['success']) {
-          autheticated.value = result['success'];
+          authenticated.value = result['success'];
 
           var userData = result['data'];
           _localStorage.setString('user', jsonEncode(userData));
@@ -252,14 +252,14 @@ class AuthService extends GetxService {
   Future<void> localAutheticate() async {
     if (isBioEnabled.isTrue) {
       try {
-        bool localAutheticated = await auth.authenticate(
+        bool localauthenticated = await auth.authenticate(
             localizedReason: "Autheticate to Login in the system.",
             options: const AuthenticationOptions(
               stickyAuth: true,
               biometricOnly: true,
             ));
-        if (localAutheticated) {
-          autheticated.value = localAutheticated;
+        if (localauthenticated) {
+          authenticated.value = localauthenticated;
           setAuthStatus();
           Get.offAllNamed('/');
         }
@@ -272,9 +272,9 @@ class AuthService extends GetxService {
   Future logout() async {
     try {
       apiCall.postRequest({}, '/logout').then((value) {
+        setAuthStatus();
         setLocalAuth();
-        init();
-        Get.offAllNamed('/login');
+        // Get.offAllNamed('/login');
       });
     } catch (error) {
       Get.dialog(GetDialog(

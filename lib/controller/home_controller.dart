@@ -91,7 +91,7 @@ class HomeController extends GetxController {
           'latitude': position.latitude,
           'longitude': position.longitude,
         },
-        '/calculate-location/${_authService.employee.value.id}',
+        '/calculate-location/${_authService.employee!.value.id}',
       );
 
       var result = jsonDecode(response.body);
@@ -147,7 +147,7 @@ class HomeController extends GetxController {
           'latitude': position.latitude,
           'longitude': position.longitude,
         },
-        '/calculate-location/${_authService.employee.value.id}',
+        '/calculate-location/${_authService.employee!.value.id}',
       );
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
@@ -209,7 +209,7 @@ class HomeController extends GetxController {
     try {
       // print('called');
       var response = await apiCall.postRequest({
-        'employee_id': _authService.employee.value.id,
+        'employee_id': _authService.employee!.value.id,
         'clocked_in_location': attendance.value.clockedInLocation,
         'clocked_in_lattitude': attendance.value.clockedInLatitude,
         'clocked_in_longitude': attendance.value.clockedInLongitude,
@@ -222,8 +222,8 @@ class HomeController extends GetxController {
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         _timeEntriesController.getAttendanceList(
-            employeeId: _authService.employee.value.id, days: 1);
-        checkNewShift(employeeId: _authService.employee.value.id);
+            employeeId: _authService.employee!.value.id, days: 1);
+        checkNewShift(employeeId: _authService.employee!.value.id);
       } else {
         Get.dialog(GetDialog(
           title: "Oopps",
@@ -268,8 +268,8 @@ class HomeController extends GetxController {
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         _timeEntriesController.getAttendanceList(
-            employeeId: _authService.employee.value.id, days: 1);
-        checkNewShift(employeeId: _authService.employee.value.id);
+            employeeId: _authService.employee!.value.id, days: 1);
+        checkNewShift(employeeId: _authService.employee!.value.id);
       } else {
         Get.dialog(GetDialog(
           title: "Oopps",

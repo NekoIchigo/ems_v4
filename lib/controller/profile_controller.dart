@@ -32,7 +32,7 @@ class ProfileController extends GetxController {
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         if (profileImage.value != '') {
-          authService.employee.value.profileBase64 = profileImage.value;
+          authService.employee!.value.profileBase64 = profileImage.value;
         }
         await Get.dialog(
           barrierDismissible: false,

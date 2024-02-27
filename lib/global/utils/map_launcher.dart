@@ -16,9 +16,9 @@ class MapLauncher {
     const String baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
 
     String destinationLat =
-        _authService.employee.value.employeeDetails.location.latitude;
+        _authService.employee!.value.employeeDetails.location.latitude;
     String destinationLong =
-        _authService.employee.value.employeeDetails.location.longitude;
+        _authService.employee!.value.employeeDetails.location.longitude;
 
     String? originLat;
     String? originLong;

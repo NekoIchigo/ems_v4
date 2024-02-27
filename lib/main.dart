@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: initalRouteName,
+      initialRoute: initialRouteName,
       getPages: routes,
     );
   }

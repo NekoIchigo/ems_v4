@@ -49,7 +49,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
             children: [
               const SizedBox(height: 10),
               Text(
-                _authViewService.employee.value.employeeDetails.location.name,
+                _authViewService.employee!.value.employeeDetails.location.name,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: primaryBlue,

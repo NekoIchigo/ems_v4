@@ -120,7 +120,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                 ),
                 Flexible(
                   child: Text(
-                    _authService.employee.value.employeeDetails.location.name,
+                    _authService.employee!.value.employeeDetails.location.name,
                     style: const TextStyle(
                       color: primaryBlue,
                       fontSize: 13,
@@ -277,7 +277,8 @@ class _AttendanceLogState extends State<AttendanceLog> {
                   ),
                   Flexible(
                     child: Text(
-                      _authService.employee.value.employeeDetails.location.name,
+                      _authService
+                          .employee!.value.employeeDetails.location.name,
                       style: const TextStyle(
                         color: primaryBlue,
                         fontSize: 13,

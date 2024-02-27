@@ -28,12 +28,12 @@ class _PersonalInformationState extends State<PersonalInformation> {
   void initState() {
     super.initState();
     _profileController.profileImage.value =
-        authService.employee.value.profileBase64;
+        authService.employee!.value.profileBase64;
     _contactNumber.setText(
-        authService.employee.value.employeeContact.workContactNumber ?? '');
-    _email.setText(authService.employee.value.employeeContact.email ?? '');
+        authService.employee!.value.employeeContact.workContactNumber ?? '');
+    _email.setText(authService.employee!.value.employeeContact.email ?? '');
     _name.setText(
-        "${authService.employee.value.firstName} ${authService.employee.value.lastName}");
+        "${authService.employee!.value.firstName} ${authService.employee!.value.lastName}");
   }
 
   @override
