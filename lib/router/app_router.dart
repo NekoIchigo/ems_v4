@@ -18,14 +18,21 @@ import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_conta
 import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart';
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:ems_v4/views/layout/public/pin_login.dart';
+import 'package:ems_v4/views/widgets/under_maintenance.dart';
 import 'package:get/get.dart';
 
-final AuthService authService = Get.find<AuthService>();
-String initialRouteName = authService.hasUser.isTrue ? '/pin_login' : '/login';
+final AuthService _authService = Get.find<AuthService>();
+String initialRouteName = _authService.isMaintenance.isTrue
+    ? '/maintenance'
+    : _authService.hasUser.isTrue
+        ? '/pin_login'
+        : '/login';
 
 final List<GetPage> routes = [
   GetPage(name: '/login', page: () => const Login()),
   GetPage(name: '/pin_login', page: () => const PINLogin()),
+  GetPage(
+      name: '/maintenance', page: () => const UnderMaintenance(hasLogo: true)),
   GetPage(
     name: '/forgot_password',
     page: () => const ForgotPasswordContainer(),

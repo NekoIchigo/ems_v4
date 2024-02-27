@@ -15,13 +15,14 @@ class AuthService extends GetxService {
   late SharedPreferences _localStorage;
   late final LocalAuthentication auth;
   final ApiCall apiCall = ApiCall();
-  RxBool isSupported = false.obs;
   String? userEmail;
 
-  RxBool isLoading = false.obs;
-  RxBool authenticated = false.obs;
-  RxBool isBioEnabled = false.obs;
-  RxBool hasUser = false.obs;
+  RxBool isLoading = false.obs,
+      authenticated = false.obs,
+      isBioEnabled = false.obs,
+      hasUser = false.obs,
+      isMaintenance = false.obs,
+      isSupported = false.obs;
   RxString pinError = ''.obs;
   String? token;
   late Rx<Company> company;

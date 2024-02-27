@@ -92,12 +92,14 @@ class _PINLoginState extends State<PINLogin> {
                     style: TextStyle(color: gray, fontSize: 12),
                   ),
                 ),
-                PinInput(
-                  pinController: _passwordController,
-                  label: '',
-                  obscureText: true,
-                  errorText: errorText,
-                  validation: (p0) {},
+                Center(
+                  child: PinInput(
+                    pinController: _passwordController,
+                    label: '',
+                    obscureText: true,
+                    errorText: errorText,
+                    validation: (p0) {},
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

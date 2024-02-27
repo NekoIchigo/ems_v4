@@ -7,6 +7,7 @@ class NoResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 20),
         Image.asset(
