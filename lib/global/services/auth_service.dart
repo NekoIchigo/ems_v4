@@ -21,7 +21,7 @@ class AuthService extends GetxService {
       authenticated = false.obs,
       isBioEnabled = false.obs,
       hasUser = false.obs,
-      isMaintenance = false.obs,
+      isMaintenance = true.obs,
       isSupported = false.obs;
   RxString pinError = ''.obs;
   String? token;
