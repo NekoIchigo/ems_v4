@@ -1,5 +1,5 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:ems_v4/controller/main_navigation_controller.dart';
+import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/getting_started.dart';
 

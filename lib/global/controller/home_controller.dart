@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:ems_v4/controller/time_entries_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';

@@ -1,10 +1,10 @@
-import 'package:ems_v4/controller/create_password_controller.dart';
-import 'package:ems_v4/controller/home_controller.dart';
-import 'package:ems_v4/controller/main_navigation_controller.dart';
-import 'package:ems_v4/controller/profile_controller.dart';
-import 'package:ems_v4/controller/time_entries_controller.dart';
-import 'package:ems_v4/controller/location_controller.dart';
-import 'package:ems_v4/controller/transaction_controller.dart';
+import 'package:ems_v4/global/controller/create_password_controller.dart';
+import 'package:ems_v4/global/controller/home_controller.dart';
+import 'package:ems_v4/global/controller/main_navigation_controller.dart';
+import 'package:ems_v4/global/controller/profile_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
+import 'package:ems_v4/global/controller/location_controller.dart';
+import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';

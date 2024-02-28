@@ -1,6 +1,6 @@
-import 'package:ems_v4/controller/home_controller.dart';
-import 'package:ems_v4/controller/time_entries_controller.dart';
-import 'package:ems_v4/controller/location_controller.dart';
+import 'package:ems_v4/global/controller/home_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
+import 'package:ems_v4/global/controller/location_controller.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
 import 'package:flutter/material.dart';

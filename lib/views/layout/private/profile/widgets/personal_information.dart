@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:ems_v4/controller/profile_controller.dart';
+import 'package:ems_v4/global/controller/profile_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';

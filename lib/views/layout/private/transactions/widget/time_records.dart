@@ -1,5 +1,5 @@
-import 'package:ems_v4/controller/time_entries_controller.dart';
-import 'package:ems_v4/controller/transaction_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
+import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';

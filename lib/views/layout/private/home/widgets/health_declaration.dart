@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/home_controller.dart';
+import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/json_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';

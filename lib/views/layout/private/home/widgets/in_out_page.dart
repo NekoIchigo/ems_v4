@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/home_controller.dart';
+import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/services/settings.dart';
