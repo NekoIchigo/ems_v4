@@ -1,6 +1,6 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/map_launcher.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
@@ -17,7 +17,7 @@ class AttendanceLog extends StatefulWidget {
 class _AttendanceLogState extends State<AttendanceLog> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
   final MapLauncher _mapLuncher = MapLauncher();
   bool isClockIn = false;
 

@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SettingsController());
     Get.put(AuthController());
+    Get.put(SettingsController());
     Get.put(TimeEntriesController());
     Get.put(LocationController());
     Get.put(MainNavigationController());

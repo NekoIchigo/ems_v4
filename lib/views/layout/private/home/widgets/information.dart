@@ -1,6 +1,6 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/map_launcher.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class HomeInfoPage extends StatefulWidget {
 }
 
 class _HomeInfoPageState extends State<HomeInfoPage> {
-  final AuthService _authViewService = Get.find<AuthService>();
+  final AuthController _authViewService = Get.find<AuthController>();
   final HomeController _homeController = Get.find<HomeController>();
   final MapLauncher _mapLuncher = MapLauncher();
 

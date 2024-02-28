@@ -1,14 +1,14 @@
 import 'dart:developer';
 
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MapLauncher {
   final HomeController _homeController = Get.find<HomeController>();
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
 
   Future<void> launchMap(
       {AttendanceRecord? attendanceRecord, bool isclockin = false}) async {

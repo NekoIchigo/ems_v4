@@ -20,7 +20,6 @@ class SettingsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    isMaintenance.value = true;
     getServerTime();
     checkAppVersion();
   }
@@ -42,6 +41,7 @@ class SettingsController extends GetxController {
       }
     } catch (error) {
       if (error.toString().contains('html')) {
+        isMaintenance.value = true;
         Get.dialog(
           Dialog(
             child: Container(
@@ -124,7 +124,7 @@ class SettingsController extends GetxController {
                   ),
                   Text(
                     value.newVersion ?? "1.0.0",
-                    style: TextStyle(color: gray),
+                    style: const TextStyle(color: gray),
                   ),
                   Image.asset('assets/images/maintenance.jpg'),
                   SizedBox(

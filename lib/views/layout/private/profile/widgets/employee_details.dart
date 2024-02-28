@@ -1,5 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,7 @@ class EmployeeDetailsPage extends StatefulWidget {
 
 class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
     with SingleTickerProviderStateMixin {
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {

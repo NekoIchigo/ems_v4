@@ -1,6 +1,6 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
@@ -15,7 +15,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
   final ApiCall apiCall = ApiCall();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

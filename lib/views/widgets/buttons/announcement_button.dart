@@ -19,7 +19,7 @@ class AnnouncementButton extends StatefulWidget {
 }
 
 class _AnnouncementButtonState extends State<AnnouncementButton> {
-  DateTimeUtils _dateTimeUtils = DateTimeUtils();
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _AnnouncementButtonState extends State<AnnouncementButton> {
       ),
       child: Column(
         children: [
-          SvgPicture.asset('assets/svg/annoucement.svg', width: 25),
+          SvgPicture.asset('assets/svg/announcement.svg', width: 25),
           Text(
             _dateTimeUtils.formatDate(dateTime: widget.date),
             style: const TextStyle(color: bgPrimaryBlue),

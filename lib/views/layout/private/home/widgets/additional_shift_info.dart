@@ -1,6 +1,6 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +14,7 @@ class AdditionalShiftInfo extends StatefulWidget {
 }
 
 class _AdditionalShiftInfoState extends State<AdditionalShiftInfo> {
-  final AuthService _authViewService = Get.find<AuthService>();
+  final AuthController _authViewService = Get.find<AuthController>();
   final HomeController _homeController = Get.find<HomeController>();
 
   bool _isNotButtonDisable = false;
@@ -26,7 +26,7 @@ class _AdditionalShiftInfoState extends State<AdditionalShiftInfo> {
 
   String? selectedReason;
 
-  final List<String> _location_list = <String>[
+  final List<String> _locationList = <String>[
     'EDSA Starmall Shaw',
     'WCC Bldg, Shaw Blvd Cor Edsa',
     'Test Building',
@@ -113,7 +113,7 @@ class _AdditionalShiftInfoState extends State<AdditionalShiftInfo> {
                       }
                     });
                   },
-                  dropdownMenuEntries: _location_list
+                  dropdownMenuEntries: _locationList
                       .map<DropdownMenuEntry<String>>((String value) {
                     return DropdownMenuEntry<String>(
                       value: value,

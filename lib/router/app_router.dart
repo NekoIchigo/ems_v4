@@ -1,5 +1,5 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/guards/auth_guard.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
@@ -21,7 +21,7 @@ import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:ems_v4/views/widgets/under_maintenance.dart';
 import 'package:get/get.dart';
 
-final AuthService _authService = Get.find<AuthService>();
+final AuthController _authService = Get.find<AuthController>();
 String initialRouteName = _authService.isMaintenance.isTrue
     ? '/maintenance'
     : _authService.hasUser.isTrue

@@ -25,7 +25,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
 
   @override
   Widget build(BuildContext context) {
-    final bool _isRange = widget.type == "range";
+    final bool isRange = widget.type == "range";
 
     return InkWell(
       onTap: () async {
@@ -38,7 +38,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
         padding: const EdgeInsets.only(left: 25.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: _isRange ? range() : single(),
+          children: isRange ? range() : single(),
         ),
       ),
     );

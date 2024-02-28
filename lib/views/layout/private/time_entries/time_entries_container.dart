@@ -19,7 +19,7 @@ class _TimeEntriesContainerState extends State<TimeEntriesContainer> {
   Widget build(BuildContext context) {
     return Obx(() {
       switch (_timeEntriesController.pageName.value) {
-        case '/atttendance-log':
+        case '/attendance-log':
           return const AttendanceLog();
         // case '/home/result':
         //   return const HomeResultPage();

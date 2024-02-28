@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/api.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
@@ -15,7 +15,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
 
@@ -114,7 +114,7 @@ class HomeController extends GetxController {
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
-            message: "Error: Distance calculation unsuccessfull",
+            message: "Error: Distance calculation unsuccessful",
             type: "error",
             buttonNumber: 0,
           ),
@@ -167,7 +167,7 @@ class HomeController extends GetxController {
             hasMessage: true,
             withCloseButton: true,
             hasCustomWidget: false,
-            message: "Error: Distance calculation unsuccessfull",
+            message: "Error: Distance calculation unsuccessful",
             type: "error",
             buttonNumber: 0,
           ),
@@ -313,7 +313,7 @@ class HomeController extends GetxController {
         'clocked_out_location_setting': reason,
       }, '/additional-shift-clockin');
       var result = jsonDecode(response.body);
-      print(result);
+      printInfo(info: result.toString());
     } catch (error) {
       Get.dialog(
         GetDialog(
@@ -343,7 +343,7 @@ class HomeController extends GetxController {
         'clocked_out_location_setting': reason,
       }, '/additional-shift-clockout');
       var result = jsonDecode(response.body);
-      print(result);
+      printInfo(info: result.toString());
     } catch (error) {
       Get.dialog(
         GetDialog(

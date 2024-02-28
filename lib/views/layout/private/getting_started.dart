@@ -1,8 +1,8 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/controller/location_controller.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -17,7 +17,7 @@ class GettingStarted extends StatefulWidget {
 class _GettingStartedState extends State<GettingStarted> {
   final SettingsController _settings = Get.find<SettingsController>();
   final HomeController _homeController = Get.find<HomeController>();
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
   final LocationController _locationController = Get.find<LocationController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();

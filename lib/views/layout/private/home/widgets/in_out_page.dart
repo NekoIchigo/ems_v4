@@ -1,7 +1,7 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
@@ -19,7 +19,7 @@ class InOutPage extends StatefulWidget {
 }
 
 class _InOutPageState extends State<InOutPage> {
-  final AuthService _authViewService = Get.find<AuthService>();
+  final AuthController _authViewService = Get.find<AuthController>();
   final SettingsController _settings = Get.find<SettingsController>();
   final HomeController _homeController = Get.find<HomeController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
@@ -48,7 +48,7 @@ class _InOutPageState extends State<InOutPage> {
             buttonSection(),
             detailsSection(),
             // additionalShift(),
-            // annoucementSection(),
+            // announcementSection(),
           ],
         ),
       ),
@@ -299,7 +299,7 @@ class _InOutPageState extends State<InOutPage> {
               Icon(Icons.info),
               SizedBox(width: 10),
               Text(
-                'Your additional workshift:',
+                'Your additional work shift:',
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
             ],
@@ -353,7 +353,7 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget annoucementSection() {
+  Widget announcementSection() {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
       color: Colors.white,

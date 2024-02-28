@@ -1,9 +1,9 @@
-import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthGuard extends GetMiddleware {
-  final AuthService authService = Get.find<AuthService>();
+  final AuthController authService = Get.find<AuthController>();
 
   @override
   int? get priority => 0;

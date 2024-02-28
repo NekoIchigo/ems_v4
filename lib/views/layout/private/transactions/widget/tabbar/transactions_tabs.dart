@@ -78,7 +78,7 @@ class _TransactionsTabsState extends State<TransactionsTabs>
               ApprovedListview(items: [item, item]),
               ApprovedListview(items: [item, item, item]),
               ApprovedListview(items: [item, item]),
-              ApprovedListview(items: []),
+              const ApprovedListview(items: []),
             ],
           ),
         ),

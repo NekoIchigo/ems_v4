@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthService extends GetxService {
+class AuthController extends GetxController {
   late SharedPreferences _localStorage;
   late final LocalAuthentication auth;
   final ApiCall apiCall = ApiCall();
@@ -28,7 +28,9 @@ class AuthService extends GetxService {
   late Rx<Company> company;
   Rx<Employee>? employee;
 
-  Future<AuthService> init() async {
+  @override
+  void onInit() async {
+    super.onInit();
     _localStorage = await SharedPreferences.getInstance();
     auth = LocalAuthentication();
     token = _localStorage.getString('token');
@@ -43,7 +45,6 @@ class AuthService extends GetxService {
         setAuthStatus();
       }
     }
-    return this;
   }
 
   Future<void> setAuthStatus() async {
@@ -191,17 +192,6 @@ class AuthService extends GetxService {
             Get.offAllNamed('/');
           }
         } else {
-          // Get.dialog(
-          //   GetDialog(
-          //     title: "Oops",
-          //     hasMessage: true,
-          //     withCloseButton: true,
-          //     hasCustomWidget: false,
-          //     message: "Error pin: ${result['message']}",
-          //     type: "error",
-          //     buttonNumber: 0,
-          //   ),
-          // );
           if (result.containsKey('deactivate') && result['deactivate']) {
             Get.dialog(
               GetDialog(

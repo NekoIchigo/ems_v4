@@ -1,7 +1,6 @@
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
@@ -91,7 +90,7 @@ class _TimeRecordsState extends State<TimeRecords> {
                                         child: ListTile(
                                           onTap: () {
                                             _timeEntriesController.pageName
-                                                .value = '/atttendance-log';
+                                                .value = '/attendance-log';
                                             _timeEntriesController
                                                 .attendanceIndex.value = index;
                                             _timeEntriesController

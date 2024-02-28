@@ -1,5 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_list_button.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
@@ -16,7 +16,7 @@ class ProfileContainer extends StatefulWidget {
 
 class _ProfileContainerState extends State<ProfileContainer> {
   late SharedPreferences _localStorage;
-  final AuthService authService = Get.find<AuthService>();
+  final AuthController authService = Get.find<AuthController>();
   bool switchVal = true;
 
   @override

@@ -5,4 +5,23 @@
         "editor.formatOnSave": true
     },
     "java.configuration.updateBuildConfiguration": "interactive",
+    "cSpell.words": [
+        "Clockin",
+        "clockout",
+        "EDSA",
+        "Getx",
+        "isclockin",
+        "Listview",
+        "LTRB",
+        "originlat",
+        "originlong",
+        "pana",
+        "pinput",
+        "prograssive",
+        "rafiki",
+        "Starmall",
+        "tabbar",
+        "textblack",
+        "vsync"
+    ],
 }

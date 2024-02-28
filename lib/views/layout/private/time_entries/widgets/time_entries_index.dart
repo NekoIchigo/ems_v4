@@ -1,6 +1,6 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bottomsheet.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
@@ -18,7 +18,7 @@ class TimeEntriesIndex extends StatefulWidget {
 class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
 
   final List _list = [
     {'day': 1, 'label': 'Today'},
@@ -28,7 +28,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
     {'day': 0, 'label': 'Custom date range'},
   ];
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   late Object dropdownValue;
   @override
@@ -142,7 +142,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                               return ElevatedButton(
                                 onPressed: () {
                                   _timeEntriesController.pageName.value =
-                                      '/atttendance-log';
+                                      '/attendance-log';
                                   _timeEntriesController.attendanceIndex.value =
                                       index;
                                   _timeEntriesController.hasClose.value = true;
