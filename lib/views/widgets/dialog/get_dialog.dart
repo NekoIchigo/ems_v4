@@ -183,12 +183,10 @@ class GetDialog extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: okPress,
                               style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(12), // <-- Radius
-                                  ),
-                                  backgroundColor:
-                                      okButtonBGColor ?? primaryBlue),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5.0, vertical: 10.0),

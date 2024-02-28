@@ -1,7 +1,7 @@
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
-import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
@@ -20,7 +20,7 @@ class InOutPage extends StatefulWidget {
 
 class _InOutPageState extends State<InOutPage> {
   final AuthService _authViewService = Get.find<AuthService>();
-  final Settings _settings = Get.find<Settings>();
+  final SettingsController _settings = Get.find<SettingsController>();
   final HomeController _homeController = Get.find<HomeController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   late AttendanceRecord attendance;
@@ -33,7 +33,7 @@ class _InOutPageState extends State<InOutPage> {
     attendance = _homeController.attendance.value;
     currentTime = _settings.currentTime.value;
     date = DateFormat("EEE, MMM dd y").format(currentTime);
-    greetings = _settings.getGreeting();
+    greetings = _dateTimeUtils.getGreeting(currentTime.hour);
   }
 
   @override

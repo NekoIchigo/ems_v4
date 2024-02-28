@@ -211,7 +211,7 @@ class HomeController extends GetxController {
       var response = await apiCall.postRequest({
         'employee_id': _authService.employee!.value.id,
         'clocked_in_location': attendance.value.clockedInLocation,
-        'clocked_in_lattitude': attendance.value.clockedInLatitude,
+        'clocked_in_latitude': attendance.value.clockedInLatitude,
         'clocked_in_longitude': attendance.value.clockedInLongitude,
         'clocked_in_location_type': attendance.value.clockedInLocationType,
         'clocked_in_location_setting':
@@ -259,7 +259,7 @@ class HomeController extends GetxController {
       var response = await apiCall.postRequest({
         'attendance_id': attendance.value.id,
         'clocked_out_location': attendance.value.clockedOutLocation,
-        'clocked_out_lattitude': attendance.value.clockedOutLatitude,
+        'clocked_out_latitude': attendance.value.clockedOutLatitude,
         'clocked_out_longitude': attendance.value.clockedOutLongitude,
         'clocked_out_location_type': attendance.value.clockedOutLocationType,
         'clocked_out_location_setting':
@@ -307,7 +307,7 @@ class HomeController extends GetxController {
       var response = await apiCall.postRequest({
         'attendance_records_id': attendance.value.id,
         'clocked_in_location': location,
-        'clocked_in_lattitude': attendance.value.clockedInLatitude,
+        'clocked_in_latitude': attendance.value.clockedInLatitude,
         'clocked_in_longitude': attendance.value.clockedInLongitude,
         'clocked_in_location_type': attendance.value.clockedInLocationType,
         'clocked_out_location_setting': reason,
@@ -337,7 +337,7 @@ class HomeController extends GetxController {
       var response = await apiCall.postRequest({
         'attendance_records_id': attendance.value.id,
         'clocked_in_location': location,
-        'clocked_in_lattitude': attendance.value.clockedInLatitude,
+        'clocked_in_latitude': attendance.value.clockedInLatitude,
         'clocked_in_longitude': attendance.value.clockedInLongitude,
         'clocked_in_location_type': attendance.value.clockedInLocationType,
         'clocked_out_location_setting': reason,

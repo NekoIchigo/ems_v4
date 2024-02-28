@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiCall {
   // final String _baseUrl = 'http://192.168.0.25:8000/api/mobile';
   // final String _baseUrl = 'http://10.10.10.42:8000/api/mobile'; // company ip
+
   final String _baseUrl = "https://stg-ems.globalland.com.ph/api/mobile";
   final Duration _timeOutDuration = const Duration(seconds: 30);
   final client = RetryClient(http.Client());

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+const baseUrl = "https://stg-ems.globalland.com.ph";
 const primaryBlue = Color(0xFF2465C7);
 const navBlue = Color(0xFF274D85);
 const bgPrimaryBlue = Color(0xFF1F4583);

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,7 +12,7 @@ import 'package:ems_v4/global/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileController extends GetxController {
-  final AuthService authService = Get.find<AuthService>();
+  final AuthController authService = Get.find<AuthController>();
   final ImagePicker _imagePicker = ImagePicker();
   late SharedPreferences _localStorage;
 

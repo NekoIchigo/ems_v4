@@ -1,13 +1,13 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/controller/profile_controller.dart';
+import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/controller/location_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
-import 'package:ems_v4/global/services/settings.dart';
 import 'package:ems_v4/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,9 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // start the authservice and settings
-  await Get.putAsync(() => AuthService().init());
-  await Get.putAsync(() => Settings().init());
+  // await Get.putAsync(() => AuthService().init());
   runApp(const MyApp());
 }
 
@@ -26,6 +24,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(SettingsController());
+    Get.put(AuthController());
     Get.put(TimeEntriesController());
     Get.put(LocationController());
     Get.put(MainNavigationController());

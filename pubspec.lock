@@ -792,6 +792,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  package_info_plus:
+    dependency: transitive
+    description:
+      name: package_info_plus
+      sha256: "88bc797f44a94814f2213db1c9bd5badebafdfb8290ca9f78d4b9ee2a3db4d79"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
+  package_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: package_info_plus_platform_interface
+      sha256: "9bc8ba46813a4cc42c66ab781470711781940780fd8beddd0c3da62506d3a6c6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   path:
     dependency: transitive
     description:
@@ -1045,6 +1061,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  store_version_checker:
+    dependency: "direct main"
+    description:
+      name: store_version_checker
+      sha256: "1f5418fc4cb2664bbc6857042cdbbaee3d54ac0a051c1d3878a4401cd4147704"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   stream_channel:
     dependency: transitive
     description:
