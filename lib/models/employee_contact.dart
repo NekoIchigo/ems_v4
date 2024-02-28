@@ -8,11 +8,10 @@ class EmployeeContact {
   final String? houseNumber;
   final String? subdivisionName;
   final String? streetName;
-  final String barangay;
-  final String city;
-  final String province;
-  final String createdAt;
-  final String updatedAt;
+  final String? barangay;
+  final String? city;
+  final String? province;
+  final String? region;
 
   EmployeeContact({
     required this.id,
@@ -24,11 +23,10 @@ class EmployeeContact {
     this.houseNumber,
     this.subdivisionName,
     this.streetName,
-    required this.barangay,
-    required this.city,
-    required this.province,
-    required this.createdAt,
-    required this.updatedAt,
+    this.barangay,
+    this.city,
+    this.province,
+    this.region,
   });
 
   factory EmployeeContact.fromJson(Map<String, dynamic> json) {
@@ -42,11 +40,10 @@ class EmployeeContact {
       houseNumber: json['house_number'] as String?,
       subdivisionName: json['subdivision_name'] as String?,
       streetName: json['street_name'] as String?,
-      barangay: json['barangay'] as String,
-      city: json['city'] as String,
-      province: json['province'] as String,
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
+      barangay: json['barangay'] as String?,
+      city: json['city'] as String?,
+      province: json['province'] as String?,
+      region: json['region'] as String?,
     );
   }
 
@@ -64,8 +61,7 @@ class EmployeeContact {
       'barangay': barangay,
       'city': city,
       'province': province,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
+      'region': region,
     };
   }
 }

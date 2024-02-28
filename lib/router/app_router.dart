@@ -22,11 +22,7 @@ import 'package:ems_v4/views/widgets/under_maintenance.dart';
 import 'package:get/get.dart';
 
 final AuthController _authService = Get.find<AuthController>();
-String initialRouteName = _authService.isMaintenance.isTrue
-    ? '/maintenance'
-    : _authService.hasUser.isTrue
-        ? '/pin_login'
-        : '/login';
+String initialRouteName = _authService.hasUser.isTrue ? '/pin_login' : '/login';
 
 final List<GetPage> routes = [
   GetPage(name: '/login', page: () => const Login()),

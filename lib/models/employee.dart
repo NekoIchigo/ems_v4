@@ -10,9 +10,9 @@ class Employee {
   final String? middleName;
   final String lastName;
   final String dailyTimeRecord;
-  final String birthday;
-  final String gender;
-  final String civilStatus;
+  final String? birthday;
+  final String? gender;
+  final String? civilStatus;
   String profileBase64;
   final EmployeeDetails employeeDetails;
   final EmployeeContact employeeContact;
@@ -26,9 +26,9 @@ class Employee {
     this.middleName,
     required this.lastName,
     required this.dailyTimeRecord,
-    required this.birthday,
-    required this.gender,
-    required this.civilStatus,
+    this.birthday,
+    this.gender,
+    this.civilStatus,
     required this.profileBase64,
     required this.employeeDetails,
     required this.employeeContact,
@@ -44,9 +44,9 @@ class Employee {
       middleName: json['middle_name'] as String?,
       lastName: json['last_name'] as String,
       dailyTimeRecord: json['daily_time_record'] as String,
-      birthday: json['birthday'] as String,
-      gender: json['gender'] as String,
-      civilStatus: json['civil_status'] as String,
+      birthday: json['birthday'] as String?,
+      gender: json['gender'] as String?,
+      civilStatus: json['civil_status'] as String?,
       profileBase64: json['image_path'] as String,
       employeeDetails: EmployeeDetails.fromJson(json['employee_details']),
       employeeContact: EmployeeContact.fromJson(json['employee_contact']),
