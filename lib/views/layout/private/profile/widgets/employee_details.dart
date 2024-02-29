@@ -82,7 +82,8 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                     style: TextStyle(color: primaryBlue),
                   ),
                   Text(
-                    _authService.employee!.value.employeeDetails.dateHired,
+                    _authService.employee?.value.employeeDetails.dateHired ??
+                        "??/??/????",
                     style: const TextStyle(color: gray),
                   ),
                   const SizedBox(height: 30),

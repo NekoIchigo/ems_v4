@@ -9,7 +9,7 @@ class Employee {
   final String firstName;
   final String? middleName;
   final String lastName;
-  final String dailyTimeRecord;
+  final String? dailyTimeRecord;
   final String? birthday;
   final String? gender;
   final String? civilStatus;
@@ -43,7 +43,7 @@ class Employee {
       firstName: json['first_name'] as String,
       middleName: json['middle_name'] as String?,
       lastName: json['last_name'] as String,
-      dailyTimeRecord: json['daily_time_record'] as String,
+      dailyTimeRecord: json['daily_time_record'] as String?,
       birthday: json['birthday'] as String?,
       gender: json['gender'] as String?,
       civilStatus: json['civil_status'] as String?,

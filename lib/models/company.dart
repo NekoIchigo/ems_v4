@@ -1,7 +1,7 @@
 class Company {
   final int id;
   final String name;
-  final String logo;
+  final String? logo;
   final String? description;
 
   Company({
@@ -15,7 +15,7 @@ class Company {
     return Company(
       id: json['id'] as int,
       name: json['name'] as String,
-      logo: json['logo'] as String,
+      logo: json['logo'] as String?,
       description: json['description'] as String?,
     );
   }

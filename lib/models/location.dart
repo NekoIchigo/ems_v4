@@ -2,7 +2,7 @@ class Location {
   final int id;
   final int companyId;
   final String name;
-  final String logo;
+  final String? logo;
   final String latitude;
   final String longitude;
   final double radius;
@@ -32,7 +32,7 @@ class Location {
       id: json['id'] as int,
       companyId: json['company_id'] as int,
       name: json['name'] as String,
-      logo: json['logo'] as String,
+      logo: json['logo'] as String?,
       latitude: json['latitude'] as String,
       longitude: json['longitude'] as String,
       radius: json['radius'].toDouble(),

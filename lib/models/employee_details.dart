@@ -6,13 +6,13 @@ class EmployeeDetails {
   final int id;
   final int employeeId;
   final String employeeNumber;
-  final String dateHired;
+  final String? dateHired;
   final String? skillType;
-  final int employeeTypeId;
-  final int employeeStatusId;
-  final int companyId;
-  final int departmentId;
-  final int positionId;
+  final int? employeeTypeId;
+  final int? employeeStatusId;
+  final int? companyId;
+  final int? departmentId;
+  final int? positionId;
   final int? groupId;
   final int? costCenterId;
   final String? clientName;
@@ -31,14 +31,14 @@ class EmployeeDetails {
     required this.id,
     required this.employeeId,
     required this.employeeNumber,
-    required this.dateHired,
-    required this.skillType,
-    required this.employeeTypeId,
-    required this.employeeStatusId,
-    required this.companyId,
-    required this.departmentId,
-    required this.positionId,
-    required this.groupId,
+    this.dateHired,
+    this.skillType,
+    this.employeeTypeId,
+    this.employeeStatusId,
+    this.companyId,
+    this.departmentId,
+    this.positionId,
+    this.groupId,
     this.costCenterId,
     this.clientName,
     required this.position,
@@ -58,13 +58,13 @@ class EmployeeDetails {
       id: json['id'] as int,
       employeeId: json['employee_id'] as int,
       employeeNumber: json['employee_number'] as String,
-      dateHired: json['date_hired'] as String,
+      dateHired: json['date_hired'] as String?,
       skillType: json['skill_type'] as String?,
-      employeeTypeId: json['employee_type_id'] as int,
-      employeeStatusId: json['employee_status_id'] as int,
-      companyId: json['company_id'] as int,
-      departmentId: json['department_id'] as int,
-      positionId: json['position_id'] as int,
+      employeeTypeId: json['employee_type_id'] as int?,
+      employeeStatusId: json['employee_status_id'] as int?,
+      companyId: json['company_id'] as int?,
+      departmentId: json['department_id'] as int?,
+      positionId: json['position_id'] as int?,
       groupId: json['group_id'] as int?,
       costCenterId: json['cost_center_id'] as int?,
       clientName: json['client_name'] as String?,
