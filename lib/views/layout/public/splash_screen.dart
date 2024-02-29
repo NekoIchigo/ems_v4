@@ -18,23 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
   final AuthController _authService = Get.find<AuthController>();
   final SettingsController _settings = Get.find<SettingsController>();
 
-  bool isLoading = false;
-
   @override
   void initState() {
     super.initState();
     initFunctions();
-    // isLoading = true;
-    // // Simulating some async work
-    // Timer(Duration(seconds: 3), () {
-    //   // Set isLoading to false when your data is loaded or other conditions are met
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    //   Get.offAllNamed('/login');
-    //   // Navigate to the next page here
-    //   // For example, Navigator.pushReplacementNamed(context, '/home');
-    // });
   }
 
   Future initFunctions() async {
@@ -50,19 +37,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: SizedBox(
-              height: Get.height * 0.15,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 25.0),
-                child: Image.asset(
-                  'assets/images/GEMS4blue.png',
-                ),
+              height: queryData.size.height * 0.12,
+              child: Image.asset(
+                'assets/images/GEMS4blue.png',
               ),
             ),
           ),
