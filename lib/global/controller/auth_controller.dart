@@ -28,9 +28,7 @@ class AuthController extends GetxController {
   late Rx<Company> company;
   Rx<Employee>? employee;
 
-  @override
-  void onInit() async {
-    super.onInit();
+  Future<void> initAuth() async {
     _localStorage = await SharedPreferences.getInstance();
     auth = LocalAuthentication();
     token = _localStorage.getString('token');
@@ -48,6 +46,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> setAuthStatus() async {
+    _localStorage = await SharedPreferences.getInstance();
     String? userData = _localStorage.getString('user');
     if (userData != null) {
       hasUser.value = true;
@@ -62,6 +61,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> setLocalAuth() async {
+    _localStorage = await SharedPreferences.getInstance();
     bool? bio = _localStorage.getBool('auth_biometrics');
     String? userData = _localStorage.getString('user');
     if (userData != null) {
@@ -77,6 +77,7 @@ class AuthController extends GetxController {
   }
 
   Future<String?> isEmailSaved() async {
+    _localStorage = await SharedPreferences.getInstance();
     String? userData = _localStorage.getString('user');
 
     if (userData != null) {
@@ -93,6 +94,7 @@ class AuthController extends GetxController {
   }
 
   Future login(String email, String password, String code) async {
+    _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
     try {
       final response = await apiCall.postRequest(
@@ -162,6 +164,7 @@ class AuthController extends GetxController {
   }
 
   Future pinAuth(String password) async {
+    _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
 
     try {
@@ -243,6 +246,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> localAuthenticate() async {
+    _localStorage = await SharedPreferences.getInstance();
     await setLocalAuth();
     if (isBioEnabled.isTrue) {
       try {

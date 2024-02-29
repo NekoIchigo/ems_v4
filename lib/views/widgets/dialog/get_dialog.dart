@@ -183,6 +183,7 @@ class GetDialog extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: okPress,
                               style: ElevatedButton.styleFrom(
+                                backgroundColor: okButtonBGColor ?? primaryBlue,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),

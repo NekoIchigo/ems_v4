@@ -102,7 +102,9 @@ class _ChangePinState extends State<ChangePin> {
                     currentpin: _currentPin.text,
                   );
                   if (error != null) {
-                    errorPin = error['errors']['pin'][0];
+                    if (error['errors'].containsKey('pin')) {
+                      errorPin = error['errors']['pin'][0];
+                    }
                   } else {
                     currentPin = error['message'];
                   }
