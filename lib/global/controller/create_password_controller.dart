@@ -148,7 +148,7 @@ class CreatePasswordController extends GetxController {
       var response = await apiCall.postRequest({
         'OTPin': otpPin,
         'email': _userEmail,
-      }, '/otp-validition');
+      }, '/otp-validation');
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         animateToThirdPage();

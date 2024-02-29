@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/models/attendance_record.dart';
@@ -13,7 +14,7 @@ class MapLauncher {
   Future<void> launchMap(
       {AttendanceRecord? attendanceRecord, bool isclockin = false}) async {
     // const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
-    const String baseUrl = "https://stg-ems.globalland.com.ph/mobile-map-view";
+    const String baseUrl = "${globalBaseUrl}mobile-map-view";
 
     String destinationLat =
         _authService.employee!.value.employeeDetails.location.latitude;
