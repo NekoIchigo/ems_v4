@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'EMS V.4',
       debugShowCheckedModeBanner: false,
+      // initialBinding: BindingsBuilder(() { }),
       theme: ThemeData(
         textTheme: GoogleFonts.outfitTextTheme(),
         colorScheme: ColorScheme.fromSeed(

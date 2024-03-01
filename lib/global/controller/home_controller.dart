@@ -21,6 +21,8 @@ class HomeController extends GetxController {
 
   final ApiCall apiCall = ApiCall();
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
+  Rx<DateTime> workStart = DateTime.now().obs;
+  Rx<DateTime> workEnd = DateTime.now().obs;
 
   final int routerKey = 1;
   RxInt pageIndex = 0.obs;
@@ -54,6 +56,10 @@ class HomeController extends GetxController {
         isNewShift.value = data['is_new_shift'];
         isClockInOutComplete.value = data['is_shift_complete'];
         isClockOut.value = data['is_clockout'];
+        workStart.value =
+            DateTime.parse("2024-01-01 ${data['schedule']['work_start']}");
+        workEnd.value =
+            DateTime.parse("2024-01-01 ${data['schedule']['work_end']}");
 
         if (data['current_attendance_record'] != null) {
           attendance =

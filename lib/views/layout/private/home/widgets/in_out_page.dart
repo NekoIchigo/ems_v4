@@ -93,15 +93,15 @@ class _InOutPageState extends State<InOutPage> {
             style: const TextStyle(color: gray, fontSize: 13),
           ),
           const SizedBox(height: 8),
-          const Row(
+          Row(
             children: [
-              Text(
+              const Text(
                 'Today\'s Schedule : ',
                 style: TextStyle(color: gray, fontWeight: FontWeight.bold),
               ),
               Text(
-                '08:30 am to 06:30 pm',
-                style: TextStyle(color: gray),
+                '${_dateTimeUtils.formatTime(dateTime: _homeController.workStart.value)} to ${_dateTimeUtils.formatTime(dateTime: _homeController.workEnd.value)}',
+                style: const TextStyle(color: gray),
               ),
             ],
           ),
