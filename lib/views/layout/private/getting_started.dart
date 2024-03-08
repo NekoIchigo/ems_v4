@@ -34,29 +34,27 @@ class _GettingStartedState extends State<GettingStarted> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Visibility(
-        visible: _settings.isLoading.isTrue,
-        child: Container(
-          color: Colors.black.withOpacity(0.7),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'Getting things started',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                ),
-                LoadingAnimationWidget.prograssiveDots(
+    return Visibility(
+      visible: _settings.isLoading.isTrue,
+      child: Container(
+        color: Colors.black.withOpacity(0.7),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Getting things started',
+                style: TextStyle(
                   color: Colors.white,
-                  size: 40,
-                )
-              ],
-            ),
+                  fontSize: 18,
+                ),
+              ),
+              LoadingAnimationWidget.prograssiveDots(
+                color: Colors.white,
+                size: 40,
+              )
+            ],
           ),
         ),
       ),

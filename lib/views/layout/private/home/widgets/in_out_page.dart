@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
@@ -31,28 +33,34 @@ class _InOutPageState extends State<InOutPage> {
   void initState() {
     super.initState();
     attendance = _homeController.attendance.value;
+    initFunctions();
+
     currentTime = _settings.currentTime.value;
     date = DateFormat("EEE, MMM dd y").format(currentTime);
     greetings = _dateTimeUtils.getGreeting(currentTime.hour);
   }
 
+  Future initFunctions() async {
+    await _settings.getServerTime();
+    log(currentTime.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Obx(
-        () => Column(
-          children: [
-            greetingWidget(),
-            buttonSection(),
-            detailsSection(),
-            // additionalShift(),
-            // announcementSection(),
-          ],
-        ),
-      ),
-    );
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Obx(
+          () => Column(
+            children: [
+              greetingWidget(),
+              buttonSection(),
+              detailsSection(),
+              // additionalShift(),
+              // announcementSection(),
+            ],
+          ),
+        ));
   }
 
   Widget greetingWidget() {

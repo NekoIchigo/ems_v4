@@ -4,6 +4,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -43,6 +44,10 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Visibility(
+            visible: globalBaseUrl.contains('stg'),
+            child: const Text("Stg App"),
+          ),
           Center(
             child: SizedBox(
               height: queryData.size.height * 0.12,
