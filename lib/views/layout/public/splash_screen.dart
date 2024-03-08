@@ -27,6 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future initFunctions() async {
     await _settings.getServerTime();
+    _settings.updateTimeToRealTime();
     await _settings.checkAppVersionMaintenance();
     await _authService.initAuth();
     Timer(const Duration(seconds: 3), () {

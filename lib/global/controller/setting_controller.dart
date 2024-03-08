@@ -38,7 +38,6 @@ class SettingsController extends GetxController {
       var result = jsonDecode(response.body);
       if (result.containsKey('success') && result['success']) {
         currentTime.value = DateTime.parse(result['data']['withTimeZone']);
-        updateTimeToRealTime();
       }
     } catch (error) {
       Get.dialog(
