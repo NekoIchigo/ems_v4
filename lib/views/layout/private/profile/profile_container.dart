@@ -6,6 +6,7 @@ import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileContainer extends StatefulWidget {
   const ProfileContainer({super.key});
@@ -104,18 +105,25 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
             const SizedBox(height: 5),
             ProfileListButton(
+              label: 'Help Center',
+              onPressed: () {
+                _launchInBrowser(
+                    'https://sites.google.com/view/gemshelpcenter/home');
+              },
+            ),
+            const SizedBox(height: 5),
+            ProfileListButton(
               label: 'Privacy Policy',
               onPressed: () {
-                // _launchInBrowser(
-                //     'https://happyhousekeepers.com.ph/privacy-policy');
+                _launchInBrowser(
+                    'https://gems.globalland.com.ph/privacy-policy');
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Terms of Use',
               onPressed: () {
-                // _launchInBrowser(
-                //     'https://happyhousekeepers.com.ph/privacy-policy');
+                _launchInBrowser('https://gems.globalland.com.ph/terms-of-use');
               },
             ),
             const SizedBox(height: 30),
@@ -152,5 +160,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
         okButtonBGColor: bgPrimaryBlue,
       ),
     );
+  }
+
+  Future<void> _launchInBrowser(url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
   }
 }
