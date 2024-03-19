@@ -1,7 +1,5 @@
-import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/coming_soon.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Transactions extends StatefulWidget {
   const Transactions({super.key});
@@ -16,13 +14,21 @@ class _TransactionsState extends State<Transactions> {
 
   @override
   Widget build(BuildContext context) {
-    return EMSContainer(
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+      height: size.height,
+      width: size.width,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: Get.height * .78,
+            height: size.height * .78,
             child: const Center(
               child: ComingSoon(),
               // Menu(),

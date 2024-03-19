@@ -13,7 +13,7 @@ import 'package:ems_v4/views/layout/public/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-final navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final router = GoRouter(
   navigatorKey: navigatorKey,
@@ -32,31 +32,133 @@ final router = GoRouter(
     GoRoute(
         path: '/create_password',
         builder: (context, state) => const CreatePasswordContainer()),
-    GoRoute(
-      path: '/main',
-      builder: (context, state) => const MainNavigation(),
+    ShellRoute(
+      builder: (context, state, child) {
+        return MainNavigation(child: child);
+      },
       routes: [
         GoRoute(
-          path: 'home',
-          builder: (context, state) => const Home(),
+          path: '/home',
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const Home(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Change the opacity of the screen using a Curve based on the the animation's
+                // value
+                return FadeTransition(
+                  opacity: CurveTween(curve: Curves.easeInOutCirc)
+                      .animate(animation),
+                  child: child,
+                );
+              },
+            );
+          },
         ),
         GoRoute(
-          path: 'time_entries',
-          builder: (context, state) => const TimeEntries(),
+          path: '/time_entries',
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const TimeEntries(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Change the opacity of the screen using a Curve based on the the animation's
+                // value
+                return FadeTransition(
+                  opacity: CurveTween(curve: Curves.easeInOutCirc)
+                      .animate(animation),
+                  child: child,
+                );
+              },
+            );
+          },
         ),
         GoRoute(
-          path: 'transaction',
-          builder: (context, state) => const Transactions(),
+          path: '/transaction',
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const Transactions(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Change the opacity of the screen using a Curve based on the the animation's
+                // value
+                return FadeTransition(
+                  opacity: CurveTween(curve: Curves.easeInOutCirc)
+                      .animate(animation),
+                  child: child,
+                );
+              },
+            );
+          },
         ),
         GoRoute(
-          path: 'notification',
-          builder: (context, state) => const NotificationPage(),
+          path: '/notification',
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const NotificationPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Change the opacity of the screen using a Curve based on the the animation's
+                // value
+                return FadeTransition(
+                  opacity: CurveTween(curve: Curves.easeInOutCirc)
+                      .animate(animation),
+                  child: child,
+                );
+              },
+            );
+          },
         ),
         GoRoute(
-          path: 'profile',
-          builder: (context, state) => const Profile(),
+          path: '/profile',
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: const Profile(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Change the opacity of the screen using a Curve based on the the animation's
+                // value
+                return FadeTransition(
+                  opacity: CurveTween(curve: Curves.easeInOutCirc)
+                      .animate(animation),
+                  child: child,
+                );
+              },
+            );
+          },
         ),
       ],
     ),
+    // GoRoute(
+    //   path: '/main',
+    //   builder: (context, state) => const MainNavigation(),
+    //   routes: [
+    //     GoRoute(
+    //       path: 'home',
+    //       builder: (context, state) => const Home(),
+    //     ),
+    //     GoRoute(
+    //       path: 'time_entries',
+    //       builder: (context, state) => const TimeEntries(),
+    //     ),
+    //     GoRoute(
+    //       path: 'transaction',
+    //       builder: (context, state) => const Transactions(),
+    //     ),
+    //     GoRoute(
+    //       path: 'notification',
+    //       builder: (context, state) => const NotificationPage(),
+    //     ),
+    //     GoRoute(
+    //       path: 'profile',
+    //       builder: (context, state) => const Profile(),
+    //     ),
+    //   ],
+    // ),
   ],
 );

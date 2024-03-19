@@ -36,6 +36,8 @@ class _ProfileContainerState extends State<ProfileContainer> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
@@ -134,7 +136,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 }
               },
               label: 'Log out',
-              size: Size(Get.width, 30),
+              size: Size(size.width, 30),
               bgColor: bgPrimaryBlue,
             ),
           ],

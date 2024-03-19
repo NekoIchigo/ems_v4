@@ -4,12 +4,15 @@ import 'dart:developer';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
+import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 
 class AuthController extends GetxController {
   late SharedPreferences _localStorage;
@@ -115,9 +118,9 @@ class AuthController extends GetxController {
         _localStorage.setString('token', result['token']);
         _localStorage.setString('user', jsonEncode(result['data']));
         if (result.containsKey('is_first_login') && result['is_first_login']) {
-          Get.offAllNamed('/create_password');
+          navigatorKey.currentContext?.go('/create_password');
         } else {
-          Get.offAllNamed('/');
+          navigatorKey.currentContext?.go('/home');
         }
       } else {
         if (result.containsKey('deactivate') && result['deactivate'] == 1) {

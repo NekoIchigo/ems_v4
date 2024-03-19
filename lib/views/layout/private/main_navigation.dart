@@ -2,12 +2,18 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/getting_started.dart';
+import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
+  final Widget child;
+  const MainNavigation({
+    super.key,
+    required this.child,
+  });
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
@@ -30,15 +36,16 @@ class _MainNavigationState extends State<MainNavigation> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          PageView(
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: List.generate(
-              _mainNavigationController.pages.length,
-              (index) => _mainNavigationController.pages[index],
-            ),
-          ),
-          const GettingStarted(),
+          EMSContainer(child: widget.child)
+          // PageView(
+          //   controller: pageController,
+          //   physics: const NeverScrollableScrollPhysics(),
+          //   children: List.generate(
+          //     _mainNavigationController.pages.length,
+          //     (index) => _mainNavigationController.pages[index],
+          //   ),
+          // ),
+          // const GettingStarted(),
         ],
       ),
       extendBody: true,
@@ -51,41 +58,54 @@ class _MainNavigationState extends State<MainNavigation> {
         style: TabStyle.reactCircle,
         // cornerRadius: 5,
         onTap: (index) {
-          pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
+          switch (index) {
+            case 0:
+              context.go('/home');
+            case 1:
+              context.go('/time_entries');
+            case 2:
+              context.go('/transaction');
+            case 3:
+              context.go('/notification');
+            case 4:
+              context.go('/profile');
+          }
+          // pageController.animateToPage(
+          //   index,
+          //   duration: const Duration(milliseconds: 300),
+          //   curve: Curves.easeInOut,
+          // );
         },
       ),
     );
   }
-
-  Future<bool?> showExitConfirmationDialog(BuildContext context) async {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Exit'),
-          content: const Text('Do you want to exit the app?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () =>
-                  Navigator.of(context).pop(false), // User doesn't want to exit
-              child: const Text('No'),
-            ),
-            TextButton(
-              onPressed: () =>
-                  Navigator.of(context).pop(true), // User wants to exit
-              child: const Text('Yes'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
  /*
+
+   // Future<bool?> showExitConfirmationDialog(BuildContext context) async {
+  //   return showDialog<bool>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Confirm Exit'),
+  //         content: const Text('Do you want to exit the app?'),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () =>
+  //                 Navigator.of(context).pop(false), // User doesn't want to exit
+  //             child: const Text('No'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () =>
+  //                 Navigator.of(context).pop(true), // User wants to exit
+  //             child: const Text('Yes'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+  
  return PopScope(
       canPop: false,
       onPopInvoked: (bool didPop) async {

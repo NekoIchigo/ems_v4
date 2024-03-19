@@ -1,7 +1,5 @@
-import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/coming_soon.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -13,13 +11,21 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
-    return EMSContainer(
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+      height: size.height,
+      width: size.width,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: Get.height * .78, child: const ComingSoon(),
+            height: size.height * .78, child: const ComingSoon(),
             // const NotificationContainer(),
           ),
         ],

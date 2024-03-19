@@ -20,6 +20,7 @@ import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:ems_v4/views/layout/public/splash_screen.dart';
 import 'package:ems_v4/views/widgets/under_maintenance.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 final AuthController _authService = Get.find<AuthController>();
@@ -46,7 +47,9 @@ final List<GetPage> routes = [
       middlewares: [AuthGuard()]),
   GetPage(
     name: '/',
-    page: () => const MainNavigation(),
+    page: () => MainNavigation(
+      child: Container(),
+    ),
     middlewares: [AuthGuard()],
     children: [
       GetPage(

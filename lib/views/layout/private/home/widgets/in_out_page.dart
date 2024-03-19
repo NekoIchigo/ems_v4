@@ -47,15 +47,17 @@ class _InOutPageState extends State<InOutPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.only(bottom: 20),
         child: Obx(
           () => Column(
             children: [
-              greetingWidget(),
-              buttonSection(),
-              detailsSection(),
+              greetingWidget(size),
+              buttonSection(size),
+              detailsSection(size),
               // additionalShift(),
               // announcementSection(),
             ],
@@ -63,7 +65,7 @@ class _InOutPageState extends State<InOutPage> {
         ));
   }
 
-  Widget greetingWidget() {
+  Widget greetingWidget(Size size) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -118,9 +120,9 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget buttonSection() {
+  Widget buttonSection(Size size) {
     return SizedBox(
-      height: Get.height * .38,
+      height: size.height * .38,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -128,7 +130,7 @@ class _InOutPageState extends State<InOutPage> {
               ? Positioned(
                   top: 0,
                   child: Image.asset('assets/images/EMS1.png',
-                      width: Get.width * .62),
+                      width: size.width * .62),
                 )
               : Stack(
                   alignment: Alignment.center,
@@ -143,7 +145,7 @@ class _InOutPageState extends State<InOutPage> {
                     Positioned(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(Get.width * .38, Get.width * .38),
+                          minimumSize: Size(size.width * .38, size.width * .38),
                           shape: const CircleBorder(),
                           backgroundColor: _homeController.isClockOut.isTrue
                               ? colorError
@@ -152,15 +154,11 @@ class _InOutPageState extends State<InOutPage> {
                         onPressed: () {
                           if (_homeController.isClockOut.isFalse) {
                             _homeController.setClockInLocation().then((value) {
-                              // Get.to(() => const HomeInfoPage(),
-                              //     id: _homeController.routerKey);
                               _homeController.isWhite.value = true;
                               _homeController.pageName.value = '/home/info';
                             });
                           } else {
                             _homeController.setClockOutLocation().then((value) {
-                              // Get.to(() => const HomeInfoPage(),
-                              //     id: _homeController.routerKey);
                               _homeController.isWhite.value = true;
                               _homeController.pageName.value = '/home/info';
                             });
@@ -217,12 +215,12 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget detailsSection() {
+  Widget detailsSection(Size size) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.only(top: 20),
-      height: Get.height * .14,
-      width: Get.width,
+      height: size.height * .14,
+      width: size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,7 +293,7 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget additionalShift() {
+  Widget additionalShift(Size size) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       color: Colors.white,
@@ -322,15 +320,13 @@ class _InOutPageState extends State<InOutPage> {
               RoundedCustomButton(
                 onPressed: () {
                   _homeController.setClockInLocation().then((value) {
-                    // Get.to(() => const HomeInfoPage(),
-                    //     id: _homeController.routerKey);
                     _homeController.isWhite.value = true;
                     _homeController.pageName.value =
                         '/home/additional_shift_info:clock_in';
                   });
                 },
                 label: 'Clock in',
-                size: Size(Get.width * .42, 40),
+                size: Size(size.width * .42, 40),
                 radius: 10,
                 bgColor: Colors.white,
                 textColor: colorSuccess,
@@ -339,15 +335,13 @@ class _InOutPageState extends State<InOutPage> {
               RoundedCustomButton(
                 onPressed: () {
                   _homeController.setClockOutLocation().then((value) {
-                    // Get.to(() => const HomeInfoPage(),
-                    //     id: _homeController.routerKey);
                     _homeController.isWhite.value = true;
                     _homeController.pageName.value =
                         '/home/additional_shift_info:clock_out';
                   });
                 },
                 label: 'Clock out',
-                size: Size(Get.width * .42, 40),
+                size: Size(size.width * .42, 40),
                 radius: 10,
                 bgColor: Colors.white,
                 textColor: red,
