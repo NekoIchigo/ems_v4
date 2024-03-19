@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,6 +58,19 @@ class ApiCall {
           },
         );
       }
+    } on SocketException catch (_) {
+      Get.dialog(
+        const GetDialog(
+          title: "Oops",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message:
+              "Unable to connect to the server. \n Please check your internet connection.",
+          type: "error",
+          buttonNumber: 0,
+        ),
+      );
     } finally {
       client.close();
     }
@@ -73,6 +88,19 @@ class ApiCall {
           log('request time out');
           return http.Response('Request Timeout', 408);
         },
+      );
+    } on SocketException catch (_) {
+      Get.dialog(
+        const GetDialog(
+          title: "Oops",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message:
+              "Unable to connect to the server. \n Please check your internet connection.",
+          type: "error",
+          buttonNumber: 0,
+        ),
       );
     } finally {
       client.close();

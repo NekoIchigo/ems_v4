@@ -21,6 +21,8 @@ class _OTPInputPageState extends State<OTPInputPage> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -53,7 +55,7 @@ class _OTPInputPageState extends State<OTPInputPage> {
               isLoading: _passwordController.isLoading.value,
               label:
                   _passwordController.isLoading.isTrue ? "Verifying" : "Verify",
-              size: Size(Get.width * .9, 30),
+              size: Size(queryData.size.width * .9, 30),
               bgColor: bgPrimaryBlue,
             ),
           )

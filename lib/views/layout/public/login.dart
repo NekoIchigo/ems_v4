@@ -6,6 +6,7 @@ import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -28,17 +29,19 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
-          height: Get.height,
-          width: Get.width,
+          height: queryData.size.height,
+          width: queryData.size.width,
           color: Colors.white,
           child: Stack(
             children: [
               Positioned(
-                width: Get.width,
+                width: queryData.size.width,
                 left: 0,
                 bottom: 0,
                 child: Image.asset('assets/images/login_bg_image.jpg'),
@@ -51,10 +54,10 @@ class _LoginState extends State<Login> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: Get.height * .15),
+                        SizedBox(height: queryData.size.height * .15),
                         Center(
                           child: SizedBox(
-                            height: Get.height * 0.15,
+                            height: queryData.size.height * 0.15,
                             child: Padding(
                               padding: const EdgeInsets.only(top: 25.0),
                               child: Image.asset(
@@ -152,7 +155,7 @@ class _LoginState extends State<Login> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                Get.toNamed('/forgot_password');
+                                context.push('/forgot_password');
                               },
                               child: const Text(
                                 'Forgot Password?',
@@ -164,7 +167,7 @@ class _LoginState extends State<Login> {
                         Center(
                           child: Container(
                             margin: const EdgeInsets.only(top: 20),
-                            width: Get.width * .55,
+                            width: queryData.size.width * .55,
                             child: const Text(
                               "By logging in, you agree to our Privacy Policy and Terms of Use.",
                               textAlign: TextAlign.center,
@@ -213,7 +216,7 @@ class _LoginState extends State<Login> {
                                 ? 'Log In'
                                 : 'Logging In...',
                             radius: 50,
-                            size: Size(Get.width, 20),
+                            size: Size(queryData.size.width, 20),
                             bgColor: bgPrimaryBlue,
                           ),
                         ),
@@ -223,7 +226,7 @@ class _LoginState extends State<Login> {
                             child: Center(
                               child: TextButton(
                                 onPressed: () {
-                                  Get.toNamed('/pin_login');
+                                  context.push('/pin_login');
                                 },
                                 child: const Text(
                                   'Use PIN',

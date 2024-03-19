@@ -23,6 +23,8 @@ class _NewPINState extends State<NewPIN> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -83,7 +85,7 @@ class _NewPINState extends State<NewPIN> {
             label: _createPasswordController.isLoading.isTrue
                 ? "Submitting..."
                 : "Submit",
-            size: Size(Get.width * .9, 40),
+            size: Size(queryData.size.width * .9, 40),
             bgColor: bgPrimaryBlue,
           ),
         ],

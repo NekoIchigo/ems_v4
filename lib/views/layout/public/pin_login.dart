@@ -5,6 +5,7 @@ import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/pin_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PINLogin extends StatefulWidget {
@@ -25,16 +26,17 @@ class _PINLoginState extends State<PINLogin> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: Get.height,
-          width: Get.width,
+          height: queryData.size.height,
+          width: queryData.size.width,
           color: Colors.white,
           child: Stack(
             children: [
               Positioned(
-                width: Get.width,
+                width: queryData.size.width,
                 left: 0,
                 bottom: 0,
                 child: Image.asset('assets/images/login_bg_image.jpg'),
@@ -44,10 +46,10 @@ class _PINLoginState extends State<PINLogin> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: Get.height * .15),
+                    SizedBox(height: queryData.size.height * .15),
                     Center(
                       child: SizedBox(
-                        height: Get.height * 0.15,
+                        height: queryData.size.height * 0.15,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 25.0),
                           child: Image.asset(
@@ -118,7 +120,7 @@ class _PINLoginState extends State<PINLogin> {
                             _localStorage =
                                 await SharedPreferences.getInstance();
                             _localStorage.setBool('auth_biometrics', false);
-                            Get.toNamed('/login');
+                            context.push('/login');
                           },
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(0)),
@@ -146,7 +148,7 @@ class _PINLoginState extends State<PINLogin> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 1)),
                           onPressed: () {
-                            Get.toNamed('/forgot_pin');
+                            context.push('/forgot_pin');
                           },
                           child: const Text(
                             'Forgot PIN?',
@@ -171,14 +173,14 @@ class _PINLoginState extends State<PINLogin> {
                             ? 'Log In'
                             : 'Logging In...',
                         radius: 50,
-                        size: Size(Get.width, 20),
+                        size: Size(queryData.size.width, 20),
                         bgColor: bgPrimaryBlue,
                       ),
                     ),
                     Center(
                       child: TextButton(
                         onPressed: () {
-                          Get.toNamed('/login');
+                          context.push('/login');
                         },
                         child: const Text(
                           'Use password',

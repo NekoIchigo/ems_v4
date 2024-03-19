@@ -6,6 +6,7 @@ import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final AuthController _authService = Get.find<AuthController>();
   final SettingsController _settings = Get.find<SettingsController>();
+  final GlobalKey _key = GlobalKey();
 
   @override
   void initState() {
@@ -32,16 +34,16 @@ class _SplashScreenState extends State<SplashScreen> {
     await _authService.initAuth();
     Timer(const Duration(seconds: 3), () {
       _authService.hasUser.isTrue
-          ? Get.offAllNamed('/pin_login')
-          : Get.offAllNamed('/login');
+          ? _key.currentContext?.go('/pin_login')
+          : _key.currentContext?.go('/login');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData;
-    queryData = MediaQuery.of(context);
+    MediaQueryData queryData = MediaQuery.of(context);
     return Scaffold(
+      key: _key,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

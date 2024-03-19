@@ -1,6 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class EMSContainer extends StatefulWidget {
   final Widget child;
@@ -13,15 +12,17 @@ class EMSContainer extends StatefulWidget {
 class _EMSContainerState extends State<EMSContainer> {
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData = MediaQuery.of(context);
+
     return Scaffold(
       body: SizedBox(
-        height: Get.height,
-        width: Get.width,
+        height: queryData.size.height,
+        width: queryData.size.width,
         child: Stack(
           alignment: Alignment.topLeft,
           children: [
             Container(
-              height: Get.height * .16,
+              height: queryData.size.height * .16,
               padding:
                   const EdgeInsets.symmetric(horizontal: 120, vertical: 35),
               color: bgPrimaryBlue,
@@ -35,14 +36,14 @@ class _EMSContainerState extends State<EMSContainer> {
               ),
             ),
             Positioned(
-              top: (Get.height * .12) -
+              top: (queryData.size.height * .12) -
                   (MediaQuery.of(context).viewInsets.bottom * .3),
               right: 0,
               left: 0,
               child: Center(
                 child: Container(
                   alignment: Alignment.center,
-                  height: Get.height * .87,
+                  height: queryData.size.height * .87,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:
