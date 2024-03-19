@@ -1,10 +1,10 @@
-import 'package:ems_v4/controller/home_controller.dart';
+import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/global/utils/json_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/dialog/ems_dialog.dart';
+import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,13 +18,13 @@ class HealthDeclaration extends StatefulWidget {
 
 class _HealthDeclarationState extends State<HealthDeclaration> {
   final HomeController _homeController = Get.find<HomeController>();
-  final AuthService _authService = Get.find<AuthService>();
   final JsonUtils _jsonUtils = JsonUtils();
 
   List _symptoms = [];
   List checkedSymptoms = [];
-  TextEditingController temperatureController = TextEditingController();
-
+  final TextEditingController _temperatureController = TextEditingController();
+  final TextEditingController _otherSymptom = TextEditingController();
+  bool isOthersCheck = false;
   @override
   void initState() {
     super.initState();
@@ -45,14 +45,28 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text("Health Declaration",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: primaryBlue,
-                  )),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text("Health Declaration",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: primaryBlue,
+                      )),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    onPressed: () {
+                      _homeController.pageName.value = '/home/info';
+                    },
+                    icon: const Icon(Icons.close),
+                  ),
+                ),
+              ],
             ),
             const Row(
               children: [
@@ -71,90 +85,113 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
             _symptoms.isNotEmpty
                 ? Padding(
                     padding: EdgeInsets.symmetric(vertical: Get.height * .01),
-                    child: ColumnBuilder(
-                      itemCount: _symptoms.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: Get.width * .01),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color(0xFF2465C7),
-                                style: BorderStyle.solid,
-                                width: 0.5,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: lightGray,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ColumnBuilder(
+                        itemCount: _symptoms.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding:
+                                EdgeInsets.symmetric(vertical: Get.width * .01),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: CheckboxListTile(
-                              activeColor: primaryBlue,
-                              tileColor: darkGray,
-                              contentPadding: const EdgeInsets.all(0),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              title: Row(
-                                children: [
-                                  Image(
-                                    height: Get.height * .05,
-                                    image: AssetImage(_symptoms[index]["path"]),
-                                  ),
-                                  Flexible(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          left: Get.width * .02),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            _symptoms[index]
-                                                ["descriptionEnglish"],
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: gray,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2.5),
-                                          Text(
-                                            _symptoms[index]
-                                                ["descriptionTagalog"],
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: gray,
-                                            ),
-                                            textWidthBasis:
-                                                TextWidthBasis.longestLine,
-                                          ),
-                                        ],
-                                      ),
+                              child: CheckboxListTile(
+                                activeColor: primaryBlue,
+                                side: const BorderSide(color: gray, width: 1),
+                                contentPadding: const EdgeInsets.all(0),
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Row(
+                                  children: [
+                                    Image(
+                                      height: 40,
+                                      image:
+                                          AssetImage(_symptoms[index]["path"]),
                                     ),
-                                  )
-                                ],
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: Get.width * .02),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              _symptoms[index]
+                                                  ["descriptionEnglish"],
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: gray,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2.5),
+                                            Text(
+                                              _symptoms[index]
+                                                  ["descriptionTagalog"],
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: gray,
+                                              ),
+                                              textWidthBasis:
+                                                  TextWidthBasis.longestLine,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                value: _symptoms[index]["state"],
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (checkedSymptoms.contains(
+                                        _symptoms[index]
+                                            ["descriptionEnglish"])) {
+                                      checkedSymptoms.remove((_symptoms[index]
+                                          ["descriptionEnglish"]));
+                                    } else {
+                                      checkedSymptoms.add(_symptoms[index]
+                                          ["descriptionEnglish"]);
+                                    }
+                                    if (_symptoms[index]
+                                            ["descriptionEnglish"] ==
+                                        "Others") {
+                                      isOthersCheck = !isOthersCheck;
+                                    }
+                                    _symptoms[index]["state"] = value;
+                                  });
+                                },
                               ),
-                              value: _symptoms[index]["state"],
-                              onChanged: (value) {
-                                setState(() {
-                                  if (checkedSymptoms.contains(
-                                      _symptoms[index]["descriptionEnglish"])) {
-                                    checkedSymptoms.remove((_symptoms[index]
-                                        ["descriptionEnglish"]));
-                                  } else {
-                                    checkedSymptoms.add(
-                                        _symptoms[index]["descriptionEnglish"]);
-                                  }
-                                  _symptoms[index]["state"] = value;
-                                });
-                              },
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   )
                 : Container(),
+            Visibility(
+              visible: isOthersCheck,
+              child: Input(
+                validator: (p0) {},
+                isPassword: false,
+                textController: _otherSymptom,
+                hintText: 'Other symptoms',
+              ),
+            ),
+            const SizedBox(height: 10),
             TextFormField(
-              controller: temperatureController,
+              controller: _temperatureController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
@@ -162,20 +199,20 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                     RegExp(r'^\d{0,2}\.?\d{0,2}')),
               ],
               decoration: const InputDecoration(
-                labelText: 'Enter your body temperature in degree celsius',
-                labelStyle: TextStyle(color: gray),
+                labelText: 'Enter temperature in °C',
+                labelStyle: TextStyle(color: lightGray, fontSize: 13),
                 hintText: "--.--",
                 prefixIcon: Icon(
                   Icons.thermostat_sharp,
-                  color: darkGray,
+                  color: gray,
                 ),
                 hintStyle: TextStyle(color: gray),
                 contentPadding: EdgeInsets.all(0),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: gray),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: lightGray),
                 ),
+                border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                  gapPadding: 0.0,
                   borderSide: BorderSide(color: primaryBlue),
                 ),
               ),
@@ -191,7 +228,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                     // context.router.navigate(const HomepageRouter());
                   },
                   label: 'Close',
-                  bgColor: darkGray,
+                  bgColor: gray,
                   radius: 8,
                   size: Size(Get.width * .4, 40),
                 ),
@@ -199,9 +236,9 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 RoundedCustomButton(
                   onPressed: () {
                     if (checkedSymptoms.isEmpty ||
-                        temperatureController.text == "") {
+                        _temperatureController.text == "") {
                       EMSDialog(
-                        title: "Opps!",
+                        title: "Oops",
                         hasMessage: true,
                         withCloseButton: true,
                         hasCustomWidget: false,
@@ -211,13 +248,11 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                         buttonNumber: 0,
                       ).show(context);
                     } else {
-                      debugPrint(checkedSymptoms.join(", "));
-                      debugPrint(temperatureController.text);
+                      checkedSymptoms.add(_otherSymptom.text);
                       _homeController
                           .clockIn(
-                        employeeId: _authService.employee.value.id,
                         healthCheck: checkedSymptoms,
-                        temperature: temperatureController.text,
+                        temperature: _temperatureController.text,
                       )
                           .then((value) {
                         _homeController.pageName.value = '/home/result';
@@ -231,6 +266,9 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 ),
                 const Expanded(child: SizedBox()),
               ],
+            ),
+            Container(
+              height: MediaQuery.of(context).viewInsets.bottom + 80,
             ),
           ],
         ),

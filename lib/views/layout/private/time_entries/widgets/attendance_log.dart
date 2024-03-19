@@ -1,7 +1,9 @@
-import 'package:ems_v4/controller/time_entries_controller.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/utils/map_launcher.dart';
 import 'package:ems_v4/models/attendance_record.dart';
+import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +17,9 @@ class AttendanceLog extends StatefulWidget {
 class _AttendanceLogState extends State<AttendanceLog> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
+  final MapLauncher _mapLuncher = MapLauncher();
+  bool isClockIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,175 +27,15 @@ class _AttendanceLogState extends State<AttendanceLog> {
         .attendances[_timeEntriesController.attendanceIndex.value];
 
     return SingleChildScrollView(
+      padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
       child: SizedBox(
         height: Get.height * .8,
         child: Stack(
           alignment: Alignment.topCenter,
-          // mainAxisAlignment: MainAxisAlignment.start,
-          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Positioned(
-              top: 13,
-              child: Container(
-                width: Get.width * .9,
-                height: Get.height * .35,
-                padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: gray),
-                    borderRadius: BorderRadius.circular(20)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      selectedRecord.formattedClockIn ?? "??/??/??/ | ??:??",
-                      style: const TextStyle(
-                        color: primaryBlue,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Reports at:'),
-                        const SizedBox(width: 50),
-                        Flexible(
-                          child: Text(
-                            _authService.company.value.name,
-                            style: const TextStyle(color: primaryBlue),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(selectedRecord.clockedInLocationType ?? ""),
-                        const SizedBox(width: 30),
-                        const Text(
-                          "View Map",
-                          style: TextStyle(
-                            color: primaryBlue,
-                            decoration: TextDecoration.underline,
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('GPS Location:'),
-                        const SizedBox(width: 30),
-                        Expanded(
-                          child: Text(
-                            selectedRecord.clockedInLocation ?? "",
-                            style: const TextStyle(color: primaryBlue),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Health Cheack:'),
-                        const SizedBox(width: 23),
-                        Text(
-                          selectedRecord.healthCheck ?? 'View Symptoms',
-                          style: const TextStyle(
-                            color: primaryBlue,
-                            decoration: TextDecoration.underline,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              top: Get.height * .40,
-              child: Visibility(
-                visible: selectedRecord.clockOutAt != null,
-                child: Container(
-                  width: Get.width * .9,
-                  height: Get.height * .35,
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: gray),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        selectedRecord.formattedClockOut ?? "??/??/??/ | ??:??",
-                        style: const TextStyle(
-                          color: primaryBlue,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Reports at:'),
-                          const SizedBox(width: 50),
-                          Flexible(
-                            child: Text(
-                              _authService.company.value.name,
-                              style: const TextStyle(color: primaryBlue),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(selectedRecord.clockedOutLocationType ?? ""),
-                          const SizedBox(width: 30),
-                          const Text(
-                            "View Map",
-                            style: TextStyle(
-                              color: primaryBlue,
-                              decoration: TextDecoration.underline,
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('GPS Location:'),
-                          const SizedBox(width: 30),
-                          Expanded(
-                            child: Text(
-                              selectedRecord.clockedOutLocation ?? "",
-                              style: const TextStyle(color: primaryBlue),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Health Cheack:'),
-                          const SizedBox(width: 23),
-                          Text(
-                            selectedRecord.healthCheck ?? 'View Symptoms',
-                            style: const TextStyle(
-                              color: primaryBlue,
-                              decoration: TextDecoration.underline,
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            clockInDetails(selectedRecord),
+            clockOutDetails(selectedRecord),
             Positioned(
               top: 0,
               left: 40,
@@ -212,7 +56,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
               ),
             ),
             Positioned(
-              top: Get.height * .385,
+              top: Get.height * .333,
               left: 40,
               child: Visibility(
                 visible: selectedRecord.clockOutAt != null,
@@ -234,6 +78,290 @@ class _AttendanceLogState extends State<AttendanceLog> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget clockInDetails(AttendanceRecord selectedRecord) {
+    return Positioned(
+      top: 13,
+      child: Container(
+        width: Get.width * .9,
+        height: Get.height * .28,
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+            border: Border.all(width: 1, color: lightGray),
+            borderRadius: BorderRadius.circular(20)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              selectedRecord.formattedClockIn ?? "??/??/??/ | ??:??",
+              style: const TextStyle(
+                color: primaryBlue,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: Get.width * .30,
+                  child: const Text(
+                    'Reports at:',
+                    style: TextStyle(
+                      color: gray,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    _authService.employee!.value.employeeDetails.location.name,
+                    style: const TextStyle(
+                      color: primaryBlue,
+                      fontSize: 13,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: Get.width * .30,
+                  child: Text(
+                    selectedRecord.clockedInLocationType ?? "",
+                    style: const TextStyle(
+                      color: gray,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isClockIn = true;
+                        });
+                        _mapLuncher.launchMap(
+                            attendanceRecord: selectedRecord, isclockin: true);
+                      },
+                      child: const Text(
+                        "View Map",
+                        style: TextStyle(
+                          color: primaryBlue,
+                          decoration: TextDecoration.underline,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      selectedRecord.clockedInLocationSetting ?? "",
+                      style: const TextStyle(
+                        color: primaryBlue,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: Get.width * .30,
+                  child: const Text(
+                    'GPS Location:',
+                    style: TextStyle(
+                      color: gray,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    selectedRecord.clockedInLocation ?? "",
+                    style: const TextStyle(
+                      color: primaryBlue,
+                      fontSize: 13,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Visibility(
+              visible: selectedRecord.healthCheck != null,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: Get.width * .30,
+                    child: const Text(
+                      'Health Check:',
+                      style: TextStyle(
+                        color: gray,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.to(
+                        () => TimeEntriesHealthDeclaration(
+                          attendanceRecord: selectedRecord,
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'View Symptoms',
+                      style: TextStyle(
+                        color: primaryBlue,
+                        decoration: TextDecoration.underline,
+                        fontSize: 13,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget clockOutDetails(AttendanceRecord selectedRecord) {
+    return Positioned(
+      top: Get.height * .35,
+      child: Visibility(
+        visible: selectedRecord.clockOutAt != null,
+        child: Container(
+          width: Get.width * .9,
+          height: Get.height * .28,
+          padding: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+              border: Border.all(width: 1, color: lightGray),
+              borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                selectedRecord.formattedClockOut ?? "??/??/??/ | ??:??",
+                style: const TextStyle(
+                  color: primaryBlue,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: Get.width * .30,
+                    child: const Text(
+                      'Reports at:',
+                      style: TextStyle(
+                        color: gray,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Text(
+                      _authService
+                          .employee!.value.employeeDetails.location.name,
+                      style: const TextStyle(
+                        color: primaryBlue,
+                        fontSize: 13,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: Get.width * .30,
+                    child: Text(
+                      selectedRecord.clockedOutLocationType ?? "",
+                      style: const TextStyle(
+                        color: gray,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isClockIn = true;
+                          });
+                          _mapLuncher.launchMap(
+                              attendanceRecord: selectedRecord,
+                              isclockin: true);
+                        },
+                        child: const Text(
+                          "View Map",
+                          style: TextStyle(
+                            color: primaryBlue,
+                            decoration: TextDecoration.underline,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible:
+                            selectedRecord.clockedOutLocationSetting != null,
+                        child: Text(
+                          selectedRecord.clockedOutLocationSetting ?? "",
+                          style: const TextStyle(
+                            color: primaryBlue,
+                            decoration: TextDecoration.underline,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: Get.width * .30,
+                    child: const Text(
+                      'GPS Location:',
+                      style: TextStyle(
+                        color: gray,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      selectedRecord.clockedOutLocation ?? "",
+                      style: const TextStyle(
+                        color: primaryBlue,
+                        fontSize: 13,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

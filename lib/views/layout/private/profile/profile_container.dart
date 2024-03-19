@@ -1,5 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_list_button.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
@@ -17,14 +17,8 @@ class ProfileContainer extends StatefulWidget {
 
 class _ProfileContainerState extends State<ProfileContainer> {
   late SharedPreferences _localStorage;
-  final AuthService authService = Get.find<AuthService>();
+  final AuthController authService = Get.find<AuthController>();
   bool switchVal = true;
-
-  Future<void> _launchInBrowser(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
-    }
-  }
 
   @override
   initState() {
@@ -34,6 +28,10 @@ class _ProfileContainerState extends State<ProfileContainer> {
 
   Future initLocalStorage() async {
     _localStorage = await SharedPreferences.getInstance();
+    bool? data = _localStorage.getBool('auth_biometrics');
+    setState(() {
+      switchVal = data ?? false;
+    });
   }
 
   @override
@@ -46,7 +44,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
           children: [
             const SizedBox(height: 20),
             const Text(
-              "Accounts and Proflie Info",
+              "Accounts and Profile Info",
               style: TextStyle(
                 color: primaryBlue,
                 fontWeight: FontWeight.bold,
@@ -58,6 +56,12 @@ class _ProfileContainerState extends State<ProfileContainer> {
               label: 'Personal Information',
               onPressed: () {
                 Get.toNamed("/profile/personal_info");
+              },
+            ),
+            ProfileListButton(
+              label: 'Employment Details',
+              onPressed: () {
+                Get.toNamed("/profile/employment_details");
               },
             ),
             const SizedBox(height: 5),
@@ -76,78 +80,50 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
             const SizedBox(height: 5),
             ProfileListButton(
-              label: 'Enable Fingerprint Authetication',
+              label: 'Enable Fingerprint Authentication',
               onPressed: () {
-                _localStorage.setBool('auth_biometrics', switchVal);
-                Get.dialog(
-                  barrierDismissible: false,
-                  GetDialog(
-                    type: 'success',
-                    title: 'Fingerprint Authetication Updated',
-                    hasMessage: false,
-                    message: "You can now log in using your new password.",
-                    buttonNumber: 1,
-                    hasCustomWidget: false,
-                    withCloseButton: false,
-                    okPress: () {
-                      Get.back();
-                    },
-                    okText: "Close",
-                    okButtonBGColor: bgPrimaryBlue,
-                  ),
-                );
                 setState(() {
                   switchVal = !switchVal;
                 });
+                updateFingerprintState(switchVal);
               },
-              leading: Switch(
-                value: switchVal,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (value) {
-                  _localStorage.setBool('auth_biometrics', value);
-                  Get.dialog(
-                    barrierDismissible: false,
-                    GetDialog(
-                      type: 'success',
-                      title: 'Fingerprint Authetication Updated',
-                      hasMessage: false,
-                      message: "You can now log in using your new password.",
-                      buttonNumber: 1,
-                      hasCustomWidget: false,
-                      withCloseButton: false,
-                      okPress: () {
-                        Get.back();
-                      },
-                      okText: "Close",
-                      okButtonBGColor: bgPrimaryBlue,
-                    ),
-                  );
-                  setState(() {
-                    switchVal = value;
-                  });
-                },
+              leading: SizedBox(
+                width: 40,
+                child: FittedBox(
+                  child: Switch(
+                    value: switchVal,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    onChanged: (value) {
+                      setState(() {
+                        switchVal = value;
+                      });
+                      updateFingerprintState(switchVal);
+                    },
+                  ),
+                ),
               ),
             ),
+            const SizedBox(height: 5),
             ProfileListButton(
-              label: 'Employment Details',
+              label: 'Help Center',
               onPressed: () {
-                Get.toNamed("/profile/employment_details");
+                _launchInBrowser(
+                    'https://sites.google.com/view/gemshelpcenter/home');
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
-              label: 'Provacy Policy',
+              label: 'Privacy Policy',
               onPressed: () {
                 _launchInBrowser(
-                    'https://happyhousekeepers.com.ph/privacy-policy');
+                    'https://gems.globalland.com.ph/privacy-policy');
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Terms of Use',
               onPressed: () {
-                _launchInBrowser(
-                    'https://happyhousekeepers.com.ph/privacy-policy');
+                _launchInBrowser('https://gems.globalland.com.ph/terms-of-use');
               },
             ),
             const SizedBox(height: 30),
@@ -165,5 +141,30 @@ class _ProfileContainerState extends State<ProfileContainer> {
         ),
       ),
     );
+  }
+
+  updateFingerprintState(bool value) {
+    _localStorage.setBool('auth_biometrics', value);
+    Get.dialog(
+      barrierDismissible: false,
+      GetDialog(
+        type: 'success',
+        title: 'Success',
+        hasMessage: true,
+        message: value
+            ? "You can now log in using your fingerprint."
+            : "Your fingerprint login has been successfully disabled.",
+        buttonNumber: 0,
+        hasCustomWidget: false,
+        withCloseButton: true,
+        okButtonBGColor: bgPrimaryBlue,
+      ),
+    );
+  }
+
+  Future<void> _launchInBrowser(url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
   }
 }

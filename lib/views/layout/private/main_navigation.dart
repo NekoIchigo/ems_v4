@@ -1,5 +1,5 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:ems_v4/controller/main_navigation_controller.dart';
+import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/getting_started.dart';
 
@@ -26,39 +26,63 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: 0);
     return Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: Stack(
-          children: [
-            PageView(
-              controller: pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: List.generate(
-                _mainNavigationController.pages.length,
-                (index) => _mainNavigationController.pages[index],
-              ),
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          PageView(
+            controller: pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: List.generate(
+              _mainNavigationController.pages.length,
+              (index) => _mainNavigationController.pages[index],
             ),
-            const GettingStarted(),
+          ),
+          const GettingStarted(),
+        ],
+      ),
+      extendBody: true,
+      bottomNavigationBar: ConvexAppBar(
+        backgroundColor: bgPrimaryBlue,
+        height: 55,
+        items: _mainNavigationController.navigations,
+        curveSize: 80,
+        top: -15,
+        style: TabStyle.reactCircle,
+        // cornerRadius: 5,
+        onTap: (index) {
+          pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
+      ),
+    );
+  }
+
+  Future<bool?> showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Exit'),
+          content: const Text('Do you want to exit the app?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () =>
+                  Navigator.of(context).pop(false), // User doesn't want to exit
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () =>
+                  Navigator.of(context).pop(true), // User wants to exit
+              child: const Text('Yes'),
+            ),
           ],
-        ),
-        extendBody: true,
-        bottomNavigationBar: ConvexAppBar(
-          backgroundColor: bgPrimaryBlue,
-          height: 55,
-          items: _mainNavigationController.navigations,
-          curveSize: 80,
-          top: -15,
-          style: TabStyle.reactCircle,
-          // cornerRadius: 5,
-          onTap: (index) {
-            print(index);
-            pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
-          },
-        ));
+        );
+      },
+    );
   }
 }
  /*

@@ -1,3 +1,4 @@
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/guards/auth_guard.dart';
 import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
@@ -14,16 +15,30 @@ import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/d
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_container.dart';
+import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart';
 import 'package:ems_v4/views/layout/public/login.dart';
+import 'package:ems_v4/views/layout/public/pin_login.dart';
+import 'package:ems_v4/views/layout/public/splash_screen.dart';
+import 'package:ems_v4/views/widgets/under_maintenance.dart';
 import 'package:get/get.dart';
 
-const String initalRouteName = '/login';
+final AuthController _authService = Get.find<AuthController>();
+// String initialRouteName = _authService.hasUser.isTrue ? '/splash' : '/login';
+String initialRouteName = '/splash';
 
 final List<GetPage> routes = [
   GetPage(name: '/login', page: () => const Login()),
+  GetPage(name: '/splash', page: () => const SplashScreen()),
+  GetPage(name: '/pin_login', page: () => const PINLogin()),
+  GetPage(
+      name: '/maintenance', page: () => const UnderMaintenance(hasLogo: true)),
   GetPage(
     name: '/forgot_password',
     page: () => const ForgotPasswordContainer(),
+  ),
+  GetPage(
+    name: '/forgot_pin',
+    page: () => const ForgotPINContainer(),
   ),
   GetPage(
       name: '/create_password',

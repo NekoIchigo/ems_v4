@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfileListButton extends StatefulWidget {
   final Function() onPressed;
@@ -31,9 +32,15 @@ class _ProfileListButtonState extends State<ProfileListButton> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            widget.label,
-            style: const TextStyle(color: gray, fontSize: 15),
+          SizedBox(
+            width: Get.width * .7,
+            child: Text(
+              widget.label,
+              style: const TextStyle(
+                color: gray,
+                fontSize: 13,
+              ),
+            ),
           ),
           widget.leading ??
               const Icon(

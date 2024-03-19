@@ -14,11 +14,12 @@ class GetDialog extends StatelessWidget {
   final int buttonNumber;
   final String? okText;
   final bool hasCustomWidget;
+  final bool? hasLottie;
   final Widget? customWidget;
   final bool withCloseButton;
   final Color? okButtonBGColor;
   final void Function()? okPress;
-
+  final void Function()? onClose;
   final void Function()? cancelPress;
   final String? cancelText;
 
@@ -38,6 +39,8 @@ class GetDialog extends StatelessWidget {
     this.okPress,
     this.cancelPress,
     this.cancelText,
+    this.onClose,
+    this.hasLottie,
   });
 
   @override
@@ -73,7 +76,7 @@ class GetDialog extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: InkWell(
                           onTap: () {
-                            // Navigator.of(context, rootNavigator: true).pop();
+                            onClose;
                             Navigator.of(context).pop();
                           },
                           child: const Icon(
@@ -83,25 +86,28 @@ class GetDialog extends StatelessWidget {
                           ),
                         )),
                   ),
-                  Lottie.asset(
-                    type == "question"
-                        ? 'assets/lottie/question.json'
-                        : type == "error"
-                            ? 'assets/lottie/error-icon-2.json'
-                            : type == "success"
-                                ? 'assets/lottie/success-icon-4.json'
-                                : "assets/lottie/info.json",
-                    repeat: false,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.fill,
+                  Visibility(
+                    visible: hasLottie ?? true,
+                    child: Lottie.asset(
+                      type == "question"
+                          ? 'assets/lottie/question.json'
+                          : type == "error"
+                              ? 'assets/lottie/error-icon-2.json'
+                              : type == "success"
+                                  ? 'assets/lottie/success-icon-4.json'
+                                  : "assets/lottie/info.json",
+                      repeat: false,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.plusJakartaSans(
+                      style: GoogleFonts.outfit(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: type == "success"
@@ -124,8 +130,8 @@ class GetDialog extends StatelessWidget {
                       child: Text(
                         message ?? "",
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.plusJakartaSans(
-                            fontSize: 14,
+                        style: GoogleFonts.outfit(
+                            fontSize: 11,
                             color: textblack,
                             fontWeight: FontWeight.w300),
                       ),
@@ -159,7 +165,7 @@ class GetDialog extends StatelessWidget {
                                       horizontal: 5.0, vertical: 10.0),
                                   child: Text(
                                     cancelText ?? "Cancel",
-                                    style: GoogleFonts.plusJakartaSans(
+                                    style: GoogleFonts.outfit(
                                       textStyle: const TextStyle(
                                           fontSize: 14.0,
                                           color: textblack,
@@ -177,18 +183,17 @@ class GetDialog extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: okPress,
                               style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(12), // <-- Radius
-                                  ),
-                                  backgroundColor:
-                                      okButtonBGColor ?? primaryBlue),
+                                backgroundColor: okButtonBGColor ?? primaryBlue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5.0, vertical: 10.0),
                                 child: Text(
                                   okText ?? "OK",
-                                  style: GoogleFonts.plusJakartaSans(
+                                  style: GoogleFonts.outfit(
                                     textStyle: const TextStyle(
                                         fontSize: 14.0,
                                         color: Colors.white,

@@ -3,14 +3,16 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:ems_v4/global/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiCall {
-  final String _baseUrl = 'http://192.168.0.25:8000/api/mobile';
+  // final String _baseUrl = 'http://192.168.0.25:8000/api/mobile';
   // final String _baseUrl = 'http://10.10.10.42:8000/api/mobile'; // company ip
-  // final String _baseUrl = "https://stg-ems.globalland.com.ph/api/mobile";
+
+  final String _baseUrl = "${globalBaseUrl}api/mobile";
   final Duration _timeOutDuration = const Duration(seconds: 30);
   final client = RetryClient(http.Client());
 

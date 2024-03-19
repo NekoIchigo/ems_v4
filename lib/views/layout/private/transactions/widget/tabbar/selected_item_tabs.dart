@@ -94,8 +94,12 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
                 controller: _tabController,
                 children: [
                   widget.detailPage,
-                  const UnderMaintenance(),
-                  const UnderMaintenance(),
+                  const UnderMaintenance(
+                    hasLogo: false,
+                  ),
+                  const UnderMaintenance(
+                    hasLogo: false,
+                  ),
                 ],
               ),
             ),

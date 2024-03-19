@@ -1,10 +1,11 @@
-import 'package:ems_v4/controller/time_entries_controller.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bottomsheet.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class TimeEntriesIndex extends StatefulWidget {
@@ -17,22 +18,38 @@ class TimeEntriesIndex extends StatefulWidget {
 class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
 
   final List _list = [
-    {'month': 1, 'label': 'Last month'},
-    {'month': 6, 'label': 'Last 6 months'},
-    {'month': 12, 'label': 'Last 12 months'},
-    {'month': 24, 'label': 'Last 24 months'},
-    {'month': 0, 'label': 'Custom date range'},
+    {'day': 1, 'label': 'Today'},
+    {'day': 7, 'label': 'Last 7 days'},
+    {'day': 30, 'label': 'Last 30 days'},
+    {'day': 90, 'label': 'Last 3 months'},
+    {'day': 0, 'label': 'Custom date range'},
   ];
+
+  final ScrollController _scrollController = ScrollController();
 
   late Object dropdownValue;
   @override
   void initState() {
     super.initState();
     dropdownValue = _list[0];
+    _scrollController.addListener(_scrollListener);
     // _timeEntriesController.hasClose.value = false;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _timeEntriesController.getNextListPage();
+    }
   }
 
   @override
@@ -52,7 +69,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
               margin: const EdgeInsets.symmetric(vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: bgSecondaryBlue,
+                color: Colors.white,
+                border: Border.all(color: lightGray),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: DropdownButtonHideUnderline(
@@ -63,25 +81,27 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                   //   style: TextStyle(color: Colors.white),
                   // ),
                   value: dropdownValue,
-                  dropdownColor: bgSecondaryBlue,
+                  dropdownColor: Colors.white,
                   elevation: 16,
                   isExpanded: true,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: gray),
                   onChanged: (value) async {
-                    if (value["month"] == 0) {
-                      List dates = await Get.bottomSheet(
+                    if (value["day"] == 0) {
+                      List? dates = await Get.bottomSheet(
                         const CustomDateBottomsheet(type: "range"),
                       );
-                      _timeEntriesController.getAttendanceList(
-                        employeeId: _authService.employee.value.id,
-                        months: value["month"],
-                        startDate: dates[0],
-                        endDate: dates[1],
-                      );
+                      if (dates != null) {
+                        _timeEntriesController.getAttendanceList(
+                          employeeId: _authService.employee!.value.id,
+                          days: value["day"],
+                          startDate: dates[0],
+                          endDate: dates[1],
+                        );
+                      }
                     } else {
                       _timeEntriesController.getAttendanceList(
-                        employeeId: _authService.employee.value.id,
-                        months: value["month"],
+                        employeeId: _authService.employee!.value.id,
+                        days: value["day"],
                       );
                     }
                     setState(() {
@@ -93,8 +113,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                       value: value,
                       child: Row(
                         children: [
-                          const Icon(Icons.date_range_rounded,
-                              color: Colors.white),
+                          const Icon(Icons.date_range_rounded, color: gray),
                           const SizedBox(width: 10),
                           Text(value['label']),
                         ],
@@ -111,8 +130,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                     ? const ListShimmer(listLength: 10)
                     : _timeEntriesController.attendances.isNotEmpty
                         ? ListView.builder(
-                            // TODO : paginate every scroll
-                            padding: EdgeInsets.zero,
+                            controller: _scrollController,
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             physics: const BouncingScrollPhysics(),
                             itemCount:
                                 _timeEntriesController.attendances.length,
@@ -120,108 +139,42 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                               final attendance =
                                   _timeEntriesController.attendances[index];
 
-                              return Container(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                height: 70,
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    bottom:
-                                        BorderSide(width: 1, color: lightGray),
+                              return ElevatedButton(
+                                onPressed: () {
+                                  _timeEntriesController.pageName.value =
+                                      '/attendance-log';
+                                  _timeEntriesController.attendanceIndex.value =
+                                      index;
+                                  _timeEntriesController.hasClose.value = true;
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  elevation: 0,
+                                  shape: LinearBorder.bottom(
+                                    side: const BorderSide(color: lightGray),
                                   ),
                                 ),
-                                child: ListTile(
-                                  onTap: () {
-                                    _timeEntriesController.pageName.value =
-                                        '/atttendance-log';
-                                    _timeEntriesController
-                                        .attendanceIndex.value = index;
-                                    _timeEntriesController.hasClose.value =
-                                        true;
-                                  },
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.access_time,
-                                            color: primaryBlue,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 15),
-                                          Text(
-                                            attendance.formattedClockIn ??
-                                                "??/??/??/ | ??:??",
-                                            style: const TextStyle(
-                                              color: primaryBlue,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Expanded(
-                                            child: Text(
-                                              attendance
-                                                      .clockedInLocationType ??
-                                                  "",
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: const TextStyle(
-                                                color: darkGray,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Visibility(
-                                        visible: attendance.clockOutAt != null,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            const Icon(
-                                              Icons.access_time_filled,
-                                              color: primaryBlue,
-                                              size: 20,
-                                            ),
-                                            const SizedBox(width: 15),
-                                            Text(
-                                              attendance.formattedClockOut ??
-                                                  "??/??/??/ | ??:??",
-                                              style: const TextStyle(
-                                                color: primaryBlue,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Expanded(
-                                              child: Text(
-                                                attendance
-                                                        .clockedOutLocationType ??
-                                                    "",
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  color: darkGray,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: const Icon(
-                                    Icons.navigate_next,
-                                    color: gray,
-                                    size: 20,
-                                  ),
+                                child: Column(
+                                  children: [
+                                    listItem(
+                                      attendance.formattedClockIn ??
+                                          "??/??/??/ | ??:??",
+                                      attendance.clockedInLocationType ==
+                                          'Within Vicinity',
+                                      "IN",
+                                    ),
+                                    const SizedBox(height: 10),
+                                    listItem(
+                                      attendance.clockOutAt != null
+                                          ? attendance.formattedClockOut ??
+                                              "No Record"
+                                          : "No Record",
+                                      attendance.clockedOutLocationType ==
+                                          'Within Vicinity',
+                                      "OUT",
+                                    ),
+                                  ],
                                 ),
                               );
                             },
@@ -232,6 +185,54 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget listItem(String dateTime, bool inOut, String clockType) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: Get.width * .68,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 50,
+                child: Text(
+                  clockType,
+                  style: const TextStyle(
+                    color: gray,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 50),
+              Text(
+                dateTime,
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                  color: gray,
+                  fontSize: 13,
+                ),
+              )
+            ],
+          ),
+        ),
+        Visibility(
+          visible: dateTime != "No Record",
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(
+                inOut ? colorSuccess : colorError, BlendMode.srcIn),
+            child: SvgPicture.asset(
+              inOut
+                  ? "assets/svg/within_vicinity.svg"
+                  : "assets/svg/outside_vicinity.svg",
+              height: 25,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

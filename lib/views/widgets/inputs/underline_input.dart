@@ -7,6 +7,7 @@ class UnderlineInput extends StatefulWidget {
   final IconData icon;
   final TextEditingController textController;
   final String? errorText;
+  final Function(String)? onChanged;
   const UnderlineInput({
     super.key,
     required this.label,
@@ -14,6 +15,7 @@ class UnderlineInput extends StatefulWidget {
     required this.icon,
     required this.textController,
     this.errorText,
+    this.onChanged,
   });
 
   @override
@@ -34,18 +36,19 @@ class _UnderlineInputState extends State<UnderlineInput> {
     return TextFormField(
       obscureText: widget.isPassword ? _isObscure : false,
       controller: widget.textController,
-      style: const TextStyle(color: darkGray, fontSize: 15),
+      style: const TextStyle(color: gray, fontSize: 15),
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
-        focusedBorder:
-            const UnderlineInputBorder(borderSide: BorderSide(color: darkGray)),
+        focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: lightGray)),
         enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: darkGray),
+          borderSide: BorderSide(color: lightGray),
         ),
         error: hasError(),
         labelText: widget.label,
-        labelStyle: const TextStyle(color: darkGray),
+        labelStyle: const TextStyle(color: gray),
         suffixIcon: !widget.isPassword
-            ? Icon(widget.icon, color: darkGray)
+            ? Icon(widget.icon, color: gray)
             : InkWell(
                 onTap: _togglePasswordView,
                 child: Icon(
@@ -54,7 +57,7 @@ class _UnderlineInputState extends State<UnderlineInput> {
                 ),
               ),
         floatingLabelStyle:
-            const TextStyle(color: darkGray, letterSpacing: 1.3, fontSize: 14),
+            const TextStyle(color: gray, letterSpacing: 1.3, fontSize: 14),
       ),
       validator: (String? value) {
         if (value == null || value == '') {
@@ -67,14 +70,19 @@ class _UnderlineInputState extends State<UnderlineInput> {
   }
 
   Widget? hasError() {
-    if (widget.errorText != null) {
+    if (widget.errorText != null && widget.errorText != '') {
       return Row(
         children: [
           const Icon(
             Icons.warning_rounded,
             color: colorError,
+            size: 18,
           ),
-          Text(widget.errorText!)
+          const SizedBox(width: 5),
+          Text(
+            widget.errorText!,
+            style: const TextStyle(color: colorError, fontSize: 12),
+          )
         ],
       );
     }

@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:ems_v4/controller/profile_controller.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/profile_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
-import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,9 +17,10 @@ class PersonalInformation extends StatefulWidget {
 }
 
 class _PersonalInformationState extends State<PersonalInformation> {
-  final AuthService authService = Get.find<AuthService>();
+  final AuthController authService = Get.find<AuthController>();
   final ProfileController _profileController = Get.find<ProfileController>();
   bool isNotEdit = true;
+  final TextEditingController _name = TextEditingController();
   final TextEditingController _contactNumber = TextEditingController();
   final TextEditingController _email = TextEditingController();
 
@@ -28,10 +28,12 @@ class _PersonalInformationState extends State<PersonalInformation> {
   void initState() {
     super.initState();
     _profileController.profileImage.value =
-        authService.employee.value.profileBase64;
-    _contactNumber
-        .setText(authService.employee.value.employeeContact.workContactNumber);
-    _email.setText(authService.employee.value.employeeContact.email);
+        authService.employee!.value.profileBase64;
+    _contactNumber.setText(
+        authService.employee!.value.employeeContact.workContactNumber ?? '');
+    _email.setText(authService.employee!.value.employeeContact.email ?? '');
+    _name.setText(
+        "${authService.employee!.value.firstName} ${authService.employee!.value.lastName}");
   }
 
   @override
@@ -48,38 +50,52 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 Center(
                   child: Column(
                     children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          if (!isNotEdit) {
-                            _profileController.selectProfileImage();
-                          }
-                        },
-                        style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsetsDirectional.all(0),
-                            side: const BorderSide(
-                              color: lightGray,
-                            )),
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipOval(
-                            child: Obx(
-                              () => _profileController.profileImage.value != ''
-                                  ? Image.memory(
-                                      base64.decode(_profileController
-                                          .profileImage.value),
-                                      fit: BoxFit.contain,
-                                    )
-                                  : const Icon(
-                                      Icons.image_search,
-                                      size: 30,
-                                      color: gray,
-                                    ),
+                      SizedBox(
+                        width: 110,
+                        height: 110,
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: lightGray),
+                              ),
+                              child: ClipOval(
+                                child: Obx(
+                                  () => _profileController.profileImage.value !=
+                                          ''
+                                      ? Image.memory(
+                                          base64.decode(_profileController
+                                              .profileImage.value),
+                                          fit: BoxFit.contain,
+                                        )
+                                      : const Icon(
+                                          Icons.image_search,
+                                          size: 30,
+                                          color: gray,
+                                        ),
+                                ),
+                              ),
                             ),
-                          ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: IconButton(
+                                style: IconButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    backgroundColor: Colors.white),
+                                onPressed: () {
+                                  _profileController.selectProfileImage();
+                                },
+                                icon: const Icon(
+                                  Icons.camera_enhance_rounded,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const Padding(
@@ -97,6 +113,26 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
+                  "Name",
+                  style: TextStyle(
+                    color: primaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Input(
+                    validator: (p0) {},
+                    isPassword: false,
+                    disabled: true,
+                    textController: _name,
+                    labelColor: primaryBlue,
+                    icon: Icons.person,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
                   "Contact Number",
                   style: TextStyle(
                     color: primaryBlue,
@@ -107,8 +143,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Input(
+                    validator: (p0) {},
                     isPassword: false,
-                    disabled: isNotEdit,
+                    disabled: true,
                     textController: _contactNumber,
                     labelColor: primaryBlue,
                     icon: Icons.phone_android_rounded,
@@ -124,8 +161,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 ),
                 const SizedBox(height: 5),
                 Input(
+                  validator: (p0) {},
                   isPassword: false,
-                  disabled: isNotEdit,
+                  disabled: true,
                   textController: _email,
                   labelColor: primaryBlue,
                   icon: Icons.email_rounded,
@@ -134,26 +172,26 @@ class _PersonalInformationState extends State<PersonalInformation> {
               ],
             ),
           ),
-          Center(
-            child: Obx(
-              () => RoundedCustomButton(
-                isLoading: _profileController.isLoading.value,
-                onPressed: () {
-                  if (!isNotEdit) {
-                    _profileController.updatePersonalInformation(
-                        _contactNumber.text, _email.text);
-                  }
-                  setState(() {
-                    isNotEdit = false;
-                  });
-                },
-                label: isNotEdit ? 'Update' : 'Submit',
-                radius: 5,
-                size: Size(Get.width * .35, 30),
-                bgColor: bgPrimaryBlue,
-              ),
-            ),
-          ),
+          // Center(
+          //   child: Obx(
+          //     () => RoundedCustomButton(
+          //       isLoading: _profileController.isLoading.value,
+          //       onPressed: () {
+          //         if (!isNotEdit) {
+          //           _profileController.updatePersonalInformation(
+          //               _contactNumber.text, _email.text);
+          //         }
+          //         setState(() {
+          //           isNotEdit = false;
+          //         });
+          //       },
+          //       label: isNotEdit ? 'Edit' : 'Submit',
+          //       radius: 5,
+          //       size: Size(Get.width * .35, 30),
+          //       bgColor: bgPrimaryBlue,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

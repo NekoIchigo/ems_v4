@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/time_entries_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/attendance_log.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class _TimeEntriesContainerState extends State<TimeEntriesContainer> {
   Widget build(BuildContext context) {
     return Obx(() {
       switch (_timeEntriesController.pageName.value) {
-        case '/atttendance-log':
+        case '/attendance-log':
           return const AttendanceLog();
         // case '/home/result':
         //   return const HomeResultPage();

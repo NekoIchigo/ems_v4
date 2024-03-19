@@ -51,9 +51,7 @@ class _EditProfileState extends State<EditProfile>
           ExpansionPanel(
             canTapOnHeader: true,
             headerBuilder: (BuildContext context, bool isExpanded) {
-              return Container(
-                child: Text('Account Settings'),
-              );
+              return const Text('Account Settings');
             },
             body: SlideTransition(
               position: Tween<Offset>(
@@ -111,12 +109,14 @@ class _EditProfileState extends State<EditProfile>
                             label: "Contact Number",
                             isPassword: false,
                             textController: _contactNumber,
+                            validator: (p0) {},
                           ),
                           const SizedBox(height: 10),
                           Input(
                             label: "Email Address",
                             isPassword: false,
                             textController: _contactNumber,
+                            validator: (p0) {},
                           ),
                         ],
                       ),
@@ -133,15 +133,18 @@ class _EditProfileState extends State<EditProfile>
                             label: "Current Password",
                             isPassword: true,
                             textController: _contactNumber,
+                            validator: (p0) {},
                           ),
                           const SizedBox(height: 10),
                           Input(
+                            validator: (p0) {},
                             label: "New Password",
                             isPassword: true,
                             textController: _contactNumber,
                           ),
                           const SizedBox(height: 10),
                           Input(
+                            validator: (p0) {},
                             label: "Re-enter Password",
                             isPassword: true,
                             textController: _contactNumber,

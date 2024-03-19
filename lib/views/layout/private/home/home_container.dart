@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/home_controller.dart';
+import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/additional_shift_info.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';

@@ -7,12 +7,20 @@ class PinInput extends StatefulWidget {
   final String label;
   final Function(String?) validation;
   final bool? hasShadow;
+  final String? errorText;
+  final bool? obscureText;
+  final bool? readOnly;
+  final Function(String)? onChanged;
   const PinInput({
     super.key,
     required this.pinController,
     required this.label,
     required this.validation,
     this.hasShadow,
+    this.errorText,
+    this.obscureText,
+    this.readOnly,
+    this.onChanged,
   });
 
   @override
@@ -65,15 +73,21 @@ class _PinInputState extends State<PinInput> {
           children: [
             Text(
               widget.label,
-              style: TextStyle(color: gray),
+              style: const TextStyle(color: gray),
             ),
             const SizedBox(height: 5),
             Directionality(
               // Specify direction if desired
               textDirection: TextDirection.ltr,
               child: Pinput(
+                readOnly: widget.readOnly ?? false,
                 length: 6,
+                obscureText: widget.obscureText ?? false,
                 controller: widget.pinController,
+                forceErrorState: widget.errorText != null,
+                errorText: widget.errorText,
+                errorTextStyle:
+                    const TextStyle(fontSize: 12, color: colorError),
                 focusNode: focusNode,
                 androidSmsAutofillMethod:
                     AndroidSmsAutofillMethod.smsUserConsentApi,
@@ -91,9 +105,7 @@ class _PinInputState extends State<PinInput> {
                 onCompleted: (pin) {
                   debugPrint('onCompleted: $pin');
                 },
-                onChanged: (value) {
-                  debugPrint('onChanged: $value');
-                },
+                onChanged: widget.onChanged,
                 cursor: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

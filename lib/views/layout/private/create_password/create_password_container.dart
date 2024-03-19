@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/create_password_controller.dart';
+import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/indicator/password_indicator.dart';
@@ -70,7 +70,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             ),
             const SizedBox(height: 20),
             PasswordIndicator(
-              hasNavigation: false,
+              hasNavigation: true,
               firstIcon: Icons.edit_note_rounded,
               secondIcon: Icons.security,
               thirdIcon: Icons.fingerprint_rounded,
@@ -82,6 +82,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             SizedBox(
               height: Get.height * .55,
               child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _passwordController.pageController.value,
                 children: List.generate(_passwordController.pages.length,
                     (index) => _passwordController.pages[index]),

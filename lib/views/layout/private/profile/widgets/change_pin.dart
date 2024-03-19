@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/create_password_controller.dart';
+import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -19,6 +19,10 @@ class _ChangePinState extends State<ChangePin> {
   final TextEditingController _currentPin = TextEditingController();
   final TextEditingController _newPin = TextEditingController();
   final TextEditingController _confirmPin = TextEditingController();
+
+  String? errorPin;
+  String? currentPin;
+  bool isCurrentEmpty = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,12 @@ class _ChangePinState extends State<ChangePin> {
                 PinInput(
                   pinController: _currentPin,
                   label: '',
+                  errorText: currentPin,
                   hasShadow: true,
+                  onChanged: (p0) {
+                    isCurrentEmpty = false;
+                    setState(() {});
+                  },
                   validation: (p0) {},
                 ),
                 const SizedBox(height: 30),
@@ -53,7 +62,9 @@ class _ChangePinState extends State<ChangePin> {
                   ),
                 ),
                 PinInput(
+                  readOnly: isCurrentEmpty,
                   pinController: _newPin,
+                  errorText: errorPin,
                   label: '',
                   hasShadow: true,
                   validation: (p0) {},
@@ -68,9 +79,14 @@ class _ChangePinState extends State<ChangePin> {
                 ),
                 PinInput(
                   pinController: _confirmPin,
+                  readOnly: isCurrentEmpty,
                   label: '',
                   hasShadow: true,
-                  validation: (p0) {},
+                  validation: (value) {
+                    if (_newPin.text != value) {
+                      return 'PIN not match';
+                    }
+                  },
                 ),
                 const SizedBox(height: 40),
               ],
@@ -78,12 +94,22 @@ class _ChangePinState extends State<ChangePin> {
           ),
           Center(
             child: RoundedCustomButton(
-              onPressed: () {
-                _createPasswordController.changePIN(
-                  _newPin.text,
-                  _confirmPin.text,
-                  currentpin: _currentPin.text,
-                );
+              onPressed: () async {
+                if (_currentPin.text != '') {
+                  var error = await _createPasswordController.changePIN(
+                    _newPin.text,
+                    _confirmPin.text,
+                    currentpin: _currentPin.text,
+                  );
+                  if (error != null) {
+                    if (error['errors'].containsKey('pin')) {
+                      errorPin = error['errors']['pin'][0];
+                    }
+                  } else {
+                    currentPin = error['message'];
+                  }
+                  setState(() {});
+                }
               },
               label: 'Update',
               radius: 5,

@@ -8,8 +8,13 @@ class Input extends StatefulWidget {
   final Color? labelColor;
   final int? max;
   final String? errorText;
+  final String? hintText;
   final IconData? icon;
   final bool? disabled;
+  final bool? hasFocus;
+  final Function(String)? onChanged;
+  final Function(String?) validator;
+  final Widget? prefixIcon;
 
   const Input({
     super.key,
@@ -21,6 +26,11 @@ class Input extends StatefulWidget {
     this.errorText,
     this.icon,
     this.disabled,
+    this.hasFocus,
+    this.onChanged,
+    this.hintText,
+    required this.validator,
+    this.prefixIcon,
   });
 
   @override
@@ -52,9 +62,13 @@ class _InputState extends State<Input> {
           obscureText: widget.isPassword ? _isObscure : false,
           controller: widget.textController,
           readOnly: widget.disabled ?? false,
+          onChanged: widget.onChanged,
           style: const TextStyle(color: gray, fontSize: 14),
           decoration: InputDecoration(
             filled: true,
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: lightGray),
+            ),
             fillColor: widget.disabled ?? false
                 ? lightGray.withOpacity(0.5)
                 : Colors.white,
@@ -66,7 +80,9 @@ class _InputState extends State<Input> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
-            labelStyle: const TextStyle(color: gray),
+            labelText: widget.hintText,
+            labelStyle: const TextStyle(color: gray, fontSize: 13),
+            prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? InkWell(
                     onTap: _togglePasswordView,
@@ -80,11 +96,8 @@ class _InputState extends State<Input> {
                     color: gray,
                   ),
           ),
-          validator: (String? value) {
-            if (value == null || value == '') {
-              return '';
-            }
-            return null;
+          validator: (value) {
+            return widget.validator(value);
           },
           autovalidateMode: AutovalidateMode.disabled,
         ),
@@ -99,8 +112,16 @@ class _InputState extends State<Input> {
           const Icon(
             Icons.warning_rounded,
             color: colorError,
+            size: 18,
           ),
-          Text(widget.errorText!)
+          const SizedBox(width: 10),
+          Text(
+            widget.errorText!,
+            style: const TextStyle(
+              color: colorError,
+              fontSize: 12,
+            ),
+          )
         ],
       );
     }

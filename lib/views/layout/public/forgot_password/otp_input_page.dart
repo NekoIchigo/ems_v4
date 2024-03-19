@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/create_password_controller.dart';
+import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/pin_input.dart';
@@ -16,6 +16,8 @@ class _OTPInputPageState extends State<OTPInputPage> {
   final TextEditingController _otpController = TextEditingController();
   final CreatePasswordController _passwordController =
       Get.find<CreatePasswordController>();
+
+  String? otpError;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +39,17 @@ class _OTPInputPageState extends State<OTPInputPage> {
             pinController: _otpController,
             label: '',
             validation: (p0) {},
+            errorText: otpError,
           ),
           const SizedBox(height: 20),
           Obx(
             () => RoundedCustomButton(
-              onPressed: () {
-                _passwordController.verifyOTP(_otpController.text);
+              onPressed: () async {
+                var error =
+                    await _passwordController.verifyOTP(_otpController.text);
                 // _passwordController.animateToThirdPage();
+                otpError = error['message'];
+                setState(() {});
               },
               isLoading: _passwordController.isLoading.value,
               label:

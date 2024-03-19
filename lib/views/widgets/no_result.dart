@@ -1,3 +1,4 @@
+import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 
 class NoResult extends StatelessWidget {
@@ -6,12 +7,17 @@ class NoResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        const SizedBox(height: 20),
         Image.asset(
           'assets/images/no_data.png',
           width: 400,
         ),
-        const Text('No Records'),
+        const Text(
+          'No Records',
+          style: TextStyle(color: gray),
+        ),
       ],
     );
   }

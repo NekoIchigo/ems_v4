@@ -2,14 +2,14 @@ class Position {
   final int id;
   final int companyId;
   final String name;
-  final String description;
+  final String? description;
   final int status;
 
   Position({
     required this.id,
     required this.companyId,
     required this.name,
-    required this.description,
+    this.description,
     required this.status,
   });
 
@@ -18,7 +18,7 @@ class Position {
       id: json['id'] as int,
       companyId: json['company_id'] as int,
       name: json['name'] as String,
-      description: json['description'] as String,
+      description: json['description'] as String?,
       status: json['status'] as int,
     );
   }

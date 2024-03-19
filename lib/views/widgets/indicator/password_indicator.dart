@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/create_password_controller.dart';
+import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

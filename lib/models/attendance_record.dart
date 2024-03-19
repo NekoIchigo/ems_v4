@@ -41,8 +41,8 @@ class AttendanceRecord {
 
   factory AttendanceRecord.fromJson(Map<String, dynamic> json) {
     return AttendanceRecord(
-      id: json['id'] as int,
-      employeeId: json['employee_id'] as int,
+      id: json['id'] as int?,
+      employeeId: json['employee_id'] as int?,
       clockInAt: json['clock_in_at'] != null
           ? DateTime.parse(json['clock_in_at'] as String)
           : null,
@@ -53,9 +53,9 @@ class AttendanceRecord {
       formattedClockOut: json['formatted_clock_out_at'] as String?,
       clockedInLocation: json['clocked_in_location'] as String?,
       clockedOutLocation: json['clocked_out_location'] as String?,
-      clockedInLatitude: json['clocked_in_lattitude'] as String?,
+      clockedInLatitude: json['clocked_in_latitude'] as String?,
       clockedInLongitude: json['clocked_in_longitude'] as String?,
-      clockedOutLatitude: json['clocked_out_lattitude'] as String?,
+      clockedOutLatitude: json['clocked_out_latitude'] as String?,
       clockedOutLongitude: json['clocked_out_longitude'] as String?,
       clockedInLocationType: json['clocked_in_location_type'] as String?,
       clockedOutLocationType: json['clocked_out_location_type'] as String?,
@@ -75,9 +75,9 @@ class AttendanceRecord {
       'clock_out_at': clockOutAt?.toIso8601String(),
       'clocked_in_location': clockedInLocation,
       'clocked_out_location': clockedOutLocation,
-      'clocked_in_lattitude': clockedInLatitude,
+      'clocked_in_latitude': clockedInLatitude,
       'clocked_in_longitude': clockedInLongitude,
-      'clocked_out_lattitude': clockedOutLatitude,
+      'clocked_out_latitude': clockedOutLatitude,
       'clocked_out_longitude': clockedOutLongitude,
       'clocked_in_location_type': clockedInLocationType,
       'clocked_out_location_type': clockedOutLocationType,
@@ -91,13 +91,13 @@ class AttendanceRecord {
 
 // class Attendance {
 //   String? clockedInAt;
-//   String? clockedInLattitude;
+//   String? clockedInlatitude;
 //   String? clockedInLongitude;
 //   String? clockedInLocationSetting;
 //   String? clockedInLocationType;
 //   String? clockedInLocation;
 //   String? clockedOutAt;
-//   String? clockedOutLattitude;
+//   String? clockedOutlatitude;
 //   String? clockedOutLongitude;
 //   String? clockedOutLocationSetting;
 //   String? clockedOutLocationType;
@@ -109,13 +109,13 @@ class AttendanceRecord {
 
 //   Attendance({
 //     this.clockedInAt,
-//     this.clockedInLattitude,
+//     this.clockedInlatitude,
 //     this.clockedInLongitude,
 //     this.clockedInLocationSetting,
 //     this.clockedInLocationType,
 //     this.clockedInLocation,
 //     this.clockedOutAt,
-//     this.clockedOutLattitude,
+//     this.clockedOutlatitude,
 //     this.clockedOutLongitude,
 //     this.clockedOutLocationSetting,
 //     this.clockedOutLocationType,
@@ -134,9 +134,9 @@ class AttendanceRecord {
 //       clockedOutAt: json['clock_out_at'] ?? "",
 //       clockedInLocationSetting: json['clocked_in_location_setting'] ?? "",
 //       clockedOutLocationSetting: json['clocked_out_location_setting'] ?? "",
-//       clockedInLattitude: json['clocked_in_lattitude'] ?? "",
+//       clockedInlatitude: json['clocked_in_latitude'] ?? "",
 //       clockedInLongitude: json['clocked_in_longitude'] ?? "",
-//       clockedOutLattitude: json['clocked_out_lattitude'] ?? "",
+//       clockedOutlatitude: json['clocked_out_latitude'] ?? "",
 //       clockedOutLongitude: json['clocked_out_longitude'] ?? "",
 //       clockedInLocation: json['clocked_in_location'] ?? "",
 //       clockedOutLocation: json['clocked_out_location'] ?? "",
@@ -155,9 +155,9 @@ class AttendanceRecord {
 //       'clocked_out_location': clockedOutLocation,
 //       'clocked_in_location_setting': clockedInLocationSetting,
 //       'clocked_out_location_setting': clockedOutLocationSetting,
-//       'clocked_in_lattitude': clockedInLattitude,
+//       'clocked_in_latitude': clockedInlatitude,
 //       'clocked_in_longitude': clockedInLongitude,
-//       'clocked_out_lattitude': clockedOutLattitude,
+//       'clocked_out_latitude': clockedOutlatitude,
 //       'clocked_out_longitude': clockedOutLongitude,
 //       'clocked_in_location_type': clockedInLocationType,
 //       'clocked_out_location_type': clockedOutLocationType,
@@ -167,13 +167,13 @@ class AttendanceRecord {
 //   Map<String, dynamic> toMap() {
 //     return <String, dynamic>{
 //       'clockedInAt': clockedInAt,
-//       'clockedInLattitude': clockedInLattitude,
+//       'clockedInlatitude': clockedInlatitude,
 //       'clockedInLongitude': clockedInLongitude,
 //       'clockedInLocationSetting': clockedInLocationSetting,
 //       'clockedInLocationType': clockedInLocationType,
 //       'clockedInLocation': clockedInLocation,
 //       'clockedOutAt': clockedOutAt,
-//       'clockedOutLattitude': clockedOutLattitude,
+//       'clockedOutlatitude': clockedOutlatitude,
 //       'clockedOutLongitude': clockedOutLongitude,
 //       'clockedOutLocationSetting': clockedOutLocationSetting,
 //       'clockedOutLocationType': clockedOutLocationType,
@@ -189,8 +189,8 @@ class AttendanceRecord {
 //     return Attendance(
 //       clockedInAt:
 //           map['clockedInAt'] != null ? map['clockedInAt'] as String : null,
-//       clockedInLattitude: map['clockedInLattitude'] != null
-//           ? map['clockedInLattitude'] as String
+//       clockedInlatitude: map['clockedInlatitude'] != null
+//           ? map['clockedInlatitude'] as String
 //           : null,
 //       clockedInLongitude: map['clockedInLongitude'] != null
 //           ? map['clockedInLongitude'] as String
@@ -206,8 +206,8 @@ class AttendanceRecord {
 //           : null,
 //       clockedOutAt:
 //           map['clockedOutAt'] != null ? map['clockedOutAt'] as String : null,
-//       clockedOutLattitude: map['clockedOutLattitude'] != null
-//           ? map['clockedOutLattitude'] as String
+//       clockedOutlatitude: map['clockedOutlatitude'] != null
+//           ? map['clockedOutlatitude'] as String
 //           : null,
 //       clockedOutLongitude: map['clockedOutLongitude'] != null
 //           ? map['clockedOutLongitude'] as String

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class ComingSoon extends StatelessWidget {
@@ -11,15 +10,14 @@ class ComingSoon extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Positioned(
-          bottom: 50,
-          child: Lottie.asset("assets/lottie/coming_soon.json",
-              width: Get.width * .7),
+          bottom: 65,
+          child: Lottie.asset("assets/lottie/coming_soon.json", width: 250),
         ),
         Positioned(
           top: 100,
           child: Image.asset(
             'assets/images/coming_soon.jpg',
-            width: Get.width * .80,
+            width: 280,
           ),
         ),
       ],

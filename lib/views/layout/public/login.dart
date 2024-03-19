@@ -1,18 +1,11 @@
-import 'dart:developer';
-
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/services/auth_service.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/inputs/underline_input.dart';
-import 'package:flutter/gestures.dart';
+import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/local_auth.dart';
-
-import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -22,244 +15,236 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final AuthService _authService = Get.find<AuthService>();
+  final AuthController _authService = Get.find<AuthController>();
   final ApiCall apiCall = ApiCall();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Future<void> _launchInBrowser(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (_authService.isSupported.isTrue) {
-      log("Device supported");
-    } else {
-      log("This device is not supported");
-    }
-  }
+  String? _userNameError;
+  String? _passwordError;
+  String? _codeError;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: SizedBox(
+        child: Container(
           height: Get.height,
           width: Get.width,
-          child: Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                const SizedBox(height: 40),
-                SizedBox(
-                  height: Get.height * 0.11,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
-                    child: Image.asset(
-                      'assets/images/EMS_logo_Blue.png',
-                      width: Get.width,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: Get.height * 0.82,
+          color: Colors.white,
+          child: Stack(
+            children: [
+              Positioned(
+                width: Get.width,
+                left: 0,
+                bottom: 0,
+                child: Image.asset('assets/images/login_bg_image.jpg'),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Form(
+                  key: _formKey,
                   child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: SizedBox(
-                      width: Get.width,
-                      height: Get.height * 0.81,
-                      child: Stack(
-                        alignment: Alignment.topCenter,
-                        children: [
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            height: Get.height * .45,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: Get.height * .15),
+                        Center(
+                          child: SizedBox(
+                            height: Get.height * 0.15,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30.0),
-                              child: Column(
-                                children: [
-                                  // const SizedBox(height: 10),
-                                  const Text(
-                                    'Welcome',
-                                    style: TextStyle(
-                                        fontSize: 26,
-                                        fontWeight: FontWeight.w600,
-                                        color: darkGray),
-                                  ),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      physics: const BouncingScrollPhysics(),
-                                      child: Column(
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text(
-                                              'Login to continue',
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                color: darkGray,
-                                              ),
-                                            ),
-                                          ),
-                                          UnderlineInput(
-                                            label: 'Email',
-                                            isPassword: false,
-                                            textController: _emailController,
-                                            icon: Icons.mail,
-                                          ),
-                                          UnderlineInput(
-                                            label: 'Password',
-                                            isPassword: true,
-                                            textController: _passwordController,
-                                            icon: Icons.visibility,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Get.toNamed(
-                                                        '/forgot_password');
-                                                  },
-                                                  child: const Text(
-                                                    'Forgot Password?',
-                                                    style: TextStyle(
-                                                      color: darkGray,
-                                                    ),
-                                                  )),
-                                            ],
-                                          ),
-                                          Obx(
-                                            () => RoundedCustomButton(
-                                              onPressed: () async {
-                                                if (_authService
-                                                    .isLoading.isFalse) {
-                                                  _authService.login(
-                                                    _emailController.text,
-                                                    _passwordController.text,
-                                                  );
-                                                }
-                                              },
-                                              isLoading:
-                                                  _authService.isLoading.value,
-                                              label:
-                                                  _authService.isLoading.isFalse
-                                                      ? 'Log In'
-                                                      : 'Logging In...',
-                                              radius: 50,
-                                              size: Size(Get.width, 20),
-                                              bgColor: bgPrimaryBlue,
-                                            ),
-                                          ),
-                                          TextButton(
-                                            onPressed: _localAutheticate,
-                                            child: const Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                    Icons.fingerprint_outlined),
-                                                SizedBox(width: 5),
-                                                Text('Login with fingerprint'),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * .70,
-                                            child: Text.rich(
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: darkGray,
-                                                height: 1.5,
-                                                fontSize: 12,
-                                              ),
-                                              TextSpan(children: [
-                                                const TextSpan(
-                                                  text:
-                                                      'By logging in, you agree to our ',
-                                                ),
-                                                TextSpan(
-                                                  text: 'Privacy Policy ',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          _launchInBrowser(
-                                                              'https://happyhousekeepers.com.ph/privacy-policy');
-                                                        },
-                                                ),
-                                                const TextSpan(
-                                                  text: 'and ',
-                                                ),
-                                                TextSpan(
-                                                  text: 'Terms of User',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          _launchInBrowser(
-                                                              'https://happyhousekeepers.com.ph/privacy-policy');
-                                                        },
-                                                )
-                                              ]),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              padding: const EdgeInsets.only(top: 25.0),
+                              child: Image.asset(
+                                'assets/images/GEMS4blue.png',
                               ),
                             ),
                           ),
-                          Positioned(
-                            top: 20,
-                            child: Image.asset(
-                              'assets/images/login-image.png',
-                              width: Get.width * .88,
+                        ),
+                        const SizedBox(height: 50),
+                        const Text(
+                          'Code',
+                          style: TextStyle(color: gray, fontSize: 12),
+                        ),
+                        const SizedBox(height: 10),
+                        FloatingInput(
+                          label: '',
+                          isPassword: false,
+                          errorText: _codeError,
+                          textController: _codeController,
+                          iconColor: lightGray,
+                          icon: Icons.business_rounded,
+                          onChanged: (p0) {
+                            setState(() {
+                              _codeError = null;
+                            });
+                          },
+                          validator: (value) {
+                            setState(() {
+                              if (value == null || value.isEmpty) {
+                                _codeError = 'Please enter a value';
+                              }
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Username',
+                          style: TextStyle(color: gray, fontSize: 12),
+                        ),
+                        const SizedBox(height: 10),
+                        Obx(
+                          () => FloatingInput(
+                            label: '',
+                            isPassword: false,
+                            errorText: _userNameError,
+                            textController: _emailController,
+                            icon: _authService.isBioEnabled.isTrue
+                                ? Icons.fingerprint
+                                : Icons.mail,
+                            iconColor: lightGray,
+                            onIconPressed: () {
+                              _authService.localAuthenticate();
+                            },
+                            onChanged: (p0) {
+                              setState(() {
+                                _userNameError = null;
+                              });
+                            },
+                            validator: (value) {
+                              setState(() {
+                                if (value == null || value.isEmpty) {
+                                  _userNameError = 'Please enter a value';
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        const Text(
+                          'Password',
+                          style: TextStyle(color: gray, fontSize: 12),
+                        ),
+                        const SizedBox(height: 10),
+                        FloatingInput(
+                          label: '',
+                          isPassword: true,
+                          errorText: _passwordError,
+                          textController: _passwordController,
+                          iconColor: lightGray,
+                          icon: Icons.visibility,
+                          onChanged: (p0) {
+                            setState(() {
+                              _passwordError = null;
+                            });
+                          },
+                          validator: (value) {
+                            setState(() {
+                              if (value == null || value.isEmpty) {
+                                _passwordError = 'Please enter a value';
+                              }
+                            });
+                          },
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Get.toNamed('/forgot_password');
+                              },
+                              child: const Text(
+                                'Forgot Password?',
+                                style: TextStyle(color: gray, fontSize: 12),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            width: Get.width * .55,
+                            child: const Text(
+                              "By logging in, you agree to our Privacy Policy and Terms of Use.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: gray, fontSize: 12),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        Obx(
+                          () => RoundedCustomButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {});
+                                if (_authService.isLoading.isFalse) {
+                                  var error = await _authService.login(
+                                    _emailController.text,
+                                    _passwordController.text,
+                                    _codeController.text,
+                                  );
+                                  if (error != null) {
+                                    if (error.containsKey('errors')) {
+                                      if (error['errors']
+                                          .containsKey('email')) {
+                                        _userNameError =
+                                            error['errors']['email'][0];
+                                      }
+                                      if (error['errors']
+                                          .containsKey('password')) {
+                                        _passwordError =
+                                            error['errors']['password'][0];
+                                      }
+                                      if (error['errors'].containsKey('code')) {
+                                        _codeError = error['errors']['code'][0];
+                                      }
+                                    } else if (error.containsKey('success') &&
+                                        error.containsKey('message')) {
+                                      _userNameError = error['message'];
+                                      _passwordError = error['message'];
+                                    }
+                                  }
+                                }
+                                setState(() {});
+                              }
+                            },
+                            isLoading: _authService.isLoading.value,
+                            label: _authService.isLoading.isFalse
+                                ? 'Log In'
+                                : 'Logging In...',
+                            radius: 50,
+                            size: Size(Get.width, 20),
+                            bgColor: bgPrimaryBlue,
+                          ),
+                        ),
+                        Obx(
+                          () => Visibility(
+                            visible: _authService.hasUser.isTrue,
+                            child: Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  Get.toNamed('/pin_login');
+                                },
+                                child: const Text(
+                                  'Use PIN',
+                                  style: TextStyle(
+                                    color: gray,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> _localAutheticate() async {
-    try {
-      bool autheticated = await _authService.auth.authenticate(
-          localizedReason: "Autheticate to Login in the system.",
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-            biometricOnly: true,
-          ));
-      if (autheticated) {
-        _authService.autheticated.value = autheticated;
-        _authService.setAuthStatus();
-        Get.offNamed('/');
-      }
-    } on PlatformException catch (e) {
-      print(e);
-    }
   }
 }

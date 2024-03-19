@@ -1,4 +1,4 @@
-import 'package:ems_v4/controller/create_password_controller.dart';
+import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
       child: Column(
         children: [
           Container(
+            width: Get.width * .6,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: lightGray),
@@ -36,23 +37,25 @@ class _BiometricsPageState extends State<BiometricsPage> {
               // ],
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Text(
                   "Enable Biometrics Log in ",
-                  style: TextStyle(
-                    color: primaryBlue,
-                    fontSize: 18,
-                  ),
+                  style: TextStyle(color: primaryBlue),
                 ),
                 const SizedBox(width: 5),
-                Switch(
-                  value: _switch,
-                  onChanged: (value) {
-                    setState(() {
-                      _switch = value;
-                    });
-                  },
+                SizedBox(
+                  width: 40,
+                  child: FittedBox(
+                    child: Switch(
+                      value: _switch,
+                      onChanged: (value) {
+                        setState(() {
+                          _switch = value;
+                        });
+                      },
+                    ),
+                  ),
                 )
               ],
             ),
@@ -61,14 +64,14 @@ class _BiometricsPageState extends State<BiometricsPage> {
           const Text(
             "You can turn this feature on or off at any time under My Account.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: primaryBlue),
+            style: TextStyle(color: primaryBlue, fontSize: 13),
           ),
           const SizedBox(height: 40),
-          const Text(
-            "By submitting, you agree to our Privacy Policy and Terms of Use.",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: gray),
-          ),
+          // const Text(
+          //   "By submitting, you agree to our Privacy Policy and Terms of Use.",
+          //   textAlign: TextAlign.center,
+          //   style: TextStyle(color: gray),
+          // ),
           const SizedBox(height: 5),
           Align(
             alignment: Alignment.bottomCenter,

@@ -7,7 +7,11 @@ class FloatingInput extends StatefulWidget {
   final IconData icon;
   final TextEditingController textController;
   final String? errorText;
+  final double? borderRadius;
+  final Color? iconColor;
   final Function(String) onChanged;
+  final Function()? onIconPressed;
+  final Function(String?) validator;
 
   const FloatingInput({
     super.key,
@@ -17,6 +21,10 @@ class FloatingInput extends StatefulWidget {
     required this.icon,
     this.errorText,
     required this.onChanged,
+    this.borderRadius,
+    this.iconColor,
+    this.onIconPressed,
+    required this.validator,
   });
 
   @override
@@ -56,19 +64,28 @@ class _FloatingInputState extends State<FloatingInput> {
           error: hasError(),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: lightGray),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: lightGray),
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 5),
           ),
           border: const OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: primaryBlue),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 5)),
           labelText: widget.label,
           labelStyle: const TextStyle(color: gray),
           suffixIcon: !widget.isPassword
-              ? Icon(widget.icon, color: gray)
+              ? InkWell(
+                  onTap: widget.onIconPressed,
+                  child: Icon(
+                    widget.icon,
+                    color: widget.iconColor ?? gray,
+                  ))
               : InkWell(
                   onTap: _togglePasswordView,
                   child: Icon(
                     _isObscure ? Icons.visibility : Icons.visibility_off,
-                    color: gray,
+                    color: widget.iconColor ?? gray,
                   ),
                 ),
           floatingLabelStyle:
@@ -80,10 +97,7 @@ class _FloatingInputState extends State<FloatingInput> {
           }),
         ),
         validator: (String? value) {
-          if (value == null || value == '') {
-            return '';
-          }
-          return null;
+          return widget.validator(value);
         },
         autovalidateMode: AutovalidateMode.disabled,
       ),
@@ -91,15 +105,23 @@ class _FloatingInputState extends State<FloatingInput> {
   }
 
   Widget? hasError() {
-    if (widget.errorText != null) {
-      return Row(
-        children: [
-          const Icon(
-            Icons.warning_rounded,
-            color: colorError,
-          ),
-          Text(widget.errorText!)
-        ],
+    if (widget.errorText != null && widget.errorText != '') {
+      return Container(
+        color: Colors.transparent,
+        child: Row(
+          children: [
+            const Icon(
+              Icons.warning_rounded,
+              color: colorError,
+              size: 18,
+            ),
+            const SizedBox(width: 5),
+            Text(
+              widget.errorText!,
+              style: const TextStyle(color: colorError, fontSize: 12),
+            )
+          ],
+        ),
       );
     }
 
