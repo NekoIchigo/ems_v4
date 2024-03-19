@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
@@ -52,7 +53,7 @@ class HomeController extends GetxController {
 
       if (result.containsKey('success') && result['success']) {
         var data = result['data'];
-
+        log(result.toString());
         isNewShift.value = data['is_new_shift'];
         isClockInOutComplete.value = data['is_shift_complete'];
         isClockOut.value = data['is_clockout'];

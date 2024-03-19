@@ -2,7 +2,7 @@ name: ems_v4
 description: "employee management system"
 publish_to: 'none' 
 
-version: 1.0.4+4
+version: 1.0.6+6
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -36,6 +36,7 @@ dependencies:
   firebase_core: ^2.24.2
   store_version_checker: ^1.0.1
   geolocator: ^11.0.0
+  provider: ^6.1.2
 
 dev_dependencies:
   change_app_package_name: ^1.1.0
