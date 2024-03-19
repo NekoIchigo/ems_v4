@@ -7,7 +7,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';

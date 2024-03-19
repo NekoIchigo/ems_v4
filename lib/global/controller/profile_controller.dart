@@ -5,7 +5,7 @@ import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:get/get.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';

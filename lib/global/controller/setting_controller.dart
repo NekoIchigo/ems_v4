@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_version_checker/store_version_checker.dart';

@@ -10,7 +10,7 @@ import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart
 import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';

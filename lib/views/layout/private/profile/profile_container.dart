@@ -2,7 +2,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_list_button.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';

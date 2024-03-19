@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/attendance_record.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:get/get.dart';
 
 class TimeEntriesController extends GetxController {

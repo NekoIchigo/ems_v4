@@ -8,7 +8,7 @@ import 'package:ems_v4/views/layout/public/forgot_password/email_otp.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/new_password.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/otp_input_page.dart';
 import 'package:ems_v4/views/layout/public/forgot_pin/new_pin.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:get/get.dart';
