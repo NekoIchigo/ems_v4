@@ -33,6 +33,7 @@ class _NewPasswordState extends State<NewPassword> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -90,7 +91,7 @@ class _NewPasswordState extends State<NewPassword> {
             label: _createPasswordController.isLoading.isTrue
                 ? "Submitting..."
                 : "Submit",
-            size: Size(Get.width * .9, 40),
+            size: Size(size.width * .9, 40),
             bgColor: bgPrimaryBlue,
           ),
         ],

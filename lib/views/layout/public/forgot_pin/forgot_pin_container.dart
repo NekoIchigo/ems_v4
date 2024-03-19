@@ -44,7 +44,7 @@ class _ForgotPINContainerState extends State<ForgotPINContainer> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData = MediaQuery.of(context);
+    Size size = MediaQuery.of(context).size;
 
     return EMSContainer(
       child: Padding(
@@ -81,7 +81,7 @@ class _ForgotPINContainerState extends State<ForgotPINContainer> {
             ),
             const SizedBox(height: 40),
             SizedBox(
-              height: queryData.size.height * .55,
+              height: size.height * .55,
               child: PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: _passwordController.pageController.value,

@@ -29,19 +29,19 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData = MediaQuery.of(context);
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
-          height: queryData.size.height,
-          width: queryData.size.width,
+          height: size.height,
+          width: size.width,
           color: Colors.white,
           child: Stack(
             children: [
               Positioned(
-                width: queryData.size.width,
+                width: size.width,
                 left: 0,
                 bottom: 0,
                 child: Image.asset('assets/images/login_bg_image.jpg'),
@@ -54,10 +54,10 @@ class _LoginState extends State<Login> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: queryData.size.height * .15),
+                        SizedBox(height: size.height * .15),
                         Center(
                           child: SizedBox(
-                            height: queryData.size.height * 0.15,
+                            height: size.height * 0.15,
                             child: Padding(
                               padding: const EdgeInsets.only(top: 25.0),
                               child: Image.asset(
@@ -167,7 +167,7 @@ class _LoginState extends State<Login> {
                         Center(
                           child: Container(
                             margin: const EdgeInsets.only(top: 20),
-                            width: queryData.size.width * .55,
+                            width: size.width * .55,
                             child: const Text(
                               "By logging in, you agree to our Privacy Policy and Terms of Use.",
                               textAlign: TextAlign.center,
@@ -216,7 +216,7 @@ class _LoginState extends State<Login> {
                                 ? 'Log In'
                                 : 'Logging In...',
                             radius: 50,
-                            size: Size(queryData.size.width, 20),
+                            size: Size(size.width, 20),
                             bgColor: bgPrimaryBlue,
                           ),
                         ),

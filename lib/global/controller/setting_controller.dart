@@ -41,7 +41,7 @@ class SettingsController extends GetxController {
       }
     } catch (error) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -59,7 +59,7 @@ class SettingsController extends GetxController {
   Future<void> _launchUrl(value) async {
     if (!await launchUrl(Uri.parse(value.appURL!))) {
       Get.dialog(
-        const GetDialog(
+        const GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -223,7 +223,7 @@ class SettingsController extends GetxController {
         //       );
         //     } else {
         //       Get.dialog(
-        //         GetDialog(
+        //         GemsDialog(
         //           title: "Oops",
         //           hasMessage: true,
         //           withCloseButton: true,

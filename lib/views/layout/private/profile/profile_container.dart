@@ -147,7 +147,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
     _localStorage.setBool('auth_biometrics', value);
     Get.dialog(
       barrierDismissible: false,
-      GetDialog(
+      GemsDialog(
         type: 'success',
         title: 'Success',
         hasMessage: true,

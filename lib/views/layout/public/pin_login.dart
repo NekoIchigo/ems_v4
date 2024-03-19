@@ -26,17 +26,17 @@ class _PINLoginState extends State<PINLogin> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData = MediaQuery.of(context);
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: queryData.size.height,
-          width: queryData.size.width,
+          height: size.height,
+          width: size.width,
           color: Colors.white,
           child: Stack(
             children: [
               Positioned(
-                width: queryData.size.width,
+                width: size.width,
                 left: 0,
                 bottom: 0,
                 child: Image.asset('assets/images/login_bg_image.jpg'),
@@ -46,10 +46,10 @@ class _PINLoginState extends State<PINLogin> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: queryData.size.height * .15),
+                    SizedBox(height: size.height * .15),
                     Center(
                       child: SizedBox(
-                        height: queryData.size.height * 0.15,
+                        height: size.height * 0.15,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 25.0),
                           child: Image.asset(
@@ -173,7 +173,7 @@ class _PINLoginState extends State<PINLogin> {
                             ? 'Log In'
                             : 'Logging In...',
                         radius: 50,
-                        size: Size(queryData.size.width, 20),
+                        size: Size(size.width, 20),
                         bgColor: bgPrimaryBlue,
                       ),
                     ),

@@ -119,7 +119,7 @@ class AuthService extends GetxService {
       } else {
         if (result.containsKey('deactivate') && result['deactivate'] == 1) {
           Get.dialog(
-            GetDialog(
+            GemsDialog(
               title: "",
               hasMessage: true,
               hasLottie: false,
@@ -143,7 +143,7 @@ class AuthService extends GetxService {
 
       isLoading.value = false;
     } catch (error) {
-      Get.dialog(GetDialog(
+      Get.dialog(GemsDialog(
         title: "Oops",
         hasMessage: true,
         withCloseButton: true,
@@ -192,7 +192,7 @@ class AuthService extends GetxService {
           }
         } else {
           // Get.dialog(
-          //   GetDialog(
+          //   GemsDialog(
           //     title: "Oops",
           //     hasMessage: true,
           //     withCloseButton: true,
@@ -204,7 +204,7 @@ class AuthService extends GetxService {
           // );
           if (result.containsKey('deactivate') && result['deactivate']) {
             Get.dialog(
-              GetDialog(
+              GemsDialog(
                 title: "Oops",
                 hasMessage: true,
                 withCloseButton: true,
@@ -223,7 +223,7 @@ class AuthService extends GetxService {
         }
       } else {
         Get.dialog(
-          const GetDialog(
+          const GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -236,7 +236,7 @@ class AuthService extends GetxService {
       }
     } catch (error) {
       await Get.dialog(
-        const GetDialog(
+        const GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -281,7 +281,7 @@ class AuthService extends GetxService {
         Get.offAllNamed('/login');
       });
     } catch (error) {
-      Get.dialog(GetDialog(
+      Get.dialog(GemsDialog(
         title: "Oops",
         hasMessage: true,
         withCloseButton: true,

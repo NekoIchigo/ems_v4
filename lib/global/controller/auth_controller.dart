@@ -122,7 +122,7 @@ class AuthController extends GetxController {
       } else {
         if (result.containsKey('deactivate') && result['deactivate'] == 1) {
           Get.dialog(
-            GetDialog(
+            GemsDialog(
               title: "",
               hasMessage: true,
               hasLottie: false,
@@ -146,7 +146,7 @@ class AuthController extends GetxController {
 
       isLoading.value = false;
     } catch (error) {
-      Get.dialog(GetDialog(
+      Get.dialog(GemsDialog(
         title: "Oops",
         hasMessage: true,
         withCloseButton: true,
@@ -197,7 +197,7 @@ class AuthController extends GetxController {
         } else {
           if (result.containsKey('deactivate') && result['deactivate']) {
             Get.dialog(
-              GetDialog(
+              GemsDialog(
                 title: "Oops",
                 hasMessage: true,
                 withCloseButton: true,
@@ -216,7 +216,7 @@ class AuthController extends GetxController {
         }
       } else {
         Get.dialog(
-          const GetDialog(
+          const GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -229,7 +229,7 @@ class AuthController extends GetxController {
       }
     } catch (error) {
       await Get.dialog(
-        const GetDialog(
+        const GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -275,7 +275,7 @@ class AuthController extends GetxController {
         Get.offAllNamed('/login');
       });
     } catch (error) {
-      Get.dialog(GetDialog(
+      Get.dialog(GemsDialog(
         title: "Oops",
         hasMessage: true,
         withCloseButton: true,

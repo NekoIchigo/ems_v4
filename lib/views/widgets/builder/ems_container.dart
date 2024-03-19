@@ -12,17 +12,16 @@ class EMSContainer extends StatefulWidget {
 class _EMSContainerState extends State<EMSContainer> {
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData = MediaQuery.of(context);
-
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SizedBox(
-        height: queryData.size.height,
-        width: queryData.size.width,
+        height: size.height,
+        width: size.width,
         child: Stack(
           alignment: Alignment.topLeft,
           children: [
             Container(
-              height: queryData.size.height * .16,
+              height: size.height * .16,
               padding:
                   const EdgeInsets.symmetric(horizontal: 120, vertical: 35),
               color: bgPrimaryBlue,
@@ -36,14 +35,14 @@ class _EMSContainerState extends State<EMSContainer> {
               ),
             ),
             Positioned(
-              top: (queryData.size.height * .12) -
+              top: (size.height * .12) -
                   (MediaQuery.of(context).viewInsets.bottom * .3),
               right: 0,
               left: 0,
               child: Center(
                 child: Container(
                   alignment: Alignment.center,
-                  height: queryData.size.height * .87,
+                  height: size.height * .87,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:

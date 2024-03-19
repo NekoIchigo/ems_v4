@@ -60,7 +60,7 @@ class ApiCall {
       }
     } on SocketException catch (_) {
       Get.dialog(
-        const GetDialog(
+        const GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -91,7 +91,7 @@ class ApiCall {
       );
     } on SocketException catch (_) {
       Get.dialog(
-        const GetDialog(
+        const GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,

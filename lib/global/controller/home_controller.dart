@@ -70,7 +70,7 @@ class HomeController extends GetxController {
         }
       } else {
         Get.dialog(
-          GetDialog(
+          GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -116,7 +116,7 @@ class HomeController extends GetxController {
             isInsideVicinity.isTrue ? 'Within Vicinity' : 'Outside Vicinity';
       } else {
         Get.dialog(
-          const GetDialog(
+          const GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -129,7 +129,7 @@ class HomeController extends GetxController {
       }
     } catch (error) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -169,7 +169,7 @@ class HomeController extends GetxController {
             isInsideVicinity.isTrue ? 'Within Vicinity' : 'Outside Vicinity';
       } else {
         Get.dialog(
-          const GetDialog(
+          const GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -182,7 +182,7 @@ class HomeController extends GetxController {
       }
     } catch (error) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -232,7 +232,7 @@ class HomeController extends GetxController {
             employeeId: _authService.employee!.value.id, days: 1);
         checkNewShift(employeeId: _authService.employee!.value.id);
       } else {
-        Get.dialog(GetDialog(
+        Get.dialog(GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -243,7 +243,7 @@ class HomeController extends GetxController {
         ));
       }
     } catch (error) {
-      Get.dialog(GetDialog(
+      Get.dialog(GemsDialog(
         title: "Oops",
         hasMessage: true,
         withCloseButton: true,
@@ -278,7 +278,7 @@ class HomeController extends GetxController {
             employeeId: _authService.employee!.value.id, days: 1);
         checkNewShift(employeeId: _authService.employee!.value.id);
       } else {
-        Get.dialog(GetDialog(
+        Get.dialog(GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -292,7 +292,7 @@ class HomeController extends GetxController {
       }
     } catch (error) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -323,7 +323,7 @@ class HomeController extends GetxController {
       printInfo(info: result.toString());
     } catch (error) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -353,7 +353,7 @@ class HomeController extends GetxController {
       printInfo(info: result.toString());
     } catch (error) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -400,7 +400,7 @@ class HomeController extends GetxController {
   //         }
   //       }
   //     } else {
-  //       Get.dialog(GetDialog(
+  //       Get.dialog(GemsDialog(
   //         title: "Oops",
   //         hasMessage: true,
   //         withCloseButton: true,
@@ -413,7 +413,7 @@ class HomeController extends GetxController {
   //       printError(info: 'Error Message getLatestLog: Invalid Request');
   //     }
   //   } catch (error) {
-  //     Get.dialog(GetDialog(
+  //     Get.dialog(GemsDialog(
   //       title: "Oops",
   //       hasMessage: true,
   //       withCloseButton: true,

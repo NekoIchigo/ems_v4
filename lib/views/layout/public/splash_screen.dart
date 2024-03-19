@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData = MediaQuery.of(context);
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: _key,
       body: Column(
@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Center(
             child: SizedBox(
-              height: queryData.size.height * 0.12,
+              height: size.height * 0.12,
               child: Image.asset(
                 'assets/images/GEMS4blue.png',
               ),

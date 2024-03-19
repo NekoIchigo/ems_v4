@@ -107,7 +107,7 @@ class CreatePasswordController extends GetxController {
         if (result.containsKey('success') && result['success']) {
           await Get.dialog(
             barrierDismissible: false,
-            const GetDialog(
+            const GemsDialog(
               type: 'success',
               title: 'One-Time Pin Sent',
               hasMessage: true,
@@ -124,7 +124,7 @@ class CreatePasswordController extends GetxController {
         }
       } catch (e) {
         Get.dialog(
-          GetDialog(
+          GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -154,7 +154,7 @@ class CreatePasswordController extends GetxController {
         animateToThirdPage();
       } else {
         // Get.dialog(
-        //   GetDialog(
+        //   GemsDialog(
         //     title: "Oops",
         //     hasMessage: true,
         //     withCloseButton: true,
@@ -168,7 +168,7 @@ class CreatePasswordController extends GetxController {
       }
     } catch (e) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -195,7 +195,7 @@ class CreatePasswordController extends GetxController {
       if (result.containsKey('success') && result['success']) {
         await Get.dialog(
           barrierDismissible: false,
-          const GetDialog(
+          const GemsDialog(
             type: 'success',
             title: 'Success!',
             hasMessage: true,
@@ -212,7 +212,7 @@ class CreatePasswordController extends GetxController {
       }
     } catch (e) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -246,7 +246,7 @@ class CreatePasswordController extends GetxController {
         if (currentPassword != null) {
           await Get.dialog(
             barrierDismissible: false,
-            const GetDialog(
+            const GemsDialog(
               type: 'success',
               title: 'Success',
               hasMessage: true,
@@ -264,7 +264,7 @@ class CreatePasswordController extends GetxController {
       } else {
         return result;
         // Get.dialog(
-        //   GetDialog(
+        //   GemsDialog(
         //     title: "Oops",
         //     hasMessage: true,
         //     withCloseButton: true,
@@ -277,7 +277,7 @@ class CreatePasswordController extends GetxController {
       }
     } catch (e) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -312,7 +312,7 @@ class CreatePasswordController extends GetxController {
         if (currentpin != null) {
           await Get.dialog(
             barrierDismissible: false,
-            const GetDialog(
+            const GemsDialog(
               type: 'success',
               title: 'Success',
               hasMessage: true,
@@ -327,7 +327,7 @@ class CreatePasswordController extends GetxController {
         } else if (isForgotPin.isTrue) {
           await Get.dialog(
             barrierDismissible: false,
-            const GetDialog(
+            const GemsDialog(
               type: 'success',
               title: 'Success',
               hasMessage: true,
@@ -346,7 +346,7 @@ class CreatePasswordController extends GetxController {
       } else {
         return result;
         // Get.dialog(
-        //   GetDialog(
+        //   GemsDialog(
         //     title: "Oops",
         //     hasMessage: true,
         //     withCloseButton: true,
@@ -359,7 +359,7 @@ class CreatePasswordController extends GetxController {
       }
     } catch (e) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -387,7 +387,7 @@ class CreatePasswordController extends GetxController {
       if (result.containsKey('success') && result['success']) {
         await Get.dialog(
           barrierDismissible: false,
-          GetDialog(
+          GemsDialog(
             type: 'success',
             title: 'You are all set!',
             hasMessage: true,
@@ -405,7 +405,7 @@ class CreatePasswordController extends GetxController {
         Get.offAllNamed("/login");
       } else {
         Get.dialog(
-          GetDialog(
+          GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -418,7 +418,7 @@ class CreatePasswordController extends GetxController {
       }
     } catch (e) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,

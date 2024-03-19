@@ -1,11 +1,10 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
-class GetDialog extends StatelessWidget {
+class GemsDialog extends StatelessWidget {
   final String type;
   final String title;
   final bool hasMessage;
@@ -23,7 +22,7 @@ class GetDialog extends StatelessWidget {
   final void Function()? cancelPress;
   final String? cancelText;
 
-  const GetDialog({
+  const GemsDialog({
     super.key,
     required this.type,
     required this.title,
@@ -45,12 +44,14 @@ class GetDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Dialog(
       insetPadding: Device.get().isTablet
           ? const EdgeInsets.symmetric(vertical: 20, horizontal: 100)
           : const EdgeInsets.all(20),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0)), //this right here
+        borderRadius: BorderRadius.circular(12.0),
+      ),
       insetAnimationDuration: const Duration(milliseconds: 100),
       child: Container(
         padding: buttonNumber != 0
@@ -150,8 +151,8 @@ class GetDialog extends StatelessWidget {
                             visible: buttonNumber == 2,
                             child: SizedBox(
                               width: Device.get().isTablet
-                                  ? Get.width * 0.28
-                                  : Get.width * 0.37,
+                                  ? size.width * 0.28
+                                  : size.width * 0.37,
                               child: ElevatedButton(
                                 onPressed: cancelPress,
                                 style: ElevatedButton.styleFrom(
@@ -178,8 +179,8 @@ class GetDialog extends StatelessWidget {
                           ),
                           SizedBox(
                             width: Device.get().isTablet
-                                ? Get.width * 0.28
-                                : Get.width * 0.37,
+                                ? size.width * 0.28
+                                : size.width * 0.37,
                             child: ElevatedButton(
                               onPressed: okPress,
                               style: ElevatedButton.styleFrom(

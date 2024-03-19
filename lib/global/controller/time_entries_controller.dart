@@ -58,7 +58,7 @@ class TimeEntriesController extends GetxController {
             .map((attendance) => AttendanceRecord.fromJson(attendance)));
         // print(attendances.length);
       } else {
-        Get.dialog(GetDialog(
+        Get.dialog(GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
@@ -69,7 +69,7 @@ class TimeEntriesController extends GetxController {
         ));
       }
     } catch (error) {
-      Get.dialog(GetDialog(
+      Get.dialog(GemsDialog(
         title: "Oops",
         hasMessage: true,
         withCloseButton: true,
@@ -108,7 +108,7 @@ class TimeEntriesController extends GetxController {
               .map((attendance) => AttendanceRecord.fromJson(attendance)));
           // print(attendances.length);
         } else {
-          Get.dialog(GetDialog(
+          Get.dialog(GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -119,7 +119,7 @@ class TimeEntriesController extends GetxController {
           ));
         }
       } catch (e) {
-        Get.dialog(GetDialog(
+        Get.dialog(GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,

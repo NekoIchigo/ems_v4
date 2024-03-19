@@ -36,7 +36,7 @@ class ProfileController extends GetxController {
         }
         await Get.dialog(
           barrierDismissible: false,
-          const GetDialog(
+          const GemsDialog(
             type: 'success',
             title: 'Success',
             hasMessage: true,
@@ -49,7 +49,7 @@ class ProfileController extends GetxController {
         );
       } else {
         Get.dialog(
-          GetDialog(
+          GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -62,7 +62,7 @@ class ProfileController extends GetxController {
       }
     } catch (e) {
       Get.dialog(
-        GetDialog(
+        GemsDialog(
           title: "Oops",
           hasMessage: true,
           withCloseButton: true,
