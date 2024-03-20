@@ -6,6 +6,7 @@ import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class TimeEntriesList extends StatefulWidget {
   const TimeEntriesList({super.key});
@@ -37,6 +38,8 @@ class _TimeEntriesListState extends State<TimeEntriesList> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Padding(
@@ -105,93 +108,58 @@ class _TimeEntriesListState extends State<TimeEntriesList> {
               ),
             ),
             Obx(
-              () => SizedBox(
-                height: Get.height * .55,
-                child: _timeEntriesController.isLoading.isTrue
-                    ? const ListShimmer(listLength: 10)
-                    : _timeEntriesController.attendances.isNotEmpty
-                        ? ListView.builder(
-                            // TODO : paginate every scroll
-                            padding: EdgeInsets.zero,
-                            physics: const BouncingScrollPhysics(),
-                            itemCount:
-                                _timeEntriesController.attendances.length,
-                            itemBuilder: (context, index) {
-                              final attendance =
-                                  _timeEntriesController.attendances[index];
+              () => Builder(builder: (context) {
+                return SizedBox(
+                  height: size.height * .55,
+                  child: _timeEntriesController.isLoading.isTrue
+                      ? const ListShimmer(listLength: 10)
+                      : _timeEntriesController.attendances.isNotEmpty
+                          ? ListView.builder(
+                              // TODO : paginate every scroll
+                              padding: EdgeInsets.zero,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount:
+                                  _timeEntriesController.attendances.length,
+                              itemBuilder: (context, index) {
+                                final attendance =
+                                    _timeEntriesController.attendances[index];
 
-                              return Container(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                height: 70,
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    bottom:
-                                        BorderSide(width: 1, color: lightGray),
+                                return Container(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  height: 70,
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1, color: lightGray),
+                                    ),
                                   ),
-                                ),
-                                child: ListTile(
-                                  onTap: () {
-                                    _timeEntriesController.pageName.value =
-                                        '/attendance-log';
-                                    _timeEntriesController
-                                        .attendanceIndex.value = index;
-                                    _timeEntriesController.hasClose.value =
-                                        true;
-                                  },
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.access_time,
-                                            color: primaryBlue,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 15),
-                                          Text(
-                                            attendance.formattedClockIn ??
-                                                "??/??/??/ | ??:??",
-                                            style: const TextStyle(
-                                              color: primaryBlue,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Expanded(
-                                            child: Text(
-                                              attendance
-                                                      .clockedInLocationType ??
-                                                  "",
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: const TextStyle(
-                                                color: gray,
-                                                fontSize: 13,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Visibility(
-                                        visible: attendance.clockOutAt != null,
-                                        child: Row(
+                                  child: ListTile(
+                                    tileColor: Colors.white,
+                                    onTap: () {
+                                      context.go('/attendance-log');
+                                      _timeEntriesController
+                                          .attendanceIndex.value = index;
+                                      _timeEntriesController.hasClose.value =
+                                          true;
+                                    },
+                                    title: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
                                             const Icon(
-                                              Icons.access_time_filled,
+                                              Icons.access_time,
                                               color: primaryBlue,
                                               size: 20,
                                             ),
                                             const SizedBox(width: 15),
                                             Text(
-                                              attendance.formattedClockOut ??
+                                              attendance.formattedClockIn ??
                                                   "??/??/??/ | ??:??",
                                               style: const TextStyle(
                                                 color: primaryBlue,
@@ -202,10 +170,10 @@ class _TimeEntriesListState extends State<TimeEntriesList> {
                                             Expanded(
                                               child: Text(
                                                 attendance
-                                                        .clockedOutLocationType ??
+                                                        .clockedInLocationType ??
                                                     "",
-                                                maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
                                                 style: const TextStyle(
                                                   color: gray,
                                                   fontSize: 13,
@@ -214,20 +182,59 @@ class _TimeEntriesListState extends State<TimeEntriesList> {
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ],
+                                        Visibility(
+                                          visible:
+                                              attendance.clockOutAt != null,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const Icon(
+                                                Icons.access_time_filled,
+                                                color: primaryBlue,
+                                                size: 20,
+                                              ),
+                                              const SizedBox(width: 15),
+                                              Text(
+                                                attendance.formattedClockOut ??
+                                                    "??/??/??/ | ??:??",
+                                                style: const TextStyle(
+                                                  color: primaryBlue,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 5),
+                                              Expanded(
+                                                child: Text(
+                                                  attendance
+                                                          .clockedOutLocationType ??
+                                                      "",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: gray,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    trailing: const Icon(
+                                      Icons.navigate_next,
+                                      color: gray,
+                                      size: 20,
+                                    ),
                                   ),
-                                  trailing: const Icon(
-                                    Icons.navigate_next,
-                                    color: gray,
-                                    size: 20,
-                                  ),
-                                ),
-                              );
-                            },
-                          )
-                        : const NoResult(),
-              ),
+                                );
+                              },
+                            )
+                          : const NoResult(),
+                );
+              }),
             ),
           ],
         ),

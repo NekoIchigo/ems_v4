@@ -1,9 +1,7 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
-import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,8 +12,6 @@ class MainNavigationController extends GetxController {
   final int routerKey = 0;
 
   final List<Widget> pages = [
-    // const Home(),
-    const TimeEntries(),
     const Transactions(),
     const NotificationPage(),
     const Profile(),

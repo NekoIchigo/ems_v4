@@ -53,21 +53,5 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
     );
-
-    // GetMaterialApp(
-    //   title: 'GEMS',
-    //   navigatorKey: navigatorKey,
-    //   debugShowCheckedModeBanner: false,
-    //   // initialBinding: BindingsBuilder(() { }),
-    //   theme: ThemeData(
-    //     textTheme: GoogleFonts.outfitTextTheme(),
-    //     colorScheme: ColorScheme.fromSeed(
-    //       seedColor: bgPrimaryBlue,
-    //     ),
-    //     useMaterial3: true,
-    //   ),
-    //   initialRoute: initialRouteName,
-    //   getPages: routes,
-    // );
   }
 }

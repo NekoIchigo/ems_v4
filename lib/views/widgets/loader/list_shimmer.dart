@@ -1,6 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ListShimmer extends StatefulWidget {
@@ -19,6 +18,8 @@ class ListShimmer extends StatefulWidget {
 class _ListShimmerState extends State<ListShimmer> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.zero,
@@ -51,7 +52,7 @@ class _ListShimmerState extends State<ListShimmer> {
                   children: [
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
-                      width: Get.width * 0.5,
+                      width: size.width * 0.5,
                       height: 10,
                       decoration: BoxDecoration(
                           color: primaryBlue,
@@ -59,7 +60,7 @@ class _ListShimmerState extends State<ListShimmer> {
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
-                      width: Get.width * 0.7,
+                      width: size.width * 0.7,
                       height: 10,
                       decoration: BoxDecoration(
                           color: primaryBlue,
@@ -67,7 +68,7 @@ class _ListShimmerState extends State<ListShimmer> {
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
-                      width: Get.width * 0.6,
+                      width: size.width * 0.6,
                       height: 10,
                       decoration: BoxDecoration(
                           color: primaryBlue,

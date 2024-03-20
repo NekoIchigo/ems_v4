@@ -8,6 +8,8 @@ import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
+import 'package:ems_v4/views/layout/private/time_entries/widgets/attendance_log.dart';
+import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_container.dart';
 import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart';
@@ -120,10 +122,32 @@ final router = GoRouter(
             ),
           ],
         ),
-        GoRoute(
-          path: '/time_entries',
-          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-              context: context, state: state, child: const TimeEntries()),
+        ShellRoute(
+          pageBuilder: (context, state, child) =>
+              buildPageWithDefaultTransition<void>(
+                  context: context,
+                  state: state,
+                  child: TimeEntries(child: child)),
+          routes: [
+            GoRoute(
+              path: '/time_entries',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const TimeEntriesIndex(),
+              ),
+            ),
+            GoRoute(
+              path: '/attendance-log',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const AttendanceLog(),
+              ),
+            ),
+          ],
         ),
         GoRoute(
           path: '/transaction',

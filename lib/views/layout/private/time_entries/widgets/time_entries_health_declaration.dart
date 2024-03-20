@@ -6,7 +6,7 @@ import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
 class TimeEntriesHealthDeclaration extends StatefulWidget {
@@ -59,6 +59,8 @@ class _TimeEntriesHealthDeclarationState
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return EMSContainer(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -83,7 +85,7 @@ class _TimeEntriesHealthDeclarationState
                     alignment: Alignment.centerRight,
                     child: IconButton(
                       onPressed: () {
-                        Get.back();
+                        context.pop();
                       },
                       icon: const Icon(Icons.close),
                     ),
@@ -106,7 +108,8 @@ class _TimeEntriesHealthDeclarationState
               ),
               _symptoms.isNotEmpty
                   ? Padding(
-                      padding: EdgeInsets.symmetric(vertical: Get.height * .01),
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * .01),
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -121,7 +124,7 @@ class _TimeEntriesHealthDeclarationState
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: Get.width * .01),
+                                  vertical: size.width * .01),
                               child: CheckboxListTile(
                                 activeColor: primaryBlue,
                                 tileColor: lightGray,
@@ -132,14 +135,14 @@ class _TimeEntriesHealthDeclarationState
                                 title: Row(
                                   children: [
                                     Image(
-                                      height: Get.height * .05,
+                                      height: size.height * .05,
                                       image:
                                           AssetImage(_symptoms[index]["path"]),
                                     ),
                                     Flexible(
                                       child: Padding(
                                         padding: EdgeInsets.only(
-                                            left: Get.width * .02),
+                                            left: size.width * .02),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -250,13 +253,13 @@ class _TimeEntriesHealthDeclarationState
               Center(
                 child: RoundedCustomButton(
                   onPressed: () {
-                    Get.back();
+                    context.pop();
                     // context.router.navigate(const HomepageRouter());
                   },
                   label: 'Close',
                   bgColor: gray,
                   radius: 8,
-                  size: Size(Get.width * .4, 40),
+                  size: Size(size.width * .4, 40),
                 ),
               ),
             ],

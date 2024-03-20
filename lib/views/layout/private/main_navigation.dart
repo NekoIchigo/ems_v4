@@ -30,22 +30,14 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    final pageController = PageController(initialPage: 0);
+    // final pageController = PageController(initialPage: 0);
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          EMSContainer(child: widget.child)
-          // PageView(
-          //   controller: pageController,
-          //   physics: const NeverScrollableScrollPhysics(),
-          //   children: List.generate(
-          //     _mainNavigationController.pages.length,
-          //     (index) => _mainNavigationController.pages[index],
-          //   ),
-          // ),
-          // const GettingStarted(),
+          EMSContainer(child: widget.child),
+          const GettingStarted(),
         ],
       ),
       extendBody: true,

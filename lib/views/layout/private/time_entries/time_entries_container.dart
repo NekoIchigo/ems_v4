@@ -21,10 +21,6 @@ class _TimeEntriesContainerState extends State<TimeEntriesContainer> {
       switch (_timeEntriesController.pageName.value) {
         case '/attendance-log':
           return const AttendanceLog();
-        // case '/home/result':
-        //   return const HomeResultPage();
-        // case '/home/health_declaration':
-        //   return const HealthDeclaration();
         default:
           return const TimeEntriesIndex();
       }

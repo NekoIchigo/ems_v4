@@ -15,6 +15,7 @@ class AttendanceLog extends StatefulWidget {
 }
 
 class _AttendanceLogState extends State<AttendanceLog> {
+  late Size size;
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
   final AuthController _authService = Get.find<AuthController>();
@@ -23,61 +24,70 @@ class _AttendanceLogState extends State<AttendanceLog> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     final AttendanceRecord selectedRecord = _timeEntriesController
         .attendances[_timeEntriesController.attendanceIndex.value];
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
-      child: SizedBox(
-        height: Get.height * .8,
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            clockInDetails(selectedRecord),
-            clockOutDetails(selectedRecord),
-            Positioned(
-              top: 0,
-              left: 40,
-              child: Container(
-                color: Colors.white,
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.access_time,
-                      color: primaryBlue,
-                    ),
-                    Text(
-                      ' Clock in:',
-                      style: TextStyle(color: primaryBlue),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              top: Get.height * .333,
-              left: 40,
-              child: Visibility(
-                visible: selectedRecord.clockOutAt != null,
+    return Container(
+      height: size.height,
+      width: size.width,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: SingleChildScrollView(
+        padding: EdgeInsets.zero,
+        physics: const BouncingScrollPhysics(),
+        child: SizedBox(
+          height: size.height * .8,
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              clockInDetails(selectedRecord),
+              clockOutDetails(selectedRecord),
+              Positioned(
+                top: 0,
+                left: 40,
                 child: Container(
                   color: Colors.white,
                   child: const Row(
                     children: [
                       Icon(
-                        Icons.access_time_filled,
+                        Icons.access_time,
                         color: primaryBlue,
                       ),
                       Text(
-                        ' Clock out:',
+                        ' Clock in:',
                         style: TextStyle(color: primaryBlue),
                       )
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+              Positioned(
+                top: size.height * .333,
+                left: 40,
+                child: Visibility(
+                  visible: selectedRecord.clockOutAt != null,
+                  child: Container(
+                    color: Colors.white,
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.access_time_filled,
+                          color: primaryBlue,
+                        ),
+                        Text(
+                          ' Clock out:',
+                          style: TextStyle(color: primaryBlue),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -87,8 +97,8 @@ class _AttendanceLogState extends State<AttendanceLog> {
     return Positioned(
       top: 13,
       child: Container(
-        width: Get.width * .9,
-        height: Get.height * .28,
+        width: size.width * .9,
+        height: size.height * .28,
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
             border: Border.all(width: 1, color: lightGray),
@@ -109,7 +119,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: Get.width * .30,
+                  width: size.width * .30,
                   child: const Text(
                     'Reports at:',
                     style: TextStyle(
@@ -133,7 +143,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: Get.width * .30,
+                  width: size.width * .30,
                   child: Text(
                     selectedRecord.clockedInLocationType ?? "",
                     style: const TextStyle(
@@ -177,7 +187,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: Get.width * .30,
+                  width: size.width * .30,
                   child: const Text(
                     'GPS Location:',
                     style: TextStyle(
@@ -203,7 +213,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: Get.width * .30,
+                    width: size.width * .30,
                     child: const Text(
                       'Health Check:',
                       style: TextStyle(
@@ -240,12 +250,12 @@ class _AttendanceLogState extends State<AttendanceLog> {
 
   Widget clockOutDetails(AttendanceRecord selectedRecord) {
     return Positioned(
-      top: Get.height * .35,
+      top: size.height * .35,
       child: Visibility(
         visible: selectedRecord.clockOutAt != null,
         child: Container(
-          width: Get.width * .9,
-          height: Get.height * .28,
+          width: size.width * .9,
+          height: size.height * .28,
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
               border: Border.all(width: 1, color: lightGray),
@@ -266,7 +276,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: Get.width * .30,
+                    width: size.width * .30,
                     child: const Text(
                       'Reports at:',
                       style: TextStyle(
@@ -291,7 +301,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: Get.width * .30,
+                    width: size.width * .30,
                     child: Text(
                       selectedRecord.clockedOutLocationType ?? "",
                       style: const TextStyle(
@@ -340,7 +350,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: Get.width * .30,
+                    width: size.width * .30,
                     child: const Text(
                       'GPS Location:',
                       style: TextStyle(

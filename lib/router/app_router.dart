@@ -57,11 +57,11 @@ final List<GetPage> routes = [
       //   page: () => const Home(),
       //   middlewares: [AuthGuard()],
       // ),
-      GetPage(
-        name: '/time_entries',
-        page: () => const TimeEntries(),
-        middlewares: [AuthGuard()],
-      ),
+      // GetPage(
+      //   name: '/time_entries',
+      //   page: () => const TimeEntries(),
+      //   middlewares: [AuthGuard()],
+      // ),
       GetPage(
         name: '/transactions',
         page: () => const Transactions(),

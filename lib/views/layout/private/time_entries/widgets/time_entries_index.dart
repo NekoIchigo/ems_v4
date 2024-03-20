@@ -7,6 +7,7 @@ import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class TimeEntriesIndex extends StatefulWidget {
   const TimeEntriesIndex({super.key});
@@ -54,6 +55,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Padding(
@@ -125,7 +128,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
             ),
             Obx(
               () => SizedBox(
-                height: Get.height * .55,
+                height: size.height * .55,
                 child: _timeEntriesController.isLoading.isTrue
                     ? const ListShimmer(listLength: 10)
                     : _timeEntriesController.attendances.isNotEmpty
@@ -141,8 +144,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
 
                               return ElevatedButton(
                                 onPressed: () {
-                                  _timeEntriesController.pageName.value =
-                                      '/attendance-log';
+                                  context.push('/attendance-log');
                                   _timeEntriesController.attendanceIndex.value =
                                       index;
                                   _timeEntriesController.hasClose.value = true;
@@ -163,6 +165,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       attendance.clockedInLocationType ==
                                           'Within Vicinity',
                                       "IN",
+                                      size,
                                     ),
                                     const SizedBox(height: 10),
                                     listItem(
@@ -173,6 +176,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       attendance.clockedOutLocationType ==
                                           'Within Vicinity',
                                       "OUT",
+                                      size,
                                     ),
                                   ],
                                 ),
@@ -188,12 +192,12 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
     );
   }
 
-  Widget listItem(String dateTime, bool inOut, String clockType) {
+  Widget listItem(String dateTime, bool inOut, String clockType, Size size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: Get.width * .68,
+          width: size.width * .68,
           child: Row(
             children: [
               SizedBox(

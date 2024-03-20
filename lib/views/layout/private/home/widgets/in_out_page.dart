@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -68,7 +69,7 @@ class _InOutPageState extends State<InOutPage> {
             greetingWidget(size),
             buttonSection(size),
             detailsSection(size),
-            // additionalShift(),
+            additionalShift(size),
             // announcementSection(),
           ],
         ),
@@ -134,123 +135,120 @@ class _InOutPageState extends State<InOutPage> {
   Widget buttonSection(Size size) {
     return SizedBox(
       height: size.height * .38,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          _homeController.isClockInOutComplete.isTrue
-              ? Positioned(
-                  top: 0,
-                  child: Image.asset('assets/images/EMS1.png',
-                      width: size.width * .62),
-                )
-              : Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Positioned(
-                      child: _homeController.isClockOut.isTrue
-                          ? Lottie.asset("assets/lottie/Clock-out.json",
-                              width: 300)
-                          : Lottie.asset("assets/lottie/Clock-in.json",
-                              width: 300),
-                    ),
-                    Positioned(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize:
-                                  Size(size.width * .38, size.width * .38),
-                              shape: const CircleBorder(),
-                              backgroundColor: _homeController.isClockOut.isTrue
-                                  ? colorError
-                                  : colorSuccess,
-                            ),
-                            onPressed: () {
-                              if (_homeController.isClockOut.isFalse) {
-                                _homeController
-                                    .setClockInLocation()
-                                    .then((value) {
-                                  context.push('/info');
-                                  // _homeController.isWhite.value = true;
-                                  // _homeController.pageName.value = '/home/info';
-                                });
-                              } else {
-                                _homeController
-                                    .setClockOutLocation()
-                                    .then((value) {
-                                  context.push('/info');
-                                  // _homeController.isWhite.value = true;
-                                  // _homeController.pageName.value = '/home/info';
-                                });
-                              }
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  _homeController.isClockOut.isTrue
-                                      ? "CLOCK OUT"
-                                      : "CLOCK IN",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    shadows: <Shadow>[
-                                      Shadow(
-                                        offset: const Offset(0.0, 5.0),
-                                        blurRadius: 8.0,
-                                        color: Colors.white.withOpacity(.40),
-                                      ),
-                                    ],
+      child: GetBuilder<HomeController>(builder: (controller) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            _homeController.isClockInOutComplete.isTrue
+                ? Positioned(
+                    top: 0,
+                    child: Image.asset('assets/images/EMS1.png',
+                        width: size.width * .62),
+                  )
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
+                        child: _homeController.isClockOut.isTrue
+                            ? Lottie.asset("assets/lottie/Clock-out.json",
+                                width: 300)
+                            : Lottie.asset("assets/lottie/Clock-in.json",
+                                width: 300),
+                      ),
+                      Positioned(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize:
+                                    Size(size.width * .38, size.width * .38),
+                                shape: const CircleBorder(),
+                                backgroundColor:
+                                    _homeController.isClockOut.isTrue
+                                        ? colorError
+                                        : colorSuccess,
+                              ),
+                              onPressed: () {
+                                if (_homeController.isClockOut.isFalse) {
+                                  controller.setClockInLocation().then((value) {
+                                    context.push('/info');
+                                  });
+                                } else {
+                                  controller
+                                      .setClockOutLocation()
+                                      .then((value) {
+                                    context.push('/info');
+                                  });
+                                }
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    _homeController.isClockOut.isTrue
+                                        ? "CLOCK OUT"
+                                        : "CLOCK IN",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      shadows: <Shadow>[
+                                        Shadow(
+                                          offset: const Offset(0.0, 5.0),
+                                          blurRadius: 8.0,
+                                          color: Colors.white.withOpacity(.40),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Visibility(
-                            visible: false,
-                            child: SizedBox(
-                              width: size.width * .42,
-                              height: size.width * .42,
-                              child: const CircularProgressIndicator(
-                                color: colorSuccess,
-                                strokeCap: StrokeCap.round,
+                                ],
                               ),
                             ),
-                          ),
-                        ],
+                            Visibility(
+                              visible: controller.isLoading.isTrue,
+                              child: SizedBox(
+                                width: size.width * .42,
+                                height: size.width * .42,
+                                child: const CircularProgressIndicator(
+                                  color: colorSuccess,
+                                  strokeCap: StrokeCap.round,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
+                    ],
+                  ),
+            Positioned(
+              bottom: 0,
+              child: Column(
+                children: [
+                  const SizedBox(height: 8),
+                  Text(
+                    DateFormat("hh:mm a").format(_settings.currentTime.value),
+                    style: const TextStyle(
+                      color: gray,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
-          Positioned(
-            bottom: 0,
-            child: Column(
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  DateFormat("hh:mm a").format(_settings.currentTime.value),
-                  style: const TextStyle(
-                    color: gray,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  date,
-                  style: const TextStyle(
-                    color: gray,
-                    fontWeight: FontWeight.w500,
+                  const SizedBox(height: 8),
+                  Text(
+                    date,
+                    style: const TextStyle(
+                      color: gray,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 
@@ -321,63 +319,18 @@ class _InOutPageState extends State<InOutPage> {
   }
 
   Widget additionalShift(Size size) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(Icons.info),
-              SizedBox(width: 10),
-              Text(
-                'Your additional work shift:',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ],
+    return Visibility(
+      visible: false,
+      child: TextButton(
+        onPressed: () {},
+        child: const Text(
+          'Clock-in/ Clock out again',
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+            decorationColor: gray,
+            color: gray,
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Shift #2: 01:00 pm to 05:30 pm'),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RoundedCustomButton(
-                onPressed: () {
-                  _homeController.setClockInLocation().then((value) {
-                    _homeController.isWhite.value = true;
-                    _homeController.pageName.value =
-                        '/home/additional_shift_info:clock_in';
-                  });
-                },
-                label: 'Clock in',
-                size: Size(size.width * .42, 40),
-                radius: 10,
-                bgColor: Colors.white,
-                textColor: colorSuccess,
-                borderColor: colorSuccess,
-              ),
-              RoundedCustomButton(
-                onPressed: () {
-                  _homeController.setClockOutLocation().then((value) {
-                    _homeController.isWhite.value = true;
-                    _homeController.pageName.value =
-                        '/home/additional_shift_info:clock_out';
-                  });
-                },
-                label: 'Clock out',
-                size: Size(size.width * .42, 40),
-                radius: 10,
-                bgColor: Colors.white,
-                textColor: red,
-                borderColor: red,
-              ),
-            ],
-          ),
-          Container(),
-        ],
+        ),
       ),
     );
   }
