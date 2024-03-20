@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bottomsheet.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
@@ -17,8 +18,7 @@ class TimeEntriesIndex extends StatefulWidget {
 }
 
 class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
-  final TimeEntriesController _timeEntriesController =
-      Get.find<TimeEntriesController>();
+  final TimeEntriesController _timeEntriesController = TimeEntriesController();
   final AuthController _authService = Get.find<AuthController>();
 
   final List _list = [
@@ -37,7 +37,10 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
     super.initState();
     dropdownValue = _list[0];
     _scrollController.addListener(_scrollListener);
-    // _timeEntriesController.hasClose.value = false;
+    _timeEntriesController.getAttendanceList(
+      employeeId: _authService.employee!.value.id,
+      days: 1,
+    );
   }
 
   @override
@@ -79,10 +82,6 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<dynamic>(
                   iconEnabledColor: Colors.white,
-                  // hint: Text(
-                  //   "Select your reason/purpose here",
-                  //   style: TextStyle(color: Colors.white),
-                  // ),
                   value: dropdownValue,
                   dropdownColor: Colors.white,
                   elevation: 16,
@@ -90,9 +89,12 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                   style: const TextStyle(color: gray),
                   onChanged: (value) async {
                     if (value["day"] == 0) {
-                      List? dates = await Get.bottomSheet(
-                        const CustomDateBottomsheet(type: "range"),
-                      );
+                      List? dates = await showModalBottomSheet(
+                          context: mainNavigationKey.currentContext!,
+                          builder: (BuildContext context) {
+                            return const CustomDateBottomsheet(type: "range");
+                          });
+
                       if (dates != null) {
                         _timeEntriesController.getAttendanceList(
                           employeeId: _authService.employee!.value.id,

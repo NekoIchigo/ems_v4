@@ -8,13 +8,14 @@ import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/controller/location_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/router/app_router.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/view_model/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: router,
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: scaffoldKey,
       theme: ThemeData(
         textTheme: GoogleFonts.outfitTextTheme(),
         colorScheme: ColorScheme.fromSeed(

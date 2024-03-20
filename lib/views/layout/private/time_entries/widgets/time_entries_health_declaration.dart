@@ -218,43 +218,10 @@ class _TimeEntriesHealthDeclarationState
                   color: gray,
                 ),
               ),
-              // TextFormField(
-              //   controller: temperatureController,
-              //   readOnly: true,
-              //   keyboardType:
-              //       const TextInputType.numberWithOptions(decimal: true),
-              //   inputFormatters: [
-              //     FilteringTextInputFormatter.allow(
-              //         RegExp(r'^\d{0,2}\.?\d{0,2}')),
-              //   ],
-              //   decoration: const InputDecoration(
-              //     labelText: 'Enter temperature in °C',
-              //     labelStyle: TextStyle(color: gray),
-              //     hintText: "--.--",
-              //     fillColor: gray,
-              //     prefixIcon: Icon(
-              //       Icons.thermostat_sharp,
-              //       color: gray,
-              //     ),
-              //     hintStyle: TextStyle(color: gray),
-              //     contentPadding: EdgeInsets.all(0),
-              //     enabledBorder: OutlineInputBorder(
-              //       borderSide: BorderSide(color: lightGray),
-              //     ),
-              //     border: OutlineInputBorder(
-              //       borderSide: BorderSide(color: gray),
-              //     ),
-              //     focusedBorder: OutlineInputBorder(
-              //       gapPadding: 0.0,
-              //       borderSide: BorderSide(color: primaryBlue),
-              //     ),
-              //   ),
-              // ),
               Center(
                 child: RoundedCustomButton(
                   onPressed: () {
                     context.pop();
-                    // context.router.navigate(const HomepageRouter());
                   },
                   label: 'Close',
                   bgColor: gray,
