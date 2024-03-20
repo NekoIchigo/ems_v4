@@ -52,11 +52,11 @@ final List<GetPage> routes = [
     ),
     middlewares: [AuthGuard()],
     children: [
-      GetPage(
-        name: '/home',
-        page: () => const Home(),
-        middlewares: [AuthGuard()],
-      ),
+      // GetPage(
+      //   name: '/home',
+      //   page: () => const Home(),
+      //   middlewares: [AuthGuard()],
+      // ),
       GetPage(
         name: '/time_entries',
         page: () => const TimeEntries(),

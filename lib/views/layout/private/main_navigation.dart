@@ -60,7 +60,7 @@ class _MainNavigationState extends State<MainNavigation> {
         onTap: (index) {
           switch (index) {
             case 0:
-              context.go('/home');
+              context.go('/in_out');
             case 1:
               context.go('/time_entries');
             case 2:

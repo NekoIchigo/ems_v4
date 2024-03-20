@@ -120,7 +120,7 @@ class AuthController extends GetxController {
         if (result.containsKey('is_first_login') && result['is_first_login']) {
           navigatorKey.currentContext?.go('/create_password');
         } else {
-          navigatorKey.currentContext?.go('/home');
+          navigatorKey.currentContext?.go('/in_out');
         }
       } else {
         if (result.containsKey('deactivate') && result['deactivate'] == 1) {
@@ -193,9 +193,9 @@ class AuthController extends GetxController {
           _localStorage.setString('user', jsonEncode(result['data']));
           if (result.containsKey('is_first_login') &&
               result['is_first_login']) {
-            Get.offAllNamed('/create_password');
+            navigatorKey.currentContext?.go('/create_password');
           } else {
-            Get.offAllNamed('/');
+            navigatorKey.currentContext?.go('/in_out');
           }
         } else {
           if (result.containsKey('deactivate') && result['deactivate']) {
@@ -242,7 +242,7 @@ class AuthController extends GetxController {
           buttonNumber: 0,
         ),
       );
-      Get.offAllNamed('/login');
+      navigatorKey.currentContext?.go('/login');
     } finally {
       isLoading.value = false;
     }
@@ -262,7 +262,7 @@ class AuthController extends GetxController {
         if (localAuthenticated) {
           authenticated.value = localAuthenticated;
           setAuthStatus();
-          Get.offAllNamed('/');
+          navigatorKey.currentContext?.go('/in_out');
         }
       } on PlatformException catch (e) {
         log(e.toString());
@@ -275,7 +275,7 @@ class AuthController extends GetxController {
       apiCall.postRequest({}, '/logout').then((value) {
         setAuthStatus();
         setLocalAuth();
-        Get.offAllNamed('/login');
+        navigatorKey.currentContext?.go('/login');
       });
     } catch (error) {
       Get.dialog(GemsDialog(

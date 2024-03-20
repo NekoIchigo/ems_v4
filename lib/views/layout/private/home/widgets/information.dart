@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/map_launcher.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -17,7 +18,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
   final AuthController _authViewService = Get.find<AuthController>();
   final HomeController _homeController = Get.find<HomeController>();
   final MapLauncher _mapLuncher = MapLauncher();
-
+  final GlobalKey _homeInfoKey = GlobalKey();
   final List<bool> _isSelected = [false];
   bool _isNotButtonDisable = false;
 
@@ -40,128 +41,140 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Obx(
-        () => Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 10),
-              Text(
-                _authViewService.employee!.value.employeeDetails.location.name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: primaryBlue,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Center(
-                  child: Image.asset(
-                    _homeController.isInsideVicinity.value
-                        ? "assets/images/current_location-pana.png"
-                        : "assets/images/current_location-rafiki.png",
-                    width: Get.width * .65,
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: SingleChildScrollView(
+        key: _homeInfoKey,
+        child: Obx(
+          () => Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 10),
+                Text(
+                  _authViewService
+                      .employee!.value.employeeDetails.location.name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: primaryBlue,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              InkWell(
-                onTap: () {
-                  _mapLuncher.launchMap();
-                },
-                child: const Text(
-                  'View Map',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: gray,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _homeController.currentLocation.value,
-                style: const TextStyle(color: gray, fontSize: 13),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Visibility(
-                visible: _homeController.isInsideVicinity.isFalse,
-                child: DropdownMenu<String>(
-                  width: Get.width * .710,
-                  hintText: "Select your reason/purpose here",
-                  errorText: reasonError,
-                  textStyle: const TextStyle(color: primaryBlue, fontSize: 12),
-                  inputDecorationTheme: const InputDecorationTheme(
-                    hintStyle: TextStyle(color: primaryBlue, fontSize: 12),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Center(
+                    child: Image.asset(
+                      _homeController.isInsideVicinity.value
+                          ? "assets/images/current_location-pana.png"
+                          : "assets/images/current_location-rafiki.png",
+                      width: size.width * .65,
                     ),
                   ),
-                  onSelected: (String? value) {
-                    reason = value;
-                    if (_homeController.isClockOut.isFalse) {
-                      _homeController
-                          .attendance.value.clockedInLocationSetting = value!;
-                    } else {
-                      _homeController
-                          .attendance.value.clockedOutLocationSetting = value!;
-                    }
-                    reasonError = null;
-                    setState(() {});
+                ),
+                const SizedBox(height: 8),
+                InkWell(
+                  onTap: () {
+                    _mapLuncher.launchMap();
                   },
-                  menuStyle: const MenuStyle(
-                    surfaceTintColor: MaterialStatePropertyAll(Colors.white),
-                    backgroundColor: MaterialStatePropertyAll(Colors.white),
+                  child: const Text(
+                    'View Map',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: gray,
+                      fontSize: 12,
+                    ),
                   ),
-                  dropdownMenuEntries:
-                      _list.map<DropdownMenuEntry<String>>((String value) {
-                    return DropdownMenuEntry<String>(
-                      value: value,
-                      label: value,
-                      labelWidget: Text(
-                        value,
-                        style: const TextStyle(fontSize: 13),
-                      ),
-                      style: const ButtonStyle(
-                        foregroundColor: MaterialStatePropertyAll(primaryBlue),
-                      ),
-                    );
-                  }).toList(),
                 ),
-              ),
-              const SizedBox(height: 10),
-              howAreYouFeeling(),
-              const SizedBox(height: 20),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 15.0),
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'By clicking ',
-                      ),
-                      TextSpan(
-                          text: _homeController.isClockOut.isFalse
-                              ? 'Clock In'
-                              : 'Clock Out'),
-                      TextSpan(
-                          text: _homeController.isClockOut.isFalse
-                              ? ', you confirm your location and affirm your health condition.'
-                              : ', you confirm your location.'),
-                    ],
-                  ),
+                const SizedBox(height: 8),
+                Text(
+                  _homeController.currentLocation.value,
+                  style: const TextStyle(color: gray, fontSize: 13),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: gray, fontSize: 12),
                 ),
-              ),
-              bottomButtons(),
-            ],
+                const SizedBox(height: 8),
+                Visibility(
+                  visible: _homeController.isInsideVicinity.isFalse,
+                  child: DropdownMenu<String>(
+                    width: size.width * .710,
+                    hintText: "Select your reason/purpose here",
+                    errorText: reasonError,
+                    textStyle:
+                        const TextStyle(color: primaryBlue, fontSize: 12),
+                    inputDecorationTheme: const InputDecorationTheme(
+                      hintStyle: TextStyle(color: primaryBlue, fontSize: 12),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                    ),
+                    onSelected: (String? value) {
+                      reason = value;
+                      if (_homeController.isClockOut.isFalse) {
+                        _homeController
+                            .attendance.value.clockedInLocationSetting = value!;
+                      } else {
+                        _homeController.attendance.value
+                            .clockedOutLocationSetting = value!;
+                      }
+                      reasonError = null;
+                      setState(() {});
+                    },
+                    menuStyle: const MenuStyle(
+                      surfaceTintColor: MaterialStatePropertyAll(Colors.white),
+                      backgroundColor: MaterialStatePropertyAll(Colors.white),
+                    ),
+                    dropdownMenuEntries:
+                        _list.map<DropdownMenuEntry<String>>((String value) {
+                      return DropdownMenuEntry<String>(
+                        value: value,
+                        label: value,
+                        labelWidget: Text(
+                          value,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                        style: const ButtonStyle(
+                          foregroundColor:
+                              MaterialStatePropertyAll(primaryBlue),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                howAreYouFeeling(),
+                const SizedBox(height: 20),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 15.0),
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'By clicking ',
+                        ),
+                        TextSpan(
+                            text: _homeController.isClockOut.isFalse
+                                ? 'Clock In'
+                                : 'Clock Out'),
+                        TextSpan(
+                            text: _homeController.isClockOut.isFalse
+                                ? ', you confirm your location and affirm your health condition.'
+                                : ', you confirm your location.'),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: gray, fontSize: 12),
+                  ),
+                ),
+                bottomButtons(size),
+              ],
+            ),
           ),
         ),
       ),
@@ -288,20 +301,18 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
     );
   }
 
-  Widget bottomButtons() {
+  Widget bottomButtons(Size size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         RoundedCustomButton(
           onPressed: () {
-            _homeController.isWhite.value = false;
-            _homeController.pageName.value = '/home';
-            // Get.back(id: _homeController.routerKey);
+            _homeInfoKey.currentContext?.pop();
           },
           label: 'Close',
           radius: 8,
           bgColor: gray,
-          size: Size(Get.width * .4, 40),
+          size: Size(size.width * .4, 40),
         ),
         RoundedCustomButton(
           onPressed: () {
@@ -325,7 +336,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               : _isNotButtonDisable
                   ? colorSuccess
                   : lightGray,
-          size: Size(Get.width * .4, 40),
+          size: Size(size.width * .4, 40),
         ),
       ],
     );

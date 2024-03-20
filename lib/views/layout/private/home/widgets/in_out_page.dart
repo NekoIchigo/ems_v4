@@ -8,8 +8,11 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -49,20 +52,28 @@ class _InOutPageState extends State<InOutPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/tiles-bg.png'),
+          fit: BoxFit.fill,
+        ),
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 20),
-        child: Obx(
-          () => Column(
-            children: [
-              greetingWidget(size),
-              buttonSection(size),
-              detailsSection(size),
-              // additionalShift(),
-              // announcementSection(),
-            ],
-          ),
-        ));
+        child: Column(
+          children: [
+            greetingWidget(size),
+            buttonSection(size),
+            detailsSection(size),
+            // additionalShift(),
+            // announcementSection(),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget greetingWidget(Size size) {
@@ -143,45 +154,73 @@ class _InOutPageState extends State<InOutPage> {
                               width: 300),
                     ),
                     Positioned(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(size.width * .38, size.width * .38),
-                          shape: const CircleBorder(),
-                          backgroundColor: _homeController.isClockOut.isTrue
-                              ? colorError
-                              : colorSuccess,
-                        ),
-                        onPressed: () {
-                          if (_homeController.isClockOut.isFalse) {
-                            _homeController.setClockInLocation().then((value) {
-                              _homeController.isWhite.value = true;
-                              _homeController.pageName.value = '/home/info';
-                            });
-                          } else {
-                            _homeController.setClockOutLocation().then((value) {
-                              _homeController.isWhite.value = true;
-                              _homeController.pageName.value = '/home/info';
-                            });
-                          }
-                        },
-                        child: Text(
-                          _homeController.isClockOut.isTrue
-                              ? "CLOCK OUT"
-                              : "CLOCK IN",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: const Offset(0.0, 5.0),
-                                blurRadius: 8.0,
-                                color: Colors.white.withOpacity(.40),
-                              ),
-                            ],
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize:
+                                  Size(size.width * .38, size.width * .38),
+                              shape: const CircleBorder(),
+                              backgroundColor: _homeController.isClockOut.isTrue
+                                  ? colorError
+                                  : colorSuccess,
+                            ),
+                            onPressed: () {
+                              if (_homeController.isClockOut.isFalse) {
+                                _homeController
+                                    .setClockInLocation()
+                                    .then((value) {
+                                  context.push('/info');
+                                  // _homeController.isWhite.value = true;
+                                  // _homeController.pageName.value = '/home/info';
+                                });
+                              } else {
+                                _homeController
+                                    .setClockOutLocation()
+                                    .then((value) {
+                                  context.push('/info');
+                                  // _homeController.isWhite.value = true;
+                                  // _homeController.pageName.value = '/home/info';
+                                });
+                              }
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _homeController.isClockOut.isTrue
+                                      ? "CLOCK OUT"
+                                      : "CLOCK IN",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                        offset: const Offset(0.0, 5.0),
+                                        blurRadius: 8.0,
+                                        color: Colors.white.withOpacity(.40),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                          Visibility(
+                            visible: false,
+                            child: SizedBox(
+                              width: size.width * .42,
+                              height: size.width * .42,
+                              child: const CircularProgressIndicator(
+                                color: colorSuccess,
+                                strokeCap: StrokeCap.round,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -222,69 +261,57 @@ class _InOutPageState extends State<InOutPage> {
       height: size.height * .14,
       width: size.width,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Column(
             children: [
               const Icon(Icons.access_time, color: primaryBlue),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
-                  _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
-                  style: const TextStyle(color: gray, fontSize: 13),
+                  'Clock In',
+                  style: TextStyle(color: gray, fontSize: 13),
                 ),
               ),
-              const Text(
-                'Clock In',
-                style: TextStyle(color: gray, fontSize: 13),
+              Text(
+                _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
+                style: const TextStyle(
+                    color: gray, fontSize: 13, fontWeight: FontWeight.w500),
+              ),
+              Visibility(
+                visible: false,
+                child: Text(
+                  _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
+                  style: const TextStyle(
+                      color: gray, fontSize: 13, fontWeight: FontWeight.w500),
+                ),
               ),
             ],
           ),
+          const SizedBox(width: 50),
           Column(
             children: [
               const Icon(Icons.access_time_filled, color: primaryBlue),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
-                  _dateTimeUtils.formatTime(dateTime: attendance.clockOutAt),
-                  style: const TextStyle(color: gray, fontSize: 13),
+                  'Clock Out',
+                  style: TextStyle(color: gray, fontSize: 13),
                 ),
               ),
-              const Text(
-                'Clock Out',
-                style: TextStyle(color: gray, fontSize: 13),
+              Text(
+                _dateTimeUtils.formatTime(dateTime: attendance.clockOutAt),
+                style: const TextStyle(
+                    color: gray, fontSize: 13, fontWeight: FontWeight.w500),
               ),
-            ],
-          ),
-          Column(
-            children: [
-              const SizedBox(
-                width: 31,
-                child: Stack(
-                  children: [
-                    Positioned(
-                        child:
-                            Icon(Icons.access_time_filled, color: primaryBlue)),
-                    Positioned(
-                      right: 0,
-                      child: Icon(Icons.access_time, color: primaryBlue),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+              Visibility(
+                visible: false,
                 child: Text(
-                  _homeController.getWorkingHrs(
-                      dateTimeIn: attendance.clockInAt,
-                      dateTimeOut: attendance.clockOutAt),
-                  style: const TextStyle(color: gray, fontSize: 13),
+                  _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
+                  style: const TextStyle(
+                      color: gray, fontSize: 13, fontWeight: FontWeight.w500),
                 ),
-              ),
-              const Text(
-                'Working Hrs',
-                style: TextStyle(color: gray, fontSize: 13),
               ),
             ],
           ),

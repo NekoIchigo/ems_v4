@@ -117,15 +117,14 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ProfileListButton(
               label: 'Privacy Policy',
               onPressed: () {
-                _launchInBrowser(
-                    'https://gems.globalland.com.ph/privacy-policy');
+                _launchInBrowser('${globalBaseUrl}privacy-policy');
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Terms of Use',
               onPressed: () {
-                _launchInBrowser('https://gems.globalland.com.ph/terms-of-use');
+                _launchInBrowser('${globalBaseUrl}terms-of-use');
               },
             ),
             const SizedBox(height: 30),

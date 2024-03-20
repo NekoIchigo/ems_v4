@@ -14,7 +14,7 @@ class MainNavigationController extends GetxController {
   final int routerKey = 0;
 
   final List<Widget> pages = [
-    const Home(),
+    // const Home(),
     const TimeEntries(),
     const Transactions(),
     const NotificationPage(),
