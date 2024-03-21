@@ -52,7 +52,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   void _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      _timeEntriesController.getNextListPage();
+      // _timeEntriesController.getNextListPage();
     }
   }
 
