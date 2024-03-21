@@ -1,14 +1,9 @@
-import 'package:ems_v4/views/layout/private/profile/profile_container.dart';
 import 'package:flutter/material.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class Profile extends StatelessWidget {
+  final Widget child;
+  const Profile({super.key, required this.child});
 
-  @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -26,7 +21,7 @@ class _ProfileState extends State<Profile> {
         children: [
           SizedBox(
             height: size.height * .78,
-            child: const ProfileContainer(),
+            child: child,
           ),
         ],
       ),

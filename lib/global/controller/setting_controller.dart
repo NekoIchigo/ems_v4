@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/app_version_dialog.dart';
-import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:ems_v4/views/widgets/dialog/maintenance_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,30 +49,16 @@ class SettingsController extends GetxController {
           },
         );
       } else {
-        try {
-          isLoading.value = true;
-          var response = await apiCall.postRequest(
-            data: {'version': value.currentVersion},
-            apiUrl: '/check-maintenance',
-          );
-          var result = jsonDecode(response.body);
+        isLoading.value = true;
+        var result = await apiCall.postRequest(
+          data: {'version': value.currentVersion},
+          apiUrl: '/check-maintenance',
+        );
 
-          if (result.containsKey('success') && result['success']) {
-            isMaintenance.value =
-                result['data']['under_maintenance'] == 1 ? true : false;
-            if (isMaintenance.isTrue) {
-              showDialog(
-                context: navigatorKey.currentContext!,
-                barrierDismissible: false,
-                builder: (context) {
-                  return const MaintenanceDialog();
-                },
-              );
-            }
-          } else {}
-        } catch (error) {
-          if (error.toString().contains('html')) {
-            isMaintenance.value = true;
+        if (result.containsKey('success') && result['success']) {
+          isMaintenance.value =
+              result['data']['under_maintenance'] == 1 ? true : false;
+          if (isMaintenance.isTrue) {
             showDialog(
               context: navigatorKey.currentContext!,
               barrierDismissible: false,
@@ -82,27 +66,10 @@ class SettingsController extends GetxController {
                 return const MaintenanceDialog();
               },
             );
-          } else {
-            isMaintenance.value = true;
-            showDialog(
-              context: navigatorKey.currentContext!,
-              barrierDismissible: false,
-              builder: (context) {
-                return GemsDialog(
-                  title: "Oops",
-                  hasMessage: true,
-                  withCloseButton: true,
-                  hasCustomWidget: false,
-                  message: "Something went wrong! \n Error Code: $error",
-                  type: "error",
-                  buttonNumber: 0,
-                );
-              },
-            );
           }
-        } finally {
-          isLoading.value = false;
         }
+
+        isLoading.value = false;
       }
     });
   }

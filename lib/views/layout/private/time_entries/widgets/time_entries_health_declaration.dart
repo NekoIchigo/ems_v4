@@ -10,9 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
 class TimeEntriesHealthDeclaration extends StatefulWidget {
-  const TimeEntriesHealthDeclaration(
-      {super.key, required this.attendanceRecord});
-  final AttendanceRecord attendanceRecord;
+  const TimeEntriesHealthDeclaration({super.key});
 
   @override
   State<TimeEntriesHealthDeclaration> createState() =>
@@ -27,32 +25,37 @@ class _TimeEntriesHealthDeclarationState
   List checkedSymptoms = [];
   final TextEditingController temperatureController = TextEditingController();
   final TextEditingController _otherSymptom = TextEditingController();
+  late AttendanceRecord attendanceRecord;
 
   @override
   void initState() {
     super.initState();
 
+    loadData();
+  }
+
+  void loadData() {
     _jsonUtils.readJson('assets/json/symptoms.json').then((value) {
       setState(() {
         _symptoms = value['symptoms'];
-        if (widget.attendanceRecord.healthCheck != null) {
+        if (attendanceRecord.healthCheck != null) {
           _symptoms.asMap().forEach(
             (index, element) {
-              if (widget.attendanceRecord.healthCheck!
+              if (attendanceRecord.healthCheck!
                   .contains(_symptoms[index]['descriptionEnglish'])) {
                 checkedSymptoms.add(_symptoms[index]['descriptionEnglish']);
                 _symptoms[index]['state'] = true;
               }
             },
           );
-          if (widget.attendanceRecord.healthCheck!.contains("Others")) {
-            List tempArr = widget.attendanceRecord.healthCheck!.split(', ');
+          if (attendanceRecord.healthCheck!.contains("Others")) {
+            List tempArr = attendanceRecord.healthCheck!.split(', ');
 
             _otherSymptom.setText(tempArr[tempArr.length - 1]);
           }
         }
         temperatureController
-            .setText(widget.attendanceRecord.healthTemperature ?? "37.0");
+            .setText(attendanceRecord.healthTemperature ?? "37.0");
       });
     });
   }
@@ -60,7 +63,7 @@ class _TimeEntriesHealthDeclarationState
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    attendanceRecord = GoRouterState.of(context).extra! as AttendanceRecord;
     return EMSContainer(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

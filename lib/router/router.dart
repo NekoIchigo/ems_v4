@@ -7,8 +7,14 @@ import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
+import 'package:ems_v4/views/layout/private/profile/profile_container.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/change_password.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/change_pin.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/employee_details.dart';
+import 'package:ems_v4/views/layout/private/profile/widgets/personal_information.dart';
 import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/attendance_log.dart';
+import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_container.dart';
@@ -147,6 +153,15 @@ final router = GoRouter(
                 child: const AttendanceLog(),
               ),
             ),
+            GoRoute(
+              path: '/time-entries-health',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const TimeEntriesHealthDeclaration(),
+              ),
+            ),
           ],
         ),
         GoRoute(
@@ -159,10 +174,57 @@ final router = GoRouter(
           pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
               context: context, state: state, child: const NotificationPage()),
         ),
-        GoRoute(
-          path: '/profile',
-          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-              context: context, state: state, child: const Profile()),
+        ShellRoute(
+          pageBuilder: (context, state, child) =>
+              buildPageWithDefaultTransition<void>(
+                  context: context, state: state, child: Profile(child: child)),
+          routes: [
+            GoRoute(
+              path: '/profile',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ProfileContainer(),
+              ),
+            ),
+            GoRoute(
+              path: '/personal_info',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const PersonalInformation(),
+              ),
+            ),
+            GoRoute(
+              path: '/employment_details',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const EmployeeDetailsPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/change_password',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangePassword(),
+              ),
+            ),
+            GoRoute(
+              path: '/change_pin',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangePin(),
+              ),
+            ),
+          ],
         ),
       ],
     ),

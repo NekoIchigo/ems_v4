@@ -7,7 +7,6 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,17 +65,20 @@ class ApiCall {
         return jsonDecode(response.body);
       }
     } on SocketException catch (_) {
-      Get.dialog(
-        const GemsDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message:
-              "Unable to connect to the server. \n Please check your internet connection.",
-          type: "error",
-          buttonNumber: 0,
-        ),
+      showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (context) {
+          return const GemsDialog(
+            title: "Oops",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message:
+                "Unable to connect to the server. \n Please check your internet connection.",
+            type: "error",
+            buttonNumber: 0,
+          );
+        },
       );
     } finally {
       client.close();

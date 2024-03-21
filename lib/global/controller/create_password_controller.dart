@@ -250,7 +250,7 @@ class CreatePasswordController extends GetxController {
                 okButtonBGColor: bgPrimaryBlue,
               );
             });
-        Get.offAllNamed("/login");
+        navigatorKey.currentContext!.go("/login");
       } else if (isForgotPin.isTrue) {
         await showDialog(
             barrierDismissible: false,
@@ -268,7 +268,7 @@ class CreatePasswordController extends GetxController {
               );
             });
         isForgotPin.value = false;
-        Get.offAllNamed("/pin_login");
+        navigatorKey.currentContext!.go("/pin_login");
       } else {
         animateToThirdPage();
       }

@@ -3,9 +3,9 @@ import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/map_launcher.dart';
 import 'package:ems_v4/models/attendance_record.dart';
-import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class AttendanceLog extends StatefulWidget {
   const AttendanceLog({super.key});
@@ -224,10 +224,10 @@ class _AttendanceLogState extends State<AttendanceLog> {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.to(
-                        () => TimeEntriesHealthDeclaration(
-                          attendanceRecord: selectedRecord,
-                        ),
+                      // ! fix go router TimeEntriesHealthDe
+                      context.push(
+                        'time-entries-health',
+                        extra: selectedRecord,
                       );
                     },
                     child: const Text(

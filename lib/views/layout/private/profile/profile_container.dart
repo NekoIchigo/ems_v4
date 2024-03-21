@@ -1,12 +1,14 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/utils/web_view_launcher.dart';
+import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_list_button.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ProfileContainer extends StatefulWidget {
   const ProfileContainer({super.key});
@@ -57,27 +59,27 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ProfileListButton(
               label: 'Personal Information',
               onPressed: () {
-                Get.toNamed("/profile/personal_info");
+                context.push("/personal_info");
               },
             ),
             ProfileListButton(
               label: 'Employment Details',
               onPressed: () {
-                Get.toNamed("/profile/employment_details");
+                context.push("/employment_details");
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Change Password',
               onPressed: () {
-                Get.toNamed("/profile/change_password");
+                context.push("/change_password");
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Change PIN',
               onPressed: () {
-                Get.toNamed("/profile/change_pin");
+                context.push("/change_pin");
               },
             ),
             const SizedBox(height: 5),
@@ -109,22 +111,22 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ProfileListButton(
               label: 'Help Center',
               onPressed: () {
-                _launchInBrowser(
-                    'https://sites.google.com/view/gemshelpcenter/home');
+                webViewLauncher(
+                    url: 'https://sites.google.com/view/gemshelpcenter/home');
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Privacy Policy',
               onPressed: () {
-                _launchInBrowser('${globalBaseUrl}privacy-policy');
+                webViewLauncher(url: '${globalBaseUrl}privacy-policy');
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Terms of Use',
               onPressed: () {
-                _launchInBrowser('${globalBaseUrl}terms-of-use');
+                webViewLauncher(url: '${globalBaseUrl}terms-of-use');
               },
             ),
             const SizedBox(height: 30),
@@ -146,9 +148,10 @@ class _ProfileContainerState extends State<ProfileContainer> {
 
   updateFingerprintState(bool value) {
     _localStorage.setBool('auth_biometrics', value);
-    Get.dialog(
+    showDialog(
       barrierDismissible: false,
-      GemsDialog(
+      context: navigatorKey.currentContext!,
+      builder: (context) => GemsDialog(
         type: 'success',
         title: 'Success',
         hasMessage: true,
@@ -161,11 +164,5 @@ class _ProfileContainerState extends State<ProfileContainer> {
         okButtonBGColor: bgPrimaryBlue,
       ),
     );
-  }
-
-  Future<void> _launchInBrowser(url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
-    }
   }
 }

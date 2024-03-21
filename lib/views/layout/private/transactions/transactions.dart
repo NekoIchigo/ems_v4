@@ -31,16 +31,6 @@ class _TransactionsState extends State<Transactions> {
             height: size.height * .78,
             child: const Center(
               child: ComingSoon(),
-              // Menu(),
-              //   Navigator(
-              //     key: Get.nestedKey(_transactionController.routerKey),
-              //     onGenerateRoute: (settings) {
-              //       return GetPageRoute(
-              //         page: () => _transactionController
-              //             .pages[_transactionController.pageIndex.value],
-              //       );
-              //     },
-              //   ),
             ),
           ),
         ],
