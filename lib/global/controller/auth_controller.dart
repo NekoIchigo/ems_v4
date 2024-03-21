@@ -36,7 +36,10 @@ class AuthController extends GetxController {
     token = _localStorage.getString('token');
     setLocalAuth();
     if (token != null) {
-      var result = await apiCall.getRequest(apiUrl: '/check-token');
+      var result = await apiCall.getRequest(
+        apiUrl: '/check-token',
+        catchError: (error) {},
+      );
       if (!result.containsKey('token')) {
         authenticated.value = false;
         isBioEnabled.value = false;
@@ -104,7 +107,13 @@ class AuthController extends GetxController {
       'code': code.toUpperCase()
     };
 
-    final result = await apiCall.postRequest(apiUrl: '/login', data: data);
+    final result = await apiCall.postRequest(
+      apiUrl: '/login',
+      data: data,
+      catchError: (error) {
+        isLoading.value = false;
+      },
+    );
     if (result.containsKey('success') && result['success']) {
       authenticated.value = result['success'];
 
@@ -147,9 +156,9 @@ class AuthController extends GetxController {
         );
         return null;
       }
+      isLoading.value = false;
       return result;
     }
-
     isLoading.value = false;
   }
 
@@ -161,7 +170,13 @@ class AuthController extends GetxController {
 
     if (email != null) {
       final Map<String, String> data = {'email': email, 'pin': password};
-      final result = await apiCall.postRequest(apiUrl: '/pin-auth', data: data);
+      final result = await apiCall.postRequest(
+        apiUrl: '/pin-auth',
+        data: data,
+        catchError: (error) {
+          isLoading.value = false;
+        },
+      );
       if (result.containsKey('success') && result['success']) {
         authenticated.value = result['success'];
 
@@ -200,6 +215,7 @@ class AuthController extends GetxController {
               });
           return null;
         }
+        isLoading.value = false;
         return result['message'];
       }
     } else {
@@ -247,7 +263,10 @@ class AuthController extends GetxController {
   Future logout() async {
     isLoading.value = true;
 
-    await apiCall.postRequest(apiUrl: '/logout').then((value) {
+    await apiCall
+        .postRequest(
+            apiUrl: '/logout', catchError: (error) => isLoading.value = false)
+        .then((value) {
       setAuthStatus();
       setLocalAuth();
       navigatorKey.currentContext?.go('/login');

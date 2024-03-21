@@ -45,7 +45,10 @@ class HomeController extends GetxController {
   Future checkNewShift() async {
     isLoading.value = true;
 
-    var result = await apiCall.getRequest(apiUrl: '/check-shift');
+    var result = await apiCall.getRequest(
+      apiUrl: '/check-shift',
+      catchError: (error) => isLoading.value = false,
+    );
 
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
@@ -87,13 +90,14 @@ class HomeController extends GetxController {
     isLoading.value = true;
 
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.best);
     var result = await apiCall.postRequest(
       data: {
         'latitude': position.latitude,
         'longitude': position.longitude,
       },
       apiUrl: '/calculate-location',
+      catchError: (error) => isLoading.value = false,
     );
 
     if (result.containsKey('success') && result['success']) {
@@ -131,13 +135,14 @@ class HomeController extends GetxController {
     isLoading.value = true;
 
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.best);
     var result = await apiCall.postRequest(
       data: {
         'latitude': position.latitude,
         'longitude': position.longitude,
       },
       apiUrl: '/calculate-location',
+      catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
@@ -200,10 +205,10 @@ class HomeController extends GetxController {
         'health_temperature': temperature,
       },
       apiUrl: '/clock-in',
+      catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {
-      _timeEntriesController.getAttendanceList(
-          employeeId: _authService.employee!.value.id, days: 1);
+      _timeEntriesController.getAttendanceList(days: 1);
       checkNewShift();
     } else {
       showDialog(
@@ -228,18 +233,21 @@ class HomeController extends GetxController {
   Future clockOut({required BuildContext context}) async {
     isLoading.value = true;
 
-    var result = await apiCall.postRequest(data: {
-      'attendance_id': attendance.value.id,
-      'clocked_out_location': attendance.value.clockedOutLocation,
-      'clocked_out_latitude': attendance.value.clockedOutLatitude,
-      'clocked_out_longitude': attendance.value.clockedOutLongitude,
-      'clocked_out_location_type': attendance.value.clockedOutLocationType,
-      'clocked_out_location_setting':
-          attendance.value.clockedOutLocationSetting,
-    }, apiUrl: '/clock-out');
+    var result = await apiCall.postRequest(
+      data: {
+        'attendance_id': attendance.value.id,
+        'clocked_out_location': attendance.value.clockedOutLocation,
+        'clocked_out_latitude': attendance.value.clockedOutLatitude,
+        'clocked_out_longitude': attendance.value.clockedOutLongitude,
+        'clocked_out_location_type': attendance.value.clockedOutLocationType,
+        'clocked_out_location_setting':
+            attendance.value.clockedOutLocationSetting,
+      },
+      apiUrl: '/clock-out',
+      catchError: (error) => isLoading.value = false,
+    );
     if (result.containsKey('success') && result['success']) {
-      _timeEntriesController.getAttendanceList(
-          employeeId: _authService.employee!.value.id, days: 1);
+      _timeEntriesController.getAttendanceList(days: 1);
       checkNewShift();
     } else {
       showDialog(

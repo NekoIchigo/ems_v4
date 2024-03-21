@@ -1,7 +1,5 @@
-import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
-import 'package:ems_v4/global/controller/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -15,8 +13,6 @@ class GettingStarted extends StatefulWidget {
 
 class _GettingStartedState extends State<GettingStarted> {
   final HomeController _homeController = Get.find<HomeController>();
-  final AuthController _authService = Get.find<AuthController>();
-  final LocationController _locationController = Get.find<LocationController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
   bool isLoading = true;
@@ -29,9 +25,7 @@ class _GettingStartedState extends State<GettingStarted> {
 
   Future loadFunction() async {
     await _homeController.checkNewShift();
-    await _timeEntriesController.getAttendanceList(
-        employeeId: _authService.employee!.value.id, days: 1);
-    await _locationController.checkLocationPermission();
+    await _timeEntriesController.getAttendanceList(days: 1);
     await _timeEntriesController.getPreviousClockIn();
     setState(() {
       isLoading = false;

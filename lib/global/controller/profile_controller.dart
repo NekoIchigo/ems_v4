@@ -27,10 +27,14 @@ class ProfileController extends GetxController {
     var userData = jsonDecode(_localStorage.getString('user')!);
     String? image = profileImage.value != '' ? profileImage.value : null;
 
-    var result = await apiCall.postRequest(data: {
-      'id': userData['id'],
-      'image': image,
-    }, apiUrl: '/update-personal-info');
+    var result = await apiCall.postRequest(
+      data: {
+        'id': userData['id'],
+        'image': image,
+      },
+      apiUrl: '/update-personal-info',
+      catchError: (error) => isLoading.value = false,
+    );
 
     if (result.containsKey('success') && result['success']) {
       if (profileImage.value != '') {

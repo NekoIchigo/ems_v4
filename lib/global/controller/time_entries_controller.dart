@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/router/router.dart';
@@ -15,6 +13,7 @@ class TimeEntriesController extends GetxController {
   RxBool hasClose = false.obs,
       isLoading = false.obs,
       isListLoading = false.obs,
+      isPaginateLoading = false.obs,
       hasPrevAttendance = false.obs;
 
   Rx<AttendanceRecord> prevAttendance = AttendanceRecord().obs;
@@ -29,64 +28,43 @@ class TimeEntriesController extends GetxController {
   dynamic currentEndDate;
 
   Future getAttendanceList({
-    required int employeeId,
     required int days,
     startDate,
     endDate,
   }) async {
     isLoading.value = true;
-    empId = employeeId;
-    currentDays = days;
-    currentStartDate = startDate;
-    currentEndDate = endDate;
 
-    try {
-      // ignore: prefer_typing_uninitialized_variables
-      var result;
-      if (days == 0) {
-        List<String> fromDate = startDate!.toString().split(" ");
-        List<String> toDate = endDate!.toString().split(" ");
-        result = await apiCall.getRequest(
-          apiUrl: '/show-dtrs',
-          parameters: {
-            'days': 1,
-            'page': 1,
-            'endDate': toDate[0],
-            'startDate': fromDate[0],
-          },
-        );
-      } else {
-        result = await apiCall.getRequest(
-          apiUrl: '/show-dtrs',
-          parameters: {'days': 1, 'page': 1},
-        );
-      }
+    // ignore: prefer_typing_uninitialized_variables
+    var result;
+    if (days == 0) {
+      List<String> fromDate = startDate!.toString().split(" ");
+      List<String> toDate = endDate!.toString().split(" ");
+      result = await apiCall.getRequest(
+        apiUrl: '/show-dtrs',
+        parameters: {
+          'days': days,
+          'page': currentPage.value,
+          'endDate': toDate[0],
+          'startDate': fromDate[0],
+        },
+        catchError: (error) => isLoading.value = false,
+      );
+    } else {
+      result = await apiCall.getRequest(
+        apiUrl: '/show-dtrs',
+        parameters: {'days': 1, 'page': 1},
+        catchError: (error) => isLoading.value = false,
+      );
+    }
 
-      log(result.toString());
-      if (result['success']) {
-        pageUrl.value = "${result['data']['first_page_url']}&days=$days";
-        paginateLength.value = result['data']['last_page'];
-        currentPage.value = result['data']['current_page'];
+    if (result['success']) {
+      paginateLength.value = result['data']['last_page'];
+      currentPage.value = result['data']['current_page'];
 
-        final attendancesJson = result['data']['data'];
-        attendances = RxList<AttendanceRecord>.from(attendancesJson
-            .map((attendance) => AttendanceRecord.fromJson(attendance)));
-      } else {
-        showDialog(
-            context: navigatorKey.currentContext!,
-            builder: (context) {
-              return GemsDialog(
-                title: "Oops",
-                hasMessage: true,
-                withCloseButton: true,
-                hasCustomWidget: false,
-                message: "Error: $result",
-                type: "error",
-                buttonNumber: 0,
-              );
-            });
-      }
-    } catch (error) {
+      final attendancesJson = result['data']['data'];
+      attendances = RxList<AttendanceRecord>.from(attendancesJson
+          .map((attendance) => AttendanceRecord.fromJson(attendance)));
+    } else {
       showDialog(
           context: navigatorKey.currentContext!,
           builder: (context) {
@@ -95,14 +73,75 @@ class TimeEntriesController extends GetxController {
               hasMessage: true,
               withCloseButton: true,
               hasCustomWidget: false,
-              message: "Error: $error",
+              message: "Error: $result",
               type: "error",
               buttonNumber: 0,
             );
           });
-    } finally {
-      isLoading.value = false;
     }
+
+    isLoading.value = false;
+  }
+
+  Future nextPageList({
+    required int days,
+    startDate,
+    endDate,
+  }) async {
+    isPaginateLoading.value = true;
+    if (currentPage.value < paginateLength.value) {
+      currentPage.value += 1;
+    } else {
+      return;
+    }
+
+    // ignore: prefer_typing_uninitialized_variables
+    var result;
+    if (days == 0) {
+      List<String> fromDate = startDate!.toString().split(" ");
+      List<String> toDate = endDate!.toString().split(" ");
+      result = await apiCall.getRequest(
+        apiUrl: '/show-dtrs',
+        parameters: {
+          'days': days,
+          'page': currentPage.value,
+          'endDate': toDate[0],
+          'startDate': fromDate[0],
+        },
+        catchError: (error) => isLoading.value = false,
+      );
+    } else {
+      result = await apiCall.getRequest(
+        apiUrl: '/show-dtrs',
+        parameters: {'days': 1, 'page': currentPage.value},
+        catchError: (error) => isLoading.value = false,
+      );
+    }
+
+    if (result['success']) {
+      paginateLength.value = result['data']['last_page'];
+      currentPage.value = result['data']['current_page'];
+
+      final attendancesJson = result['data']['data'];
+      attendances += RxList<AttendanceRecord>.from(attendancesJson
+          .map((attendance) => AttendanceRecord.fromJson(attendance)));
+    } else {
+      showDialog(
+          context: navigatorKey.currentContext!,
+          builder: (context) {
+            return GemsDialog(
+              title: "Oops",
+              hasMessage: true,
+              withCloseButton: true,
+              hasCustomWidget: false,
+              message: "Error: $result",
+              type: "error",
+              buttonNumber: 0,
+            );
+          });
+    }
+
+    isPaginateLoading.value = false;
   }
 
   Future getPreviousClockIn() async {
@@ -111,6 +150,7 @@ class TimeEntriesController extends GetxController {
     var result = await apiCall.getRequest(
       apiUrl: '/show-dtrs',
       parameters: {'days': 1, 'page': 1},
+      catchError: (error) => isLoading.value = false,
     );
 
     if (result['success']) {

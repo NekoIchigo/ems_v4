@@ -23,6 +23,8 @@ class ApiCall {
     Map<String, dynamic>? data,
     required String apiUrl,
     File? file,
+    required Function catchError,
+    bool showErrorDialog = true,
   }) async {
     var fullUrl = _baseUrl + apiUrl;
     var token = await _getToken();
@@ -64,22 +66,25 @@ class ApiCall {
         );
         return jsonDecode(response.body);
       }
-    } on SocketException catch (_) {
-      showDialog(
-        context: navigatorKey.currentContext!,
-        builder: (context) {
-          return const GemsDialog(
-            title: "Oops",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message:
-                "Unable to connect to the server. \n Please check your internet connection.",
-            type: "error",
-            buttonNumber: 0,
-          );
-        },
-      );
+    } catch (error) {
+      if (showErrorDialog) {
+        showDialog(
+          context: navigatorKey.currentContext!,
+          builder: (context) {
+            return const GemsDialog(
+              title: "Oops",
+              hasMessage: true,
+              withCloseButton: true,
+              hasCustomWidget: false,
+              message:
+                  "Unable to connect to the server. \n Please check your internet connection.",
+              type: "error",
+              buttonNumber: 0,
+            );
+          },
+        );
+      }
+      catchError(error);
     } finally {
       client.close();
     }
@@ -88,6 +93,8 @@ class ApiCall {
   Future getRequest({
     required String apiUrl,
     Map<String, dynamic>? parameters,
+    required Function catchError,
+    bool showErrorDialog = true,
   }) async {
     var fullUrl = _baseUrl + apiUrl;
     var token = await _getToken();
@@ -104,21 +111,24 @@ class ApiCall {
       );
       return jsonDecode(response.body);
     } catch (error) {
-      showDialog(
-        context: navigatorKey.currentContext!,
-        builder: (context) {
-          return const GemsDialog(
-            title: "Oops",
-            hasMessage: true,
-            withCloseButton: false,
-            hasCustomWidget: false,
-            message:
-                "Unable to connect to the server. \n Please check your internet connection.",
-            type: "error",
-            buttonNumber: 0,
-          );
-        },
-      );
+      if (showErrorDialog) {
+        showDialog(
+          context: navigatorKey.currentContext!,
+          builder: (context) {
+            return const GemsDialog(
+              title: "Oops",
+              hasMessage: true,
+              withCloseButton: true,
+              hasCustomWidget: false,
+              message:
+                  "Unable to connect to the server. \n Please check your internet connection.",
+              type: "error",
+              buttonNumber: 0,
+            );
+          },
+        );
+      }
+      catchError(error);
     } finally {
       client.close();
     }

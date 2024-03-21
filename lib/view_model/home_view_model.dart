@@ -11,7 +11,8 @@ class HomeViewModel extends ChangeNotifier {
   Future<void> checkNewShift() async {
     _isLoading = true;
     try {
-      var response = await _apiCall.getRequest(apiUrl: '/check-shift');
+      var response = await _apiCall.getRequest(
+          apiUrl: '/check-shift', catchError: (error) => {});
       var result = jsonDecode(response.body);
 
       if (result.containsKey('success') && result['success']) {}

@@ -94,8 +94,10 @@ class CreatePasswordController extends GetxController {
     if (email != null) {
       _userEmail = email;
 
-      var result = await apiCall
-          .postRequest(data: {'email': email}, apiUrl: '/mail-reset-otp');
+      var result = await apiCall.postRequest(
+          data: {'email': email},
+          apiUrl: '/mail-reset-otp',
+          catchError: (error) => isLoading.value = false);
       if (result.containsKey('success') && result['success']) {
         showDialog(
           context: navigatorKey.currentContext!,
@@ -130,11 +132,14 @@ class CreatePasswordController extends GetxController {
       'OTPin': otpPin,
       'email': _userEmail,
     };
-    var result =
-        await apiCall.postRequest(data: data, apiUrl: '/otp-validation');
+    var result = await apiCall.postRequest(
+        data: data,
+        apiUrl: '/otp-validation',
+        catchError: (error) => isLoading.value = false);
     if (result.containsKey('success') && result['success']) {
       animateToThirdPage();
     } else {
+      isLoading.value = false;
       return result;
     }
 
@@ -149,8 +154,11 @@ class CreatePasswordController extends GetxController {
       'password_confirmation': confirmPassword,
       'email': _userEmail
     };
-    var result =
-        await apiCall.postRequest(data: data, apiUrl: '/reset-password');
+    var result = await apiCall.postRequest(
+      data: data,
+      apiUrl: '/reset-password',
+      catchError: (error) => isLoading.value = false,
+    );
     if (result.containsKey('success') && result['success']) {
       await showDialog(
           barrierDismissible: false,
@@ -169,6 +177,7 @@ class CreatePasswordController extends GetxController {
           });
       navigatorKey.currentContext!.go("/login");
     } else {
+      isLoading.value = false;
       return result;
     }
 
@@ -187,8 +196,11 @@ class CreatePasswordController extends GetxController {
       'password_confirmation': confirmPassword,
       'current_password': currentPassword,
     };
-    var result =
-        await apiCall.postRequest(data: data, apiUrl: '/change-password');
+    var result = await apiCall.postRequest(
+      data: data,
+      apiUrl: '/change-password',
+      catchError: (error) => isLoading.value = false,
+    );
 
     if (result.containsKey('success') && result['success']) {
       if (currentPassword != null) {
@@ -212,6 +224,7 @@ class CreatePasswordController extends GetxController {
         animateToSecondPage();
       }
     } else {
+      isLoading.value = false;
       return result;
     }
     isLoading.value = false;
@@ -229,7 +242,11 @@ class CreatePasswordController extends GetxController {
       'pin_confirmation': confirmPin,
       'current_pin': currentpin,
     };
-    var result = await apiCall.postRequest(data: data, apiUrl: '/change-pin');
+    var result = await apiCall.postRequest(
+      data: data,
+      apiUrl: '/change-pin',
+      catchError: (error) => isLoading.value = false,
+    );
 
     if (result.containsKey('success') && result['success']) {
       if (currentpin != null) {
@@ -271,6 +288,7 @@ class CreatePasswordController extends GetxController {
         animateToThirdPage();
       }
     } else {
+      isLoading.value = false;
       return result;
     }
 
@@ -281,7 +299,10 @@ class CreatePasswordController extends GetxController {
     _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
 
-    var result = await apiCall.getRequest(apiUrl: '/first-login');
+    var result = await apiCall.getRequest(
+      apiUrl: '/first-login',
+      catchError: (error) => isLoading.value = false,
+    );
     _localStorage.setBool('auth_biometrics', biometrics);
 
     if (result.containsKey('success') && result['success']) {

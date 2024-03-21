@@ -1,8 +1,8 @@
-import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bottomsheet.dart';
+import 'package:ems_v4/views/widgets/loader/item_shimmer.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,6 @@ class TimeEntriesIndex extends StatefulWidget {
 
 class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   final TimeEntriesController _timeEntriesController = TimeEntriesController();
-  final AuthController _authService = Get.find<AuthController>();
 
   final List _list = [
     {'day': 1, 'label': 'Today'},
@@ -32,13 +31,13 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   final ScrollController _scrollController = ScrollController();
 
   late Object dropdownValue;
+  int paginateDays = 1;
   @override
   void initState() {
     super.initState();
     dropdownValue = _list[0];
     _scrollController.addListener(_scrollListener);
     _timeEntriesController.getAttendanceList(
-      employeeId: _authService.employee!.value.id,
       days: 1,
     );
   }
@@ -52,7 +51,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   void _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      // _timeEntriesController.getNextListPage();
+      _timeEntriesController.nextPageList(days: paginateDays);
     }
   }
 
@@ -88,6 +87,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                   isExpanded: true,
                   style: const TextStyle(color: gray),
                   onChanged: (value) async {
+                    paginateDays = value["day"];
                     if (value["day"] == 0) {
                       List? dates = await showModalBottomSheet(
                           context: mainNavigationKey.currentContext!,
@@ -96,7 +96,6 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                           });
                       if (dates != null) {
                         _timeEntriesController.getAttendanceList(
-                          employeeId: _authService.employee!.value.id,
                           days: value["day"],
                           startDate: dates[0],
                           endDate: dates[1],
@@ -104,7 +103,6 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                       }
                     } else {
                       _timeEntriesController.getAttendanceList(
-                        employeeId: _authService.employee!.value.id,
                         days: value["day"],
                       );
                     }
@@ -129,60 +127,91 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
             ),
             Obx(
               () => SizedBox(
-                height: size.height * .55,
+                height: size.height * .60,
                 child: _timeEntriesController.isLoading.isTrue
-                    ? const ListShimmer(listLength: 10)
+                    ? const ListShimmer(
+                        listLength: 10,
+                        withLeading: true,
+                      )
                     : _timeEntriesController.attendances.isNotEmpty
-                        ? ListView.builder(
-                            controller: _scrollController,
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            physics: const BouncingScrollPhysics(),
-                            itemCount:
-                                _timeEntriesController.attendances.length,
-                            itemBuilder: (context, index) {
-                              final attendance =
-                                  _timeEntriesController.attendances[index];
+                        ? SizedBox(
+                            height: size.height * .55,
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              physics: const BouncingScrollPhysics(),
+                              itemCount:
+                                  _timeEntriesController.attendances.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index <
+                                    _timeEntriesController.attendances.length) {
+                                  final attendance =
+                                      _timeEntriesController.attendances[index];
 
-                              return ElevatedButton(
-                                onPressed: () {
-                                  context.push('/attendance-log');
-                                  _timeEntriesController.attendanceIndex.value =
-                                      index;
-                                  _timeEntriesController.hasClose.value = true;
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  elevation: 0,
-                                  shape: LinearBorder.bottom(
-                                    side: const BorderSide(color: lightGray),
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    listItem(
-                                      attendance.formattedClockIn ??
-                                          "??/??/??/ | ??:??",
-                                      attendance.clockedInLocationType ==
-                                          'Within Vicinity',
-                                      "IN",
-                                      size,
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      context.push('/attendance-log');
+                                      _timeEntriesController
+                                          .attendanceIndex.value = index;
+                                      _timeEntriesController.hasClose.value =
+                                          true;
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      elevation: 0,
+                                      shape: LinearBorder.bottom(
+                                        side:
+                                            const BorderSide(color: lightGray),
+                                      ),
                                     ),
-                                    const SizedBox(height: 10),
-                                    listItem(
-                                      attendance.clockOutAt != null
-                                          ? attendance.formattedClockOut ??
-                                              "No Record"
-                                          : "No Record",
-                                      attendance.clockedOutLocationType ==
-                                          'Within Vicinity',
-                                      "OUT",
-                                      size,
+                                    child: Column(
+                                      children: [
+                                        listItem(
+                                          attendance.formattedClockIn ??
+                                              "??/??/??/ | ??:??",
+                                          attendance.clockedInLocationType ==
+                                              'Within Vicinity',
+                                          "IN",
+                                          size,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        listItem(
+                                          attendance.clockOutAt != null
+                                              ? attendance.formattedClockOut ??
+                                                  "No Record"
+                                              : "No Record",
+                                          attendance.clockedOutLocationType ==
+                                              'Within Vicinity',
+                                          "OUT",
+                                          size,
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
+                                  );
+                                } else {
+                                  return _timeEntriesController
+                                              .currentPage.value <
+                                          _timeEntriesController
+                                              .paginateLength.value
+                                      ? const ItemShimmer(withLeading: true)
+                                      : const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 20.0),
+                                            child: Text(
+                                              "-- End of Records --",
+                                              style: TextStyle(
+                                                color: gray,
+                                                fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                }
+                              },
+                            ),
                           )
                         : const NoResult(),
               ),

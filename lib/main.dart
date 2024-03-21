@@ -5,7 +5,6 @@ import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/controller/profile_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
-import 'package:ems_v4/global/controller/location_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/router/router.dart';
@@ -36,7 +35,6 @@ class MyApp extends StatelessWidget {
     Get.put(SettingsController());
     Get.put(AuthController());
     Get.put(TimeEntriesController());
-    Get.put(LocationController());
     Get.put(MainNavigationController());
     Get.put(TransactionController());
     Get.put(CreatePasswordController());
