@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/layout/private/create_password/biomertrics_page.dart';
@@ -283,10 +281,8 @@ class CreatePasswordController extends GetxController {
     _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
 
-    var response = await apiCall.getRequest(apiUrl: '/first-login');
+    var result = await apiCall.getRequest(apiUrl: '/first-login');
     _localStorage.setBool('auth_biometrics', biometrics);
-
-    var result = jsonDecode(response.body);
 
     if (result.containsKey('success') && result['success']) {
       await showDialog(

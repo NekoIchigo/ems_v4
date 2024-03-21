@@ -2,7 +2,6 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/json_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
-import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +63,11 @@ class _TimeEntriesHealthDeclarationState
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     attendanceRecord = GoRouterState.of(context).extra! as AttendanceRecord;
-    return EMSContainer(
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
