@@ -8,7 +8,6 @@ import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class DTRCorrectionForm extends StatefulWidget {
   const DTRCorrectionForm({super.key});
@@ -24,7 +23,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   ];
   String? _dropdownValue;
   String _selectedTime = "-- : -- --";
-
+  late Size size;
   @override
   void initState() {
     super.initState();
@@ -33,12 +32,13 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     return EMSContainer(
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            height: Get.height * .86,
+            height: size.height * .86,
             child: SelectedItemTabs(
               status: "Pending",
               title: "DTR Correction",
@@ -59,7 +59,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     RoundedCustomButton(
                       onPressed: () {},
                       label: "Submit",
-                      size: Size(Get.width * .4, 40),
+                      size: Size(size.width * .4, 40),
                       radius: 8,
                       bgColor: gray, //primaryBlue
                     )
@@ -91,7 +91,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
           Row(
             children: [
               SizedBox(
-                width: Get.width * .5,
+                width: size.width * .5,
                 child: DropdownMenu<String>(
                   initialSelection: _list.first,
                   inputDecorationTheme: const InputDecorationTheme(),

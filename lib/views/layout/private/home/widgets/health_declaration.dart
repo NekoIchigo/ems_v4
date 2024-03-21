@@ -38,6 +38,8 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
@@ -84,7 +86,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
             ),
             _symptoms.isNotEmpty
                 ? Padding(
-                    padding: EdgeInsets.symmetric(vertical: Get.height * .01),
+                    padding: EdgeInsets.symmetric(vertical: size.height * .01),
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -98,8 +100,8 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                         itemCount: _symptoms.length,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding:
-                                EdgeInsets.symmetric(vertical: Get.width * .01),
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.width * .01),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.transparent,
@@ -121,7 +123,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                                     Flexible(
                                       child: Padding(
                                         padding: EdgeInsets.only(
-                                            left: Get.width * .02),
+                                            left: size.width * .02),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -230,7 +232,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                   label: 'Close',
                   bgColor: gray,
                   radius: 8,
-                  size: Size(Get.width * .4, 40),
+                  size: Size(size.width * .4, 40),
                 ),
                 const Expanded(child: SizedBox()),
                 RoundedCustomButton(
@@ -262,7 +264,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                   label: 'Clock In',
                   bgColor: colorSuccess,
                   radius: 8,
-                  size: Size(Get.width * .4, 40),
+                  size: Size(size.width * .4, 40),
                 ),
                 const Expanded(child: SizedBox()),
               ],

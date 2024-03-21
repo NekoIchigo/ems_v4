@@ -4,7 +4,6 @@ import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 
 class NotificationContainer extends StatefulWidget {
   const NotificationContainer({super.key});
@@ -30,6 +29,7 @@ class _NotificationContainerState extends State<NotificationContainer>
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
@@ -56,14 +56,14 @@ class _NotificationContainerState extends State<NotificationContainer>
               ],
             ),
             SizedBox(
-              width: Get.width * .4,
+              width: size.width * .4,
               child: TabBar(
                 tabs: tabs,
                 controller: _tabController,
               ),
             ),
             SizedBox(
-              height: Get.height * .7,
+              height: size.height * .7,
               child: TabBarView(
                   controller: _tabController,
                   children: const [NoResult(), NotificationIndex()]),
@@ -71,7 +71,7 @@ class _NotificationContainerState extends State<NotificationContainer>
             Visibility(
               visible: false,
               child: SizedBox(
-                height: Get.height * .8,
+                height: size.height * .8,
                 child: const ListShimmer(listLength: 8),
               ),
             ),

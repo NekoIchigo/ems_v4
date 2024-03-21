@@ -3,7 +3,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
-import 'package:ems_v4/views/widgets/validation/password_valdiation.dart';
+import 'package:ems_v4/views/widgets/validation/password_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,6 +37,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return ProfilePageContainer(
       title: "Change Password",
       child: Column(
@@ -169,7 +170,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               },
               label: 'Update',
               radius: 5,
-              size: Size(Get.width * .4, 30),
+              size: Size(size.width * .4, 30),
               bgColor: bgPrimaryBlue,
             ),
           ),

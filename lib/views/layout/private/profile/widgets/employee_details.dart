@@ -3,6 +3,7 @@ import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class EmployeeDetailsPage extends StatefulWidget {
   const EmployeeDetailsPage({super.key});
@@ -17,9 +18,10 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return EMSContainer(
       child: SizedBox(
-        width: Get.width,
+        width: size.width,
         child: Stack(
           children: [
             Positioned(
@@ -27,7 +29,7 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
               top: 5,
               child: IconButton(
                 onPressed: () {
-                  Get.back();
+                  context.pop();
                 },
                 icon: const Icon(Icons.close),
               ),

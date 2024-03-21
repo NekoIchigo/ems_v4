@@ -2,7 +2,6 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/approved_listview.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TransactionsTabs extends StatefulWidget {
   const TransactionsTabs({super.key});
@@ -44,6 +43,7 @@ class _TransactionsTabsState extends State<TransactionsTabs>
   );
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         TabBar(
@@ -71,7 +71,7 @@ class _TransactionsTabsState extends State<TransactionsTabs>
           controller: _tabController,
         ),
         SizedBox(
-          height: Get.height * .5,
+          height: size.height * .5,
           child: TabBarView(
             controller: _tabController,
             children: [

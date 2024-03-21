@@ -6,6 +6,7 @@ import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class TimeRecords extends StatefulWidget {
   const TimeRecords({super.key});
@@ -22,6 +23,7 @@ class _TimeRecordsState extends State<TimeRecords> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return EMSContainer(
       child: Container(
         decoration: const BoxDecoration(
@@ -35,9 +37,7 @@ class _TimeRecordsState extends State<TimeRecords> {
               right: 10,
               child: IconButton(
                 onPressed: () {
-                  Get.back();
-                  // Get.back(id: _transactionController.routerKey);
-                  // _transactionController.pageIndex.value = 0;
+                  context.pop();
                 },
                 icon: const Icon(Icons.close),
               ),
@@ -65,7 +65,7 @@ class _TimeRecordsState extends State<TimeRecords> {
                         ),
                         Obx(
                           () => SizedBox(
-                            height: Get.height * .55,
+                            height: size.height * .55,
                             child: _timeEntriesController.isLoading.isTrue
                                 ? const ListShimmer(listLength: 10)
                                 : ListView.builder(

@@ -2,7 +2,6 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -28,6 +27,7 @@ class _EditProfileState extends State<EditProfile>
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
@@ -62,7 +62,7 @@ class _EditProfileState extends State<EditProfile>
                 curve: Curves.easeInOut,
               )),
               child: SizedBox(
-                width: Get.width * .8,
+                width: size.width * .8,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -158,7 +158,7 @@ class _EditProfileState extends State<EditProfile>
                         onPressed: () {},
                         label: 'Update',
                         radius: 5,
-                        size: Size(Get.width * .4, 30),
+                        size: Size(size.width * .4, 30),
                         bgColor: bgPrimaryBlue,
                       ),
                     ),

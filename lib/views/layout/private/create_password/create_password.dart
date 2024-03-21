@@ -2,7 +2,7 @@ import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
-import 'package:ems_v4/views/widgets/validation/password_valdiation.dart';
+import 'package:ems_v4/views/widgets/validation/password_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +33,7 @@ class _CreatePasswordState extends State<CreatePassword> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -78,7 +79,7 @@ class _CreatePasswordState extends State<CreatePassword> {
               setState(() {});
             },
             label: "Next",
-            size: Size(Get.width * .9, 40),
+            size: Size(size.width * .9, 40),
             bgColor: bgPrimaryBlue,
           ),
         ],

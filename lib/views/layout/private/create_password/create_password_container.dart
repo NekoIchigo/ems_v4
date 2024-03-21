@@ -44,12 +44,13 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return EMSContainer(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           children: [
-            SizedBox(height: Get.height * .05),
+            SizedBox(height: size.height * .05),
             Obx(
               () => Text(
                 _passwordController.titles[_passwordController.pageIndex.value],
@@ -58,7 +59,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             ),
             const SizedBox(height: 5),
             SizedBox(
-              width: Get.width * .6,
+              width: size.width * .6,
               child: Obx(
                 () => Text(
                   _passwordController
@@ -80,7 +81,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             ),
             const SizedBox(height: 40),
             SizedBox(
-              height: Get.height * .55,
+              height: size.height * .55,
               child: PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: _passwordController.pageController.value,

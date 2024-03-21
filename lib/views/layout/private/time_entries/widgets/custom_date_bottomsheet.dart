@@ -10,7 +10,7 @@ class CustomDateBottomsheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DateTime?> _dates = <DateTime?>[];
+    List<DateTime?> dates = <DateTime?>[];
     Size size = MediaQuery.of(context).size;
 
     return Container(
@@ -52,8 +52,8 @@ class CustomDateBottomsheet extends StatelessWidget {
                     ? CalendarDatePicker2Type.range
                     : CalendarDatePicker2Type.single,
               ),
-              value: _dates,
-              onValueChanged: (dates) => _dates = dates,
+              value: dates,
+              onValueChanged: (dates) => dates = dates,
             ),
           ),
           Row(
@@ -69,8 +69,8 @@ class CustomDateBottomsheet extends StatelessWidget {
               RoundedCustomButton(
                 onPressed: () {
                   if (type == "range") {
-                    if (_dates.length == 2) {
-                      context.pop(_dates);
+                    if (dates.length == 2) {
+                      context.pop(dates);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -85,8 +85,8 @@ class CustomDateBottomsheet extends StatelessWidget {
                       );
                     }
                   } else {
-                    if (_dates.isNotEmpty) {
-                      context.pop(_dates);
+                    if (dates.isNotEmpty) {
+                      context.pop(dates);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

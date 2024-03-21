@@ -4,7 +4,6 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ReasonInput extends StatefulWidget {
   final bool readOnly;
@@ -19,6 +18,7 @@ class _ReasonInputState extends State<ReasonInput> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -36,7 +36,7 @@ class _ReasonInputState extends State<ReasonInput> {
         ),
         Container(
           padding: const EdgeInsets.only(left: 15),
-          width: Get.width * .35,
+          width: size.width * .35,
           child: TextButton(
             onPressed: () async {
               // TODO: Setup file_picker in IOS with Podfile
@@ -49,14 +49,20 @@ class _ReasonInputState extends State<ReasonInput> {
               if (result != null) {
                 files = result.paths.map((path) => File(path!)).toList();
               } else {
-                Get.snackbar(
-                  "No file found!",
-                  "You did not select any file or something went bad.",
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: gray,
-                  colorText: Colors.white,
-                  margin: const EdgeInsets.only(bottom: 5),
-                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text(
+                          'You did not select any file or something went bad.'),
+                      behavior: SnackBarBehavior.floating,
+                      margin: EdgeInsets.only(
+                        bottom: size.height - 130,
+                        right: 20,
+                        left: 20,
+                      ),
+                    ),
+                  );
+                }
               }
 
               // print(file.name);

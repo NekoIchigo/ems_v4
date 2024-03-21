@@ -2,7 +2,7 @@ import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
-import 'package:ems_v4/views/widgets/validation/password_valdiation.dart';
+import 'package:ems_v4/views/widgets/validation/password_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +21,7 @@ class _NewPasswordState extends State<NewPassword> {
       TextEditingController();
 
   String? passwordError;
-  String? confrimPasswordError;
+  String? confirmPasswordError;
 
   @override
   void initState() {
@@ -83,9 +83,6 @@ class _NewPasswordState extends State<NewPassword> {
                 _createPasswordController.confirmPassword.value,
               );
               passwordError = error['errors']['password'][0];
-              // if (_passwordController.text != _confirmPasswordController.text) {
-              //   confrimPasswordError = 'Password not match';
-              // }
               setState(() {});
             },
             label: _createPasswordController.isLoading.isTrue

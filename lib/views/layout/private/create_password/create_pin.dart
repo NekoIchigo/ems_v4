@@ -21,6 +21,7 @@ class _CreatePinState extends State<CreatePin> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         PinInput(
@@ -54,7 +55,7 @@ class _CreatePinState extends State<CreatePin> {
               setState(() {});
             },
             label: "Next",
-            size: Size(Get.width * .9, 40),
+            size: Size(size.width * .9, 40),
             bgColor: bgPrimaryBlue,
           ),
         ),

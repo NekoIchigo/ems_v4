@@ -9,7 +9,6 @@ import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class OvertimeForm extends StatefulWidget {
   const OvertimeForm({super.key});
@@ -25,7 +24,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
   ];
   String? _dropdownValue;
   String _selectedTime = "-- : -- --";
-
+  late Size size;
   @override
   void initState() {
     super.initState();
@@ -34,12 +33,13 @@ class _OvertimeFormState extends State<OvertimeForm> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return EMSContainer(
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            height: Get.height * .86,
+            height: size.height * .86,
             child: SelectedItemTabs(
               title: "Overtime",
               detailPage: SingleChildScrollView(
@@ -59,7 +59,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
                     RoundedCustomButton(
                       onPressed: () {},
                       label: "Submit",
-                      size: Size(Get.width * .4, 40),
+                      size: Size(size.width * .4, 40),
                       radius: 8,
                       bgColor: gray, //primaryBlue
                     )

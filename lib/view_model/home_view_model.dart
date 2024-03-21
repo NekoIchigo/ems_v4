@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:ems_v4/global/api.dart';
-import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:flutter/material.dart';
 
 class HomeViewModel extends ChangeNotifier {
   final ApiCall _apiCall = ApiCall();
-  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   DateTime _workStart = DateTime.now(), _workEnd = DateTime.now();
   bool _isLoading = false;
 

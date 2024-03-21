@@ -1,7 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/under_maintenance.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class SelectedItemTabs extends StatefulWidget {
   final String? status;
@@ -63,7 +63,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
           right: 0,
           child: IconButton(
             onPressed: () {
-              Get.back();
+              context.pop();
             },
             icon: const Icon(Icons.close),
           ),

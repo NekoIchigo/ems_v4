@@ -17,12 +17,13 @@ class _BiometricsPageState extends State<BiometricsPage> {
       Get.find<CreatePasswordController>();
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         children: [
           Container(
-            width: Get.width * .6,
+            width: size.width * .6,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: lightGray),
@@ -80,7 +81,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
                 _createPasswordController.enableBioMetrics(_switch);
               },
               label: "Submit",
-              size: Size(Get.width * .9, 40),
+              size: Size(size.width * .9, 40),
               bgColor: bgPrimaryBlue,
             ),
           )

@@ -1,10 +1,9 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class ChangeRestday extends StatefulWidget {
   const ChangeRestday({super.key});
@@ -30,9 +29,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               right: 0,
               child: IconButton(
                 onPressed: () {
-                  Get.back();
-                  // Get.back(id: _transactionController.routerKey);
-                  // _transactionController.pageIndex.value = 0;
+                  context.pop();
                 },
                 icon: const Icon(Icons.close),
               ),
@@ -65,7 +62,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
                 shape: const CircleBorder(),
                 backgroundColor: bgPrimaryBlue,
                 onPressed: () {
-                  Get.to(() => const ChangeRestdayForm());
+                  context.go('');
                 },
                 child: const Icon(
                   Icons.add,
