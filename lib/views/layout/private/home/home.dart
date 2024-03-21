@@ -3,16 +3,10 @@ import 'package:ems_v4/views/widgets/loader/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   final Widget child;
 
-  const Home({super.key, required this.child});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
+  Home({super.key, required this.child});
   final HomeController _homeController = Get.find<HomeController>();
 
   @override
@@ -25,9 +19,7 @@ class _HomeState extends State<Home> {
       children: [
         SizedBox(
           height: size.height * .80,
-          child: _homeController.isLoading.isFalse
-              ? widget.child
-              : const Loading(),
+          child: _homeController.isLoading.isFalse ? child : const Loading(),
         ),
       ],
     );

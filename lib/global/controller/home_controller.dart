@@ -44,7 +44,7 @@ class HomeController extends GetxController {
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
 
-  Future checkNewShift({required int employeeId}) async {
+  Future checkNewShift() async {
     isLoading.value = true;
     try {
       var response = await apiCall.getRequest('/check-shift');
@@ -52,7 +52,6 @@ class HomeController extends GetxController {
 
       if (result.containsKey('success') && result['success']) {
         var data = result['data'];
-        print(data);
         isNewShift.value = data['is_new_shift'];
         isClockInOutComplete.value = data['is_shift_complete'];
         isClockOut.value = data['is_clockout'];
@@ -229,7 +228,7 @@ class HomeController extends GetxController {
       if (result.containsKey('success') && result['success']) {
         _timeEntriesController.getAttendanceList(
             employeeId: _authService.employee!.value.id, days: 1);
-        checkNewShift(employeeId: _authService.employee!.value.id);
+        checkNewShift();
       } else {
         Get.dialog(GemsDialog(
           title: "Oops",
@@ -275,7 +274,7 @@ class HomeController extends GetxController {
       if (result.containsKey('success') && result['success']) {
         _timeEntriesController.getAttendanceList(
             employeeId: _authService.employee!.value.id, days: 1);
-        checkNewShift(employeeId: _authService.employee!.value.id);
+        checkNewShift();
       } else {
         Get.dialog(GemsDialog(
           title: "Oops",

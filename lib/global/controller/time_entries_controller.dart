@@ -52,7 +52,7 @@ class TimeEntriesController extends GetxController {
       }
 
       var result = jsonDecode(response.body);
-      // log(result.toString());
+      log(result.toString());
       if (result['success']) {
         pageUrl.value = "${result['data']['first_page_url']}&days=$days";
         paginateLength.value = result['data']['last_page'];

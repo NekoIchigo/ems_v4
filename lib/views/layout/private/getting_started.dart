@@ -28,8 +28,7 @@ class _GettingStartedState extends State<GettingStarted> {
   }
 
   Future loadFunction() async {
-    await _homeController.checkNewShift(
-        employeeId: _authService.employee!.value.id);
+    await _homeController.checkNewShift();
     await _timeEntriesController.getAttendanceList(
         employeeId: _authService.employee!.value.id, days: 1);
     await _locationController.checkLocationPermission();
