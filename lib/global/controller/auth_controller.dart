@@ -183,35 +183,40 @@ class AuthController extends GetxController {
         }
       } else {
         if (result.containsKey('deactivate') && result['deactivate']) {
-          Get.dialog(
-            GemsDialog(
-              title: "Oops",
-              hasMessage: true,
-              withCloseButton: true,
-              hasCustomWidget: true,
-              customWidget:
-                  Image.asset('assets/images/no_data.png', width: 400),
-              message:
-                  "Your account has been deactivated. You will not be able to login.",
-              type: "error",
-              buttonNumber: 0,
-            ),
-          );
+          showDialog(
+              context: navigatorKey.currentContext!,
+              builder: (context) {
+                return GemsDialog(
+                  title: "Oops",
+                  hasMessage: true,
+                  withCloseButton: true,
+                  hasCustomWidget: true,
+                  customWidget:
+                      Image.asset('assets/images/no_data.png', width: 400),
+                  message:
+                      "Your account has been deactivated. You will not be able to login.",
+                  type: "error",
+                  buttonNumber: 0,
+                );
+              });
           return null;
         }
         return result['message'];
       }
     } else {
-      Get.dialog(
-        const GemsDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Something went wrong! Login by password.",
-          type: "error",
-          buttonNumber: 0,
-        ),
+      showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (context) {
+          return const GemsDialog(
+            title: "Oops",
+            hasMessage: true,
+            withCloseButton: true,
+            hasCustomWidget: false,
+            message: "Something went wrong! Login by password.",
+            type: "error",
+            buttonNumber: 0,
+          );
+        },
       );
     }
 
