@@ -26,31 +26,14 @@ class SettingsController extends GetxController {
   }
 
   Future getServerTime() async {
-    try {
-      isLoading.value = true;
-      var response = await apiCall.getRequest('/server-time');
-      var result = jsonDecode(response.body);
-      if (result.containsKey('success') && result['success']) {
-        currentTime.value = DateTime.parse(result['data']['withTimeZone']);
-      }
-    } catch (error) {
-      showDialog(
-        context: navigatorKey.currentContext!,
-        builder: (context) {
-          return GemsDialog(
-            title: "Oops",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Something went wrong! \n Error Code: $error",
-            type: "error",
-            buttonNumber: 0,
-          );
-        },
-      );
-    } finally {
-      isLoading.value = false;
+    isLoading.value = true;
+    var result = await apiCall.getRequest(apiUrl: '/server-time');
+
+    if (result.containsKey('success') && result['success']) {
+      currentTime.value = DateTime.parse(result['data']['withTimeZone']);
     }
+
+    isLoading.value = false;
   }
 
   Future checkAppVersionMaintenance() async {
@@ -71,7 +54,9 @@ class SettingsController extends GetxController {
         try {
           isLoading.value = true;
           var response = await apiCall.postRequest(
-              {'version': value.currentVersion}, '/check-maintenance');
+            data: {'version': value.currentVersion},
+            apiUrl: '/check-maintenance',
+          );
           var result = jsonDecode(response.body);
 
           if (result.containsKey('success') && result['success']) {
