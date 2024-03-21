@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/layout/private/create_password/biomertrics_page.dart';
 import 'package:ems_v4/views/layout/private/create_password/create_password.dart';
 import 'package:ems_v4/views/layout/private/create_password/create_pin.dart';
@@ -12,6 +13,7 @@ import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreatePasswordController extends GetxController {
@@ -20,51 +22,44 @@ class CreatePasswordController extends GetxController {
   final ApiCall apiCall = ApiCall();
   final RxBool isLoading = false.obs;
 
-  RxString password = ''.obs;
-  RxString confirmPassword = ''.obs;
+  RxString password = ''.obs, confirmPassword = ''.obs;
   String? _errorText;
   RxBool isForgotPin = false.obs;
 
   final List<Widget> pages = [
-    const CreatePassword(),
-    const CreatePin(),
-    const BiometricsPage(),
-  ];
+        const CreatePassword(),
+        const CreatePin(),
+        const BiometricsPage(),
+      ],
+      forgotPasswordPages = [
+        const EmailOTP(),
+        const OTPInputPage(),
+        const NewPassword(),
+      ],
+      forgotPINPages = [
+        const EmailOTP(),
+        const OTPInputPage(),
+        const NewPIN(),
+      ];
 
-  final List<Widget> forgotPasswordPages = [
-    const EmailOTP(),
-    const OTPInputPage(),
-    const NewPassword(),
-  ];
+  late Rx<AnimationController> midController, lastController;
+  late Rx<Animation<double>> midAnimation, lastAnimation;
+  late Rx<Animation<Color?>> midBackgroundColorAnimation,
+      lastBackgroundColorAnimation;
+  late Rx<Animation<Color?>> midIconColorAnimation, lastIconColorAnimation;
 
-  final List<Widget> forgotPINPages = [
-    const EmailOTP(),
-    const OTPInputPage(),
-    const NewPIN(),
-  ];
-
-  late Rx<AnimationController> midController;
-  late Rx<Animation<double>> midAnimation;
-  late Rx<Animation<Color?>> midBackgroundColorAnimation;
-  late Rx<Animation<Color?>> midIconColorAnimation;
-
-  late Rx<AnimationController> lastController;
-  late Rx<Animation<double>> lastAnimation;
-  late Rx<Animation<Color?>> lastBackgroundColorAnimation;
-  late Rx<Animation<Color?>> lastIconColorAnimation;
   String _userEmail = '';
 
   final List<String> titles = [
-    "Create Password",
-    "Create Pin",
-    "Biometrics",
-  ];
-
-  final List<String> subtitles = [
-    "Create a password by following the instructions below.",
-    "Create a PIN to serve as your password to log in.",
-    "Enable your biometrics for faster and easier access to your account.",
-  ];
+        "Create Password",
+        "Create Pin",
+        "Biometrics",
+      ],
+      subtitles = [
+        "Create a password by following the instructions below.",
+        "Create a PIN to serve as your password to log in.",
+        "Enable your biometrics for faster and easier access to your account.",
+      ];
 
   RxInt pageIndex = 0.obs;
   Rx<PageController> pageController = PageController(initialPage: 0).obs;
@@ -100,14 +95,15 @@ class CreatePasswordController extends GetxController {
     isLoading.value = true;
     if (email != null) {
       _userEmail = email;
-      try {
-        var response =
-            await apiCall.postRequest({'email': email}, '/mail-reset-otp');
-        var result = jsonDecode(response.body);
-        if (result.containsKey('success') && result['success']) {
-          await Get.dialog(
-            barrierDismissible: false,
-            const GemsDialog(
+
+      var result = await apiCall
+          .postRequest(data: {'email': email}, apiUrl: '/mail-reset-otp');
+      if (result.containsKey('success') && result['success']) {
+        showDialog(
+          context: navigatorKey.currentContext!,
+          barrierDismissible: false,
+          builder: (context) {
+            return const GemsDialog(
               type: 'success',
               title: 'One-Time Pin Sent',
               hasMessage: true,
@@ -116,27 +112,15 @@ class CreatePasswordController extends GetxController {
               hasCustomWidget: false,
               withCloseButton: true,
               okButtonBGColor: gray,
-            ),
-          );
-          animateToSecondPage();
-        } else {
-          _errorText = result['message'];
-        }
-      } catch (e) {
-        Get.dialog(
-          GemsDialog(
-            title: "Oops",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Error Forgot Password: $e !",
-            type: "error",
-            buttonNumber: 0,
-          ),
+            );
+          },
         );
-      } finally {
-        isLoading.value = false;
+        animateToSecondPage();
+      } else {
+        _errorText = result['message'];
       }
+
+      isLoading.value = false;
     }
     return _errorText;
   }
@@ -144,87 +128,53 @@ class CreatePasswordController extends GetxController {
   Future verifyOTP(String? otpPin) async {
     isLoading.value = true;
 
-    try {
-      var response = await apiCall.postRequest({
-        'OTPin': otpPin,
-        'email': _userEmail,
-      }, '/otp-validation');
-      var result = jsonDecode(response.body);
-      if (result.containsKey('success') && result['success']) {
-        animateToThirdPage();
-      } else {
-        // Get.dialog(
-        //   GemsDialog(
-        //     title: "Oops",
-        //     hasMessage: true,
-        //     withCloseButton: true,
-        //     hasCustomWidget: false,
-        //     message: "Error OTP: ${result['message']}",
-        //     type: "error",
-        //     buttonNumber: 0,
-        //   ),
-        // );
-        return result;
-      }
-    } catch (e) {
-      Get.dialog(
-        GemsDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Error Forgot Password: $e !",
-          type: "error",
-          buttonNumber: 0,
-        ),
-      );
-    } finally {
-      isLoading.value = false;
+    final Map<String, dynamic> data = {
+      'OTPin': otpPin,
+      'email': _userEmail,
+    };
+    var result =
+        await apiCall.postRequest(data: data, apiUrl: '/otp-validation');
+    if (result.containsKey('success') && result['success']) {
+      animateToThirdPage();
+    } else {
+      return result;
     }
+
+    isLoading.value = false;
   }
 
   Future setNewPassword(String? password, String? confirmPassword) async {
     isLoading.value = true;
-    try {
-      var response = await apiCall.postRequest({
-        'password': password,
-        'password_confirmation': confirmPassword,
-        'email': _userEmail
-      }, '/reset-password');
-      var result = jsonDecode(response.body);
-      if (result.containsKey('success') && result['success']) {
-        await Get.dialog(
+
+    final Map<String, dynamic> data = {
+      'password': password,
+      'password_confirmation': confirmPassword,
+      'email': _userEmail
+    };
+    var result =
+        await apiCall.postRequest(data: data, apiUrl: '/reset-password');
+    if (result.containsKey('success') && result['success']) {
+      await showDialog(
           barrierDismissible: false,
-          const GemsDialog(
-            type: 'success',
-            title: 'Success!',
-            hasMessage: true,
-            message: "You can now log in using your new password.",
-            buttonNumber: 0,
-            hasCustomWidget: false,
-            withCloseButton: true,
-            okButtonBGColor: bgPrimaryBlue,
-          ),
-        );
-        Get.offAllNamed("/login");
-      } else {
-        return result;
-      }
-    } catch (e) {
-      Get.dialog(
-        GemsDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Error Forgot Password: $e !",
-          type: "error",
-          buttonNumber: 0,
-        ),
-      );
-    } finally {
-      isLoading.value = false;
+          context: navigatorKey.currentContext!,
+          builder: (context) {
+            return const GemsDialog(
+              type: 'success',
+              title: 'Success!',
+              hasMessage: true,
+              message: "You can now log in using your new password.",
+              buttonNumber: 0,
+              hasCustomWidget: false,
+              withCloseButton: true,
+              okButtonBGColor: bgPrimaryBlue,
+            );
+          });
+      navigatorKey.currentContext!.go("/login");
+    } else {
+      return result;
     }
+
+    isLoading.value = false;
   }
 
   Future createNewPassword(
@@ -233,63 +183,40 @@ class CreatePasswordController extends GetxController {
     String? currentPassword,
   ) async {
     isLoading.value = true;
-    try {
-      var response = await apiCall.postRequest({
-        'password': password,
-        'password_confirmation': confirmPassword,
-        'current_password': currentPassword,
-      }, '/change-password');
 
-      var result = jsonDecode(response.body);
+    final Map<String, dynamic> data = {
+      'password': password,
+      'password_confirmation': confirmPassword,
+      'current_password': currentPassword,
+    };
+    var result =
+        await apiCall.postRequest(data: data, apiUrl: '/change-password');
 
-      if (result.containsKey('success') && result['success']) {
-        if (currentPassword != null) {
-          await Get.dialog(
+    if (result.containsKey('success') && result['success']) {
+      if (currentPassword != null) {
+        await showDialog(
+            context: navigatorKey.currentContext!,
             barrierDismissible: false,
-            const GemsDialog(
-              type: 'success',
-              title: 'Success',
-              hasMessage: true,
-              message: "You can now log in using your new password.",
-              buttonNumber: 0,
-              hasCustomWidget: false,
-              withCloseButton: true,
-              okButtonBGColor: bgPrimaryBlue,
-            ),
-          );
-          Get.offAllNamed("/login");
-        } else {
-          animateToSecondPage();
-        }
+            builder: (context) {
+              return const GemsDialog(
+                type: 'success',
+                title: 'Success',
+                hasMessage: true,
+                message: "You can now log in using your new password.",
+                buttonNumber: 0,
+                hasCustomWidget: false,
+                withCloseButton: true,
+                okButtonBGColor: bgPrimaryBlue,
+              );
+            });
+        navigatorKey.currentContext!.go("/login");
       } else {
-        return result;
-        // Get.dialog(
-        //   GemsDialog(
-        //     title: "Oops",
-        //     hasMessage: true,
-        //     withCloseButton: true,
-        //     hasCustomWidget: false,
-        //     message: "Error Create Password: ${result['message']}",
-        //     type: "error",
-        //     buttonNumber: 0,
-        //   ),
-        // );
+        animateToSecondPage();
       }
-    } catch (e) {
-      Get.dialog(
-        GemsDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Error Create Password: $e.",
-          type: "error",
-          buttonNumber: 0,
-        ),
-      );
-    } finally {
-      isLoading.value = false;
+    } else {
+      return result;
     }
+    isLoading.value = false;
   }
 
   Future changePIN(
@@ -299,113 +226,94 @@ class CreatePasswordController extends GetxController {
   }) async {
     isLoading.value = true;
 
-    try {
-      var response = await apiCall.postRequest({
-        'pin': pin,
-        'pin_confirmation': confirmPin,
-        'current_pin': currentpin,
-      }, '/change-pin');
+    final Map<String, dynamic> data = {
+      'pin': pin,
+      'pin_confirmation': confirmPin,
+      'current_pin': currentpin,
+    };
+    var result = await apiCall.postRequest(data: data, apiUrl: '/change-pin');
 
-      var result = jsonDecode(response.body);
-
-      if (result.containsKey('success') && result['success']) {
-        if (currentpin != null) {
-          await Get.dialog(
+    if (result.containsKey('success') && result['success']) {
+      if (currentpin != null) {
+        await showDialog(
+            context: navigatorKey.currentContext!,
             barrierDismissible: false,
-            const GemsDialog(
-              type: 'success',
-              title: 'Success',
-              hasMessage: true,
-              message: "You can now log in using your new PIN.",
-              buttonNumber: 0,
-              hasCustomWidget: false,
-              withCloseButton: true,
-              okButtonBGColor: bgPrimaryBlue,
-            ),
-          );
-          Get.offAllNamed("/login");
-        } else if (isForgotPin.isTrue) {
-          await Get.dialog(
+            builder: (context) {
+              return const GemsDialog(
+                type: 'success',
+                title: 'Success',
+                hasMessage: true,
+                message: "You can now log in using your new PIN.",
+                buttonNumber: 0,
+                hasCustomWidget: false,
+                withCloseButton: true,
+                okButtonBGColor: bgPrimaryBlue,
+              );
+            });
+        Get.offAllNamed("/login");
+      } else if (isForgotPin.isTrue) {
+        await showDialog(
             barrierDismissible: false,
-            const GemsDialog(
-              type: 'success',
-              title: 'Success',
-              hasMessage: true,
-              message: "You can now log in using your new PIN.",
-              buttonNumber: 0,
-              hasCustomWidget: false,
-              withCloseButton: true,
-              okButtonBGColor: bgPrimaryBlue,
-            ),
-          );
-          isForgotPin.value = false;
-          Get.offAllNamed("/pin_login");
-        } else {
-          animateToThirdPage();
-        }
+            context: navigatorKey.currentContext!,
+            builder: (context) {
+              return const GemsDialog(
+                type: 'success',
+                title: 'Success',
+                hasMessage: true,
+                message: "You can now log in using your new PIN.",
+                buttonNumber: 0,
+                hasCustomWidget: false,
+                withCloseButton: true,
+                okButtonBGColor: bgPrimaryBlue,
+              );
+            });
+        isForgotPin.value = false;
+        Get.offAllNamed("/pin_login");
       } else {
-        return result;
-        // Get.dialog(
-        //   GemsDialog(
-        //     title: "Oops",
-        //     hasMessage: true,
-        //     withCloseButton: true,
-        //     hasCustomWidget: false,
-        //     message: "Error Create PIN: ${result['message']}",
-        //     type: "error",
-        //     buttonNumber: 0,
-        //   ),
-        // );
+        animateToThirdPage();
       }
-    } catch (e) {
-      Get.dialog(
-        GemsDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Error Create PIN: $e !",
-          type: "error",
-          buttonNumber: 0,
-        ),
-      );
-    } finally {
-      isLoading.value = false;
+    } else {
+      return result;
     }
+
+    isLoading.value = false;
   }
 
   Future enableBioMetrics(bool biometrics) async {
     _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
 
-    try {
-      var response = await apiCall.getRequest('/first-login');
-      _localStorage.setBool('auth_biometrics', biometrics);
+    var response = await apiCall.getRequest(apiUrl: '/first-login');
+    _localStorage.setBool('auth_biometrics', biometrics);
 
-      var result = jsonDecode(response.body);
+    var result = jsonDecode(response.body);
 
-      if (result.containsKey('success') && result['success']) {
-        await Get.dialog(
+    if (result.containsKey('success') && result['success']) {
+      await showDialog(
+          context: navigatorKey.currentContext!,
           barrierDismissible: false,
-          GemsDialog(
-            type: 'success',
-            title: 'You are all set!',
-            hasMessage: true,
-            message: "Tap the login button to access your account.",
-            buttonNumber: 1,
-            hasCustomWidget: false,
-            withCloseButton: true,
-            okPress: () {
-              Get.back();
-            },
-            okText: 'Log in',
-            okButtonBGColor: bgPrimaryBlue,
-          ),
-        );
-        Get.offAllNamed("/login");
-      } else {
-        Get.dialog(
-          GemsDialog(
+          builder: (context) {
+            return GemsDialog(
+              type: 'success',
+              title: 'You are all set!',
+              hasMessage: true,
+              message: "Tap the login button to access your account.",
+              buttonNumber: 1,
+              hasCustomWidget: false,
+              withCloseButton: true,
+              okPress: () {
+                navigatorKey.currentContext!.pop();
+              },
+              okText: 'Log in',
+              okButtonBGColor: bgPrimaryBlue,
+            );
+          });
+      navigatorKey.currentContext!.go("/login");
+    } else {
+      showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (context) {
+          return GemsDialog(
             title: "Oops",
             hasMessage: true,
             withCloseButton: true,
@@ -413,23 +321,11 @@ class CreatePasswordController extends GetxController {
             message: "Error Create PIN: ${result['message']}",
             type: "error",
             buttonNumber: 0,
-          ),
-        );
-      }
-    } catch (e) {
-      Get.dialog(
-        GemsDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Error Create PIN: $e !",
-          type: "error",
-          buttonNumber: 0,
-        ),
+          );
+        },
       );
-    } finally {
-      isLoading.value = false;
     }
+
+    isLoading.value = false;
   }
 }
