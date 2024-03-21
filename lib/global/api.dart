@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
@@ -18,8 +20,11 @@ class ApiCall {
   final Duration _timeOutDuration = const Duration(seconds: 30);
   final client = RetryClient(http.Client());
 
-  Future postRequest(Map<String, dynamic> data, String apiUrl,
-      {File? file}) async {
+  Future postRequest({
+    Map<String, dynamic>? data,
+    required String apiUrl,
+    File? file,
+  }) async {
     var fullUrl = _baseUrl + apiUrl;
     var token = await _getToken();
     try {
@@ -38,16 +43,17 @@ class ApiCall {
             http.MultipartFile('file', fileStream, length, filename: file.path);
         request.files.add(multipartFile);
 
-        return await request.send().timeout(
+        final response = await request.send().timeout(
           _timeOutDuration,
           onTimeout: () {
             log('request time out');
             throw TimeoutException('Request Timeout');
           },
         );
+        //! to fix and test
+        return response;
       } else {
-        // POST request without file
-        return await http
+        final response = await http
             .post(Uri.parse(fullUrl),
                 body: jsonEncode(data), headers: _setHeaders(token))
             .timeout(
@@ -57,6 +63,7 @@ class ApiCall {
             return http.Response('Request Timeout', 408);
           },
         );
+        return jsonDecode(response.body);
       }
     } on SocketException catch (_) {
       Get.dialog(
@@ -76,12 +83,16 @@ class ApiCall {
     }
   }
 
-  Future getRequest(String apiUrl) async {
+  Future getRequest({
+    required String apiUrl,
+    Map<String, dynamic>? parameters,
+  }) async {
     var fullUrl = _baseUrl + apiUrl;
     var token = await _getToken();
     try {
-      return await http
-          .get(Uri.parse(fullUrl), headers: _setHeaders(token))
+      final response = await http
+          .get(Uri.parse(_buildUrl(fullUrl, parameters)),
+              headers: _setHeaders(token))
           .timeout(
         _timeOutDuration,
         onTimeout: () {
@@ -89,18 +100,22 @@ class ApiCall {
           return http.Response('Request Timeout', 408);
         },
       );
-    } on SocketException catch (_) {
-      Get.dialog(
-        const GemsDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message:
-              "Unable to connect to the server. \n Please check your internet connection.",
-          type: "error",
-          buttonNumber: 0,
-        ),
+      return jsonDecode(response.body);
+    } catch (error) {
+      showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (context) {
+          return const GemsDialog(
+            title: "Oops",
+            hasMessage: true,
+            withCloseButton: false,
+            hasCustomWidget: false,
+            message:
+                "Unable to connect to the server. \n Please check your internet connection.",
+            type: "error",
+            buttonNumber: 0,
+          );
+        },
       );
     } finally {
       client.close();
@@ -118,4 +133,13 @@ class ApiCall {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       };
+
+  String _buildUrl(String url, Map<String, dynamic>? parameters) {
+    if (parameters == null || parameters.isEmpty) {
+      return url;
+    }
+    var queryString =
+        parameters.entries.map((e) => '${e.key}=${e.value}').join('&');
+    return '$url?$queryString';
+  }
 }

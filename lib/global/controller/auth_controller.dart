@@ -37,8 +37,7 @@ class AuthController extends GetxController {
     token = _localStorage.getString('token');
     setLocalAuth();
     if (token != null) {
-      var response = await apiCall.getRequest('/check-token');
-      var result = jsonDecode(response.body);
+      var result = await apiCall.getRequest(apiUrl: '/check-token');
       if (!result.containsKey('token')) {
         authenticated.value = false;
         isBioEnabled.value = false;
@@ -99,11 +98,71 @@ class AuthController extends GetxController {
   Future login(String email, String password, String code) async {
     _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
-    try {
-      final response = await apiCall.postRequest(
-          {'email': email, 'password': password, 'code': code.toUpperCase()},
-          '/login');
-      final result = jsonDecode(response.body);
+
+    final data = {
+      'email': email,
+      'password': password,
+      'code': code.toUpperCase()
+    };
+
+    final result = await apiCall.postRequest(apiUrl: '/login', data: data);
+    if (result.containsKey('success') && result['success']) {
+      authenticated.value = result['success'];
+
+      var userData = result['data'];
+      _localStorage.setString('user', jsonEncode(userData));
+      var employeeData = userData['employee'];
+      var companyData = employeeData['company'];
+
+      employee = Employee.fromJson(employeeData).obs;
+      company = Company.fromJson(companyData).obs;
+
+      _localStorage.setString('token', result['token']);
+      _localStorage.setString('user', jsonEncode(result['data']));
+      if (result.containsKey('is_first_login') && result['is_first_login']) {
+        navigatorKey.currentContext?.go('/create_password');
+      } else {
+        navigatorKey.currentContext?.go('/in_out');
+      }
+    } else {
+      if (result.containsKey('deactivate') && result['deactivate'] == 1) {
+        showDialog(
+          context: navigatorKey.currentContext!,
+          builder: (context) {
+            return GemsDialog(
+              title: "",
+              hasMessage: true,
+              hasLottie: false,
+              withCloseButton: true,
+              hasCustomWidget: true,
+              customWidget: Column(
+                children: [
+                  Image.asset('assets/images/no_data.png', width: 400),
+                ],
+              ),
+              message: result['errors']['email'][0],
+              type: "error",
+              buttonNumber: 0,
+            );
+          },
+        );
+        return null;
+      }
+      return result;
+    }
+
+    isLoading.value = false;
+  }
+
+  Future pinAuth(String password) async {
+    _localStorage = await SharedPreferences.getInstance();
+    isLoading.value = true;
+
+    String? email = await isEmailSaved();
+
+    if (email != null) {
+      final Map<String, String> data = {'email': email, 'pin': password};
+      final result = await apiCall.postRequest(apiUrl: '/pin-auth', data: data);
       if (result.containsKey('success') && result['success']) {
         authenticated.value = result['success'];
 
@@ -123,115 +182,27 @@ class AuthController extends GetxController {
           navigatorKey.currentContext?.go('/in_out');
         }
       } else {
-        if (result.containsKey('deactivate') && result['deactivate'] == 1) {
+        if (result.containsKey('deactivate') && result['deactivate']) {
           Get.dialog(
             GemsDialog(
-              title: "",
+              title: "Oops",
               hasMessage: true,
-              hasLottie: false,
               withCloseButton: true,
               hasCustomWidget: true,
-              customWidget: Column(
-                children: [
+              customWidget:
                   Image.asset('assets/images/no_data.png', width: 400),
-                ],
-              ),
               message:
-                  "Your account has been deactivated.\n You will not be able to login.",
+                  "Your account has been deactivated. You will not be able to login.",
               type: "error",
               buttonNumber: 0,
             ),
           );
           return null;
         }
-        return result;
+        return result['message'];
       }
-
-      isLoading.value = false;
-    } catch (error) {
-      Get.dialog(GemsDialog(
-        title: "Oops",
-        hasMessage: true,
-        withCloseButton: true,
-        hasCustomWidget: false,
-        message: "Error login: $error",
-        type: "error",
-        buttonNumber: 0,
-      ));
-      isLoading.value = false;
-      printError(info: 'Error Message Login: $error');
-    } finally {
-      isLoading.value = false;
-    }
-    return null;
-  }
-
-  Future pinAuth(String password) async {
-    _localStorage = await SharedPreferences.getInstance();
-    isLoading.value = true;
-
-    try {
-      String? email = await isEmailSaved();
-
-      if (email != null) {
-        final response = await apiCall
-            .postRequest({'email': email, 'pin': password}, '/pin-auth');
-        final result = jsonDecode(response.body);
-
-        if (result.containsKey('success') && result['success']) {
-          authenticated.value = result['success'];
-
-          var userData = result['data'];
-          _localStorage.setString('user', jsonEncode(userData));
-          var employeeData = userData['employee'];
-          var companyData = employeeData['company'];
-
-          employee = Employee.fromJson(employeeData).obs;
-          company = Company.fromJson(companyData).obs;
-
-          _localStorage.setString('token', result['token']);
-          _localStorage.setString('user', jsonEncode(result['data']));
-          if (result.containsKey('is_first_login') &&
-              result['is_first_login']) {
-            navigatorKey.currentContext?.go('/create_password');
-          } else {
-            navigatorKey.currentContext?.go('/in_out');
-          }
-        } else {
-          if (result.containsKey('deactivate') && result['deactivate']) {
-            Get.dialog(
-              GemsDialog(
-                title: "Oops",
-                hasMessage: true,
-                withCloseButton: true,
-                hasCustomWidget: true,
-                customWidget:
-                    Image.asset('assets/images/no_data.png', width: 400),
-                message:
-                    "Your account has been deactivated. You will not be able to login.",
-                type: "error",
-                buttonNumber: 0,
-              ),
-            );
-            return null;
-          }
-          return result['message'];
-        }
-      } else {
-        Get.dialog(
-          const GemsDialog(
-            title: "Oops",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Something went wrong! Login by password.",
-            type: "error",
-            buttonNumber: 0,
-          ),
-        );
-      }
-    } catch (error) {
-      await Get.dialog(
+    } else {
+      Get.dialog(
         const GemsDialog(
           title: "Oops",
           hasMessage: true,
@@ -242,10 +213,9 @@ class AuthController extends GetxController {
           buttonNumber: 0,
         ),
       );
-      navigatorKey.currentContext?.go('/login');
-    } finally {
-      isLoading.value = false;
     }
+
+    isLoading.value = false;
   }
 
   Future<void> localAuthenticate() async {
@@ -271,24 +241,14 @@ class AuthController extends GetxController {
   }
 
   Future logout() async {
-    try {
-      apiCall.postRequest({}, '/logout').then((value) {
-        setAuthStatus();
-        setLocalAuth();
-        navigatorKey.currentContext?.go('/login');
-      });
-    } catch (error) {
-      Get.dialog(GemsDialog(
-        title: "Oops",
-        hasMessage: true,
-        withCloseButton: true,
-        hasCustomWidget: false,
-        message: "Error: $error",
-        type: "error",
-        buttonNumber: 0,
-      ));
-      isLoading.value = false;
-      printError(info: 'Error Message: $error');
-    }
+    isLoading.value = true;
+
+    await apiCall.postRequest(apiUrl: '/logout').then((value) {
+      setAuthStatus();
+      setLocalAuth();
+      navigatorKey.currentContext?.go('/login');
+    });
+
+    isLoading.value = false;
   }
 }

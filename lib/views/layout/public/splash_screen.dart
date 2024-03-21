@@ -32,9 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
     await _settings.checkAppVersionMaintenance();
     await _authService.initAuth();
     Timer(const Duration(seconds: 3), () {
-      _authService.hasUser.isTrue
-          ? _key.currentContext?.go('/pin_login')
-          : _key.currentContext?.go('/login');
+      if (_settings.isMaintenance.isFalse) {
+        _authService.hasUser.isTrue
+            ? _key.currentContext?.go('/pin_login')
+            : _key.currentContext?.go('/login');
+      }
     });
   }
 
