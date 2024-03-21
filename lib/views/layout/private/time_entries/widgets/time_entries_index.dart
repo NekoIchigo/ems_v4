@@ -94,7 +94,6 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                           builder: (BuildContext context) {
                             return const CustomDateBottomsheet(type: "range");
                           });
-
                       if (dates != null) {
                         _timeEntriesController.getAttendanceList(
                           employeeId: _authService.employee!.value.id,

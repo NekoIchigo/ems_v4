@@ -345,11 +345,11 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
   void clockInOut() {
     if (_homeController.isClockOut.isFalse) {
       _homeController.clockIn().then((value) {
-        _homeController.pageName.value = '/home/result';
+        context.go('/result');
       });
     } else if (_homeController.isClockOut.isTrue) {
       _homeController.clockOut(context: context).then((value) {
-        _homeController.pageName.value = '/home/result';
+        context.go('/result');
       });
     }
   }

@@ -120,7 +120,9 @@ class _PINLoginState extends State<PINLogin> {
                             _localStorage =
                                 await SharedPreferences.getInstance();
                             _localStorage.setBool('auth_biometrics', false);
-                            context.push('/login');
+                            if (context.mounted) {
+                              context.push('/login');
+                            }
                           },
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(0)),

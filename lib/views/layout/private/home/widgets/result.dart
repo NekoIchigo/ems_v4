@@ -3,6 +3,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -18,6 +19,8 @@ class _HomeResultPageState extends State<HomeResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Obx(
       () => Column(
         children: [
@@ -35,7 +38,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
           Visibility(
             visible: _homeController.isUserSick.isTrue,
             child: SizedBox(
-              width: Get.width * .8,
+              width: size.width * .8,
               child: const Column(
                 children: [
                   Text(
@@ -78,10 +81,10 @@ class _HomeResultPageState extends State<HomeResultPage> {
             child: RoundedCustomButton(
               onPressed: () {
                 _homeController.isWhite.value = false;
-                _homeController.pageName('/home');
+                context.go('/in_out');
               },
               label: 'Close',
-              size: Size(Get.width * .8, 40),
+              size: Size(size.width * .8, 40),
               bgColor: _homeController.isUserSick.isTrue ? gray : bgPrimaryBlue,
               radius: 10,
             ),

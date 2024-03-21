@@ -1,18 +1,12 @@
-import 'dart:developer';
-
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
-import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
-import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -27,16 +21,16 @@ class InOutPage extends StatefulWidget {
 class _InOutPageState extends State<InOutPage> {
   final AuthController _authViewService = Get.find<AuthController>();
   final SettingsController _settings = Get.find<SettingsController>();
+  final TimeEntriesController _timeEntriesController =
+      Get.find<TimeEntriesController>();
   final HomeController _homeController = Get.find<HomeController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
-  late AttendanceRecord attendance;
   late DateTime currentTime;
   late String date, greetings;
 
   @override
   void initState() {
     super.initState();
-    attendance = _homeController.attendance.value;
     initFunctions();
 
     currentTime = _settings.currentTime.value;
@@ -46,7 +40,6 @@ class _InOutPageState extends State<InOutPage> {
 
   Future initFunctions() async {
     await _settings.getServerTime();
-    log(currentTime.toString());
   }
 
   @override
@@ -62,16 +55,18 @@ class _InOutPageState extends State<InOutPage> {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Column(
-          children: [
-            greetingWidget(size),
-            buttonSection(size),
-            detailsSection(size),
-            additionalShift(size),
-            // announcementSection(),
-          ],
+      child: Obx(
+        () => SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Column(
+            children: [
+              greetingWidget(size),
+              buttonSection(size),
+              detailsSection(size),
+              additionalShift(size),
+              // announcementSection(),
+            ],
+          ),
         ),
       ),
     );
@@ -135,120 +130,121 @@ class _InOutPageState extends State<InOutPage> {
   Widget buttonSection(Size size) {
     return SizedBox(
       height: size.height * .38,
-      child: GetBuilder<HomeController>(builder: (controller) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            _homeController.isClockInOutComplete.isTrue
-                ? Positioned(
-                    top: 0,
-                    child: Image.asset('assets/images/EMS1.png',
-                        width: size.width * .62),
-                  )
-                : Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Positioned(
-                        child: _homeController.isClockOut.isTrue
-                            ? Lottie.asset("assets/lottie/Clock-out.json",
-                                width: 300)
-                            : Lottie.asset("assets/lottie/Clock-in.json",
-                                width: 300),
-                      ),
-                      Positioned(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize:
-                                    Size(size.width * .38, size.width * .38),
-                                shape: const CircleBorder(),
-                                backgroundColor:
-                                    _homeController.isClockOut.isTrue
-                                        ? colorError
-                                        : colorSuccess,
-                              ),
-                              onPressed: () {
-                                if (_homeController.isClockOut.isFalse) {
-                                  controller.setClockInLocation().then((value) {
-                                    context.push('/info');
-                                  });
-                                } else {
-                                  controller
-                                      .setClockOutLocation()
-                                      .then((value) {
-                                    context.push('/info');
-                                  });
-                                }
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    _homeController.isClockOut.isTrue
-                                        ? "CLOCK OUT"
-                                        : "CLOCK IN",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      shadows: <Shadow>[
-                                        Shadow(
-                                          offset: const Offset(0.0, 5.0),
-                                          blurRadius: 8.0,
-                                          color: Colors.white.withOpacity(.40),
-                                        ),
-                                      ],
-                                    ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          _homeController.isClockInOutComplete.isTrue
+              ? Positioned(
+                  top: 0,
+                  child: Image.asset('assets/images/EMS1.png',
+                      width: size.width * .62),
+                )
+              : Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      child: _homeController.isClockOut.isTrue
+                          ? Lottie.asset("assets/lottie/Clock-out.json",
+                              width: 300)
+                          : Lottie.asset("assets/lottie/Clock-in.json",
+                              width: 300),
+                    ),
+                    Positioned(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize:
+                                  Size(size.width * .38, size.width * .38),
+                              shape: const CircleBorder(),
+                              backgroundColor: _homeController.isClockOut.isTrue
+                                  ? colorError
+                                  : colorSuccess,
+                            ),
+                            onPressed: () {
+                              if (_homeController.isClockOut.isFalse) {
+                                _homeController
+                                    .setClockInLocation()
+                                    .then((value) {
+                                  context.push('/info');
+                                });
+                              } else {
+                                _homeController
+                                    .setClockOutLocation()
+                                    .then((value) {
+                                  context.push('/info');
+                                });
+                              }
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _homeController.isClockOut.isTrue
+                                      ? "CLOCK OUT"
+                                      : "CLOCK IN",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                        offset: const Offset(0.0, 5.0),
+                                        blurRadius: 8.0,
+                                        color: Colors.white.withOpacity(.40),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: _homeController.isLoading.isTrue,
+                            child: SizedBox(
+                              width: size.width * .42,
+                              height: size.width * .42,
+                              child: CircularProgressIndicator(
+                                color: _homeController.isClockOut.isTrue
+                                    ? colorError
+                                    : colorSuccess,
+                                strokeCap: StrokeCap.round,
                               ),
                             ),
-                            Visibility(
-                              visible: controller.isLoading.isTrue,
-                              child: SizedBox(
-                                width: size.width * .42,
-                                height: size.width * .42,
-                                child: const CircularProgressIndicator(
-                                  color: colorSuccess,
-                                  strokeCap: StrokeCap.round,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
-            Positioned(
-              bottom: 0,
-              child: Column(
-                children: [
-                  const SizedBox(height: 8),
-                  Text(
-                    DateFormat("hh:mm a").format(_settings.currentTime.value),
-                    style: const TextStyle(
-                      color: gray,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
                     ),
+                  ],
+                ),
+          Positioned(
+            bottom: 0,
+            child: Column(
+              children: [
+                const SizedBox(height: 8),
+                Text(
+                  DateFormat("hh:mm a").format(_settings.currentTime.value),
+                  style: const TextStyle(
+                    color: gray,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    date,
-                    style: const TextStyle(
-                      color: gray,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  date,
+                  style: const TextStyle(
+                    color: gray,
+                    fontWeight: FontWeight.w500,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        );
-      }),
+          ),
+        ],
+      ),
     );
   }
 
@@ -273,14 +269,17 @@ class _InOutPageState extends State<InOutPage> {
                 ),
               ),
               Text(
-                _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
+                _dateTimeUtils.formatTime(
+                    dateTime: _homeController.attendance.value.clockInAt),
                 style: const TextStyle(
                     color: gray, fontSize: 13, fontWeight: FontWeight.w500),
               ),
               Visibility(
-                visible: false,
+                visible: _timeEntriesController.hasPrevAttendance.isTrue,
                 child: Text(
-                  _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
+                  _dateTimeUtils.formatTime(
+                      dateTime: _timeEntriesController
+                          .prevAttendance.value.clockInAt),
                   style: const TextStyle(
                       color: gray, fontSize: 13, fontWeight: FontWeight.w500),
                 ),
@@ -299,14 +298,17 @@ class _InOutPageState extends State<InOutPage> {
                 ),
               ),
               Text(
-                _dateTimeUtils.formatTime(dateTime: attendance.clockOutAt),
+                _dateTimeUtils.formatTime(
+                    dateTime: _homeController.attendance.value.clockOutAt),
                 style: const TextStyle(
                     color: gray, fontSize: 13, fontWeight: FontWeight.w500),
               ),
               Visibility(
-                visible: false,
+                visible: _timeEntriesController.hasPrevAttendance.isTrue,
                 child: Text(
-                  _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
+                  _dateTimeUtils.formatTime(
+                      dateTime: _timeEntriesController
+                          .prevAttendance.value.clockOutAt),
                   style: const TextStyle(
                       color: gray, fontSize: 13, fontWeight: FontWeight.w500),
                 ),
@@ -320,9 +322,13 @@ class _InOutPageState extends State<InOutPage> {
 
   Widget additionalShift(Size size) {
     return Visibility(
-      visible: false,
+      visible: _homeController.isClockInOutComplete.isTrue,
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          _homeController.isNewShift.value = true;
+          _homeController.isClockOut.value = false;
+          _homeController.isClockInOutComplete.value = false;
+        },
         child: const Text(
           'Clock-in/ Clock out again',
           style: TextStyle(

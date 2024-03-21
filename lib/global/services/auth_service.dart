@@ -105,7 +105,7 @@ class AuthService extends GetxService {
         _localStorage.setString('user', jsonEncode(userData));
         var employeeData = userData['employee'];
         var companyData = employeeData['company'];
-        print(jsonEncode(employeeData));
+
         employee = Employee.fromJson(employeeData).obs;
         company = Company.fromJson(companyData).obs;
 

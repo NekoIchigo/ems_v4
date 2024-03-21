@@ -19,20 +19,30 @@ class _GettingStartedState extends State<GettingStarted> {
   final LocationController _locationController = Get.find<LocationController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _homeController.checkNewShift(employeeId: _authService.employee!.value.id);
-    _timeEntriesController.getAttendanceList(
+    loadFunction();
+  }
+
+  Future loadFunction() async {
+    await _homeController.checkNewShift(
+        employeeId: _authService.employee!.value.id);
+    await _timeEntriesController.getAttendanceList(
         employeeId: _authService.employee!.value.id, days: 1);
-    _locationController.checkLocationPermission();
+    await _locationController.checkLocationPermission();
+    await _timeEntriesController.getPreviousClockIn();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: false,
+      visible: isLoading,
       child: Container(
         color: Colors.black.withOpacity(0.7),
         child: Center(

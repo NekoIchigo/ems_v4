@@ -74,7 +74,7 @@ class CustomDateBottomsheet extends StatelessWidget {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Please select the date range.'),
+                          content: const Text('Please select the date range.'),
                           behavior: SnackBarBehavior.floating,
                           margin: EdgeInsets.only(
                             bottom: size.height - 130,
