@@ -16,6 +16,7 @@ class SettingsController extends GetxController {
 
   RxBool isMaintenance = false.obs,
       isLoading = false.obs,
+      isSettingsOpen = false.obs,
       hasUpdate = false.obs;
   Rx<DateTime> currentTime = DateTime.now().obs;
 

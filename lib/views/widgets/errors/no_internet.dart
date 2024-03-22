@@ -1,26 +1,11 @@
-import 'dart:async';
-
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
-class NoLocationPermission extends StatefulWidget {
-  const NoLocationPermission({super.key});
-
-  @override
-  State<NoLocationPermission> createState() => _NoLocationPermissionState();
-}
-
-class _NoLocationPermissionState extends State<NoLocationPermission> {
-  bool isSettingsOpen = false;
-
-  @override
-  void initState() {
-    super.initState();
-    isSettingsOpen = false;
-  }
+class NoInternet extends StatelessWidget {
+  final String? path;
+  const NoInternet({super.key, this.path});
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +38,13 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Image.asset(
-                          'assets/images/no_internet.jpg',
+                          'assets/images/no_location_permisison.jpg',
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      'Enable Location',
+                      'No connection',
                       style: TextStyle(color: darkGray, fontSize: 16),
                     ),
                     const SizedBox(height: 30),
@@ -77,19 +62,9 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                     const SizedBox(height: 30),
                     RoundedCustomButton(
                       onPressed: () {
-                        if (isSettingsOpen) {
-                          context.go('/');
-                        } else {
-                          Geolocator.openAppSettings().then((value) {
-                            Timer(const Duration(seconds: 1), () {
-                              setState(() {
-                                isSettingsOpen = true;
-                              });
-                            });
-                          });
-                        }
+                        context.go(path ?? '/');
                       },
-                      label: isSettingsOpen ? 'Try Again' : 'Go to Settings',
+                      label: 'Try Again',
                       size: Size(size.width * .8, 50),
                     ),
                   ],

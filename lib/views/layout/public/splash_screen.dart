@@ -27,6 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future initFunctions() async {
+    _settings.isSettingsOpen.value = false;
     await _settings.getServerTime();
     _settings.updateTimeToRealTime();
     await _settings.checkAppVersionMaintenance();

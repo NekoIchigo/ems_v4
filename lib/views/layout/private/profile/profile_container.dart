@@ -130,15 +130,18 @@ class _ProfileContainerState extends State<ProfileContainer> {
               },
             ),
             const SizedBox(height: 30),
-            RoundedCustomButton(
-              onPressed: () {
-                if (authService.isLoading.isFalse) {
-                  authService.logout();
-                }
-              },
-              label: 'Log out',
-              size: Size(size.width, 30),
-              bgColor: bgPrimaryBlue,
+            Obx(
+              () => RoundedCustomButton(
+                onPressed: () {
+                  if (authService.isLoading.isFalse) {
+                    authService.logout();
+                  }
+                },
+                isLoading: authService.isLoading.isTrue,
+                label: 'Log out',
+                size: Size(size.width, 30),
+                bgColor: bgPrimaryBlue,
+              ),
             ),
           ],
         ),

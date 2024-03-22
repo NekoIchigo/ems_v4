@@ -22,6 +22,7 @@ import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart'
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:ems_v4/views/layout/public/splash_screen.dart';
+import 'package:ems_v4/views/widgets/errors/no_internet.dart';
 import 'package:ems_v4/views/widgets/errors/no_location_permission.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -55,6 +56,11 @@ final router = GoRouter(
       path: '/no-permission',
       pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
           context: context, state: state, child: const NoLocationPermission()),
+    ),
+    GoRoute(
+      path: '/no-internet',
+      pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+          context: context, state: state, child: const NoInternet()),
     ),
     GoRoute(
       path: '/login',

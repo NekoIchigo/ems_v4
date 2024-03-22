@@ -8,6 +8,7 @@ import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class HealthDeclaration extends StatefulWidget {
   const HealthDeclaration({super.key});
@@ -225,9 +226,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 const Expanded(child: SizedBox()),
                 RoundedCustomButton(
                   onPressed: () {
-                    _homeController.isWhite.value = false;
-                    _homeController.pageName.value = '/home';
-                    // context.router.navigate(const HomepageRouter());
+                    context.pop();
                   },
                   label: 'Close',
                   bgColor: gray,
@@ -235,36 +234,39 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                   size: Size(size.width * .4, 40),
                 ),
                 const Expanded(child: SizedBox()),
-                RoundedCustomButton(
-                  onPressed: () {
-                    if (checkedSymptoms.isEmpty ||
-                        _temperatureController.text == "") {
-                      EMSDialog(
-                        title: "Oops",
-                        hasMessage: true,
-                        withCloseButton: true,
-                        hasCustomWidget: false,
-                        message:
-                            "Check a symptoms and enter your current temperature",
-                        type: "error",
-                        buttonNumber: 0,
-                      ).show(context);
-                    } else {
-                      checkedSymptoms.add(_otherSymptom.text);
-                      _homeController
-                          .clockIn(
-                        healthCheck: checkedSymptoms,
-                        temperature: _temperatureController.text,
-                      )
-                          .then((value) {
-                        _homeController.pageName.value = '/home/result';
-                      });
-                    }
-                  },
-                  label: 'Clock In',
-                  bgColor: colorSuccess,
-                  radius: 8,
-                  size: Size(size.width * .4, 40),
+                Obx(
+                  () => RoundedCustomButton(
+                    onPressed: () {
+                      if (checkedSymptoms.isEmpty ||
+                          _temperatureController.text == "") {
+                        EMSDialog(
+                          title: "Oops",
+                          hasMessage: true,
+                          withCloseButton: true,
+                          hasCustomWidget: false,
+                          message:
+                              "Check a symptoms and enter your current temperature",
+                          type: "error",
+                          buttonNumber: 0,
+                        ).show(context);
+                      } else {
+                        checkedSymptoms.add(_otherSymptom.text);
+                        _homeController
+                            .clockIn(
+                          healthCheck: checkedSymptoms,
+                          temperature: _temperatureController.text,
+                        )
+                            .then((value) {
+                          context.go('/result');
+                        });
+                      }
+                    },
+                    isLoading: _homeController.isLoading.isTrue,
+                    label: 'Clock In',
+                    bgColor: colorSuccess,
+                    radius: 8,
+                    size: Size(size.width * .4, 40),
+                  ),
                 ),
                 const Expanded(child: SizedBox()),
               ],

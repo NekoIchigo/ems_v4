@@ -65,22 +65,25 @@ class _CreatePasswordState extends State<CreatePassword> {
           const SizedBox(height: 20),
           const PasswordValidation(),
           const SizedBox(height: 40),
-          RoundedCustomButton(
-            onPressed: () async {
-              var error = await _createPasswordController.createNewPassword(
-                _passwordController.text,
-                _confirmPasswordController.text,
-                null,
-              );
+          Obx(
+            () => RoundedCustomButton(
+              onPressed: () async {
+                var error = await _createPasswordController.createNewPassword(
+                  _passwordController.text,
+                  _confirmPasswordController.text,
+                  null,
+                );
 
-              if (error != null) {
-                passwordError = error['errors']['password'][0];
-              }
-              setState(() {});
-            },
-            label: "Next",
-            size: Size(size.width * .9, 40),
-            bgColor: bgPrimaryBlue,
+                if (error != null) {
+                  passwordError = error['errors']['password'][0];
+                }
+                setState(() {});
+              },
+              isLoading: _createPasswordController.isLoading.isTrue,
+              label: "Next",
+              size: Size(size.width * .9, 40),
+              bgColor: bgPrimaryBlue,
+            ),
           ),
         ],
       ),

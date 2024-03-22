@@ -76,13 +76,16 @@ class _BiometricsPageState extends State<BiometricsPage> {
           const SizedBox(height: 5),
           Align(
             alignment: Alignment.bottomCenter,
-            child: RoundedCustomButton(
-              onPressed: () {
-                _createPasswordController.enableBioMetrics(_switch);
-              },
-              label: "Submit",
-              size: Size(size.width * .9, 40),
-              bgColor: bgPrimaryBlue,
+            child: Obx(
+              () => RoundedCustomButton(
+                onPressed: () {
+                  _createPasswordController.enableBioMetrics(_switch);
+                },
+                isLoading: _createPasswordController.isLoading.isTrue,
+                label: "Submit",
+                size: Size(size.width * .9, 40),
+                bgColor: bgPrimaryBlue,
+              ),
             ),
           )
         ],

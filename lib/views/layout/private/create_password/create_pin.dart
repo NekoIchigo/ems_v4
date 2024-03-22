@@ -43,20 +43,23 @@ class _CreatePinState extends State<CreatePin> {
         const SizedBox(height: 40),
         Align(
           alignment: Alignment.bottomCenter,
-          child: RoundedCustomButton(
-            onPressed: () async {
-              var error = await _createPasswordController.changePIN(
-                pinController.text,
-                confirmPinController.text,
-              );
-              if (error != null) {
-                pinError = error['errors']['pin'][0];
-              }
-              setState(() {});
-            },
-            label: "Next",
-            size: Size(size.width * .9, 40),
-            bgColor: bgPrimaryBlue,
+          child: Obx(
+            () => RoundedCustomButton(
+              onPressed: () async {
+                var error = await _createPasswordController.changePIN(
+                  pinController.text,
+                  confirmPinController.text,
+                );
+                if (error != null) {
+                  pinError = error['errors']['pin'][0];
+                }
+                setState(() {});
+              },
+              isLoading: _createPasswordController.isLoading.isTrue,
+              label: "Next",
+              size: Size(size.width * .9, 40),
+              bgColor: bgPrimaryBlue,
+            ),
           ),
         ),
       ],

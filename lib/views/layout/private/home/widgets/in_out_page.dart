@@ -41,6 +41,7 @@ class _InOutPageState extends State<InOutPage> {
   Future initFunctions() async {
     await _settings.getServerTime();
     await _homeController.checkNewShift();
+    await _timeEntriesController.getPreviousClockIn();
   }
 
   @override
@@ -253,7 +254,7 @@ class _InOutPageState extends State<InOutPage> {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.only(top: 20),
-      height: size.height * .14,
+      height: size.height * .15,
       width: size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

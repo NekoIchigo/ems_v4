@@ -7,6 +7,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,7 @@ class ApiCall {
     File? file,
     required Function catchError,
     bool showErrorDialog = true,
+    String? path,
   }) async {
     var fullUrl = _baseUrl + apiUrl;
     var token = await _getToken();
@@ -67,17 +69,18 @@ class ApiCall {
         return jsonDecode(response.body);
       }
     } catch (error) {
-      if (showErrorDialog) {
+      if (error is http.ClientException) {
+        navigatorKey.currentContext!.go('/no-internet', extra: path);
+      } else if (showErrorDialog) {
         showDialog(
           context: navigatorKey.currentContext!,
           builder: (context) {
-            return const GemsDialog(
+            return GemsDialog(
               title: "Oops",
               hasMessage: true,
               withCloseButton: true,
               hasCustomWidget: false,
-              message:
-                  "Unable to connect to the server. \n Please check your internet connection.",
+              message: "Error: ${error.toString()}",
               type: "error",
               buttonNumber: 0,
             );
@@ -95,6 +98,7 @@ class ApiCall {
     Map<String, dynamic>? parameters,
     required Function catchError,
     bool showErrorDialog = true,
+    String? path,
   }) async {
     var fullUrl = _baseUrl + apiUrl;
     var token = await _getToken();
@@ -111,17 +115,18 @@ class ApiCall {
       );
       return jsonDecode(response.body);
     } catch (error) {
-      if (showErrorDialog) {
+      if (error is http.ClientException) {
+        navigatorKey.currentContext!.go('/no-internet', extra: path);
+      } else if (showErrorDialog) {
         showDialog(
           context: navigatorKey.currentContext!,
           builder: (context) {
-            return const GemsDialog(
+            return GemsDialog(
               title: "Oops",
               hasMessage: true,
               withCloseButton: true,
               hasCustomWidget: false,
-              message:
-                  "Unable to connect to the server. \n Please check your internet connection.",
+              message: "Error: ${error.toString()}",
               type: "error",
               buttonNumber: 0,
             );

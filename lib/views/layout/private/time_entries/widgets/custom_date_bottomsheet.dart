@@ -53,7 +53,9 @@ class CustomDateBottomsheet extends StatelessWidget {
                     : CalendarDatePicker2Type.single,
               ),
               value: dates,
-              onValueChanged: (dates) => dates = dates,
+              onValueChanged: (val) {
+                dates = val;
+              },
             ),
           ),
           Row(

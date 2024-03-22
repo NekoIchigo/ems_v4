@@ -39,7 +39,10 @@ class _PINLoginState extends State<PINLogin> {
                 width: size.width,
                 left: 0,
                 bottom: 0,
-                child: Image.asset('assets/images/login_bg_image.jpg'),
+                child: Image.asset(
+                  'assets/images/login_bg_image.jpg',
+                  opacity: const AlwaysStoppedAnimation(0.6),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),

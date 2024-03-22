@@ -31,6 +31,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   final ScrollController _scrollController = ScrollController();
 
   late Object dropdownValue;
+  List? dates;
   int paginateDays = 1;
   @override
   void initState() {
@@ -51,7 +52,11 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   void _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      _timeEntriesController.nextPageList(days: paginateDays);
+      _timeEntriesController.nextPageList(
+        days: paginateDays,
+        startDate: dates?[0],
+        endDate: dates?[1],
+      );
     }
   }
 
@@ -89,7 +94,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                   onChanged: (value) async {
                     paginateDays = value["day"];
                     if (value["day"] == 0) {
-                      List? dates = await showModalBottomSheet(
+                      dates = await showModalBottomSheet(
                           context: mainNavigationKey.currentContext!,
                           builder: (BuildContext context) {
                             return const CustomDateBottomsheet(type: "range");
@@ -97,8 +102,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                       if (dates != null) {
                         _timeEntriesController.getAttendanceList(
                           days: value["day"],
-                          startDate: dates[0],
-                          endDate: dates[1],
+                          startDate: dates?[0],
+                          endDate: dates?[1],
                         );
                       }
                     } else {
@@ -139,7 +144,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                             child: ListView.builder(
                               controller: _scrollController,
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
+                                  const EdgeInsets.symmetric(horizontal: 5),
                               physics: const BouncingScrollPhysics(),
                               itemCount:
                                   _timeEntriesController.attendances.length + 1,
@@ -159,8 +164,11 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
+                                        vertical: 10,
+                                        horizontal: 10,
+                                      ),
                                       elevation: 0,
+                                      backgroundColor: Colors.white,
                                       shape: LinearBorder.bottom(
                                         side:
                                             const BorderSide(color: lightGray),

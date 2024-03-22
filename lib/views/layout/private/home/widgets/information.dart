@@ -314,29 +314,32 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
           bgColor: gray,
           size: Size(size.width * .4, 40),
         ),
-        RoundedCustomButton(
-          onPressed: () {
-            if (_isNotButtonDisable) {
-              if (_homeController.isInsideVicinity.isTrue) {
-                clockInOut();
-              } else {
-                if (reason != null) {
+        Obx(
+          () => RoundedCustomButton(
+            onPressed: () {
+              if (_isNotButtonDisable) {
+                if (_homeController.isInsideVicinity.isTrue) {
                   clockInOut();
                 } else {
-                  reasonError = "Reason/purpose field is required";
+                  if (reason != null) {
+                    clockInOut();
+                  } else {
+                    reasonError = "Reason/purpose field is required";
+                  }
                 }
               }
-            }
-            setState(() {});
-          },
-          label: _homeController.isClockOut.isTrue ? 'Clock out' : 'Clock in',
-          radius: 8,
-          bgColor: _homeController.isClockOut.isTrue
-              ? colorError
-              : _isNotButtonDisable
-                  ? colorSuccess
-                  : lightGray,
-          size: Size(size.width * .4, 40),
+              setState(() {});
+            },
+            isLoading: _homeController.isLoading.isTrue,
+            label: _homeController.isClockOut.isTrue ? 'Clock out' : 'Clock in',
+            radius: 8,
+            bgColor: _homeController.isClockOut.isTrue
+                ? colorError
+                : _isNotButtonDisable
+                    ? colorSuccess
+                    : lightGray,
+            size: Size(size.width * .4, 40),
+          ),
         ),
       ],
     );

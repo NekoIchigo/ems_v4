@@ -18,11 +18,10 @@ class CreatePasswordController extends GetxController {
   late SharedPreferences _localStorage;
 
   final ApiCall apiCall = ApiCall();
-  final RxBool isLoading = false.obs;
 
   RxString password = ''.obs, confirmPassword = ''.obs;
   String? _errorText;
-  RxBool isForgotPin = false.obs;
+  RxBool isForgotPin = false.obs, isLoading = false.obs;
 
   final List<Widget> pages = [
         const CreatePassword(),

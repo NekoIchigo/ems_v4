@@ -52,7 +52,7 @@ class TimeEntriesController extends GetxController {
     } else {
       result = await apiCall.getRequest(
         apiUrl: '/show-dtrs',
-        parameters: {'days': 1, 'page': 1},
+        parameters: {'days': days, 'page': 1},
         catchError: (error) => isLoading.value = false,
       );
     }
@@ -113,7 +113,7 @@ class TimeEntriesController extends GetxController {
     } else {
       result = await apiCall.getRequest(
         apiUrl: '/show-dtrs',
-        parameters: {'days': 1, 'page': currentPage.value},
+        parameters: {'days': days, 'page': currentPage.value},
         catchError: (error) => isLoading.value = false,
       );
     }
