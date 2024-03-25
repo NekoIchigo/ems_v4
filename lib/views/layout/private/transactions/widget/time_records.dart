@@ -1,5 +1,4 @@
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
-import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
@@ -17,8 +16,6 @@ class TimeRecords extends StatefulWidget {
 class _TimeRecordsState extends State<TimeRecords> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
-  final TransactionController _transactionController =
-      Get.find<TransactionController>();
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +83,7 @@ class _TimeRecordsState extends State<TimeRecords> {
                                       ),
                                       child: ListTile(
                                         onTap: () {
-                                          _timeEntriesController.pageName
-                                              .value = '/attendance-log';
-                                          _timeEntriesController
-                                              .attendanceIndex.value = index;
+                                          context.push('/attendance-log');
                                           _timeEntriesController
                                               .hasClose.value = true;
                                         },

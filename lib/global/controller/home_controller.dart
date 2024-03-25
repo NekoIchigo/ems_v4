@@ -4,10 +4,6 @@ import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/router/router.dart';
-import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
-import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';
-import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
-import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -22,18 +18,8 @@ class HomeController extends GetxController {
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
   Rx<DateTime> workStart = DateTime.now().obs, workEnd = DateTime.now().obs;
 
-  final int routerKey = 1;
-  RxInt pageIndex = 0.obs;
-  final List<Widget> pages = [
-    const InOutPage(),
-    const HomeInfoPage(),
-    const HealthDeclaration(),
-    const HomeResultPage()
-  ];
-
-  RxString pageName = ''.obs, currentLocation = ''.obs;
-  RxBool isWhite = false.obs,
-      isInsideVicinity = false.obs,
+  RxString currentLocation = ''.obs;
+  RxBool isInsideVicinity = false.obs,
       isLoading = false.obs,
       isClockOut = false.obs,
       isClockInOutComplete = false.obs,
@@ -41,6 +27,18 @@ class HomeController extends GetxController {
       isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
+
+  void reset() async {
+    isInsideVicinity = false.obs;
+    isClockOut = false.obs;
+    isClockInOutComplete = false.obs;
+    isUserSick = false.obs;
+    isNewShift = false.obs;
+
+    attendance = AttendanceRecord().obs;
+    workStart = DateTime.now().obs;
+    workEnd = DateTime.now().obs;
+  }
 
   Future checkNewShift() async {
     isLoading.value = true;
@@ -264,8 +262,6 @@ class HomeController extends GetxController {
           );
         },
       );
-
-      pageName.value = '/home';
     }
 
     isLoading.value = false;

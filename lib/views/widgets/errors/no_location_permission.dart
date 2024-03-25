@@ -25,6 +25,7 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final String extraString = GoRouterState.of(context).extra! as String;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -53,7 +54,7 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Image.asset(
-                          'assets/images/no_internet.jpg',
+                          'assets/images/no_location_permission.jpg',
                         ),
                       ),
                     ),
@@ -80,13 +81,23 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                         if (isSettingsOpen) {
                           context.go('/');
                         } else {
-                          Geolocator.openAppSettings().then((value) {
-                            Timer(const Duration(seconds: 1), () {
-                              setState(() {
-                                isSettingsOpen = true;
+                          if (extraString == 'off') {
+                            Geolocator.openLocationSettings().then((value) {
+                              Timer(const Duration(seconds: 1), () {
+                                setState(() {
+                                  isSettingsOpen = true;
+                                });
                               });
                             });
-                          });
+                          } else {
+                            Geolocator.openAppSettings().then((value) {
+                              Timer(const Duration(seconds: 1), () {
+                                setState(() {
+                                  isSettingsOpen = true;
+                                });
+                              });
+                            });
+                          }
                         }
                       },
                       label: isSettingsOpen ? 'Try Again' : 'Go to Settings',

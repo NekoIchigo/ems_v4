@@ -39,9 +39,9 @@ class _InOutPageState extends State<InOutPage> {
   }
 
   Future initFunctions() async {
+    await _timeEntriesController.getPreviousClockIn();
     await _settings.getServerTime();
     await _homeController.checkNewShift();
-    await _timeEntriesController.getPreviousClockIn();
   }
 
   @override

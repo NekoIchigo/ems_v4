@@ -80,7 +80,6 @@ class _HomeResultPageState extends State<HomeResultPage> {
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: RoundedCustomButton(
               onPressed: () {
-                _homeController.isWhite.value = false;
                 context.go('/in_out');
               },
               label: 'Close',

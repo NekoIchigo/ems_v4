@@ -38,7 +38,7 @@ class NoInternet extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Image.asset(
-                          'assets/images/no_location_permisison.jpg',
+                          'assets/images/no_internet.jpg',
                         ),
                       ),
                     ),

@@ -251,12 +251,10 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 OutlinedButton(
                   onPressed: () {
                     if (_homeController.isInsideVicinity.isTrue) {
-                      _homeController.pageName.value =
-                          '/home/health_declaration';
+                      context.push('/health_declaration');
                     } else {
                       if (reason != null) {
-                        _homeController.pageName.value =
-                            '/home/health_declaration';
+                        context.push('/health_declaration');
                       } else {
                         reasonError = "Reason/purpose field is required";
                       }
