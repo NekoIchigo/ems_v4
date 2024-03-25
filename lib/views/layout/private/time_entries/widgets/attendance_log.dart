@@ -21,12 +21,15 @@ class _AttendanceLogState extends State<AttendanceLog> {
   final AuthController _authService = Get.find<AuthController>();
   final MapLauncher _mapLuncher = MapLauncher();
   bool isClockIn = false;
+  late int index;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    final AttendanceRecord selectedRecord = _timeEntriesController
-        .attendances[_timeEntriesController.attendanceIndex.value];
+    index = GoRouterState.of(context).extra! as int;
+
+    final AttendanceRecord selectedRecord =
+        _timeEntriesController.attendances[index];
 
     return Container(
       height: size.height,
@@ -224,10 +227,9 @@ class _AttendanceLogState extends State<AttendanceLog> {
                   ),
                   InkWell(
                     onTap: () {
-                      // ! fix go router TimeEntriesHealthDe
                       context.push(
-                        'time-entries-health',
-                        extra: selectedRecord,
+                        '/time-entries-health',
+                        extra: index,
                       );
                     },
                     child: const Text(

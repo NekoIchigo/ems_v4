@@ -156,11 +156,13 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
 
                                   return ElevatedButton(
                                     onPressed: () {
-                                      context.push('/attendance-log');
                                       _timeEntriesController
                                           .attendanceIndex.value = index;
+
                                       _timeEntriesController.hasClose.value =
                                           true;
+                                      context.push('/attendance-log',
+                                          extra: index);
                                     },
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(

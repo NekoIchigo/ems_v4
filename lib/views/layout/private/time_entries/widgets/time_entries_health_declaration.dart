@@ -1,10 +1,12 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/json_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
@@ -20,20 +22,18 @@ class _TimeEntriesHealthDeclarationState
     extends State<TimeEntriesHealthDeclaration> {
   final JsonUtils _jsonUtils = JsonUtils();
 
+  final TimeEntriesController _timeEntriesController =
+      Get.find<TimeEntriesController>();
+
   List _symptoms = [];
   List checkedSymptoms = [];
   final TextEditingController temperatureController = TextEditingController();
   final TextEditingController _otherSymptom = TextEditingController();
   late AttendanceRecord attendanceRecord;
-
-  @override
-  void initState() {
-    super.initState();
-
-    loadData();
-  }
+  late int index;
 
   void loadData() {
+    attendanceRecord = _timeEntriesController.attendances[index];
     _jsonUtils.readJson('assets/json/symptoms.json').then((value) {
       setState(() {
         _symptoms = value['symptoms'];
@@ -62,7 +62,9 @@ class _TimeEntriesHealthDeclarationState
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    attendanceRecord = GoRouterState.of(context).extra! as AttendanceRecord;
+    index = GoRouterState.of(context).extra! as int;
+    loadData();
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,

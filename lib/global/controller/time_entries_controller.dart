@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 
 class TimeEntriesController extends GetxController {
   final ApiCall apiCall = ApiCall();
-  RxString pageName = '/index'.obs;
   RxInt attendanceIndex = 0.obs;
 
   RxBool hasClose = false.obs,
@@ -17,6 +16,7 @@ class TimeEntriesController extends GetxController {
       hasPrevAttendance = false.obs;
 
   Rx<AttendanceRecord> prevAttendance = AttendanceRecord().obs;
+  Rx<AttendanceRecord> selectedAttendance = AttendanceRecord().obs;
   RxList<AttendanceRecord> attendances = [AttendanceRecord()].obs;
   RxString pageUrl = ''.obs;
   RxInt paginateLength = 1.obs;
@@ -158,7 +158,7 @@ class TimeEntriesController extends GetxController {
       currentPage.value = result['data']['current_page'];
 
       final attendancesJson = result['data']['data'];
-      attendances += RxList<AttendanceRecord>.from(
+      attendances = RxList<AttendanceRecord>.from(
         attendancesJson.map(
           (attendance) => AttendanceRecord.fromJson(attendance),
         ),
