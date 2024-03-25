@@ -100,6 +100,7 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                           }
                         }
                       },
+                      bgColor: bgPrimaryBlue,
                       label: isSettingsOpen ? 'Try Again' : 'Go to Settings',
                       size: Size(size.width * .8, 50),
                     ),

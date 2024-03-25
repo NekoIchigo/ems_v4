@@ -70,7 +70,16 @@ class ApiCall {
       }
     } catch (error) {
       if (error is http.ClientException) {
-        navigatorKey.currentContext!.go('/no-internet', extra: path);
+        String currentPath = path ??
+            GoRouter.of(navigatorKey.currentContext!)
+                .routeInformationProvider
+                .value
+                .uri
+                .toString();
+
+        Timer(const Duration(seconds: 1), () {
+          navigatorKey.currentContext!.go('/no-internet', extra: currentPath);
+        });
       } else if (showErrorDialog) {
         showDialog(
           context: navigatorKey.currentContext!,
@@ -116,7 +125,15 @@ class ApiCall {
       return jsonDecode(response.body);
     } catch (error) {
       if (error is http.ClientException) {
-        navigatorKey.currentContext!.go('/no-internet', extra: path);
+        String currentPath = path ??
+            GoRouter.of(navigatorKey.currentContext!)
+                .routeInformationProvider
+                .value
+                .uri
+                .toString();
+        Timer(const Duration(seconds: 1), () {
+          navigatorKey.currentContext!.go('/no-internet', extra: currentPath);
+        });
       } else if (showErrorDialog) {
         showDialog(
           context: navigatorKey.currentContext!,

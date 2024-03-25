@@ -7,12 +7,15 @@ import 'package:ems_v4/views/widgets/dialog/maintenance_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:store_version_checker/store_version_checker.dart';
 
 class SettingsController extends GetxController {
   final ApiCall apiCall = ApiCall();
   final _checker = StoreVersionChecker();
+
+  RxString currentPath = ''.obs;
 
   RxBool isMaintenance = false.obs,
       isLoading = false.obs,

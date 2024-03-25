@@ -60,7 +60,7 @@ final router = GoRouter(
     GoRoute(
       path: '/no-internet',
       pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-          context: context, state: state, child: const NoInternet()),
+          context: context, state: state, child: NoInternet()),
     ),
     GoRoute(
       path: '/login',
