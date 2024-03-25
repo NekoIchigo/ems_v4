@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
@@ -16,6 +17,7 @@ class HomeController extends GetxController {
 
   final ApiCall apiCall = ApiCall();
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
+  final SettingsController _settings = Get.find<SettingsController>();
   Rx<DateTime> workStart = DateTime.now().obs, workEnd = DateTime.now().obs;
 
   RxString currentLocation = ''.obs;
@@ -86,6 +88,7 @@ class HomeController extends GetxController {
 
   Future setClockInLocation() async {
     isLoading.value = true;
+    await _settings.checkLocationPermission('in_out');
 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
@@ -131,6 +134,7 @@ class HomeController extends GetxController {
 
   Future setClockOutLocation() async {
     isLoading.value = true;
+    await _settings.checkLocationPermission('/in_out');
 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);

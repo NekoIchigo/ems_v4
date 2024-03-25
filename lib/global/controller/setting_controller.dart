@@ -84,7 +84,7 @@ class SettingsController extends GetxController {
     });
   }
 
-  Future checkLocationPermission() async {
+  Future checkLocationPermission(String path) async {
     bool serviceEnabled;
     LocationPermission permission;
     // Geolocator.openLocationSettings();
@@ -94,7 +94,8 @@ class SettingsController extends GetxController {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      navigatorKey.currentContext!.go('/no-permission', extra: 'off');
+      navigatorKey.currentContext!
+          .go('/no-permission', extra: {'path': path, 'type': 'off'});
       return Future.error('Location services are disabled.');
     }
 
@@ -107,14 +108,15 @@ class SettingsController extends GetxController {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
-        navigatorKey.currentContext!
-            .go('/no-permission', extra: 'no_permission');
+        navigatorKey.currentContext!.go('/no-permission',
+            extra: {'path': path, 'type': 'no_permission'});
         return Future.error('Location permissions are denied');
       }
     }
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      navigatorKey.currentContext!.go('/no-permission', extra: 'no_permission');
+      navigatorKey.currentContext!
+          .go('/no-permission', extra: {'path': path, 'type': 'no_permission'});
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }

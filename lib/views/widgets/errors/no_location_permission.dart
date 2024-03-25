@@ -25,7 +25,8 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final String extraString = GoRouterState.of(context).extra! as String;
+    final Map<String, dynamic> extraData =
+        GoRouterState.of(context).extra! as Map<String, dynamic>;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -60,28 +61,35 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      'Enable Location',
-                      style: TextStyle(color: darkGray, fontSize: 16),
+                      textAlign: TextAlign.center,
+                      'GEMS would like to access your location settings:',
+                      style: TextStyle(
+                        color: darkGray,
+                        fontSize: 15,
+                      ),
                     ),
                     const SizedBox(height: 30),
                     SizedBox(
                       width: size.width * .8,
-                      child: const Text(
-                        'We\'ll need your location to give you a better experience',
+                      child: Text(
+                        extraData['type'] == 'off'
+                            ? 'Enable location services'
+                            : 'Enable location permission',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
                           fontSize: 15,
                           color: darkGray,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 50),
                     RoundedCustomButton(
                       onPressed: () {
                         if (isSettingsOpen) {
-                          context.go('/');
+                          context.go(extraData['path']);
                         } else {
-                          if (extraString == 'off') {
+                          if (extraData['type'] == 'off') {
                             Geolocator.openLocationSettings().then((value) {
                               Timer(const Duration(seconds: 1), () {
                                 setState(() {
@@ -101,8 +109,11 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                         }
                       },
                       bgColor: bgPrimaryBlue,
-                      label: isSettingsOpen ? 'Try Again' : 'Go to Settings',
-                      size: Size(size.width * .8, 50),
+                      label: isSettingsOpen
+                          ? 'Try Again'
+                          : 'Update location settings',
+                      size: Size(size.width * .55, 30),
+                      fontSize: 13,
                     ),
                   ],
                 ),

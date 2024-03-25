@@ -52,28 +52,33 @@ class NoInternet extends StatelessWidget {
                     const SizedBox(height: 20),
                     const Text(
                       'No connection',
-                      style: TextStyle(color: darkGray, fontSize: 16),
+                      style: TextStyle(
+                        color: darkGray,
+                        fontSize: 15,
+                      ),
                     ),
                     const SizedBox(height: 30),
                     SizedBox(
                       width: size.width * .8,
-                      child: Text(
-                        'We\'ll need your location to give you a better experience ${path ?? _settings.currentPath.value}',
+                      child: const Text(
+                        'Please check your connection again,\n or connect to WiFi',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 15,
                           color: darkGray,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 50),
                     RoundedCustomButton(
                       onPressed: () {
                         context.go(path ?? _settings.currentPath.value);
                       },
                       bgColor: bgPrimaryBlue,
                       label: 'Try Again',
-                      size: Size(size.width * .8, 50),
+                      size: Size(size.width * .55, 30),
+                      fontSize: 13,
                     ),
                   ],
                 ),
