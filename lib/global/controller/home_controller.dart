@@ -88,7 +88,7 @@ class HomeController extends GetxController {
 
   Future setClockInLocation() async {
     isLoading.value = true;
-    await _settings.checkLocationPermission('in_out');
+    await _settings.checkLocationPermission('/in_out');
 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
