@@ -321,7 +321,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           });
                           _mapLuncher.launchMap(
                               attendanceRecord: selectedRecord,
-                              isclockin: true);
+                              isclockin: false);
                         },
                         child: const Text(
                           "View Map",
