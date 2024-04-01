@@ -109,7 +109,7 @@ class _InOutPageState extends State<InOutPage> {
                 : _homeController.isClockOut.isTrue
                     ? 'Have a great day at work!'
                     : 'Begin another day by clocking in.',
-            style: const TextStyle(color: gray, fontSize: 13),
+            style: const TextStyle(color: gray, fontSize: 14),
           ),
           const SizedBox(height: 8),
           Row(
@@ -267,14 +267,14 @@ class _InOutPageState extends State<InOutPage> {
                 padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
                   'Clock In',
-                  style: TextStyle(color: gray, fontSize: 13),
+                  style: TextStyle(color: gray, fontSize: 14),
                 ),
               ),
               Text(
                 _dateTimeUtils.formatTime(
                     dateTime: _homeController.attendance.value.clockInAt),
                 style: const TextStyle(
-                    color: gray, fontSize: 13, fontWeight: FontWeight.w500),
+                    color: gray, fontSize: 14, fontWeight: FontWeight.w500),
               ),
               Visibility(
                 visible: _timeEntriesController.hasPrevAttendance.isTrue,
@@ -283,7 +283,7 @@ class _InOutPageState extends State<InOutPage> {
                       dateTime: _timeEntriesController
                           .prevAttendance.value.clockInAt),
                   style: const TextStyle(
-                      color: gray, fontSize: 13, fontWeight: FontWeight.w500),
+                      color: gray, fontSize: 14, fontWeight: FontWeight.w500),
                 ),
               ),
             ],
@@ -296,14 +296,14 @@ class _InOutPageState extends State<InOutPage> {
                 padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
                   'Clock Out',
-                  style: TextStyle(color: gray, fontSize: 13),
+                  style: TextStyle(color: gray, fontSize: 14),
                 ),
               ),
               Text(
                 _dateTimeUtils.formatTime(
                     dateTime: _homeController.attendance.value.clockOutAt),
                 style: const TextStyle(
-                    color: gray, fontSize: 13, fontWeight: FontWeight.w500),
+                    color: gray, fontSize: 14, fontWeight: FontWeight.w500),
               ),
               Visibility(
                 visible: _timeEntriesController.hasPrevAttendance.isTrue,
@@ -312,7 +312,7 @@ class _InOutPageState extends State<InOutPage> {
                       dateTime: _timeEntriesController
                           .prevAttendance.value.clockOutAt),
                   style: const TextStyle(
-                      color: gray, fontSize: 13, fontWeight: FontWeight.w500),
+                      color: gray, fontSize: 14, fontWeight: FontWeight.w500),
                 ),
               ),
             ],

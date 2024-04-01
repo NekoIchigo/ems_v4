@@ -209,7 +209,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 ],
                 decoration: const InputDecoration(
                   labelText: 'Enter temperature in °C',
-                  labelStyle: TextStyle(color: lightGray, fontSize: 13),
+                  labelStyle: TextStyle(color: lightGray, fontSize: 14),
                   hintText: "--.--",
                   prefixIcon: Icon(
                     Icons.thermostat_sharp,

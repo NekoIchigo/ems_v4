@@ -39,7 +39,7 @@ class _ProfileListButtonState extends State<ProfileListButton> {
               widget.label,
               style: const TextStyle(
                 color: gray,
-                fontSize: 13,
+                fontSize: 14,
               ),
             ),
           ),

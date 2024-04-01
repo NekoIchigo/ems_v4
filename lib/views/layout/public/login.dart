@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                         const SizedBox(height: 50),
                         const Text(
                           'Code',
-                          style: TextStyle(color: gray, fontSize: 12),
+                          style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
                         FloatingInput(
@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                         const SizedBox(height: 10),
                         const Text(
                           'Username',
-                          style: TextStyle(color: gray, fontSize: 12),
+                          style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
                         Obx(
@@ -130,7 +130,7 @@ class _LoginState extends State<Login> {
                         ),
                         const Text(
                           'Password',
-                          style: TextStyle(color: gray, fontSize: 12),
+                          style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
                         FloatingInput(
@@ -162,7 +162,7 @@ class _LoginState extends State<Login> {
                               },
                               child: const Text(
                                 'Forgot Password?',
-                                style: TextStyle(color: gray, fontSize: 12),
+                                style: TextStyle(color: gray, fontSize: 13),
                               ),
                             ),
                           ],
@@ -174,7 +174,7 @@ class _LoginState extends State<Login> {
                             child: const Text(
                               "By logging in, you agree to our Privacy Policy and Terms of Use.",
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: gray, fontSize: 12),
+                              style: TextStyle(color: gray, fontSize: 13),
                             ),
                           ),
                         ),
@@ -235,7 +235,7 @@ class _LoginState extends State<Login> {
                                   'Use PIN',
                                   style: TextStyle(
                                     color: gray,
-                                    fontSize: 12,
+                                    fontSize: 13,
                                   ),
                                 ),
                               ),

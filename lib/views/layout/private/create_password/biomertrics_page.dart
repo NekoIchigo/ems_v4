@@ -65,7 +65,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
           const Text(
             "You can turn this feature on or off at any time under My Account.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: primaryBlue, fontSize: 13),
+            style: TextStyle(color: primaryBlue, fontSize: 14),
           ),
           const SizedBox(height: 40),
           // const Text(

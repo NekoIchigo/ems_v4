@@ -48,7 +48,7 @@ class _UnderMaintenanceState extends State<UnderMaintenance> {
               child: const Text(
                 "The page you're looking for is currently under maintenance and will be back soon.",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13, color: darkGray),
+                style: TextStyle(fontSize: 14, color: darkGray),
               ),
             ),
           ],

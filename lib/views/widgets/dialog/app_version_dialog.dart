@@ -41,7 +41,7 @@ class AppVersionDialog extends StatelessWidget {
               child: const Text(
                 "To Continue using the GEMS: Time and Attendance app, you must update the latest version",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: gray, fontSize: 13),
+                style: TextStyle(color: gray, fontSize: 14),
               ),
             ),
             const SizedBox(height: 15),

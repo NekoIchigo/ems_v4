@@ -65,7 +65,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
                   _passwordController
                       .subtitles[_passwordController.pageIndex.value],
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: gray, fontSize: 12),
+                  style: const TextStyle(color: gray, fontSize: 13),
                 ),
               ),
             ),

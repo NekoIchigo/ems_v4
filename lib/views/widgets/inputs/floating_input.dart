@@ -118,7 +118,7 @@ class _FloatingInputState extends State<FloatingInput> {
             const SizedBox(width: 5),
             Text(
               widget.errorText!,
-              style: const TextStyle(color: colorError, fontSize: 12),
+              style: const TextStyle(color: colorError, fontSize: 13),
             )
           ],
         ),

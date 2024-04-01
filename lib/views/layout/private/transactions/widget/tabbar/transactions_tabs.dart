@@ -51,9 +51,9 @@ class _TransactionsTabsState extends State<TransactionsTabs>
           indicatorPadding:
               const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
           tabs: _tabs,
-          labelStyle: const TextStyle(color: Colors.white, fontSize: 13),
+          labelStyle: const TextStyle(color: Colors.white, fontSize: 14),
           unselectedLabelStyle:
-              const TextStyle(color: bgPrimaryBlue, fontSize: 13),
+              const TextStyle(color: bgPrimaryBlue, fontSize: 14),
           indicator: BoxDecoration(
             color: bgPrimaryBlue,
             borderRadius: BorderRadius.circular(20),

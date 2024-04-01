@@ -96,7 +96,7 @@ class _PINLoginState extends State<PINLogin> {
                     const Center(
                       child: Text(
                         'Enter your 6-digit PIN',
-                        style: TextStyle(color: gray, fontSize: 12),
+                        style: TextStyle(color: gray, fontSize: 13),
                       ),
                     ),
                     Center(
@@ -115,7 +115,7 @@ class _PINLoginState extends State<PINLogin> {
                           "Not your account? ",
                           style: TextStyle(
                             color: gray,
-                            fontSize: 12,
+                            fontSize: 13,
                           ),
                         ),
                         TextButton(
@@ -133,7 +133,7 @@ class _PINLoginState extends State<PINLogin> {
                             'Switch now',
                             style: TextStyle(
                               color: primaryBlue,
-                              fontSize: 12,
+                              fontSize: 13,
                             ),
                           ),
                         ),
@@ -144,7 +144,7 @@ class _PINLoginState extends State<PINLogin> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: gray,
-                              fontSize: 12,
+                              fontSize: 13,
                             ),
                           ),
                         ),
@@ -157,7 +157,7 @@ class _PINLoginState extends State<PINLogin> {
                           },
                           child: const Text(
                             'Forgot PIN?',
-                            style: TextStyle(color: gray, fontSize: 12),
+                            style: TextStyle(color: gray, fontSize: 13),
                           ),
                         ),
                       ],
@@ -191,7 +191,7 @@ class _PINLoginState extends State<PINLogin> {
                           'Use password',
                           style: TextStyle(
                             color: gray,
-                            fontSize: 12,
+                            fontSize: 13,
                           ),
                         ),
                       ),

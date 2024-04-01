@@ -78,7 +78,7 @@ class NoInternet extends StatelessWidget {
                       bgColor: bgPrimaryBlue,
                       label: 'Try Again',
                       size: Size(size.width * .55, 30),
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ],
                 ),

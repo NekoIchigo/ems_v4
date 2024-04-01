@@ -46,7 +46,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: colorError,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                   Text(
@@ -54,7 +54,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: colorError,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -66,7 +66,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
             // "Successful ${widget.isClockIn ? "clock-in" : "clock-out"}",
             "Successful ${_homeController.isClockOut.isFalse ? 'clock-out' : 'clock-in'}",
             style: const TextStyle(
-              fontSize: 13,
+              fontSize: 14,
               color: gray,
               fontWeight: FontWeight.bold,
             ),
@@ -74,7 +74,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
           Text(
             DateFormat('MMM d, yyyy, hh:mm a').format(DateTime.now()),
             style: const TextStyle(
-                fontSize: 13, fontWeight: FontWeight.bold, color: gray),
+                fontSize: 14, fontWeight: FontWeight.bold, color: gray),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),

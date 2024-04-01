@@ -34,7 +34,7 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
       children: [
         const Text(
           'Showing records for',
-          style: TextStyle(color: gray, fontSize: 12),
+          style: TextStyle(color: gray, fontSize: 13),
         ),
         Container(
           margin: const EdgeInsets.symmetric(vertical: 10),

@@ -81,7 +81,7 @@ class _UnderlineInputState extends State<UnderlineInput> {
           const SizedBox(width: 5),
           Text(
             widget.errorText!,
-            style: const TextStyle(color: colorError, fontSize: 12),
+            style: const TextStyle(color: colorError, fontSize: 13),
           )
         ],
       );

@@ -114,7 +114,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
               selectedRecord.formattedClockIn ?? "??/??/??/ | ??:??",
               style: const TextStyle(
                 color: primaryBlue,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -127,7 +127,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     'Reports at:',
                     style: TextStyle(
                       color: gray,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                 ),
@@ -136,7 +136,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     _authService.employee!.value.employeeDetails.location.name,
                     style: const TextStyle(
                       color: primaryBlue,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                 )
@@ -151,7 +151,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     selectedRecord.clockedInLocationType ?? "",
                     style: const TextStyle(
                       color: gray,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                 ),
@@ -171,7 +171,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         style: TextStyle(
                           color: primaryBlue,
                           decoration: TextDecoration.underline,
-                          fontSize: 13,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -179,7 +179,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       selectedRecord.clockedInLocationSetting ?? "",
                       style: const TextStyle(
                         color: primaryBlue,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -195,7 +195,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     'GPS Location:',
                     style: TextStyle(
                       color: gray,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                 ),
@@ -204,7 +204,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     selectedRecord.clockedInLocation ?? "",
                     style: const TextStyle(
                       color: primaryBlue,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                 )
@@ -221,7 +221,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       'Health Check:',
                       style: TextStyle(
                         color: gray,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -237,7 +237,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       style: TextStyle(
                         color: primaryBlue,
                         decoration: TextDecoration.underline,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   )
@@ -270,7 +270,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                 selectedRecord.formattedClockOut ?? "??/??/??/ | ??:??",
                 style: const TextStyle(
                   color: primaryBlue,
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -283,7 +283,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       'Reports at:',
                       style: TextStyle(
                         color: gray,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -293,7 +293,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           .employee!.value.employeeDetails.location.name,
                       style: const TextStyle(
                         color: primaryBlue,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   )
@@ -308,7 +308,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       selectedRecord.clockedOutLocationType ?? "",
                       style: const TextStyle(
                         color: gray,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -328,7 +328,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           style: TextStyle(
                             color: primaryBlue,
                             decoration: TextDecoration.underline,
-                            fontSize: 13,
+                            fontSize: 14,
                           ),
                         ),
                       ),
@@ -340,7 +340,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           style: const TextStyle(
                             color: primaryBlue,
                             decoration: TextDecoration.underline,
-                            fontSize: 13,
+                            fontSize: 14,
                           ),
                         ),
                       ),
@@ -357,7 +357,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       'GPS Location:',
                       style: TextStyle(
                         color: gray,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -366,7 +366,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       selectedRecord.clockedOutLocation ?? "",
                       style: const TextStyle(
                         color: primaryBlue,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   )

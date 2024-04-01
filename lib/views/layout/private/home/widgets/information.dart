@@ -88,14 +88,14 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     style: TextStyle(
                       decoration: TextDecoration.underline,
                       color: gray,
-                      fontSize: 12,
+                      fontSize: 13,
                     ),
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   _homeController.currentLocation.value,
-                  style: const TextStyle(color: gray, fontSize: 13),
+                  style: const TextStyle(color: gray, fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
@@ -106,9 +106,9 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     hintText: "Select your reason/purpose here",
                     errorText: reasonError,
                     textStyle:
-                        const TextStyle(color: primaryBlue, fontSize: 12),
+                        const TextStyle(color: primaryBlue, fontSize: 13),
                     inputDecorationTheme: const InputDecorationTheme(
-                      hintStyle: TextStyle(color: primaryBlue, fontSize: 12),
+                      hintStyle: TextStyle(color: primaryBlue, fontSize: 13),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
@@ -136,7 +136,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                         label: value,
                         labelWidget: Text(
                           value,
-                          style: const TextStyle(fontSize: 13),
+                          style: const TextStyle(fontSize: 14),
                         ),
                         style: const ButtonStyle(
                           foregroundColor:
@@ -169,7 +169,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       ],
                     ),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: gray, fontSize: 12),
+                    style: const TextStyle(color: gray, fontSize: 13),
                   ),
                 ),
                 bottomButtons(size),
@@ -198,7 +198,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     'How are you feeling today?',
                     style: TextStyle(
                       color: gray,
-                      fontSize: 13,
+                      fontSize: 14,
                       // fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -237,7 +237,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             child: Text(
                               "Healthy",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 13,
                                 color: gray,
                               ),
                             ),
@@ -282,7 +282,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             "Sick",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 13,
                               color: gray,
                             ),
                           ),

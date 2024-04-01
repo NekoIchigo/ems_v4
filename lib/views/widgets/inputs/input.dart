@@ -81,7 +81,7 @@ class _InputState extends State<Input> {
               borderRadius: BorderRadius.circular(5),
             ),
             labelText: widget.hintText,
-            labelStyle: const TextStyle(color: gray, fontSize: 13),
+            labelStyle: const TextStyle(color: gray, fontSize: 14),
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? InkWell(
@@ -119,7 +119,7 @@ class _InputState extends State<Input> {
             widget.errorText!,
             style: const TextStyle(
               color: colorError,
-              fontSize: 12,
+              fontSize: 13,
             ),
           )
         ],

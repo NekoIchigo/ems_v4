@@ -113,7 +113,7 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                           ? 'Try Again'
                           : 'Update location settings',
                       size: Size(size.width * .55, 30),
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ],
                 ),

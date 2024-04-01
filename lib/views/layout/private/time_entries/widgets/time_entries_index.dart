@@ -73,7 +73,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
           children: [
             const Text(
               'Showing records for',
-              style: TextStyle(color: gray, fontSize: 12),
+              style: TextStyle(color: gray, fontSize: 13),
             ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -247,7 +247,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                   style: const TextStyle(
                     color: gray,
                     fontWeight: FontWeight.bold,
-                    fontSize: 13,
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -257,7 +257,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   color: gray,
-                  fontSize: 13,
+                  fontSize: 14,
                 ),
               )
             ],

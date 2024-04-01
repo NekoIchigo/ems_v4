@@ -34,7 +34,7 @@ class MaintenanceDialog extends StatelessWidget {
               child: const Text(
                 "The page you're looking for is currently under maintenance and will be back soon.",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: gray, fontSize: 13),
+                style: TextStyle(color: gray, fontSize: 14),
               ),
             ),
           ],
