@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/app_version_dialog.dart';
-import 'package:ems_v4/views/widgets/dialog/maintenance_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -69,13 +68,14 @@ class SettingsController extends GetxController {
           isMaintenance.value =
               result['data']['under_maintenance'] == 1 ? true : false;
           if (isMaintenance.isTrue) {
-            showDialog(
-              context: navigatorKey.currentContext!,
-              barrierDismissible: false,
-              builder: (context) {
-                return const MaintenanceDialog();
-              },
-            );
+            navigatorKey.currentContext!.go('/maintenance');
+            // showDialog(
+            //   context: navigatorKey.currentContext!,
+            //   barrierDismissible: false,
+            //   builder: (context) {
+            //     return const MaintenanceDialog();
+            //   },
+            // );
           }
         }
 

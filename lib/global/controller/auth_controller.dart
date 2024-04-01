@@ -15,7 +15,7 @@ import 'package:go_router/go_router.dart';
 
 class AuthController extends GetxController {
   late SharedPreferences _localStorage;
-  late final LocalAuthentication auth;
+  final LocalAuthentication auth = LocalAuthentication();
   final ApiCall apiCall = ApiCall();
   String? userEmail;
 
@@ -32,7 +32,6 @@ class AuthController extends GetxController {
 
   Future<void> initAuth() async {
     _localStorage = await SharedPreferences.getInstance();
-    auth = LocalAuthentication();
     token = _localStorage.getString('token');
     setLocalAuth();
     if (token != null) {
