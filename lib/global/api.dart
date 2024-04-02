@@ -137,7 +137,6 @@ class ApiCall {
           navigatorKey.currentContext!.go('/no-internet', extra: currentPath);
         });
       } else if (showErrorDialog) {
-        if (error.toString().contains('html')) {}
         showDialog(
           context: navigatorKey.currentContext!,
           builder: (context) {
