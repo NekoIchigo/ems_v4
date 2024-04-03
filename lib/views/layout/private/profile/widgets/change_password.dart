@@ -62,6 +62,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       isPassword: true,
                       textController: _currentPassword,
                       labelColor: primaryBlue,
+                      hintText: 'Enter current password',
                       onChanged: (value) {
                         setState(() {
                           _currentPasswordError = null;
@@ -92,6 +93,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     isPassword: true,
                     textController: _newPassword,
                     labelColor: primaryBlue,
+                    hintText: "Enter new password",
                     // errorText: _newPasswordError,
                     onChanged: (value) {
                       setState(() {
@@ -122,6 +124,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     isPassword: true,
                     textController: _confirmPassword,
                     labelColor: primaryBlue,
+                    hintText: "Re-enter new password",
                     // errorText: _confirmPasswordError,
                     onChanged: (value) {
                       setState(() {

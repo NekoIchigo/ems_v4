@@ -61,6 +61,7 @@ class _NewPasswordState extends State<NewPassword> {
               });
             },
             validator: (p0) {},
+            hintText: "Enter new password",
           ),
           FloatingInput(
             label: 'Confirm password',
@@ -71,6 +72,7 @@ class _NewPasswordState extends State<NewPassword> {
               _createPasswordController.confirmPassword.value = value;
             },
             validator: (p0) {},
+            hintText: "Re-enter password",
           ),
           const SizedBox(height: 20),
           const PasswordValidation(),

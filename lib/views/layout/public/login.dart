@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/utils/web_view_launcher.dart';
 
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
@@ -94,6 +95,7 @@ class _LoginState extends State<Login> {
                               }
                             });
                           },
+                          hintText: 'Enter code',
                         ),
                         const SizedBox(height: 10),
                         const Text(
@@ -126,6 +128,7 @@ class _LoginState extends State<Login> {
                                 }
                               });
                             },
+                            hintText: 'Enter username',
                           ),
                         ),
                         const Text(
@@ -152,6 +155,7 @@ class _LoginState extends State<Login> {
                               }
                             });
                           },
+                          hintText: 'Enter password',
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -171,10 +175,39 @@ class _LoginState extends State<Login> {
                           child: Container(
                             margin: const EdgeInsets.only(top: 20),
                             width: size.width * .55,
-                            child: const Text(
-                              "By logging in, you agree to our Privacy Policy and Terms of Use.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: gray, fontSize: 13),
+                            child: Wrap(
+                              children: [
+                                const Text(
+                                  "By logging in, you agree to our ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: gray, fontSize: 13),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    webViewLauncher(
+                                        url: '${globalBaseUrl}privacy-policy');
+                                  },
+                                  child: const Text(
+                                    "Privacy Policy ",
+                                    style: TextStyle(color: gray, fontSize: 13),
+                                  ),
+                                ),
+                                const Text(
+                                  "and ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: gray, fontSize: 13),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    webViewLauncher(
+                                        url: '${globalBaseUrl}terms-of-use');
+                                  },
+                                  child: const Text(
+                                    "Terms of Use.",
+                                    style: TextStyle(color: gray, fontSize: 13),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),

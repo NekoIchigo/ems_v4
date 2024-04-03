@@ -8,6 +8,7 @@ class FloatingInput extends StatefulWidget {
   final TextEditingController textController;
   final String? errorText;
   final double? borderRadius;
+  final String? hintText;
   final Color? iconColor;
   final Function(String) onChanged;
   final Function()? onIconPressed;
@@ -25,6 +26,7 @@ class FloatingInput extends StatefulWidget {
     this.iconColor,
     this.onIconPressed,
     required this.validator,
+    this.hintText,
   });
 
   @override
@@ -61,6 +63,10 @@ class _FloatingInputState extends State<FloatingInput> {
         style: const TextStyle(color: gray, fontSize: 15),
         onChanged: widget.onChanged,
         decoration: InputDecoration(
+          // labelText: widget.label,
+          // labelStyle: const TextStyle(color: gray),
+          hintText: widget.hintText, // Set hintText directly here
+          hintStyle: TextStyle(color: lightGray),
           error: hasError(),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -72,8 +78,6 @@ class _FloatingInputState extends State<FloatingInput> {
           focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: primaryBlue),
               borderRadius: BorderRadius.circular(widget.borderRadius ?? 5)),
-          labelText: widget.label,
-          labelStyle: const TextStyle(color: gray),
           suffixIcon: !widget.isPassword
               ? InkWell(
                   onTap: widget.onIconPressed,
