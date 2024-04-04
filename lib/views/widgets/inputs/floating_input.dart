@@ -66,7 +66,7 @@ class _FloatingInputState extends State<FloatingInput> {
           // labelText: widget.label,
           // labelStyle: const TextStyle(color: gray),
           hintText: widget.hintText, // Set hintText directly here
-          hintStyle: TextStyle(color: lightGray),
+          hintStyle: const TextStyle(color: lightGray, fontSize: 13),
           error: hasError(),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 10),

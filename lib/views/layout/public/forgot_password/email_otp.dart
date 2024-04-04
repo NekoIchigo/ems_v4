@@ -41,6 +41,7 @@ class _EmailOTPState extends State<EmailOTP> {
             icon: Icons.email_outlined,
             textController: _emailController,
             errorText: errorText,
+            hintText: 'example@email.com',
             onChanged: (value) {
               setState(() {
                 errorText = null;
