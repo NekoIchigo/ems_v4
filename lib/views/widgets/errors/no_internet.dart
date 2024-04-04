@@ -41,23 +41,24 @@ class NoInternet extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: size.height * .15),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Image.asset(
-                          'assets/images/no_internet.jpg',
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
                     const Text(
                       'No connection',
                       style: TextStyle(
                         color: darkGray,
                         fontSize: 15,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 30),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 25.0),
+                        child: Image.asset(
+                          'assets/images/no_internet.png',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: size.width * .8,
                       child: const Text(
@@ -66,7 +67,6 @@ class NoInternet extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 15,
                           color: darkGray,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

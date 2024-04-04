@@ -33,6 +33,15 @@ class Maintenance extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: size.height * .15),
+                    const Text(
+                      'Under Maintenance',
+                      style: TextStyle(
+                        color: darkGray,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
@@ -42,14 +51,6 @@ class Maintenance extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      'Under Maintenance',
-                      style: TextStyle(
-                        color: darkGray,
-                        fontSize: 15,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
                     SizedBox(
                       width: size.width * .8,
                       child: const Text(
@@ -58,7 +59,6 @@ class Maintenance extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 15,
                           color: darkGray,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

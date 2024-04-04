@@ -51,6 +51,16 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: size.height * .15),
+                    const Text(
+                      textAlign: TextAlign.center,
+                      'To continue, turn on your device’s location settings:',
+                      style: TextStyle(
+                        color: darkGray,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
@@ -60,15 +70,6 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      textAlign: TextAlign.center,
-                      'GEMS would like to access your location settings:',
-                      style: TextStyle(
-                        color: darkGray,
-                        fontSize: 15,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
                     SizedBox(
                       width: size.width * .8,
                       child: Text(
@@ -77,7 +78,6 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                             : 'Enable location permission',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontWeight: FontWeight.w600,
                           fontSize: 15,
                           color: darkGray,
                         ),
