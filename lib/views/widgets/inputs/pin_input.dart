@@ -89,9 +89,6 @@ class _PinInputState extends State<PinInput> {
                 errorTextStyle:
                     const TextStyle(fontSize: 13, color: colorError),
                 focusNode: focusNode,
-                androidSmsAutofillMethod:
-                    AndroidSmsAutofillMethod.smsUserConsentApi,
-                listenForMultipleSmsOnAndroid: true,
                 defaultPinTheme: defaultPinTheme,
                 separatorBuilder: (index) => const SizedBox(width: 8),
                 validator: (value) {

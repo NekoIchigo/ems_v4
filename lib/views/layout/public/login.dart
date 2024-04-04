@@ -176,6 +176,7 @@ class _LoginState extends State<Login> {
                             margin: const EdgeInsets.only(top: 20),
                             width: size.width * .55,
                             child: Wrap(
+                              alignment: WrapAlignment.center,
                               children: [
                                 const Text(
                                   "By logging in, you agree to our ",
