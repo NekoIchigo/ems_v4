@@ -21,6 +21,7 @@ class SettingsController extends GetxController {
   RxBool isMaintenance = false.obs,
       isLoading = false.obs,
       isSettingsOpen = false.obs,
+      hasLocation = false.obs,
       hasUpdate = false.obs;
   Rx<DateTime> currentTime = DateTime.now().obs;
 
@@ -107,6 +108,7 @@ class SettingsController extends GetxController {
 
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
+      hasLocation.value = true;
       firstCheck = false;
       _localStorage.setBool('first_loc_check', false);
     }
@@ -124,21 +126,28 @@ class SettingsController extends GetxController {
         if (result[0]) {
           permission = await Geolocator.requestPermission();
           if (permission == LocationPermission.denied) {
-            await Future.delayed(const Duration(seconds: 1));
+            hasLocation.value = false;
+            await Future.delayed(const Duration(seconds: 2));
             checkLocationPermission('/');
           }
 
           if (permission == LocationPermission.deniedForever) {
+            hasLocation.value = false;
             navigatorKey.currentContext!.go('/no-permission',
                 extra: {'path': path, 'type': 'no_permission'});
           }
           if (permission == LocationPermission.whileInUse ||
               permission == LocationPermission.always) {
+            hasLocation.value = true;
             firstCheck = false;
             _localStorage.setBool('first_loc_check', false);
+            if (isMaintenance.isFalse) {
+              navigatorKey.currentContext?.go('/login');
+            }
           }
         } else {
-          await Future.delayed(const Duration(seconds: 1));
+          hasLocation.value = false;
+          await Future.delayed(const Duration(seconds: 2));
           checkLocationPermission('/');
         }
       } else {
@@ -148,6 +157,7 @@ class SettingsController extends GetxController {
           // Android's shouldShowRequestPermissionRationale
           // returned true. According to Android guidelines
           // your App should show an explanatory UI now.
+          hasLocation.value = false;
           navigatorKey.currentContext!.go('/no-permission',
               extra: {'path': path, 'type': 'no_permission'});
           return Future.error('Location permissions are denied');
@@ -155,6 +165,7 @@ class SettingsController extends GetxController {
       }
       if (permission == LocationPermission.deniedForever) {
         // Permissions are denied forever, handle appropriately.
+        hasLocation.value = false;
         navigatorKey.currentContext!.go('/no-permission',
             extra: {'path': path, 'type': 'no_permission'});
         return Future.error(

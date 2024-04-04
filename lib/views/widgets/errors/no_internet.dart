@@ -32,7 +32,7 @@ class NoInternet extends StatelessWidget {
                 bottom: 0,
                 child: Image.asset(
                   'assets/images/login_bg_image.jpg',
-                  opacity: const AlwaysStoppedAnimation(0.6),
+                  opacity: const AlwaysStoppedAnimation(0.5),
                 ),
               ),
               Padding(
@@ -49,7 +49,7 @@ class NoInternet extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
