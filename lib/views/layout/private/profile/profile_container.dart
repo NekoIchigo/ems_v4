@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/utils/web_view_launcher.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_list_button.dart';
@@ -20,6 +21,7 @@ class ProfileContainer extends StatefulWidget {
 class _ProfileContainerState extends State<ProfileContainer> {
   late SharedPreferences _localStorage;
   final AuthController authService = Get.find<AuthController>();
+  final SettingsController _settings = Get.find<SettingsController>();
   bool switchVal = true;
 
   @override
@@ -142,6 +144,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 size: Size(size.width, 30),
                 bgColor: bgPrimaryBlue,
               ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              "Version: ${_settings.appVersion.value}",
+              style: const TextStyle(fontSize: 13, color: gray),
             ),
           ],
         ),

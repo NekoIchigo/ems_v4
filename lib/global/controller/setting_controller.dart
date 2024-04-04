@@ -16,7 +16,7 @@ class SettingsController extends GetxController {
   final ApiCall apiCall = ApiCall();
   final _checker = StoreVersionChecker();
 
-  RxString currentPath = ''.obs;
+  RxString currentPath = ''.obs, appVersion = ''.obs;
 
   RxBool isMaintenance = false.obs,
       isLoading = false.obs,
@@ -47,6 +47,7 @@ class SettingsController extends GetxController {
 
   Future checkAppVersionMaintenance() async {
     _checker.checkUpdate().then((value) async {
+      appVersion.value = value.currentVersion;
       if (value.canUpdate) {
         isMaintenance.value = true;
         showDialog(
