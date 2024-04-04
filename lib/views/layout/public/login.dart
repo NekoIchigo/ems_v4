@@ -190,7 +190,11 @@ class _LoginState extends State<Login> {
                                   },
                                   child: const Text(
                                     "Privacy Policy ",
-                                    style: TextStyle(color: gray, fontSize: 13),
+                                    style: TextStyle(
+                                      color: gray,
+                                      fontSize: 13,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ),
                                 const Text(
@@ -205,7 +209,11 @@ class _LoginState extends State<Login> {
                                   },
                                   child: const Text(
                                     "Terms of Use.",
-                                    style: TextStyle(color: gray, fontSize: 13),
+                                    style: TextStyle(
+                                      color: gray,
+                                      fontSize: 13,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 )
                               ],
