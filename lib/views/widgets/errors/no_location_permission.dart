@@ -65,7 +65,7 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Image.asset(
-                          'assets/images/no_location_permission.jpg',
+                          'assets/images/no_location_permission.png',
                           width: size.width * .8,
                         ),
                       ),
@@ -115,6 +115,18 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                           : 'Update location settings',
                       size: Size(size.width * .55, 30),
                       fontSize: 14,
+                    ),
+                    RoundedCustomButton(
+                      onPressed: () {
+                        if (extraData['path'] != '/') {
+                          context.go(extraData['path']);
+                        } else {
+                          context.go('/login');
+                        }
+                      },
+                      label: "Not now",
+                      bgColor: gray,
+                      size: Size(size.width * .55, 30),
                     ),
                   ],
                 ),

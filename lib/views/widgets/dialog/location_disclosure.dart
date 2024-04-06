@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,7 +13,10 @@ class LocationDisclosure extends StatelessWidget {
       child: Container(
         width: size.width * .8,
         height: size.height * .6,
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+        padding: const EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 10,
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -33,8 +37,9 @@ class LocationDisclosure extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Image.asset(
-                'assets/images/no_location_permission.jpg',
-                width: 250,
+                'assets/images/no_location_permission.png',
+                height: 200,
+                fit: BoxFit.fitWidth,
               ),
               const SizedBox(height: 20),
               SizedBox(
@@ -46,30 +51,21 @@ class LocationDisclosure extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      context.pop([false]);
-                    },
-                    child: const Text(
-                      "DENY",
-                      style: TextStyle(
-                          color: darkGray, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.pop([true]);
-                    },
-                    child: const Text(
-                      "ACCEPT",
-                      style: TextStyle(
-                          color: bgPrimaryBlue, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ],
+              RoundedCustomButton(
+                onPressed: () {
+                  context.pop([true]);
+                },
+                label: "Allow location access",
+                bgColor: bgPrimaryBlue,
+                size: Size(size.width * .65, 30),
+              ),
+              RoundedCustomButton(
+                onPressed: () {
+                  context.pop([false]);
+                },
+                label: "Not now",
+                bgColor: gray,
+                size: Size(size.width * .65, 30),
               ),
             ],
           ),

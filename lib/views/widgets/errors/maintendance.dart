@@ -46,7 +46,7 @@ class Maintenance extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Image.asset(
-                          'assets/images/maintenance.jpg',
+                          'assets/images/under-maintenance.png',
                           width: size.width * .8,
                         ),
                       ),

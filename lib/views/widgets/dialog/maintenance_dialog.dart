@@ -28,7 +28,7 @@ class MaintenanceDialog extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Image.asset('assets/images/maintenance.jpg'),
+            Image.asset('assets/images/maintenance.png'),
             SizedBox(
               width: size.width * .7,
               child: const Text(

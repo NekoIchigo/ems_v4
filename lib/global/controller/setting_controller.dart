@@ -126,31 +126,11 @@ class SettingsController extends GetxController {
 
         if (result[0]) {
           permission = await Geolocator.requestPermission();
-          if (permission == LocationPermission.denied) {
-            hasLocation.value = false;
-            await Future.delayed(const Duration(seconds: 2));
-            checkLocationPermission('/');
-          }
-
-          if (permission == LocationPermission.deniedForever) {
-            hasLocation.value = false;
-            navigatorKey.currentContext!.go('/no-permission',
-                extra: {'path': path, 'type': 'no_permission'});
-          }
-          if (permission == LocationPermission.whileInUse ||
-              permission == LocationPermission.always) {
-            hasLocation.value = true;
-            firstCheck = false;
-            _localStorage.setBool('first_loc_check', false);
-            if (isMaintenance.isFalse) {
-              navigatorKey.currentContext?.go('/login');
-            }
-          }
-        } else {
-          hasLocation.value = false;
-          await Future.delayed(const Duration(seconds: 2));
-          checkLocationPermission('/');
         }
+
+        hasLocation.value = true;
+        firstCheck = false;
+        _localStorage.setBool('first_loc_check', false);
       } else {
         if (permission == LocationPermission.denied) {
           // Permissions are denied, next time you could try

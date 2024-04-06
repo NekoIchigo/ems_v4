@@ -31,11 +31,11 @@ class _SplashScreenState extends State<SplashScreen> {
     await _settings.getServerTime();
     _settings.updateTimeToRealTime();
     await _settings.checkAppVersionMaintenance();
-    await _settings.checkLocationPermission('/');
     await _authService.initAuth();
+    await _settings.checkLocationPermission('/');
 
     Timer(const Duration(seconds: 1), () {
-      if (_settings.isMaintenance.isFalse && _settings.hasLocation.isTrue) {
+      if (_settings.isMaintenance.isFalse) {
         _authService.hasUser.isTrue
             ? _key.currentContext?.go('/pin_login')
             : _key.currentContext?.go('/login');
