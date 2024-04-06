@@ -166,6 +166,8 @@ class TimeEntriesController extends GetxController {
       if (attendances.length > 1) {
         hasPrevAttendance.value = true;
         prevAttendance.value = attendances[1];
+      } else {
+        hasPrevAttendance.value = false;
       }
     } else {
       showDialog(

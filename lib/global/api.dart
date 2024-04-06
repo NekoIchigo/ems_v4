@@ -66,7 +66,16 @@ class ApiCall {
             return http.Response('Request Timeout', 408);
           },
         );
-        return jsonDecode(response.body);
+        var body = jsonDecode(response.body);
+
+        if (body.containsKey('message') &&
+            body['message']
+                .toString()
+                .toLowerCase()
+                .contains('unauthenticated')) {
+          navigatorKey.currentContext!.go('/');
+        }
+        return body;
       }
     } catch (error) {
       if (error is http.ClientException) {
@@ -124,7 +133,15 @@ class ApiCall {
           return http.Response('Request Timeout', 408);
         },
       );
-      return jsonDecode(response.body);
+      var body = jsonDecode(response.body);
+      if (body.containsKey('message') &&
+          body['message']
+              .toString()
+              .toLowerCase()
+              .contains('unauthenticated')) {
+        navigatorKey.currentContext!.go('/');
+      }
+      return body;
     } catch (error) {
       if (error is http.ClientException) {
         String currentPath = path ??

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
+import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/models/company.dart';
 import 'package:ems_v4/models/employee.dart';
 import 'package:ems_v4/router/router.dart';
@@ -15,6 +16,7 @@ import 'package:go_router/go_router.dart';
 
 class AuthController extends GetxController {
   late SharedPreferences _localStorage;
+  final SettingsController _settings = Get.find<SettingsController>();
   final LocalAuthentication auth = LocalAuthentication();
   final ApiCall apiCall = ApiCall();
   String? userEmail;
@@ -97,6 +99,10 @@ class AuthController extends GetxController {
   }
 
   Future login(String email, String password, String code) async {
+    await _settings.checkAppVersionMaintenance();
+    if (_settings.isMaintenance.isTrue) {
+      return;
+    }
     _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
 
@@ -162,6 +168,10 @@ class AuthController extends GetxController {
   }
 
   Future pinAuth(String password) async {
+    await _settings.checkAppVersionMaintenance();
+    if (_settings.isMaintenance.isTrue) {
+      return;
+    }
     _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
 
@@ -238,6 +248,10 @@ class AuthController extends GetxController {
   }
 
   Future<void> localAuthenticate() async {
+    await _settings.checkAppVersionMaintenance();
+    if (_settings.isMaintenance.isTrue) {
+      return;
+    }
     _localStorage = await SharedPreferences.getInstance();
     await setLocalAuth();
     if (isBioEnabled.isTrue) {
