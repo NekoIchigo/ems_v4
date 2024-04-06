@@ -1,5 +1,4 @@
 import 'package:ems_v4/global/controller/auth_controller.dart';
-import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/map_launcher.dart';
 import 'package:ems_v4/models/attendance_record.dart';
@@ -16,20 +15,17 @@ class AttendanceLog extends StatefulWidget {
 
 class _AttendanceLogState extends State<AttendanceLog> {
   late Size size;
-  final TimeEntriesController _timeEntriesController =
-      Get.find<TimeEntriesController>();
+
   final AuthController _authService = Get.find<AuthController>();
   final MapLauncher _mapLuncher = MapLauncher();
   bool isClockIn = false;
-  late int index;
+  late AttendanceRecord selectedRecord;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    index = GoRouterState.of(context).extra! as int;
-
-    final AttendanceRecord selectedRecord =
-        _timeEntriesController.attendances[index];
+    selectedRecord = AttendanceRecord.fromJson(
+        GoRouterState.of(context).extra! as Map<String, dynamic>);
 
     return Container(
       height: size.height,
@@ -40,57 +36,89 @@ class _AttendanceLogState extends State<AttendanceLog> {
       ),
       child: SingleChildScrollView(
         padding: EdgeInsets.zero,
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: size.height * .8,
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              clockInDetails(selectedRecord),
-              clockOutDetails(selectedRecord),
-              Positioned(
-                top: 0,
-                left: 40,
-                child: Container(
-                  color: Colors.white,
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.access_time,
+        child: Column(
+          children: [
+            const SizedBox(height: 13),
+            SizedBox(
+              height: 50,
+              child: Stack(
+                children: [
+                  const Center(
+                    child: Text(
+                      'Time Entries',
+                      style: TextStyle(
                         color: primaryBlue,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      Text(
-                        ' Clock in:',
-                        style: TextStyle(color: primaryBlue),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: size.height * .333,
-                left: 40,
-                child: Visibility(
-                  visible: selectedRecord.clockOutAt != null,
-                  child: Container(
-                    color: Colors.white,
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.access_time_filled,
-                          color: primaryBlue,
-                        ),
-                        Text(
-                          ' Clock out:',
-                          style: TextStyle(color: primaryBlue),
-                        )
-                      ],
                     ),
                   ),
-                ),
+                  Positioned(
+                    top: 0,
+                    right: 15,
+                    child: IconButton(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 15),
+            SizedBox(
+              height: size.height * .8,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  clockInDetails(selectedRecord),
+                  clockOutDetails(selectedRecord),
+                  Positioned(
+                    top: 0,
+                    left: 40,
+                    child: Container(
+                      color: Colors.white,
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.access_time,
+                            color: primaryBlue,
+                          ),
+                          Text(
+                            ' Clock in:',
+                            style: TextStyle(color: primaryBlue),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: size.height * .333,
+                    left: 40,
+                    child: Visibility(
+                      visible: selectedRecord.clockOutAt != null,
+                      child: Container(
+                        color: Colors.white,
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.access_time_filled,
+                              color: primaryBlue,
+                            ),
+                            Text(
+                              ' Clock out:',
+                              style: TextStyle(color: primaryBlue),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -227,10 +255,8 @@ class _AttendanceLogState extends State<AttendanceLog> {
                   ),
                   InkWell(
                     onTap: () {
-                      context.push(
-                        '/time-entries-health',
-                        extra: index,
-                      );
+                      context.push('/time-entries-health',
+                          extra: selectedRecord.toMap());
                     },
                     child: const Text(
                       'View Symptoms',
@@ -313,6 +339,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     ),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InkWell(
                         onTap: () {

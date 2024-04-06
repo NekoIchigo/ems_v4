@@ -206,8 +206,8 @@ class _InOutPageState extends State<InOutPage> {
                           Visibility(
                             visible: _homeController.isLoading.isTrue,
                             child: SizedBox(
-                              width: size.width * .42,
-                              height: size.width * .42,
+                              width: size.width * .44,
+                              height: size.width * .44,
                               child: CircularProgressIndicator(
                                 color: _homeController.isClockOut.isTrue
                                     ? colorError
@@ -252,9 +252,8 @@ class _InOutPageState extends State<InOutPage> {
 
   Widget detailsSection(Size size) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.only(top: 20),
-      height: size.height * .15,
+      margin: const EdgeInsets.only(top: 15),
+      height: size.height * .16,
       width: size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

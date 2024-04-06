@@ -25,7 +25,7 @@ class _NotificationPageState extends State<NotificationPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: size.height * .78, child: const ComingSoon(),
+            height: size.height * .78, child: const Center(child: ComingSoon()),
             // const NotificationContainer(),
           ),
         ],

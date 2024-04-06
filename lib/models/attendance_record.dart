@@ -71,6 +71,8 @@ class AttendanceRecord {
     return {
       'id': id,
       'employee_id': employeeId,
+      'formatted_clock_in_at': formattedClockIn,
+      'formatted_clock_out_at': formattedClockOut,
       'clock_in_at': clockInAt?.toIso8601String(),
       'clock_out_at': clockOutAt?.toIso8601String(),
       'clocked_in_location': clockedInLocation,
