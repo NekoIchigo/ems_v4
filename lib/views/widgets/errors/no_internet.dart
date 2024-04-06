@@ -55,6 +55,7 @@ class NoInternet extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Image.asset(
                           'assets/images/no_internet.png',
+                          width: size.width * .8,
                         ),
                       ),
                     ),

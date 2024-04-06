@@ -17,60 +17,62 @@ class LocationDisclosure extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 10),
-            const Text(
-              'Allow "GEMS" to access your location \n while using the app?',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: gray,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Image.asset(
-              'assets/images/no_location_permission.jpg',
-              width: 250,
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: size.width * .65,
-              child: const Text(
-                "Your current location will be displayed on the map every time you clock in or out. This will be the basis of your work location.",
-                textAlign: TextAlign.justify,
-                style: TextStyle(color: gray, fontSize: 14),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    context.pop([false]);
-                  },
-                  child: const Text(
-                    "DENY",
-                    style:
-                        TextStyle(color: darkGray, fontWeight: FontWeight.w500),
-                  ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10),
+              const Text(
+                'Allow "GEMS" to access your location \n while using the app?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: gray,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
-                TextButton(
-                  onPressed: () {
-                    context.pop([true]);
-                  },
-                  child: const Text(
-                    "ACCEPT",
-                    style: TextStyle(
-                        color: bgPrimaryBlue, fontWeight: FontWeight.w500),
-                  ),
+              ),
+              const SizedBox(height: 20),
+              Image.asset(
+                'assets/images/no_location_permission.jpg',
+                width: 250,
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: size.width * .65,
+                child: const Text(
+                  "Your current location will be displayed on the map every time you clock in or out. This will be the basis of your work location.",
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(color: gray, fontSize: 14),
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      context.pop([false]);
+                    },
+                    child: const Text(
+                      "DENY",
+                      style: TextStyle(
+                          color: darkGray, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.pop([true]);
+                    },
+                    child: const Text(
+                      "ACCEPT",
+                      style: TextStyle(
+                          color: bgPrimaryBlue, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

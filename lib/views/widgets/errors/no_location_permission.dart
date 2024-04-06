@@ -66,6 +66,7 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Image.asset(
                           'assets/images/no_location_permission.jpg',
+                          width: size.width * .8,
                         ),
                       ),
                     ),
