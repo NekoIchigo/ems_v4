@@ -27,12 +27,12 @@ class LocationDisclosure extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               const Text(
-                'Allow "GEMS" to access your location \n while using the app?',
+                'Give "GEMS" to access your precise location',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: gray,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 20),
