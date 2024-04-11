@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 
@@ -55,10 +54,12 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 40),
-                      const Text(
+                      Text(
                         textAlign: TextAlign.center,
-                        "GEMS wouldn't work without knowing your \nprecise location.",
-                        style: TextStyle(
+                        extraData['type'] == 'off' 
+                        ? "GEMS wouldn't work because location \nservice was disabled." 
+                        : "GEMS wouldn't work because location \naccess was not permitted.",
+                        style: const TextStyle(
                           color: darkGray,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -75,19 +76,6 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      SizedBox(
-                        width: size.width * .8,
-                        child: Text(
-                          extraData['type'] == 'off'
-                              ? 'Enable location services'
-                              : 'GEMS needs your precise location to accurately record your location each time you clock in and out.',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: darkGray,
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 50),
                       RoundedCustomButton(
                         onPressed: () async {

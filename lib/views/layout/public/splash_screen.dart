@@ -51,10 +51,10 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Visibility(
-          //   visible: globalBaseUrl.contains('stg'),
-          //   child: const Text("Stg App"),
-          // ),
+          Visibility(
+            visible: globalBaseUrl.contains('stg'),
+            child: const Text("Stg App"),
+          ),
           Center(
             child: SizedBox(
               height: size.height * 0.12,

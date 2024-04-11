@@ -1,4 +1,3 @@
-import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +11,7 @@ class GettingStarted extends StatefulWidget {
 }
 
 class _GettingStartedState extends State<GettingStarted> {
-  final HomeController _homeController = Get.find<HomeController>();
+  // final HomeController _homeController = Get.find<HomeController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
   bool isLoading = true;
@@ -24,7 +23,7 @@ class _GettingStartedState extends State<GettingStarted> {
   }
 
   Future loadFunction() async {
-    await _homeController.checkNewShift();
+    // await _homeController.checkNewShift();
     await _timeEntriesController.getAttendanceList(days: 1);
     await _timeEntriesController.getPreviousClockIn();
     setState(() {

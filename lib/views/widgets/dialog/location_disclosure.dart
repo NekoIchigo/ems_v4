@@ -45,7 +45,7 @@ class LocationDisclosure extends StatelessWidget {
               SizedBox(
                 width: size.width * .65,
                 child: const Text(
-                  "Your current location will be displayed on the map every time you clock in or out. This will be the basis of your work location.",
+                  "GEMS needs your precise location to accurately record your location each time you clock in and out.",
                   textAlign: TextAlign.justify,
                   style: TextStyle(color: gray, fontSize: 14),
                 ),

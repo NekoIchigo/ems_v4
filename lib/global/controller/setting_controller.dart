@@ -54,9 +54,12 @@ class SettingsController extends GetxController {
           context: navigatorKey.currentContext!,
           barrierDismissible: false,
           builder: (context) {
-            return AppVersionDialog(
-              url: value.appURL,
-              version: value.newVersion,
+            return PopScope(
+              canPop: false,
+              child: AppVersionDialog(
+                url: value.appURL,
+                version: value.newVersion,
+              ),
             );
           },
         );

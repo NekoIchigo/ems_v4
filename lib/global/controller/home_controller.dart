@@ -46,10 +46,9 @@ class HomeController extends GetxController {
     isLoading.value = true;
 
     var result = await apiCall.getRequest(
-      apiUrl: '/check-shift',
+      apiUrl: '/check-shift/1',
       catchError: (error) => isLoading.value = false,
     );
-
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
       isNewShift.value = data['is_new_shift'];
@@ -97,7 +96,7 @@ class HomeController extends GetxController {
         'latitude': position.latitude,
         'longitude': position.longitude,
       },
-      apiUrl: '/calculate-location',
+      apiUrl: '/calculate-location/${_authService.employee!.value.id}',
       catchError: (error) => isLoading.value = false,
     );
 
@@ -143,7 +142,7 @@ class HomeController extends GetxController {
         'latitude': position.latitude,
         'longitude': position.longitude,
       },
-      apiUrl: '/calculate-location',
+      apiUrl: '/calculate-location/${_authService.employee!.value.id}',
       catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {

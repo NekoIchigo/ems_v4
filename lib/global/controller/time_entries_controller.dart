@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/api.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 
 class TimeEntriesController extends GetxController {
   final ApiCall apiCall = ApiCall();
+  final AuthController _authService = Get.find<AuthController>();
   RxInt attendanceIndex = 0.obs;
 
   RxBool hasClose = false.obs,
@@ -40,7 +42,7 @@ class TimeEntriesController extends GetxController {
       List<String> fromDate = startDate!.toString().split(" ");
       List<String> toDate = endDate!.toString().split(" ");
       result = await apiCall.getRequest(
-        apiUrl: '/show-dtrs',
+        apiUrl: "/show-dtrs/${_authService.employee!.value.id}",
         parameters: {
           'days': days,
           'page': currentPage.value,
@@ -51,7 +53,7 @@ class TimeEntriesController extends GetxController {
       );
     } else {
       result = await apiCall.getRequest(
-        apiUrl: '/show-dtrs',
+        apiUrl: '/show-dtrs/${_authService.employee!.value.id}',
         parameters: {'days': days, 'page': 1},
         catchError: (error) => isLoading.value = false,
       );
@@ -101,7 +103,7 @@ class TimeEntriesController extends GetxController {
       List<String> fromDate = startDate!.toString().split(" ");
       List<String> toDate = endDate!.toString().split(" ");
       result = await apiCall.getRequest(
-        apiUrl: '/show-dtrs',
+        apiUrl: '/show-dtrs/${_authService.employee!.value.id}',
         parameters: {
           'days': days,
           'page': currentPage.value,
@@ -112,7 +114,7 @@ class TimeEntriesController extends GetxController {
       );
     } else {
       result = await apiCall.getRequest(
-        apiUrl: '/show-dtrs',
+        apiUrl: '/show-dtrs/${_authService.employee!.value.id}',
         parameters: {'days': days, 'page': currentPage.value},
         catchError: (error) => isLoading.value = false,
       );
@@ -148,12 +150,12 @@ class TimeEntriesController extends GetxController {
     isListLoading.value = true;
 
     var result = await apiCall.getRequest(
-      apiUrl: '/show-dtrs',
+      apiUrl: '/show-dtrs/${_authService.employee!.value.id}',
       parameters: {'days': 1, 'page': 1},
       catchError: (error) => isLoading.value = false,
     );
 
-    if (result['success']) {
+    if (result.containsKey('success') && result['success']) {
       paginateLength.value = result['data']['last_page'];
       currentPage.value = result['data']['current_page'];
 
