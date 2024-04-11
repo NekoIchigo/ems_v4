@@ -117,7 +117,8 @@ class SettingsController extends GetxController {
       _localStorage.setBool('first_loc_check', false);
     }
 
-    if (permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
       if (firstCheck) {
         List result = await showDialog(
           context: navigatorKey.currentContext!,
@@ -146,14 +147,14 @@ class SettingsController extends GetxController {
               extra: {'path': path, 'type': 'no_permission'});
           return Future.error('Location permissions are denied');
         }
-      }
-      if (permission == LocationPermission.deniedForever) {
-        // Permissions are denied forever, handle appropriately.
-        hasLocation.value = false;
-        navigatorKey.currentContext!.go('/no-permission',
-            extra: {'path': path, 'type': 'no_permission'});
-        return Future.error(
-            'Location permissions are permanently denied, we cannot request permissions.');
+        if (permission == LocationPermission.deniedForever) {
+          // Permissions are denied forever, handle appropriately.
+          hasLocation.value = false;
+          navigatorKey.currentContext!.go('/no-permission',
+              extra: {'path': path, 'type': 'no_permission'});
+          return Future.error(
+              'Location permissions are permanently denied, we cannot request permissions.');
+        }
       }
     }
   }

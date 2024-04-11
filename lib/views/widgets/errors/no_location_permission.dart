@@ -53,29 +53,27 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 100),
                       Text(
                         textAlign: TextAlign.center,
-                        extraData['type'] == 'off' 
-                        ? "GEMS wouldn't work because location \nservice was disabled." 
-                        : "GEMS wouldn't work because location \naccess was not permitted.",
+                        extraData['type'] == 'off'
+                            ? "GEMS wouldn't work because location \nservice was disabled."
+                            : "GEMS wouldn't work because location \naccess was not permitted.",
                         style: const TextStyle(
                           color: darkGray,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(height: 20),
                       Center(
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 25.0),
+                          padding: const EdgeInsets.only(top: 10.0),
                           child: Image.asset(
                             'assets/images/no_location_permission.png',
                             width: size.width * .8,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                       const SizedBox(height: 50),
                       RoundedCustomButton(
                         onPressed: () async {
@@ -89,7 +87,7 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                         label: isSettingsOpen
                             ? 'Try Again'
                             : extraData['type'] == 'off'
-                                ? 'Enable GPS location'
+                                ? 'Enable GPS'
                                 : 'Enable location permission',
                         size: Size(size.width * .60, 30),
                         fontSize: 14,
