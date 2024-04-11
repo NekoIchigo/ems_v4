@@ -43,19 +43,21 @@ class _OTPInputPageState extends State<OTPInputPage> {
             errorText: otpError,
           ),
           const SizedBox(height: 20),
-          RoundedCustomButton(
-            onPressed: () async {
-              var error =
-                  await _passwordController.verifyOTP(_otpController.text);
-              // _passwordController.animateToThirdPage();
-              otpError = error['message'];
-              setState(() {});
-            },
-            isLoading: _passwordController.isLoading.value,
-            label:
-                _passwordController.isLoading.isTrue ? "Verifying" : "Verify",
-            size: Size(size.width * .9, 30),
-            bgColor: bgPrimaryBlue,
+          Obx(
+            () => RoundedCustomButton(
+              onPressed: () async {
+                var error =
+                    await _passwordController.verifyOTP(_otpController.text);
+                // _passwordController.animateToThirdPage();
+                otpError = error['message'];
+                setState(() {});
+              },
+              isLoading: _passwordController.isLoading.value,
+              label:
+                  _passwordController.isLoading.isTrue ? "Verifying" : "Verify",
+              size: Size(size.width * .9, 30),
+              bgColor: bgPrimaryBlue,
+            ),
           ),
         ],
       ),

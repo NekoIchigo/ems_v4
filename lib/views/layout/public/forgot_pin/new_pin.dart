@@ -69,23 +69,25 @@ class _NewPINState extends State<NewPIN> {
             ],
           ),
           const SizedBox(height: 40),
-          RoundedCustomButton(
-            isLoading: _createPasswordController.isLoading.value,
-            onPressed: () async {
-              _createPasswordController.isForgotPin.value = true;
-              var error = await _createPasswordController.changePIN(
-                _passwordController.text,
-                _confirmPasswordController.text,
-              );
+          Obx(
+            () => RoundedCustomButton(
+              isLoading: _createPasswordController.isLoading.value,
+              onPressed: () async {
+                _createPasswordController.isForgotPin.value = true;
+                var error = await _createPasswordController.changePIN(
+                  _passwordController.text,
+                  _confirmPasswordController.text,
+                );
 
-              errorText = error['message'];
-              setState(() {});
-            },
-            label: _createPasswordController.isLoading.isTrue
-                ? "Submitting..."
-                : "Submit",
-            size: Size(size.width * .9, 40),
-            bgColor: bgPrimaryBlue,
+                errorText = error['message'];
+                setState(() {});
+              },
+              label: _createPasswordController.isLoading.isTrue
+                  ? "Submitting..."
+                  : "Submit",
+              size: Size(size.width * .9, 40),
+              bgColor: bgPrimaryBlue,
+            ),
           ),
         ],
       ),
