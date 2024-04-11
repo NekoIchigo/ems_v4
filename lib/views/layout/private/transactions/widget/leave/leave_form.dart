@@ -2,13 +2,11 @@ import 'dart:developer';
 
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
-import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class LeaveForm extends StatefulWidget {
   const LeaveForm({super.key});
@@ -25,7 +23,7 @@ class _LeaveFormState extends State<LeaveForm> {
   ];
   String? _dropdownValue;
   String _selectedTime = "-- : -- --";
-
+  late Size size;
   @override
   void initState() {
     super.initState();
@@ -34,12 +32,17 @@ class _LeaveFormState extends State<LeaveForm> {
 
   @override
   Widget build(BuildContext context) {
-    return EMSContainer(
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            height: Get.height * .86,
+            height: size.height * .86,
             child: SelectedItemTabs(
               title: "Leave",
               detailPage: SingleChildScrollView(
@@ -59,7 +62,7 @@ class _LeaveFormState extends State<LeaveForm> {
                     RoundedCustomButton(
                       onPressed: () {},
                       label: "Submit",
-                      size: Size(Get.width * .4, 40),
+                      size: Size(size.width * .4, 40),
                       radius: 8,
                       bgColor: gray, //primaryBlue
                     )
@@ -85,7 +88,7 @@ class _LeaveFormState extends State<LeaveForm> {
         children: [
           DropdownMenu<String>(
             initialSelection: _list.first,
-            width: Get.width * .84,
+            width: size.width * .84,
             onSelected: (String? value) {
               // This is called when the user selects an item.
               setState(() {
@@ -104,7 +107,7 @@ class _LeaveFormState extends State<LeaveForm> {
           Container(
             padding: const EdgeInsets.all(5),
             color: bgSky,
-            width: Get.width * 0.85,
+            width: size.width * 0.85,
             child: const Center(
               child: Text(
                 'Total leave credits: 5',

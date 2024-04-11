@@ -48,7 +48,8 @@ class EMSDialog extends StatelessWidget {
           ? const EdgeInsets.symmetric(vertical: 20, horizontal: 100)
           : const EdgeInsets.all(20),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0)), //this right here
+        borderRadius: BorderRadius.circular(12.0),
+      ),
       insetAnimationDuration: const Duration(milliseconds: 100),
       child: Container(
         padding: buttonNumber != 0

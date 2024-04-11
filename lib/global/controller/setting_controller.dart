@@ -1,29 +1,29 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:ems_v4/global/api.dart';
-import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/router/router.dart';
+import 'package:ems_v4/views/widgets/dialog/app_version_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/location_disclosure.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_version_checker/store_version_checker.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsController extends GetxController {
+  late SharedPreferences _localStorage;
   final ApiCall apiCall = ApiCall();
   final _checker = StoreVersionChecker();
 
+  RxString currentPath = ''.obs, appVersion = ''.obs;
+
   RxBool isMaintenance = false.obs,
       isLoading = false.obs,
+      isSettingsOpen = false.obs,
+      hasLocation = false.obs,
       hasUpdate = false.obs;
   Rx<DateTime> currentTime = DateTime.now().obs;
-
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   // getServerTime();
-  //   // checkAppVersionMaintenance();
-  // }
 
   void updateTimeToRealTime() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -32,212 +32,130 @@ class SettingsController extends GetxController {
   }
 
   Future getServerTime() async {
-    try {
-      isLoading.value = true;
-      var response = await apiCall.getRequest('/server-time');
-      var result = jsonDecode(response.body);
-      if (result.containsKey('success') && result['success']) {
-        currentTime.value = DateTime.parse(result['data']['withTimeZone']);
-      }
-    } catch (error) {
-      Get.dialog(
-        GetDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Something went wrong! \n Error Code: $error",
-          type: "error",
-          buttonNumber: 0,
-        ),
-      );
-    } finally {
-      isLoading.value = false;
-    }
-  }
+    isLoading.value = true;
+    var result = await apiCall.getRequest(
+      apiUrl: '/server-time',
+      catchError: (error) => isLoading.value = false,
+    );
 
-  Future<void> _launchUrl(value) async {
-    if (!await launchUrl(Uri.parse(value.appURL!))) {
-      Get.dialog(
-        const GetDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message:
-              "Something went wrong! \n Please update the app in Play Store or App Store",
-          type: "error",
-          buttonNumber: 0,
-        ),
-      );
+    if (result.containsKey('success') && result['success']) {
+      currentTime.value = DateTime.parse(result['data']['withTimeZone']);
     }
+
+    isLoading.value = false;
   }
 
   Future checkAppVersionMaintenance() async {
     _checker.checkUpdate().then((value) async {
+      appVersion.value = value.currentVersion;
       if (value.canUpdate) {
-        Get.dialog(
-          Dialog(
-            child: Container(
-              width: Get.width * .8,
-              height: Get.height * .7,
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 10),
-                  const Text(
-                    "Update Available",
-                    style: TextStyle(
-                      color: gray,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    value.newVersion ?? "1.0.0",
-                    style: const TextStyle(color: gray),
-                  ),
-                  Image.asset('assets/images/maintenance.jpg'),
-                  SizedBox(
-                    width: Get.width * .6,
-                    child: const Text(
-                      "To Continue using the GEMS: Time and Attendance app, you must update the latest version",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: gray, fontSize: 13),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryBlue,
-                    ),
-                    onPressed: () {
-                      _launchUrl(value);
-                    },
-                    child: const Text("Okay",
-                        style: TextStyle(color: Colors.white)),
-                  )
-                ],
-              ),
-            ),
-          ),
+        isMaintenance.value = true;
+        showDialog(
+          context: navigatorKey.currentContext!,
           barrierDismissible: false,
+          builder: (context) {
+            return PopScope(
+              canPop: false,
+              child: AppVersionDialog(
+                url: value.appURL,
+                version: value.newVersion,
+              ),
+            );
+          },
         );
-        // print(value.currentVersion);
-        // print(value.newVersion);
-        // print(value.appURL);
-        // print(value.errorMessage);
       } else {
-        //   try {
-        //     isLoading.value = true;
-        //     var response = await apiCall.postRequest(
-        //         {'version': value.currentVersion}, '/check-maintenance');
-        //     var result = jsonDecode(response.body);
-        //     if (result.containsKey('success') && result['success']) {
-        //       isMaintenance.value =
-        //           result['data']['under_maintenance'] == 1 ? true : false;
-        //       if (isMaintenance.isTrue) {
-        //         Get.dialog(
-        //           Dialog(
-        //             child: Container(
-        //               width: Get.width * .8,
-        //               height: Get.height * .6,
-        //               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        //               decoration: BoxDecoration(
-        //                 color: Colors.white,
-        //                 borderRadius: BorderRadius.circular(20),
-        //               ),
-        //               child: Column(
-        //                 mainAxisAlignment: MainAxisAlignment.center,
-        //                 children: [
-        //                   const SizedBox(height: 10),
-        //                   const Text(
-        //                     "Under Maintenance",
-        //                     style: TextStyle(
-        //                       color: gray,
-        //                       fontSize: 16,
-        //                       fontWeight: FontWeight.w500,
-        //                     ),
-        //                   ),
-        //                   Image.asset('assets/images/maintenance.jpg'),
-        //                   SizedBox(
-        //                     width: Get.width * .7,
-        //                     child: const Text(
-        //                       "The page you're looking for is currently under maintenance and will be back soon.",
-        //                       textAlign: TextAlign.center,
-        //                       style: TextStyle(color: gray, fontSize: 13),
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //           ),
-        //           barrierDismissible: false,
-        //         );
-        //       }
-        //     } else {}
-        //   } catch (error) {
-        //     if (error.toString().contains('html')) {
-        //       isMaintenance.value = true;
-        //       Get.dialog(
-        //         Dialog(
-        //           child: Container(
-        //             width: Get.width * .8,
-        //             height: Get.height * .6,
-        //             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        //             decoration: BoxDecoration(
-        //               color: Colors.white,
-        //               borderRadius: BorderRadius.circular(20),
-        //             ),
-        //             child: Column(
-        //               mainAxisAlignment: MainAxisAlignment.center,
-        //               children: [
-        //                 const SizedBox(height: 10),
-        //                 const Text(
-        //                   "Under Maintenance",
-        //                   style: TextStyle(
-        //                     color: gray,
-        //                     fontSize: 16,
-        //                     fontWeight: FontWeight.w500,
-        //                   ),
-        //                 ),
-        //                 Image.asset('assets/images/maintenance.jpg'),
-        //                 SizedBox(
-        //                   width: Get.width * .7,
-        //                   child: const Text(
-        //                     "The page you're looking for is currently under maintenance and will be back soon.",
-        //                     textAlign: TextAlign.center,
-        //                     style: TextStyle(color: gray, fontSize: 13),
-        //                   ),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         ),
-        //         barrierDismissible: false,
-        //       );
-        //     } else {
-        //       Get.dialog(
-        //         GetDialog(
-        //           title: "Oops",
-        //           hasMessage: true,
-        //           withCloseButton: true,
-        //           hasCustomWidget: false,
-        //           message: "Something went wrong! \n Error Code: $error",
-        //           type: "error",
-        //           buttonNumber: 0,
-        //         ),
-        //       );
-        //     }
-        //   } finally {
-        //     isLoading.value = false;
-        //   }
+        isLoading.value = true;
+        var result = await apiCall.postRequest(
+          data: {'version': value.currentVersion},
+          apiUrl: '/check-maintenance',
+          catchError: (error) => isLoading.value = false,
+        );
+
+        if (result.containsKey('success') && result['success']) {
+          isMaintenance.value =
+              result['data']['under_maintenance'] == 1 ? true : false;
+          if (isMaintenance.isTrue) {
+            navigatorKey.currentContext!.go('/maintenance');
+            // showDialog(
+            //   context: navigatorKey.currentContext!,
+            //   barrierDismissible: false,
+            //   builder: (context) {
+            //     return const MaintenanceDialog();
+            //   },
+            // );
+          }
+        }
+
+        isLoading.value = false;
       }
     });
+  }
+
+  Future checkLocationPermission(String path) async {
+    _localStorage = await SharedPreferences.getInstance();
+    bool firstCheck = _localStorage.getBool('first_loc_check') ?? true;
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Geolocator.openLocationSettings();
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      navigatorKey.currentContext!
+          .go('/no-permission', extra: {'path': path, 'type': 'off'});
+      return Future.error('Location services are disabled.');
+    }
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      hasLocation.value = true;
+      firstCheck = false;
+      _localStorage.setBool('first_loc_check', false);
+    }
+
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      if (firstCheck) {
+        List result = await showDialog(
+          context: navigatorKey.currentContext!,
+          barrierDismissible: false,
+          builder: (context) {
+            return const LocationDisclosure();
+          },
+        );
+
+        if (result[0]) {
+          permission = await Geolocator.requestPermission();
+        }
+
+        hasLocation.value = true;
+        firstCheck = false;
+        _localStorage.setBool('first_loc_check', false);
+      } else {
+        if (permission == LocationPermission.denied) {
+          // Permissions are denied, next time you could try
+          // requesting permissions again (this is also where
+          // Android's shouldShowRequestPermissionRationale
+          // returned true. According to Android guidelines
+          // your App should show an explanatory UI now.
+          hasLocation.value = false;
+          navigatorKey.currentContext!.go('/no-permission',
+              extra: {'path': path, 'type': 'no_permission'});
+          return Future.error('Location permissions are denied');
+        }
+        if (permission == LocationPermission.deniedForever) {
+          // Permissions are denied forever, handle appropriately.
+          hasLocation.value = false;
+          navigatorKey.currentContext!.go('/no-permission',
+              extra: {'path': path, 'type': 'no_permission'});
+          return Future.error(
+              'Location permissions are permanently denied, we cannot request permissions.');
+        }
+      }
+    }
   }
 }

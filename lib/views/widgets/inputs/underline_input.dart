@@ -8,6 +8,7 @@ class UnderlineInput extends StatefulWidget {
   final TextEditingController textController;
   final String? errorText;
   final Function(String)? onChanged;
+  final String hintText;
   const UnderlineInput({
     super.key,
     required this.label,
@@ -16,6 +17,7 @@ class UnderlineInput extends StatefulWidget {
     required this.textController,
     this.errorText,
     this.onChanged,
+    required this.hintText,
   });
 
   @override
@@ -47,6 +49,8 @@ class _UnderlineInputState extends State<UnderlineInput> {
         error: hasError(),
         labelText: widget.label,
         labelStyle: const TextStyle(color: gray),
+        hintText: widget.hintText,
+        hintStyle: const TextStyle(color: lightGray),
         suffixIcon: !widget.isPassword
             ? Icon(widget.icon, color: gray)
             : InkWell(
@@ -81,7 +85,7 @@ class _UnderlineInputState extends State<UnderlineInput> {
           const SizedBox(width: 5),
           Text(
             widget.errorText!,
-            style: const TextStyle(color: colorError, fontSize: 12),
+            style: const TextStyle(color: colorError, fontSize: 13),
           )
         ],
       );

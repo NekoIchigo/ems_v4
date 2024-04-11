@@ -1,8 +1,8 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bottomsheet.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class CustomDateInput extends StatefulWidget {
   final ValueChanged<List<DateTime?>> onDateTimeChanged;
@@ -29,8 +29,10 @@ class _CustomDateInputState extends State<CustomDateInput> {
 
     return InkWell(
       onTap: () async {
-        _dates =
-            await Get.bottomSheet(CustomDateBottomsheet(type: widget.type));
+        _dates = await showModalBottomSheet(
+          context: navigatorKey.currentContext!,
+          builder: (context) => CustomDateBottomsheet(type: widget.type),
+        );
         widget.onDateTimeChanged(_dates);
         setState(() {});
       },

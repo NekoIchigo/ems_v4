@@ -17,12 +17,13 @@ class _BiometricsPageState extends State<BiometricsPage> {
       Get.find<CreatePasswordController>();
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         children: [
           Container(
-            width: Get.width * .6,
+            width: size.width * .6,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: lightGray),
@@ -64,7 +65,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
           const Text(
             "You can turn this feature on or off at any time under My Account.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: primaryBlue, fontSize: 13),
+            style: TextStyle(color: primaryBlue, fontSize: 14),
           ),
           const SizedBox(height: 40),
           // const Text(
@@ -75,13 +76,16 @@ class _BiometricsPageState extends State<BiometricsPage> {
           const SizedBox(height: 5),
           Align(
             alignment: Alignment.bottomCenter,
-            child: RoundedCustomButton(
-              onPressed: () {
-                _createPasswordController.enableBioMetrics(_switch);
-              },
-              label: "Submit",
-              size: Size(Get.width * .9, 40),
-              bgColor: bgPrimaryBlue,
+            child: Obx(
+              () => RoundedCustomButton(
+                onPressed: () {
+                  _createPasswordController.enableBioMetrics(_switch);
+                },
+                isLoading: _createPasswordController.isLoading.isTrue,
+                label: "Submit",
+                size: Size(size.width * .9, 40),
+                bgColor: bgPrimaryBlue,
+              ),
             ),
           )
         ],

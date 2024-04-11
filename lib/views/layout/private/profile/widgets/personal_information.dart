@@ -172,26 +172,6 @@ class _PersonalInformationState extends State<PersonalInformation> {
               ],
             ),
           ),
-          // Center(
-          //   child: Obx(
-          //     () => RoundedCustomButton(
-          //       isLoading: _profileController.isLoading.value,
-          //       onPressed: () {
-          //         if (!isNotEdit) {
-          //           _profileController.updatePersonalInformation(
-          //               _contactNumber.text, _email.text);
-          //         }
-          //         setState(() {
-          //           isNotEdit = false;
-          //         });
-          //       },
-          //       label: isNotEdit ? 'Edit' : 'Submit',
-          //       radius: 5,
-          //       size: Size(Get.width * .35, 30),
-          //       bgColor: bgPrimaryBlue,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class NotificationIndex extends StatefulWidget {
   const NotificationIndex({super.key});
@@ -12,8 +11,9 @@ class NotificationIndex extends StatefulWidget {
 class _NotificationIndexState extends State<NotificationIndex> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SizedBox(
-      height: Get.height * .5,
+      height: size.height * .5,
       child: ListView(
         padding: EdgeInsets.zero,
         children: const [

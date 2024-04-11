@@ -1,15 +1,13 @@
-import 'dart:developer';
-
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
+import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
-import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
-import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -23,16 +21,16 @@ class InOutPage extends StatefulWidget {
 class _InOutPageState extends State<InOutPage> {
   final AuthController _authViewService = Get.find<AuthController>();
   final SettingsController _settings = Get.find<SettingsController>();
+  final TimeEntriesController _timeEntriesController =
+      Get.find<TimeEntriesController>();
   final HomeController _homeController = Get.find<HomeController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
-  late AttendanceRecord attendance;
   late DateTime currentTime;
   late String date, greetings;
 
   @override
   void initState() {
     super.initState();
-    attendance = _homeController.attendance.value;
     initFunctions();
 
     currentTime = _settings.currentTime.value;
@@ -41,29 +39,42 @@ class _InOutPageState extends State<InOutPage> {
   }
 
   Future initFunctions() async {
+    await _timeEntriesController.getPreviousClockIn();
     await _settings.getServerTime();
-    log(currentTime.toString());
+    await _homeController.checkNewShift();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Obx(
-          () => Column(
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/tiles-bg.png'),
+          fit: BoxFit.fill,
+        ),
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Obx(
+        () => SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Column(
             children: [
-              greetingWidget(),
-              buttonSection(),
-              detailsSection(),
-              // additionalShift(),
+              greetingWidget(size),
+              buttonSection(size),
+              detailsSection(size),
+              additionalShift(size),
               // announcementSection(),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
-  Widget greetingWidget() {
+  Widget greetingWidget(Size size) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -98,7 +109,7 @@ class _InOutPageState extends State<InOutPage> {
                 : _homeController.isClockOut.isTrue
                     ? 'Have a great day at work!'
                     : 'Begin another day by clocking in.',
-            style: const TextStyle(color: gray, fontSize: 13),
+            style: const TextStyle(color: gray, fontSize: 14),
           ),
           const SizedBox(height: 8),
           Row(
@@ -118,9 +129,9 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget buttonSection() {
+  Widget buttonSection(Size size) {
     return SizedBox(
-      height: Get.height * .38,
+      height: size.height * .38,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -128,7 +139,7 @@ class _InOutPageState extends State<InOutPage> {
               ? Positioned(
                   top: 0,
                   child: Image.asset('assets/images/EMS1.png',
-                      width: Get.width * .62),
+                      width: size.width * .62),
                 )
               : Stack(
                   alignment: Alignment.center,
@@ -141,49 +152,71 @@ class _InOutPageState extends State<InOutPage> {
                               width: 300),
                     ),
                     Positioned(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(Get.width * .38, Get.width * .38),
-                          shape: const CircleBorder(),
-                          backgroundColor: _homeController.isClockOut.isTrue
-                              ? colorError
-                              : colorSuccess,
-                        ),
-                        onPressed: () {
-                          if (_homeController.isClockOut.isFalse) {
-                            _homeController.setClockInLocation().then((value) {
-                              // Get.to(() => const HomeInfoPage(),
-                              //     id: _homeController.routerKey);
-                              _homeController.isWhite.value = true;
-                              _homeController.pageName.value = '/home/info';
-                            });
-                          } else {
-                            _homeController.setClockOutLocation().then((value) {
-                              // Get.to(() => const HomeInfoPage(),
-                              //     id: _homeController.routerKey);
-                              _homeController.isWhite.value = true;
-                              _homeController.pageName.value = '/home/info';
-                            });
-                          }
-                        },
-                        child: Text(
-                          _homeController.isClockOut.isTrue
-                              ? "CLOCK OUT"
-                              : "CLOCK IN",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: const Offset(0.0, 5.0),
-                                blurRadius: 8.0,
-                                color: Colors.white.withOpacity(.40),
-                              ),
-                            ],
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize:
+                                  Size(size.width * .38, size.width * .38),
+                              shape: const CircleBorder(),
+                              backgroundColor: _homeController.isClockOut.isTrue
+                                  ? colorError
+                                  : colorSuccess,
+                            ),
+                            onPressed: () {
+                              if (_homeController.isClockOut.isFalse) {
+                                _homeController
+                                    .setClockInLocation()
+                                    .then((value) {
+                                  context.push('/info');
+                                });
+                              } else {
+                                _homeController
+                                    .setClockOutLocation()
+                                    .then((value) {
+                                  context.push('/info');
+                                });
+                              }
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _homeController.isClockOut.isTrue
+                                      ? "CLOCK OUT"
+                                      : "CLOCK IN",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                        offset: const Offset(0.0, 5.0),
+                                        blurRadius: 8.0,
+                                        color: Colors.white.withOpacity(.40),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                          Visibility(
+                            visible: _homeController.isLoading.isTrue,
+                            child: SizedBox(
+                              width: size.width * .44,
+                              height: size.width * .44,
+                              child: CircularProgressIndicator(
+                                color: _homeController.isClockOut.isTrue
+                                    ? colorError
+                                    : colorSuccess,
+                                strokeCap: StrokeCap.round,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ],
@@ -217,76 +250,69 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget detailsSection() {
+  Widget detailsSection(Size size) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.only(top: 20),
-      height: Get.height * .14,
-      width: Get.width,
+      margin: const EdgeInsets.only(top: 15),
+      height: size.height * .16,
+      width: size.width,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Column(
             children: [
               const Icon(Icons.access_time, color: primaryBlue),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
-                  _dateTimeUtils.formatTime(dateTime: attendance.clockInAt),
-                  style: const TextStyle(color: gray, fontSize: 13),
+                  'Clock In',
+                  style: TextStyle(color: gray, fontSize: 14),
                 ),
               ),
-              const Text(
-                'Clock In',
-                style: TextStyle(color: gray, fontSize: 13),
+              Text(
+                _dateTimeUtils.formatTime(
+                    dateTime: _homeController.attendance.value.clockInAt),
+                style: const TextStyle(
+                    color: gray, fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+              Visibility(
+                visible: _timeEntriesController.hasPrevAttendance.isTrue,
+                child: Text(
+                  _dateTimeUtils.formatTime(
+                      dateTime: _timeEntriesController
+                          .prevAttendance.value.clockInAt),
+                  style: const TextStyle(
+                      color: gray, fontSize: 14, fontWeight: FontWeight.w500),
+                ),
               ),
             ],
           ),
+          const SizedBox(width: 50),
           Column(
             children: [
               const Icon(Icons.access_time_filled, color: primaryBlue),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
-                  _dateTimeUtils.formatTime(dateTime: attendance.clockOutAt),
-                  style: const TextStyle(color: gray, fontSize: 13),
+                  'Clock Out',
+                  style: TextStyle(color: gray, fontSize: 14),
                 ),
               ),
-              const Text(
-                'Clock Out',
-                style: TextStyle(color: gray, fontSize: 13),
+              Text(
+                _dateTimeUtils.formatTime(
+                    dateTime: _homeController.attendance.value.clockOutAt),
+                style: const TextStyle(
+                    color: gray, fontSize: 14, fontWeight: FontWeight.w500),
               ),
-            ],
-          ),
-          Column(
-            children: [
-              const SizedBox(
-                width: 31,
-                child: Stack(
-                  children: [
-                    Positioned(
-                        child:
-                            Icon(Icons.access_time_filled, color: primaryBlue)),
-                    Positioned(
-                      right: 0,
-                      child: Icon(Icons.access_time, color: primaryBlue),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+              Visibility(
+                visible: _timeEntriesController.hasPrevAttendance.isTrue,
                 child: Text(
-                  _homeController.getWorkingHrs(
-                      dateTimeIn: attendance.clockInAt,
-                      dateTimeOut: attendance.clockOutAt),
-                  style: const TextStyle(color: gray, fontSize: 13),
+                  _dateTimeUtils.formatTime(
+                      dateTime: _timeEntriesController
+                          .prevAttendance.value.clockOutAt),
+                  style: const TextStyle(
+                      color: gray, fontSize: 14, fontWeight: FontWeight.w500),
                 ),
-              ),
-              const Text(
-                'Working Hrs',
-                style: TextStyle(color: gray, fontSize: 13),
               ),
             ],
           ),
@@ -295,68 +321,23 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget additionalShift() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(Icons.info),
-              SizedBox(width: 10),
-              Text(
-                'Your additional work shift:',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ],
+  Widget additionalShift(Size size) {
+    return Visibility(
+      visible: _homeController.isClockInOutComplete.isTrue,
+      child: TextButton(
+        onPressed: () {
+          _homeController.isNewShift.value = true;
+          _homeController.isClockOut.value = false;
+          _homeController.isClockInOutComplete.value = false;
+        },
+        child: const Text(
+          'Clock-in/ Clock out again',
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+            decorationColor: gray,
+            color: gray,
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Shift #2: 01:00 pm to 05:30 pm'),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RoundedCustomButton(
-                onPressed: () {
-                  _homeController.setClockInLocation().then((value) {
-                    // Get.to(() => const HomeInfoPage(),
-                    //     id: _homeController.routerKey);
-                    _homeController.isWhite.value = true;
-                    _homeController.pageName.value =
-                        '/home/additional_shift_info:clock_in';
-                  });
-                },
-                label: 'Clock in',
-                size: Size(Get.width * .42, 40),
-                radius: 10,
-                bgColor: Colors.white,
-                textColor: colorSuccess,
-                borderColor: colorSuccess,
-              ),
-              RoundedCustomButton(
-                onPressed: () {
-                  _homeController.setClockOutLocation().then((value) {
-                    // Get.to(() => const HomeInfoPage(),
-                    //     id: _homeController.routerKey);
-                    _homeController.isWhite.value = true;
-                    _homeController.pageName.value =
-                        '/home/additional_shift_info:clock_out';
-                  });
-                },
-                label: 'Clock out',
-                size: Size(Get.width * .42, 40),
-                radius: 10,
-                bgColor: Colors.white,
-                textColor: red,
-                borderColor: red,
-              ),
-            ],
-          ),
-          Container(),
-        ],
+        ),
       ),
     );
   }

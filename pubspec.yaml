@@ -2,7 +2,7 @@ name: ems_v4
 description: "employee management system"
 publish_to: 'none' 
 
-version: 1.0.5+5
+version: 1.0.11+11
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -17,7 +17,6 @@ dependencies:
   url_launcher: ^6.2.2
   google_fonts: ^6.1.0
   intl: 0.18.1
-  auto_route_generator: ^7.3.2
   lottie: ^2.7.0
   flutter_device_type: ^0.4.0
   loading_animation_widget: ^1.2.0+4
@@ -27,8 +26,7 @@ dependencies:
   launcher_name: ^1.0.2
   convex_bottom_bar: ^3.2.0
   flutter_svg: ^2.0.9
-  geolocator: ^10.1.0
-  go_router: ^13.0.1
+  go_router: ^13.2.1
   file_picker: ^6.1.1
   local_auth: ^2.1.8
   pinput: ^3.0.1
@@ -36,6 +34,9 @@ dependencies:
   firebase_messaging: ^14.7.10
   firebase_core: ^2.24.2
   store_version_checker: ^1.0.1
+  geolocator: ^11.0.0
+  provider: ^6.1.2
+  connectivity_plus: ^6.0.1
 
 dev_dependencies:
   change_app_package_name: ^1.1.0

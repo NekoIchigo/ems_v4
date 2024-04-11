@@ -1,7 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bottomsheet.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class MonthFilterDropdown extends StatefulWidget {
   final Function(dynamic) onChanged;
@@ -34,7 +34,7 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
       children: [
         const Text(
           'Showing records for',
-          style: TextStyle(color: gray, fontSize: 12),
+          style: TextStyle(color: gray, fontSize: 13),
         ),
         Container(
           margin: const EdgeInsets.symmetric(vertical: 10),
@@ -54,7 +54,11 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
               onChanged: (value) {
                 // This is called when the user selects an item.
                 if (value["month"] == 0) {
-                  Get.bottomSheet(const CustomDateBottomsheet(type: "range"));
+                  showModalBottomSheet(
+                    context: navigatorKey.currentContext!,
+                    builder: (context) =>
+                        const CustomDateBottomsheet(type: 'range'),
+                  );
                 } else {
                   widget.onChanged(value);
                 }

@@ -1,14 +1,8 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime.dart';
-import 'package:ems_v4/views/layout/private/transactions/widget/time_records.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -20,6 +14,7 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         const SizedBox(height: 25),
@@ -33,7 +28,7 @@ class _MenuState extends State<Menu> {
         ),
         const SizedBox(height: 20),
         SizedBox(
-          height: Get.height * .6,
+          height: size.height * .6,
           child: GridView.count(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             crossAxisCount: 2,
@@ -41,12 +36,7 @@ class _MenuState extends State<Menu> {
             children: [
               TransactionMenuButton(
                 onPressed: () {
-                  Get.to(() => const TimeRecords());
-                  // Get.toNamed(
-                  //   "/transactions/time_records",
-                  //   id: _transactionController.routerKey,
-                  // );
-                  // _transactionController.pageIndex.value = 1;
+                  context.go('');
                 },
                 title: "Time Records",
                 child: const Center(
@@ -59,12 +49,7 @@ class _MenuState extends State<Menu> {
               ),
               TransactionMenuButton(
                 onPressed: () {
-                  Get.to(() => const DTRCorrection());
-                  // Get.toNamed(
-                  //   "/transactions/dtr_correction",
-                  //   id: _transactionController.routerKey,
-                  // );
-                  // _transactionController.pageIndex.value = 2;
+                  context.go('');
                 },
                 title: "DTR Corrections",
                 child: const Center(
@@ -77,7 +62,7 @@ class _MenuState extends State<Menu> {
               ),
               TransactionMenuButton(
                 onPressed: () {
-                  Get.to(() => const LeavePage());
+                  context.go('');
                 },
                 title: "Leave",
                 child: Center(
@@ -89,7 +74,7 @@ class _MenuState extends State<Menu> {
               ),
               TransactionMenuButton(
                 onPressed: () {
-                  Get.to(() => const Overtime());
+                  context.go('');
                 },
                 title: "Overtime",
                 child: const Center(
@@ -102,7 +87,7 @@ class _MenuState extends State<Menu> {
               ),
               TransactionMenuButton(
                 onPressed: () {
-                  Get.to(() => const ChangeSchedule());
+                  context.go('');
                 },
                 title: "Change Schedule",
                 child: Center(
@@ -114,7 +99,7 @@ class _MenuState extends State<Menu> {
               ),
               TransactionMenuButton(
                 onPressed: () {
-                  Get.to(() => const ChangeRestday());
+                  context.go('');
                 },
                 title: "Change Restday",
                 child: Center(

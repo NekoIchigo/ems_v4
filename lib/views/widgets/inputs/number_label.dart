@@ -18,7 +18,7 @@ class NumberLabel extends StatelessWidget {
             number.toString(),
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 12,
+              fontSize: 13,
             ),
           ),
         ),

@@ -1,10 +1,14 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/setting_controller.dart';
+import 'package:ems_v4/global/utils/web_view_launcher.dart';
+import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_list_button.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileContainer extends StatefulWidget {
@@ -17,6 +21,7 @@ class ProfileContainer extends StatefulWidget {
 class _ProfileContainerState extends State<ProfileContainer> {
   late SharedPreferences _localStorage;
   final AuthController authService = Get.find<AuthController>();
+  final SettingsController _settings = Get.find<SettingsController>();
   bool switchVal = true;
 
   @override
@@ -35,6 +40,8 @@ class _ProfileContainerState extends State<ProfileContainer> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
@@ -54,27 +61,27 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ProfileListButton(
               label: 'Personal Information',
               onPressed: () {
-                Get.toNamed("/profile/personal_info");
+                context.push("/personal_info");
               },
             ),
             ProfileListButton(
               label: 'Employment Details',
               onPressed: () {
-                Get.toNamed("/profile/employment_details");
+                context.push("/employment_details");
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Change Password',
               onPressed: () {
-                Get.toNamed("/profile/change_password");
+                context.push("/change_password");
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Change PIN',
               onPressed: () {
-                Get.toNamed("/profile/change_pin");
+                context.push("/change_pin");
               },
             ),
             const SizedBox(height: 5),
@@ -104,30 +111,44 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
             const SizedBox(height: 5),
             ProfileListButton(
+              label: 'Help Center',
+              onPressed: () {
+                webViewLauncher(
+                    url: 'https://sites.google.com/view/gemshelpcenter/home');
+              },
+            ),
+            const SizedBox(height: 5),
+            ProfileListButton(
               label: 'Privacy Policy',
               onPressed: () {
-                // _launchInBrowser(
-                //     'https://happyhousekeepers.com.ph/privacy-policy');
+                webViewLauncher(url: '${globalBaseUrl}privacy-policy');
               },
             ),
             const SizedBox(height: 5),
             ProfileListButton(
               label: 'Terms of Use',
               onPressed: () {
-                // _launchInBrowser(
-                //     'https://happyhousekeepers.com.ph/privacy-policy');
+                webViewLauncher(url: '${globalBaseUrl}terms-of-use');
               },
             ),
             const SizedBox(height: 30),
-            RoundedCustomButton(
-              onPressed: () {
-                if (authService.isLoading.isFalse) {
-                  authService.logout();
-                }
-              },
-              label: 'Log out',
-              size: Size(Get.width, 30),
-              bgColor: bgPrimaryBlue,
+            Obx(
+              () => RoundedCustomButton(
+                onPressed: () {
+                  if (authService.isLoading.isFalse) {
+                    authService.logout();
+                  }
+                },
+                isLoading: authService.isLoading.isTrue,
+                label: 'Log out',
+                size: Size(size.width, 30),
+                bgColor: bgPrimaryBlue,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              "Version: ${_settings.appVersion.value}",
+              style: const TextStyle(fontSize: 13, color: gray),
             ),
           ],
         ),
@@ -137,9 +158,10 @@ class _ProfileContainerState extends State<ProfileContainer> {
 
   updateFingerprintState(bool value) {
     _localStorage.setBool('auth_biometrics', value);
-    Get.dialog(
+    showDialog(
       barrierDismissible: false,
-      GetDialog(
+      context: navigatorKey.currentContext!,
+      builder: (context) => GemsDialog(
         type: 'success',
         title: 'Success',
         hasMessage: true,

@@ -1,6 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ProfileListButton extends StatefulWidget {
   final Function() onPressed;
@@ -20,6 +19,8 @@ class ProfileListButton extends StatefulWidget {
 class _ProfileListButtonState extends State<ProfileListButton> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return ElevatedButton(
       onPressed: widget.onPressed,
       style: ElevatedButton.styleFrom(
@@ -33,12 +34,12 @@ class _ProfileListButtonState extends State<ProfileListButton> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: Get.width * .7,
+            width: size.width * .7,
             child: Text(
               widget.label,
               style: const TextStyle(
                 color: gray,
-                fontSize: 13,
+                fontSize: 14,
               ),
             ),
           ),

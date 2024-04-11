@@ -4,6 +4,7 @@ import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/indicator/password_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class ForgotPINContainer extends StatefulWidget {
   const ForgotPINContainer({super.key});
@@ -43,6 +44,8 @@ class _ForgotPINContainerState extends State<ForgotPINContainer> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return EMSContainer(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -55,7 +58,7 @@ class _ForgotPINContainerState extends State<ForgotPINContainer> {
                 child: IconButton(
                     onPressed: () {
                       _passwordController.isForgotPin.value = false;
-                      Get.back();
+                      context.pop();
                     },
                     icon: const Icon(
                       Icons.close,
@@ -78,7 +81,7 @@ class _ForgotPINContainerState extends State<ForgotPINContainer> {
             ),
             const SizedBox(height: 40),
             SizedBox(
-              height: Get.height * .55,
+              height: size.height * .55,
               child: PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: _passwordController.pageController.value,

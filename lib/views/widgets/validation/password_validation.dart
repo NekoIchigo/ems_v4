@@ -23,8 +23,9 @@ class _PasswordValidationState extends State<PasswordValidation> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SizedBox(
-      width: Get.width,
+      width: size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

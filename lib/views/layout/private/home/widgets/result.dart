@@ -3,6 +3,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -18,6 +19,8 @@ class _HomeResultPageState extends State<HomeResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Obx(
       () => Column(
         children: [
@@ -35,7 +38,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
           Visibility(
             visible: _homeController.isUserSick.isTrue,
             child: SizedBox(
-              width: Get.width * .8,
+              width: size.width * .8,
               child: const Column(
                 children: [
                   Text(
@@ -43,7 +46,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: colorError,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                   Text(
@@ -51,7 +54,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: colorError,
-                      fontSize: 13,
+                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -63,7 +66,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
             // "Successful ${widget.isClockIn ? "clock-in" : "clock-out"}",
             "Successful ${_homeController.isClockOut.isFalse ? 'clock-out' : 'clock-in'}",
             style: const TextStyle(
-              fontSize: 13,
+              fontSize: 14,
               color: gray,
               fontWeight: FontWeight.bold,
             ),
@@ -71,17 +74,16 @@ class _HomeResultPageState extends State<HomeResultPage> {
           Text(
             DateFormat('MMM d, yyyy, hh:mm a').format(DateTime.now()),
             style: const TextStyle(
-                fontSize: 13, fontWeight: FontWeight.bold, color: gray),
+                fontSize: 14, fontWeight: FontWeight.bold, color: gray),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: RoundedCustomButton(
               onPressed: () {
-                _homeController.isWhite.value = false;
-                _homeController.pageName('/home');
+                context.go('/in_out');
               },
               label: 'Close',
-              size: Size(Get.width * .8, 40),
+              size: Size(size.width * .8, 40),
               bgColor: _homeController.isUserSick.isTrue ? gray : bgPrimaryBlue,
               radius: 10,
             ),

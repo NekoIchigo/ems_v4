@@ -6,21 +6,18 @@ class ComingSoon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned(
-          bottom: 65,
-          child: Lottie.asset("assets/lottie/coming_soon.json", width: 250),
-        ),
-        Positioned(
-          top: 100,
-          child: Image.asset(
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 50),
+          Image.asset(
             'assets/images/coming_soon.jpg',
             width: 280,
           ),
-        ),
-      ],
+          Lottie.asset("assets/lottie/coming_soon.json", width: 250),
+        ],
+      ),
     );
   }
 }

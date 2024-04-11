@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/router/router.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/widgets/dialog/get_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:get/get.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,57 +26,52 @@ class ProfileController extends GetxController {
     isLoading.value = true;
     var userData = jsonDecode(_localStorage.getString('user')!);
     String? image = profileImage.value != '' ? profileImage.value : null;
-    try {
-      var response = await apiCall.postRequest({
+
+    var result = await apiCall.postRequest(
+      data: {
         'id': userData['id'],
         'image': image,
-      }, '/update-personal-info');
-      var result = jsonDecode(response.body);
-      if (result.containsKey('success') && result['success']) {
-        if (profileImage.value != '') {
-          authService.employee!.value.profileBase64 = profileImage.value;
-        }
-        await Get.dialog(
-          barrierDismissible: false,
-          const GetDialog(
-            type: 'success',
-            title: 'Success',
-            hasMessage: true,
-            message: "You successfully updated your personal information.",
-            buttonNumber: 0,
-            hasCustomWidget: false,
-            withCloseButton: true,
-            okButtonBGColor: bgPrimaryBlue,
-          ),
-        );
-      } else {
-        Get.dialog(
-          GetDialog(
-            title: "Oops",
-            hasMessage: true,
-            withCloseButton: true,
-            hasCustomWidget: false,
-            message: "Error update information: ${result['message']}",
-            type: "error",
-            buttonNumber: 0,
-          ),
-        );
+      },
+      apiUrl: '/update-personal-info',
+      catchError: (error) => isLoading.value = false,
+    );
+
+    if (result.containsKey('success') && result['success']) {
+      if (profileImage.value != '') {
+        authService.employee!.value.profileBase64 = profileImage.value;
       }
-    } catch (e) {
-      Get.dialog(
-        GetDialog(
-          title: "Oops",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Error update information: $e !",
-          type: "error",
-          buttonNumber: 0,
-        ),
-      );
-    } finally {
-      isLoading.value = false;
+      await showDialog(
+          context: navigatorKey.currentContext!,
+          barrierDismissible: false,
+          builder: (context) {
+            return const GemsDialog(
+              type: 'success',
+              title: 'Success',
+              hasMessage: true,
+              message: "You successfully updated your personal information.",
+              buttonNumber: 0,
+              hasCustomWidget: false,
+              withCloseButton: true,
+              okButtonBGColor: bgPrimaryBlue,
+            );
+          });
+    } else {
+      showDialog(
+          context: navigatorKey.currentContext!,
+          builder: (context) {
+            return GemsDialog(
+              title: "Oops",
+              hasMessage: true,
+              withCloseButton: true,
+              hasCustomWidget: false,
+              message: "Error update information: ${result['message']}",
+              type: "error",
+              buttonNumber: 0,
+            );
+          });
     }
+
+    isLoading.value = false;
   }
 
   String? convertToBase64(XFile? image) {

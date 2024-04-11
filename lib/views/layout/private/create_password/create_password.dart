@@ -2,7 +2,7 @@ import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
-import 'package:ems_v4/views/widgets/validation/password_valdiation.dart';
+import 'package:ems_v4/views/widgets/validation/password_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +33,7 @@ class _CreatePasswordState extends State<CreatePassword> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -50,6 +51,7 @@ class _CreatePasswordState extends State<CreatePassword> {
               });
             },
             validator: (p0) {},
+            hintText: "Enter new password",
           ),
           FloatingInput(
             label: 'Confirm password',
@@ -60,26 +62,30 @@ class _CreatePasswordState extends State<CreatePassword> {
               _createPasswordController.confirmPassword.value = value;
             },
             validator: (p0) {},
+            hintText: "Re-enter password",
           ),
           const SizedBox(height: 20),
           const PasswordValidation(),
           const SizedBox(height: 40),
-          RoundedCustomButton(
-            onPressed: () async {
-              var error = await _createPasswordController.createNewPassword(
-                _passwordController.text,
-                _confirmPasswordController.text,
-                null,
-              );
+          Obx(
+            () => RoundedCustomButton(
+              onPressed: () async {
+                var error = await _createPasswordController.createNewPassword(
+                  _passwordController.text,
+                  _confirmPasswordController.text,
+                  null,
+                );
 
-              if (error != null) {
-                passwordError = error['errors']['password'][0];
-              }
-              setState(() {});
-            },
-            label: "Next",
-            size: Size(Get.width * .9, 40),
-            bgColor: bgPrimaryBlue,
+                if (error != null) {
+                  passwordError = error['errors']['password'][0];
+                }
+                setState(() {});
+              },
+              isLoading: _createPasswordController.isLoading.isTrue,
+              label: "Next",
+              size: Size(size.width * .9, 40),
+              bgColor: bgPrimaryBlue,
+            ),
           ),
         ],
       ),

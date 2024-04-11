@@ -1,11 +1,13 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/utils/web_view_launcher.dart';
 
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/floating_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -28,20 +30,25 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
-          height: Get.height,
-          width: Get.width,
+          height: size.height,
+          width: size.width,
           color: Colors.white,
           child: Stack(
             children: [
               Positioned(
-                width: Get.width,
+                width: size.width,
                 left: 0,
                 bottom: 0,
-                child: Image.asset('assets/images/login_bg_image.jpg'),
+                child: Image.asset(
+                  'assets/images/login_bg_image.jpg',
+                  opacity: const AlwaysStoppedAnimation(0.6),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -51,10 +58,10 @@ class _LoginState extends State<Login> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: Get.height * .15),
+                        SizedBox(height: size.height * .15),
                         Center(
                           child: SizedBox(
-                            height: Get.height * 0.15,
+                            height: size.height * 0.15,
                             child: Padding(
                               padding: const EdgeInsets.only(top: 25.0),
                               child: Image.asset(
@@ -66,7 +73,7 @@ class _LoginState extends State<Login> {
                         const SizedBox(height: 50),
                         const Text(
                           'Code',
-                          style: TextStyle(color: gray, fontSize: 12),
+                          style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
                         FloatingInput(
@@ -88,11 +95,12 @@ class _LoginState extends State<Login> {
                               }
                             });
                           },
+                          hintText: 'Enter code',
                         ),
                         const SizedBox(height: 10),
                         const Text(
                           'Username',
-                          style: TextStyle(color: gray, fontSize: 12),
+                          style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
                         Obx(
@@ -120,11 +128,12 @@ class _LoginState extends State<Login> {
                                 }
                               });
                             },
+                            hintText: 'Enter username',
                           ),
                         ),
                         const Text(
                           'Password',
-                          style: TextStyle(color: gray, fontSize: 12),
+                          style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
                         FloatingInput(
@@ -146,17 +155,18 @@ class _LoginState extends State<Login> {
                               }
                             });
                           },
+                          hintText: 'Enter password',
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
                               onPressed: () {
-                                Get.toNamed('/forgot_password');
+                                context.push('/forgot_password');
                               },
                               child: const Text(
                                 'Forgot Password?',
-                                style: TextStyle(color: gray, fontSize: 12),
+                                style: TextStyle(color: gray, fontSize: 13),
                               ),
                             ),
                           ],
@@ -164,11 +174,49 @@ class _LoginState extends State<Login> {
                         Center(
                           child: Container(
                             margin: const EdgeInsets.only(top: 20),
-                            width: Get.width * .55,
-                            child: const Text(
-                              "By logging in, you agree to our Privacy Policy and Terms of Use.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: gray, fontSize: 12),
+                            width: size.width * .55,
+                            child: Wrap(
+                              alignment: WrapAlignment.center,
+                              children: [
+                                const Text(
+                                  "By logging in, you agree to our ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: gray, fontSize: 13),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    webViewLauncher(
+                                        url: '${globalBaseUrl}privacy-policy');
+                                  },
+                                  child: const Text(
+                                    "Privacy Policy ",
+                                    style: TextStyle(
+                                      color: gray,
+                                      fontSize: 13,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                                const Text(
+                                  "and ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: gray, fontSize: 13),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    webViewLauncher(
+                                        url: '${globalBaseUrl}terms-of-use');
+                                  },
+                                  child: const Text(
+                                    "Terms of Use.",
+                                    style: TextStyle(
+                                      color: gray,
+                                      fontSize: 13,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -213,7 +261,7 @@ class _LoginState extends State<Login> {
                                 ? 'Log In'
                                 : 'Logging In...',
                             radius: 50,
-                            size: Size(Get.width, 20),
+                            size: Size(size.width, 20),
                             bgColor: bgPrimaryBlue,
                           ),
                         ),
@@ -223,13 +271,13 @@ class _LoginState extends State<Login> {
                             child: Center(
                               child: TextButton(
                                 onPressed: () {
-                                  Get.toNamed('/pin_login');
+                                  context.push('/pin_login');
                                 },
                                 child: const Text(
                                   'Use PIN',
                                   style: TextStyle(
                                     color: gray,
-                                    fontSize: 12,
+                                    fontSize: 13,
                                   ),
                                 ),
                               ),

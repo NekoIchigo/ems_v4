@@ -20,6 +20,7 @@ class _EmailOTPState extends State<EmailOTP> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -40,6 +41,7 @@ class _EmailOTPState extends State<EmailOTP> {
             icon: Icons.email_outlined,
             textController: _emailController,
             errorText: errorText,
+            hintText: 'example@email.com',
             onChanged: (value) {
               setState(() {
                 errorText = null;
@@ -47,27 +49,25 @@ class _EmailOTPState extends State<EmailOTP> {
             },
           ),
           const SizedBox(height: 20),
-          Obx(
-            () => RoundedCustomButton(
-              onPressed: () async {
-                await _passwordController
-                    .sendForgotPasswordRequest(
-                  _emailController.text,
-                )
-                    .then((value) {
-                  setState(() {
-                    errorText = value;
-                  });
+          RoundedCustomButton(
+            onPressed: () async {
+              await _passwordController
+                  .sendForgotPasswordRequest(
+                _emailController.text,
+              )
+                  .then((value) {
+                setState(() {
+                  errorText = value;
                 });
-              },
-              disabled: errorText != null,
-              isLoading: _passwordController.isLoading.value,
-              label: _passwordController.isLoading.isTrue
-                  ? "Sending OTP..."
-                  : "Send One-Time Pin",
-              size: Size(Get.width * .9, 40),
-              bgColor: errorText != null ? lightGray : bgPrimaryBlue,
-            ),
+              });
+            },
+            disabled: errorText != null,
+            isLoading: _passwordController.isLoading.value,
+            label: _passwordController.isLoading.isTrue
+                ? "Sending OTP..."
+                : "Send One-Time Pin",
+            size: Size(size.width * .9, 40),
+            bgColor: errorText != null ? lightGray : bgPrimaryBlue,
           ),
         ],
       ),

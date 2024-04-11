@@ -5,6 +5,7 @@ import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/pin_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PINLogin extends StatefulWidget {
@@ -25,29 +26,33 @@ class _PINLoginState extends State<PINLogin> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: Get.height,
-          width: Get.width,
+          height: size.height,
+          width: size.width,
           color: Colors.white,
           child: Stack(
             children: [
               Positioned(
-                width: Get.width,
+                width: size.width,
                 left: 0,
                 bottom: 0,
-                child: Image.asset('assets/images/login_bg_image.jpg'),
+                child: Image.asset(
+                  'assets/images/login_bg_image.jpg',
+                  opacity: const AlwaysStoppedAnimation(0.6),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: Get.height * .15),
+                    SizedBox(height: size.height * .15),
                     Center(
                       child: SizedBox(
-                        height: Get.height * 0.15,
+                        height: size.height * 0.15,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 25.0),
                           child: Image.asset(
@@ -91,7 +96,7 @@ class _PINLoginState extends State<PINLogin> {
                     const Center(
                       child: Text(
                         'Enter your 6-digit PIN',
-                        style: TextStyle(color: gray, fontSize: 12),
+                        style: TextStyle(color: gray, fontSize: 13),
                       ),
                     ),
                     Center(
@@ -110,7 +115,7 @@ class _PINLoginState extends State<PINLogin> {
                           "Not your account? ",
                           style: TextStyle(
                             color: gray,
-                            fontSize: 12,
+                            fontSize: 13,
                           ),
                         ),
                         TextButton(
@@ -118,7 +123,9 @@ class _PINLoginState extends State<PINLogin> {
                             _localStorage =
                                 await SharedPreferences.getInstance();
                             _localStorage.setBool('auth_biometrics', false);
-                            Get.toNamed('/login');
+                            if (context.mounted) {
+                              context.push('/login');
+                            }
                           },
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(0)),
@@ -126,7 +133,7 @@ class _PINLoginState extends State<PINLogin> {
                             'Switch now',
                             style: TextStyle(
                               color: primaryBlue,
-                              fontSize: 12,
+                              fontSize: 13,
                             ),
                           ),
                         ),
@@ -137,7 +144,7 @@ class _PINLoginState extends State<PINLogin> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: gray,
-                              fontSize: 12,
+                              fontSize: 13,
                             ),
                           ),
                         ),
@@ -146,11 +153,11 @@ class _PINLoginState extends State<PINLogin> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 1)),
                           onPressed: () {
-                            Get.toNamed('/forgot_pin');
+                            context.push('/forgot_pin');
                           },
                           child: const Text(
                             'Forgot PIN?',
-                            style: TextStyle(color: gray, fontSize: 12),
+                            style: TextStyle(color: gray, fontSize: 13),
                           ),
                         ),
                       ],
@@ -171,20 +178,20 @@ class _PINLoginState extends State<PINLogin> {
                             ? 'Log In'
                             : 'Logging In...',
                         radius: 50,
-                        size: Size(Get.width, 20),
+                        size: Size(size.width, 20),
                         bgColor: bgPrimaryBlue,
                       ),
                     ),
                     Center(
                       child: TextButton(
                         onPressed: () {
-                          Get.toNamed('/login');
+                          context.push('/login');
                         },
                         child: const Text(
                           'Use password',
                           style: TextStyle(
                             color: gray,
-                            fontSize: 12,
+                            fontSize: 13,
                           ),
                         ),
                       ),

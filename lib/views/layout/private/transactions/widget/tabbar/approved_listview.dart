@@ -2,7 +2,6 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ApprovedListview extends StatefulWidget {
   final List<TransactionItem> items;
@@ -19,6 +18,7 @@ class ApprovedListview extends StatefulWidget {
 class _ApprovedListviewState extends State<ApprovedListview> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return widget.items.isNotEmpty
         ? ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -30,7 +30,7 @@ class _ApprovedListviewState extends State<ApprovedListview> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 margin: const EdgeInsets.symmetric(vertical: 5),
-                width: Get.width,
+                width: size.width,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: gray,

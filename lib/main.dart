@@ -5,18 +5,26 @@ import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/controller/profile_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
-import 'package:ems_v4/global/controller/location_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/router/app_router.dart';
+import 'package:ems_v4/router/router.dart';
+import 'package:ems_v4/view_model/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => HomeViewModel())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,17 +35,16 @@ class MyApp extends StatelessWidget {
     Get.put(SettingsController());
     Get.put(AuthController());
     Get.put(TimeEntriesController());
-    Get.put(LocationController());
     Get.put(MainNavigationController());
     Get.put(TransactionController());
     Get.put(CreatePasswordController());
     Get.put(ProfileController());
     Get.put(HomeController());
 
-    return GetMaterialApp(
-      title: 'EMS V.4',
+    return MaterialApp.router(
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
-      // initialBinding: BindingsBuilder(() { }),
+      scaffoldMessengerKey: scaffoldKey,
       theme: ThemeData(
         textTheme: GoogleFonts.outfitTextTheme(),
         colorScheme: ColorScheme.fromSeed(
@@ -45,8 +52,6 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: initialRouteName,
-      getPages: routes,
     );
   }
 }

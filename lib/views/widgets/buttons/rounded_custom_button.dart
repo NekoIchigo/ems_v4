@@ -12,6 +12,7 @@ class RoundedCustomButton extends StatefulWidget {
   final Size size;
   final bool? isLoading;
   final bool? disabled;
+  final double? fontSize;
   const RoundedCustomButton({
     super.key,
     required this.onPressed,
@@ -23,6 +24,7 @@ class RoundedCustomButton extends StatefulWidget {
     this.borderColor,
     this.isLoading,
     this.disabled,
+    this.fontSize,
   });
 
   @override
@@ -66,7 +68,7 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
               widget.label,
               style: TextStyle(
                 color: widget.textColor ?? Colors.white,
-                fontSize: 15,
+                fontSize: widget.fontSize ?? 15,
               ),
             ),
           ],

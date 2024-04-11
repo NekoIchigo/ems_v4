@@ -2,17 +2,14 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/json_utils.dart';
 import 'package:ems_v4/models/attendance_record.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
-import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
 class TimeEntriesHealthDeclaration extends StatefulWidget {
-  const TimeEntriesHealthDeclaration(
-      {super.key, required this.attendanceRecord});
-  final AttendanceRecord attendanceRecord;
+  const TimeEntriesHealthDeclaration({super.key});
 
   @override
   State<TimeEntriesHealthDeclaration> createState() =>
@@ -27,39 +24,46 @@ class _TimeEntriesHealthDeclarationState
   List checkedSymptoms = [];
   final TextEditingController temperatureController = TextEditingController();
   final TextEditingController _otherSymptom = TextEditingController();
+  late AttendanceRecord attendanceRecord;
 
-  @override
-  void initState() {
-    super.initState();
-
+  void loadData() {
     _jsonUtils.readJson('assets/json/symptoms.json').then((value) {
       setState(() {
         _symptoms = value['symptoms'];
-        if (widget.attendanceRecord.healthCheck != null) {
+        if (attendanceRecord.healthCheck != null) {
           _symptoms.asMap().forEach(
             (index, element) {
-              if (widget.attendanceRecord.healthCheck!
+              if (attendanceRecord.healthCheck!
                   .contains(_symptoms[index]['descriptionEnglish'])) {
                 checkedSymptoms.add(_symptoms[index]['descriptionEnglish']);
                 _symptoms[index]['state'] = true;
               }
             },
           );
-          if (widget.attendanceRecord.healthCheck!.contains("Others")) {
-            List tempArr = widget.attendanceRecord.healthCheck!.split(', ');
+          if (attendanceRecord.healthCheck!.contains("Others")) {
+            List tempArr = attendanceRecord.healthCheck!.split(', ');
 
             _otherSymptom.setText(tempArr[tempArr.length - 1]);
           }
         }
         temperatureController
-            .setText(widget.attendanceRecord.healthTemperature ?? "37.0");
+            .setText(attendanceRecord.healthTemperature ?? "37.0");
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return EMSContainer(
+    Size size = MediaQuery.of(context).size;
+    attendanceRecord = AttendanceRecord.fromJson(
+        GoRouterState.of(context).extra! as Map<String, dynamic>);
+    loadData();
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
@@ -83,7 +87,7 @@ class _TimeEntriesHealthDeclarationState
                     alignment: Alignment.centerRight,
                     child: IconButton(
                       onPressed: () {
-                        Get.back();
+                        context.pop();
                       },
                       icon: const Icon(Icons.close),
                     ),
@@ -106,7 +110,8 @@ class _TimeEntriesHealthDeclarationState
               ),
               _symptoms.isNotEmpty
                   ? Padding(
-                      padding: EdgeInsets.symmetric(vertical: Get.height * .01),
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * .01),
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -121,7 +126,7 @@ class _TimeEntriesHealthDeclarationState
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: Get.width * .01),
+                                  vertical: size.width * .01),
                               child: CheckboxListTile(
                                 activeColor: primaryBlue,
                                 tileColor: lightGray,
@@ -132,14 +137,14 @@ class _TimeEntriesHealthDeclarationState
                                 title: Row(
                                   children: [
                                     Image(
-                                      height: Get.height * .05,
+                                      height: size.height * .05,
                                       image:
                                           AssetImage(_symptoms[index]["path"]),
                                     ),
                                     Flexible(
                                       child: Padding(
                                         padding: EdgeInsets.only(
-                                            left: Get.width * .02),
+                                            left: size.width * .02),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -215,50 +220,18 @@ class _TimeEntriesHealthDeclarationState
                   color: gray,
                 ),
               ),
-              // TextFormField(
-              //   controller: temperatureController,
-              //   readOnly: true,
-              //   keyboardType:
-              //       const TextInputType.numberWithOptions(decimal: true),
-              //   inputFormatters: [
-              //     FilteringTextInputFormatter.allow(
-              //         RegExp(r'^\d{0,2}\.?\d{0,2}')),
-              //   ],
-              //   decoration: const InputDecoration(
-              //     labelText: 'Enter temperature in °C',
-              //     labelStyle: TextStyle(color: gray),
-              //     hintText: "--.--",
-              //     fillColor: gray,
-              //     prefixIcon: Icon(
-              //       Icons.thermostat_sharp,
-              //       color: gray,
-              //     ),
-              //     hintStyle: TextStyle(color: gray),
-              //     contentPadding: EdgeInsets.all(0),
-              //     enabledBorder: OutlineInputBorder(
-              //       borderSide: BorderSide(color: lightGray),
-              //     ),
-              //     border: OutlineInputBorder(
-              //       borderSide: BorderSide(color: gray),
-              //     ),
-              //     focusedBorder: OutlineInputBorder(
-              //       gapPadding: 0.0,
-              //       borderSide: BorderSide(color: primaryBlue),
-              //     ),
-              //   ),
-              // ),
               Center(
                 child: RoundedCustomButton(
                   onPressed: () {
-                    Get.back();
-                    // context.router.navigate(const HomepageRouter());
+                    context.pop();
                   },
                   label: 'Close',
                   bgColor: gray,
                   radius: 8,
-                  size: Size(Get.width * .4, 40),
+                  size: Size(size.width * .4, 40),
                 ),
               ),
+              SizedBox(height: 40),
             ],
           ),
         ),

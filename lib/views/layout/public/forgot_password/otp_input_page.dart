@@ -21,6 +21,7 @@ class _OTPInputPageState extends State<OTPInputPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -42,22 +43,20 @@ class _OTPInputPageState extends State<OTPInputPage> {
             errorText: otpError,
           ),
           const SizedBox(height: 20),
-          Obx(
-            () => RoundedCustomButton(
-              onPressed: () async {
-                var error =
-                    await _passwordController.verifyOTP(_otpController.text);
-                // _passwordController.animateToThirdPage();
-                otpError = error['message'];
-                setState(() {});
-              },
-              isLoading: _passwordController.isLoading.value,
-              label:
-                  _passwordController.isLoading.isTrue ? "Verifying" : "Verify",
-              size: Size(Get.width * .9, 30),
-              bgColor: bgPrimaryBlue,
-            ),
-          )
+          RoundedCustomButton(
+            onPressed: () async {
+              var error =
+                  await _passwordController.verifyOTP(_otpController.text);
+              // _passwordController.animateToThirdPage();
+              otpError = error['message'];
+              setState(() {});
+            },
+            isLoading: _passwordController.isLoading.value,
+            label:
+                _passwordController.isLoading.isTrue ? "Verifying" : "Verify",
+            size: Size(size.width * .9, 30),
+            bgColor: bgPrimaryBlue,
+          ),
         ],
       ),
     );

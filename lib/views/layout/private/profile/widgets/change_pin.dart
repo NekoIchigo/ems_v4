@@ -26,6 +26,7 @@ class _ChangePinState extends State<ChangePin> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return ProfilePageContainer(
       title: "Change PIN",
       child: Column(
@@ -113,7 +114,7 @@ class _ChangePinState extends State<ChangePin> {
               },
               label: 'Update',
               radius: 5,
-              size: Size(Get.width * .4, 30),
+              size: Size(size.width * .4, 30),
               bgColor: bgPrimaryBlue,
             ),
           ),
