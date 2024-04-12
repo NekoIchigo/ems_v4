@@ -89,6 +89,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  const SizedBox(height: 8),
                   Input(
                     isPassword: true,
                     textController: _newPassword,
@@ -120,6 +121,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  const SizedBox(height: 8),
                   Input(
                     isPassword: true,
                     textController: _confirmPassword,
@@ -150,31 +152,34 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
           const PasswordValidation(),
           const SizedBox(height: 30),
-          Center(
-            child: RoundedCustomButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  var errors =
-                      await _createPasswordController.createNewPassword(
-                          _newPassword.text,
-                          _confirmPassword.text,
-                          _currentPassword.text);
-                  if (errors != null) {
-                    {
-                      if (errors['message'].contains("current")) {
-                        _currentPasswordError = errors['message'];
-                      } else if (errors.containsKey('errors')) {
-                        _newPasswordError = errors['errors']['password'][0];
+          Obx(
+            () => Center(
+              child: RoundedCustomButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    var errors =
+                        await _createPasswordController.createNewPassword(
+                            _newPassword.text,
+                            _confirmPassword.text,
+                            _currentPassword.text);
+                    if (errors != null) {
+                      {
+                        if (errors['message'].contains("current")) {
+                          _currentPasswordError = errors['message'];
+                        } else if (errors.containsKey('errors')) {
+                          _newPasswordError = errors['errors']['password'][0];
+                        }
                       }
                     }
                   }
-                }
-                setState(() {});
-              },
-              label: 'Update',
-              radius: 5,
-              size: Size(size.width * .4, 30),
-              bgColor: bgPrimaryBlue,
+                  setState(() {});
+                },
+                label: 'Update',
+                radius: 5,
+                isLoading: _createPasswordController.isLoading.isTrue,
+                size: Size(size.width * .4, 30),
+                bgColor: bgPrimaryBlue,
+              ),
             ),
           ),
         ],
