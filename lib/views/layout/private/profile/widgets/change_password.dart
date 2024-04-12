@@ -68,16 +68,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                           _currentPasswordError = null;
                         });
                       },
-                      // errorText: _currentPasswordError,
+                      errorText: _currentPasswordError,
                       validator: (value) {
-                        setState(() {
-                          if (value == null || value.isEmpty) {
-                            _currentPasswordError = 'Please enter a value';
-                          } else if (_currentPasswordError != null) {
-                            _currentPasswordError = _currentPasswordError;
-                          }
-                        });
-                        return _currentPasswordError;
+                        // if (value == null || value.isEmpty) {
+                        //   _currentPasswordError = 'Please enter a value';
+                        // }
+                        // setState(() {});
+                        // return _currentPasswordError;
                       },
                     ),
                   ),
@@ -157,22 +154,27 @@ class _ChangePasswordState extends State<ChangePassword> {
               child: RoundedCustomButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+                    if (_currentPassword.text == "") {
+                      setState(() {
+                        _currentPasswordError = "Please enter a value";
+                      });
+                      return;
+                    }
                     var errors =
                         await _createPasswordController.createNewPassword(
-                            _newPassword.text,
-                            _confirmPassword.text,
-                            _currentPassword.text);
+                      _newPassword.text,
+                      _confirmPassword.text,
+                      _currentPassword.text,
+                    );
                     if (errors != null) {
-                      {
-                        if (errors['message'].contains("current")) {
-                          _currentPasswordError = errors['message'];
-                        } else if (errors.containsKey('errors')) {
-                          _newPasswordError = errors['errors']['password'][0];
-                        }
+                      if (errors['message'].contains("current")) {
+                        _currentPasswordError = errors['message'];
+                      } else if (errors.containsKey('errors')) {
+                        _newPasswordError = errors['errors']['password'][0];
                       }
                     }
+                    setState(() {});
                   }
-                  setState(() {});
                 },
                 label: 'Update',
                 radius: 5,
