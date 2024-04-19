@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                         ),
                         const SizedBox(height: 50),
                         const Text(
-                          'Code',
+                          "Code",
                           style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
@@ -91,15 +91,15 @@ class _LoginState extends State<Login> {
                           validator: (value) {
                             setState(() {
                               if (value == null || value.isEmpty) {
-                                _codeError = 'Please enter a value';
+                                _codeError = "Please enter a value";
                               }
                             });
                           },
-                          hintText: 'Enter code',
+                          hintText: "Enter company code",
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                          'Username',
+                          "Username",
                           style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
@@ -111,7 +111,7 @@ class _LoginState extends State<Login> {
                             textController: _emailController,
                             icon: _authService.isBioEnabled.isTrue
                                 ? Icons.fingerprint
-                                : Icons.mail,
+                                : Icons.person,
                             iconColor: lightGray,
                             onIconPressed: () {
                               _authService.localAuthenticate();
@@ -128,7 +128,7 @@ class _LoginState extends State<Login> {
                                 }
                               });
                             },
-                            hintText: 'Enter username',
+                            hintText: 'Enter employee email or ID',
                           ),
                         ),
                         const Text(

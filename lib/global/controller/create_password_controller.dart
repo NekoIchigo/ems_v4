@@ -246,7 +246,6 @@ class CreatePasswordController extends GetxController {
       apiUrl: '/change-pin',
       catchError: (error) => isLoading.value = false,
     );
-
     if (result.containsKey('success') && result['success']) {
       if (currentpin != null) {
         await showDialog(

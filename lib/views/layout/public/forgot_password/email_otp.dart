@@ -49,25 +49,27 @@ class _EmailOTPState extends State<EmailOTP> {
             },
           ),
           const SizedBox(height: 20),
-          RoundedCustomButton(
-            onPressed: () async {
-              await _passwordController
-                  .sendForgotPasswordRequest(
-                _emailController.text,
-              )
-                  .then((value) {
-                setState(() {
-                  errorText = value;
+          Obx(
+            () => RoundedCustomButton(
+              onPressed: () async {
+                await _passwordController
+                    .sendForgotPasswordRequest(
+                  _emailController.text,
+                )
+                    .then((value) {
+                  setState(() {
+                    errorText = value;
+                  });
                 });
-              });
-            },
-            disabled: errorText != null,
-            isLoading: _passwordController.isLoading.value,
-            label: _passwordController.isLoading.isTrue
-                ? "Sending OTP..."
-                : "Send One-Time Pin",
-            size: Size(size.width * .9, 40),
-            bgColor: errorText != null ? lightGray : bgPrimaryBlue,
+              },
+              disabled: errorText != null,
+              isLoading: _passwordController.isLoading.value,
+              label: _passwordController.isLoading.isTrue
+                  ? "Sending OTP..."
+                  : "Send One-Time Pin",
+              size: Size(size.width * .9, 40),
+              bgColor: errorText != null ? lightGray : bgPrimaryBlue,
+            ),
           ),
         ],
       ),

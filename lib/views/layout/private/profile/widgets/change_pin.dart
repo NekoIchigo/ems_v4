@@ -93,29 +93,36 @@ class _ChangePinState extends State<ChangePin> {
               ],
             ),
           ),
-          Center(
-            child: RoundedCustomButton(
-              onPressed: () async {
-                if (_currentPin.text != '') {
-                  var error = await _createPasswordController.changePIN(
-                    _newPin.text,
-                    _confirmPin.text,
-                    currentpin: _currentPin.text,
-                  );
-                  if (error != null) {
-                    if (error['errors'].containsKey('pin')) {
-                      errorPin = error['errors']['pin'][0];
+          Obx(
+            () => Center(
+              child: RoundedCustomButton(
+                onPressed: () async {
+                  if (_currentPin.text != '') {
+                    var error = await _createPasswordController.changePIN(
+                      _newPin.text,
+                      _confirmPin.text,
+                      currentpin: _currentPin.text,
+                    );
+                    if (error != null) {
+                      if (error.containsKey('errors') &&
+                          error['errors'].containsKey('pin')) {
+                        errorPin = error['errors']['pin'][0];
+                      } else if (error.containsKey('errors') &&
+                          error['errors'].containsKey('pin_confirmation')) {
+                        errorPin = error['errors']['pin_confirmation'][0];
+                      } else {
+                        currentPin = error['message'];
+                      }
                     }
-                  } else {
-                    currentPin = error['message'];
+                    setState(() {});
                   }
-                  setState(() {});
-                }
-              },
-              label: 'Update',
-              radius: 5,
-              size: Size(size.width * .4, 30),
-              bgColor: bgPrimaryBlue,
+                },
+                label: 'Update',
+                radius: 5,
+                isLoading: _createPasswordController.isLoading.isTrue,
+                size: Size(size.width * .4, 30),
+                bgColor: bgPrimaryBlue,
+              ),
             ),
           ),
         ],

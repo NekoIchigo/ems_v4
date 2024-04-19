@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:ems_v4/global/constants.dart';
@@ -17,7 +16,7 @@ class ApiCall {
   // final String _baseUrl = 'http://10.10.10.42:8000/api/mobile'; // company ip
 
   final String _baseUrl = "${globalBaseUrl}api/mobile";
-  final Duration _timeOutDuration = const Duration(seconds: 30);
+  // final Duration _timeOutDuration = const Duration(seconds: 30);
   final client = RetryClient(http.Client());
 
   Future postRequest({
@@ -46,26 +45,26 @@ class ApiCall {
             http.MultipartFile('file', fileStream, length, filename: file.path);
         request.files.add(multipartFile);
 
-        final response = await request.send().timeout(
-          _timeOutDuration,
-          onTimeout: () {
-            log('request time out');
-            throw TimeoutException('Request Timeout');
-          },
-        );
+        final response = await request.send();
+        // .timeout(
+        //   _timeOutDuration,
+        //   onTimeout: () {
+        //     log('request time out');
+        //     throw TimeoutException('Request Timeout');
+        //   },
+        // );
         //! to fix and test
         return response;
       } else {
-        final response = await http
-            .post(Uri.parse(fullUrl),
-                body: jsonEncode(data), headers: _setHeaders(token))
-            .timeout(
-          _timeOutDuration,
-          onTimeout: () {
-            log('request time out');
-            return http.Response('Request Timeout', 408);
-          },
-        );
+        final response = await http.post(Uri.parse(fullUrl),
+            body: jsonEncode(data), headers: _setHeaders(token));
+        //     .timeout(
+        //   _timeOutDuration,
+        //   onTimeout: () {
+        //     log('request time out');
+        //     return http.Response('Request Timeout', 408);
+        //   },
+        // );
         var body = jsonDecode(response.body);
 
         if (body.containsKey('message') &&
@@ -123,16 +122,15 @@ class ApiCall {
     var fullUrl = _baseUrl + apiUrl;
     var token = await _getToken();
     try {
-      final response = await http
-          .get(Uri.parse(_buildUrl(fullUrl, parameters)),
-              headers: _setHeaders(token))
-          .timeout(
-        _timeOutDuration,
-        onTimeout: () {
-          log('request time out');
-          return http.Response('Request Timeout', 408);
-        },
-      );
+      final response = await http.get(Uri.parse(_buildUrl(fullUrl, parameters)),
+          headers: _setHeaders(token));
+      //     .timeout(
+      //   _timeOutDuration,
+      //   onTimeout: () {
+      //     log('request time out');
+      //     return http.Response('Request Timeout', 408);
+      //   },
+      // )
       var body = jsonDecode(response.body);
       if (body.containsKey('message') &&
           body['message']
