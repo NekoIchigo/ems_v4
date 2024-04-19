@@ -45,7 +45,7 @@ class LocationDisclosure extends StatelessWidget {
               SizedBox(
                 width: size.width * .65,
                 child: const Text(
-                  "GEMS needs your precise location to accurately record your location each time you clock in and out.",
+                  "With GEMS, it'll geolocate you every time you clock in or clock out. \n\n You won't be able to complete your clock in or clock out once location service has been denied.",
                   textAlign: TextAlign.justify,
                   style: TextStyle(color: gray, fontSize: 14),
                 ),
@@ -55,7 +55,7 @@ class LocationDisclosure extends StatelessWidget {
                 onPressed: () {
                   context.pop([true]);
                 },
-                label: "Allow location access",
+                label: "Proceed",
                 bgColor: bgPrimaryBlue,
                 size: Size(size.width * .65, 30),
               ),

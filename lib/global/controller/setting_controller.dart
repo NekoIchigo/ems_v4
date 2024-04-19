@@ -22,7 +22,8 @@ class SettingsController extends GetxController {
       isLoading = false.obs,
       isSettingsOpen = false.obs,
       hasLocation = false.obs,
-      hasUpdate = false.obs;
+      hasUpdate = false.obs,
+      isFirstCheck = true.obs;
   Rx<DateTime> currentTime = DateTime.now().obs;
 
   void updateTimeToRealTime() {
@@ -93,7 +94,7 @@ class SettingsController extends GetxController {
 
   Future checkLocationPermission(String path) async {
     _localStorage = await SharedPreferences.getInstance();
-    bool firstCheck = _localStorage.getBool('first_loc_check') ?? true;
+
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -106,34 +107,38 @@ class SettingsController extends GetxController {
       // App to enable the location services.
       navigatorKey.currentContext!
           .go('/no-permission', extra: {'path': path, 'type': 'off'});
-      return Future.error('Location services are disabled.');
     }
     permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       hasLocation.value = true;
-      firstCheck = false;
+      isFirstCheck.value = false;
       _localStorage.setBool('first_loc_check', false);
     }
 
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
-      if (firstCheck) {
-        List result = await showDialog(
-          context: navigatorKey.currentContext!,
-          barrierDismissible: false,
-          builder: (context) {
-            return const LocationDisclosure();
-          },
-        );
+      permission = await Geolocator.requestPermission();
 
-        if (result[0]) {
-          permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        if (isFirstCheck.value) {
+          List result = await showDialog(
+            context: navigatorKey.currentContext!,
+            barrierDismissible: false,
+            builder: (context) {
+              return const LocationDisclosure();
+            },
+          );
+
+          if (result[0]) {
+            Geolocator.openAppSettings();
+          }
         }
 
         hasLocation.value = true;
-        firstCheck = false;
+        isFirstCheck.value = false;
         _localStorage.setBool('first_loc_check', false);
       } else {
         if (permission == LocationPermission.denied) {
@@ -145,15 +150,12 @@ class SettingsController extends GetxController {
           hasLocation.value = false;
           navigatorKey.currentContext!.go('/no-permission',
               extra: {'path': path, 'type': 'no_permission'});
-          return Future.error('Location permissions are denied');
         }
         if (permission == LocationPermission.deniedForever) {
           // Permissions are denied forever, handle appropriately.
           hasLocation.value = false;
           navigatorKey.currentContext!.go('/no-permission',
               extra: {'path': path, 'type': 'no_permission'});
-          return Future.error(
-              'Location permissions are permanently denied, we cannot request permissions.');
         }
       }
     }

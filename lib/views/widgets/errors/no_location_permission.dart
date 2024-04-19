@@ -87,8 +87,8 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                         label: isSettingsOpen
                             ? 'Try Again'
                             : extraData['type'] == 'off'
-                                ? 'Enable GPS'
-                                : 'Enable location permission',
+                                ? 'Allow GPS'
+                                : 'Allow Location Permission',
                         size: Size(size.width * .60, 30),
                         fontSize: 14,
                       ),

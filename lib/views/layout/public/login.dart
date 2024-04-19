@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                         ),
                         const SizedBox(height: 50),
                         const Text(
-                          "Company code",
+                          "Code",
                           style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
@@ -99,7 +99,7 @@ class _LoginState extends State<Login> {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                          "Email/Employee ID",
+                          "Username",
                           style: TextStyle(color: gray, fontSize: 13),
                         ),
                         const SizedBox(height: 10),
@@ -128,7 +128,7 @@ class _LoginState extends State<Login> {
                                 }
                               });
                             },
-                            hintText: 'Enter email/employee ID',
+                            hintText: 'Enter employee email or ID',
                           ),
                         ),
                         const Text(
