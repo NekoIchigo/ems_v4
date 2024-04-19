@@ -111,7 +111,7 @@ class _LoginState extends State<Login> {
                             textController: _emailController,
                             icon: _authService.isBioEnabled.isTrue
                                 ? Icons.fingerprint
-                                : Icons.mail,
+                                : Icons.person,
                             iconColor: lightGray,
                             onIconPressed: () {
                               _authService.localAuthenticate();

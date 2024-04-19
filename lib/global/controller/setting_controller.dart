@@ -134,6 +134,8 @@ class SettingsController extends GetxController {
 
           if (result[0]) {
             Geolocator.openAppSettings();
+          } else {
+            permission = await Geolocator.requestPermission();
           }
         }
 

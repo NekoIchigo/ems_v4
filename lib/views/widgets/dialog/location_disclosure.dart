@@ -12,7 +12,7 @@ class LocationDisclosure extends StatelessWidget {
     return Dialog(
       child: Container(
         width: size.width * .8,
-        height: size.height * .6,
+        height: size.height * .72,
         padding: const EdgeInsets.symmetric(
           vertical: 20,
           horizontal: 10,
@@ -27,7 +27,7 @@ class LocationDisclosure extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               const Text(
-                'Give "GEMS" to access your precise location',
+                'Location access is important',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: gray,
