@@ -65,7 +65,7 @@ class LocationDisclosure extends StatelessWidget {
                   onPressed: () {
                     context.pop([false]);
                   },
-                  label: "I'll do it later.",
+                  label: "Not now",
                   bgColor: gray,
                   size: Size(size.width * .65, 30),
                 ),
