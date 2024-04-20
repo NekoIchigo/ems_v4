@@ -25,7 +25,9 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>This app use optional local authentication to login.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>To ensure precise time and attendance records, please turn on location services. 
+
+This allows our app to accurately log your location when clocking in and out.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to photo library for changing profile image.</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -34,8 +36,8 @@
 	<string>LaunchScreen</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-	<string>sms</string>
-	<string>tel</string>
+		<string>sms</string>
+		<string>tel</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
