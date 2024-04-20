@@ -47,7 +47,7 @@ class LocationDisclosure extends StatelessWidget {
                 SizedBox(
                   width: size.width * .65,
                   child: const Text(
-                    "With GEMS, it'll geolocate you every time you clock in or clock out. \n\n You won't be able to complete your clock in or clock out once location service has been denied.",
+                    "To accurately record your work hours, we need to access your location. \n\nGranting permission will enable us to verify your presence at the designated workplace. \n\n Your privacy is important to us, and location data will only used for attendance purposes. \n\nPlease tap \"Proceed\" if you agree.",
                     textAlign: TextAlign.justify,
                     style: TextStyle(color: gray, fontSize: 14),
                   ),
