@@ -108,6 +108,7 @@ class SettingsController extends GetxController {
       navigatorKey.currentContext!
           .go('/no-permission', extra: {'path': path, 'type': 'off'});
     }
+
     permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.whileInUse ||
@@ -117,8 +118,7 @@ class SettingsController extends GetxController {
       _localStorage.setBool('first_loc_check', false);
     }
 
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied ||
@@ -153,13 +153,14 @@ class SettingsController extends GetxController {
           navigatorKey.currentContext!.go('/no-permission',
               extra: {'path': path, 'type': 'no_permission'});
         }
-        if (permission == LocationPermission.deniedForever) {
-          // Permissions are denied forever, handle appropriately.
-          hasLocation.value = false;
-          navigatorKey.currentContext!.go('/no-permission',
-              extra: {'path': path, 'type': 'no_permission'});
-        }
       }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      hasLocation.value = false;
+      navigatorKey.currentContext!
+          .go('/no-permission', extra: {'path': path, 'type': 'no_permission'});
     }
   }
 }
