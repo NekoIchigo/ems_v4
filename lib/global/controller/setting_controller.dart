@@ -122,35 +122,32 @@ class SettingsController extends GetxController {
         permission == LocationPermission.deniedForever) {
       permission = await Geolocator.requestPermission();
 
-      if (isFirstCheck.value) {
-        List result = await showDialog(
-          context: navigatorKey.currentContext!,
-          barrierDismissible: false,
-          builder: (context) {
-            return const LocationDisclosure();
-          },
-        );
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        if (isFirstCheck.value) {
+          List result = await showDialog(
+            context: navigatorKey.currentContext!,
+            barrierDismissible: false,
+            builder: (context) {
+              return const LocationDisclosure();
+            },
+          );
 
-        if (result[0]) {
-          Geolocator.openAppSettings();
-        } else {
-          permission = await Geolocator.requestPermission();
+          if (result[0]) {
+            Geolocator.openAppSettings();
+          } else {
+            permission = await Geolocator.requestPermission();
+          }
+        } else if (permission == LocationPermission.deniedForever) {
+          hasLocation.value = false;
+          navigatorKey.currentContext!.go('/no-permission',
+              extra: {'path': path, 'type': 'no_permission'});
         }
-      } else if (permission == LocationPermission.deniedForever) {
-        hasLocation.value = false;
-        navigatorKey.currentContext!.go('/no-permission',
-            extra: {'path': path, 'type': 'no_permission'});
       }
 
       hasLocation.value = true;
       isFirstCheck.value = false;
       _localStorage.setBool('first_loc_check', false);
-    } else {
-      if (permission == LocationPermission.denied) {
-        hasLocation.value = false;
-        navigatorKey.currentContext!.go('/no-permission',
-            extra: {'path': path, 'type': 'no_permission'});
-      }
     }
   }
 }

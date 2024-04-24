@@ -17,6 +17,13 @@ import 'package:ems_v4/views/layout/private/time_entries/widgets/attendance_log.
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/time_records/time_records.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_container.dart';
 import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart';
 import 'package:ems_v4/views/layout/public/login.dart';
@@ -182,10 +189,82 @@ final router = GoRouter(
             ),
           ],
         ),
+        ShellRoute(
+          pageBuilder: (context, state, child) =>
+              buildPageWithDefaultTransition<void>(
+                  context: context,
+                  state: state,
+                  child: Transactions(child: child)),
+          routes: [
+            GoRoute(
+              path: '/transaction',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const TransactionMenu(),
+              ),
+            ),
+            GoRoute(
+              path: "/time_records",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const TimeRecords(),
+              ),
+            ),
+            GoRoute(
+              path: "/dtr_correction",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const DTRCorrection(),
+              ),
+            ),
+            GoRoute(
+              path: "/leave",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const LeavePage(),
+              ),
+            ),
+            GoRoute(
+              path: "/overtime",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const Overtime(),
+              ),
+            ),
+            GoRoute(
+              path: "/change_schedule",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangeSchedule(),
+              ),
+            ),
+            GoRoute(
+              path: "/change_restday",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangeRestday(),
+              ),
+            ),
+          ],
+        ),
         GoRoute(
-          path: '/transaction',
+          path: '/notification',
           pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-              context: context, state: state, child: const Transactions()),
+              context: context, state: state, child: const NotificationPage()),
         ),
         GoRoute(
           path: '/notification',

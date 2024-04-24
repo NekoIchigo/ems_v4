@@ -38,7 +38,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               const SizedBox(height: 25),
               const Center(
                 child: Text(
-                  "Overtime",
+                  "Change Schedule",
                   style: TextStyle(
                     color: primaryBlue,
                     fontWeight: FontWeight.bold,
