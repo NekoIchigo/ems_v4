@@ -92,6 +92,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   widget.detailPage,
                   const UnderMaintenance(

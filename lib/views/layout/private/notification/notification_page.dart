@@ -20,16 +20,7 @@ class _NotificationPageState extends State<NotificationPage> {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: size.height * .78, child: const Center(child: ComingSoon()),
-            // const NotificationContainer(),
-          ),
-        ],
-      ),
+      child: const Center(child: ComingSoon()),
     );
   }
 }

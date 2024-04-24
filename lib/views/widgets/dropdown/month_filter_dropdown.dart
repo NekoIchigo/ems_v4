@@ -40,17 +40,15 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
           margin: const EdgeInsets.symmetric(vertical: 10),
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            color: bgSecondaryBlue,
             borderRadius: BorderRadius.circular(10),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<dynamic>(
               iconEnabledColor: Colors.white,
               value: dropdownValue,
-              dropdownColor: bgSecondaryBlue,
               elevation: 16,
               isExpanded: true,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: gray),
               onChanged: (value) {
                 // This is called when the user selects an item.
                 if (value["month"] == 0) {
@@ -71,7 +69,7 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
                   value: value,
                   child: Row(
                     children: [
-                      const Icon(Icons.date_range_rounded, color: Colors.white),
+                      const Icon(Icons.date_range_rounded, color: gray),
                       const SizedBox(width: 10),
                       Text(value['label']),
                     ],

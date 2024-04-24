@@ -19,6 +19,7 @@ import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_in
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
@@ -29,7 +30,7 @@ import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart'
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:ems_v4/views/layout/public/splash_screen.dart';
-import 'package:ems_v4/views/widgets/errors/maintendance.dart';
+import 'package:ems_v4/views/widgets/errors/maintenance.dart';
 import 'package:ems_v4/views/widgets/errors/no_internet.dart';
 import 'package:ems_v4/views/widgets/errors/no_location_permission.dart';
 import 'package:flutter/material.dart';
@@ -221,6 +222,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const DTRCorrection(),
+              ),
+            ),
+            GoRoute(
+              path: "/dtr_correction_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const DTRCorrectionForm(),
               ),
             ),
             GoRoute(

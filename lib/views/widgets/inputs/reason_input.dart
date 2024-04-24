@@ -89,7 +89,6 @@ class _ReasonInputState extends State<ReasonInput> {
             ),
           ),
         ),
-        Container(),
       ],
     );
   }

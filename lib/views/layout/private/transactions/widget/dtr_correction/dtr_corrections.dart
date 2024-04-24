@@ -14,6 +14,8 @@ class DTRCorrection extends StatefulWidget {
 class _DTRCorrectionState extends State<DTRCorrection> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
       decoration: const BoxDecoration(
@@ -54,13 +56,13 @@ class _DTRCorrectionState extends State<DTRCorrection> {
             ],
           ),
           Positioned(
-            bottom: 25,
+            bottom: size.height * .10,
             right: 10,
             child: FloatingActionButton(
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                context.go('');
+                context.push("/dtr_correction_form");
               },
               child: const Icon(
                 Icons.add,
