@@ -6,8 +6,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class ReasonInput extends StatefulWidget {
+  const ReasonInput({
+    super.key,
+    required this.readOnly,
+    this.showNumberLabel = true,
+  });
+
+  final bool showNumberLabel;
   final bool readOnly;
-  const ReasonInput({super.key, required this.readOnly});
 
   @override
   State<ReasonInput> createState() => _ReasonInputState();
@@ -22,7 +28,13 @@ class _ReasonInputState extends State<ReasonInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const NumberLabel(label: "Reason", number: 3),
+        Visibility(
+          visible: widget.showNumberLabel,
+          child: const NumberLabel(
+            label: "Reason",
+            number: 3,
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.fromLTRB(25, 15, 0, 0),
           child: TextFormField(
@@ -36,7 +48,7 @@ class _ReasonInputState extends State<ReasonInput> {
         ),
         Container(
           padding: const EdgeInsets.only(left: 15),
-          width: size.width * .35,
+          width: widget.readOnly ? size.width * .32 : size.width * .45,
           child: TextButton(
             onPressed: () async {
               // TODO: Setup file_picker in IOS with Podfile
@@ -80,7 +92,7 @@ class _ReasonInputState extends State<ReasonInput> {
                   size: 20,
                   color: primaryBlue,
                 ),
-                const SizedBox(width: 3),
+                const SizedBox(width: 5),
                 Text(
                   widget.readOnly ? 'View File' : 'Add attachment',
                   style: const TextStyle(color: primaryBlue),
