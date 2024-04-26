@@ -46,10 +46,15 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
   return CustomTransitionPage<T>(
     key: state.pageKey,
     child: child,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-        FadeTransition(
-            opacity: CurveTween(curve: Curves.easeInOutCirc).animate(animation),
-            child: child),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return CupertinoPageTransitionsBuilder().buildTransitions<T>(
+        null,
+        context,
+        animation,
+        secondaryAnimation,
+        child,
+      );
+    },
   );
 }
 
