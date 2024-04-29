@@ -22,6 +22,7 @@ import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime_form.dart';
@@ -260,6 +261,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const LeavePage(),
+              ),
+            ),
+            GoRoute(
+              path: "/leave_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const LeaveForm(),
               ),
             ),
             GoRoute(

@@ -21,18 +21,12 @@ class _LeaveFormState extends State<LeaveForm> {
     'Leave Type 2',
     'Leave Type 3',
   ];
-  String? _dropdownValue;
-  String _selectedTime = "-- : -- --";
+
   late Size size;
-  @override
-  void initState() {
-    super.initState();
-    _dropdownValue = _list[0];
-  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -92,7 +86,7 @@ class _LeaveFormState extends State<LeaveForm> {
             onSelected: (String? value) {
               // This is called when the user selects an item.
               setState(() {
-                _dropdownValue = value!;
+                // _dropdownValue = value!;
               });
             },
             dropdownMenuEntries:
