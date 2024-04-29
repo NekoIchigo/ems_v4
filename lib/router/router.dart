@@ -33,6 +33,7 @@ import 'package:ems_v4/views/layout/public/splash_screen.dart';
 import 'package:ems_v4/views/widgets/errors/maintenance.dart';
 import 'package:ems_v4/views/widgets/errors/no_internet.dart';
 import 'package:ems_v4/views/widgets/errors/no_location_permission.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -46,17 +47,30 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
   return CustomTransitionPage<T>(
     key: state.pageKey,
     child: child,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      return CupertinoPageTransitionsBuilder().buildTransitions<T>(
-        null,
-        context,
-        animation,
-        secondaryAnimation,
-        child,
-      );
-    },
+    transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+        FadeTransition(
+            opacity: CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+            child: child),
   );
 }
+
+// CustomTransitionPage buildPageWithDefaultTransition<T>({
+//   required BuildContext context,
+//   required GoRouterState state,
+//   required Widget child,
+// }) {
+//   return CustomTransitionPage<T>(
+//     key: state.pageKey,
+//     child: child,
+//     transitionsBuilder: (context, _, secondaryAnimation, child) {
+//       return CupertinoPageRoute(
+//         builder: (context) => child,
+//         settings: RouteSettings(
+//             name: state.pageKey.toString()), // Pass route settings
+//       ).buildTransitions(context, _, secondaryAnimation, child);
+//     },
+//   );
+// }
 
 final router = GoRouter(
   navigatorKey: navigatorKey,

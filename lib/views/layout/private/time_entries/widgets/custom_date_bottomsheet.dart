@@ -2,7 +2,6 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:go_router/go_router.dart';
 
 class CustomDateBottomsheet extends StatelessWidget {
   final String type;
@@ -62,7 +61,7 @@ class CustomDateBottomsheet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               RoundedCustomButton(
-                onPressed: () => context.pop(),
+                onPressed: () => Navigator.of(context).pop(),
                 label: "Cancel",
                 bgColor: Colors.grey,
                 radius: 8,
@@ -72,7 +71,7 @@ class CustomDateBottomsheet extends StatelessWidget {
                 onPressed: () {
                   if (type == "range") {
                     if (dates.length == 2) {
-                      context.pop(dates);
+                      Navigator.of(context).pop(dates);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -88,7 +87,7 @@ class CustomDateBottomsheet extends StatelessWidget {
                     }
                   } else {
                     if (dates.isNotEmpty) {
-                      context.pop(dates);
+                      Navigator.of(context).pop(dates);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -104,7 +103,7 @@ class CustomDateBottomsheet extends StatelessWidget {
                     }
                   }
                 },
-                label: "Submit",
+                label: "Select",
                 bgColor: primaryBlue,
                 radius: 8,
                 size: Size(size.width * .4, 40),
