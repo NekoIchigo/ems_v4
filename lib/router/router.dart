@@ -19,6 +19,7 @@ import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_in
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave.dart';
@@ -297,6 +298,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const ChangeSchedule(),
+              ),
+            ),
+            GoRoute(
+              path: "/change_schedule_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangeScheduleForm(),
               ),
             ),
             GoRoute(

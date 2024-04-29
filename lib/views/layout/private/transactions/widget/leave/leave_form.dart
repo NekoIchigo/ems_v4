@@ -59,7 +59,8 @@ class _LeaveFormState extends State<LeaveForm> {
                       size: Size(size.width * .4, 40),
                       radius: 8,
                       bgColor: gray, //primaryBlue
-                    )
+                    ),
+                    const SizedBox(height: 50),
                   ]
                       .map((widget) => Padding(
                             padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
@@ -83,6 +84,17 @@ class _LeaveFormState extends State<LeaveForm> {
           DropdownMenu<String>(
             initialSelection: _list.first,
             width: size.width * .84,
+            trailingIcon: Icon(
+              Icons.arrow_drop_down_rounded,
+              size: 25,
+            ),
+            inputDecorationTheme: const InputDecorationTheme(
+              constraints: BoxConstraints(maxHeight: 45),
+              contentPadding: EdgeInsetsDirectional.all(5),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: gray),
+              ),
+            ),
             onSelected: (String? value) {
               // This is called when the user selects an item.
               setState(() {

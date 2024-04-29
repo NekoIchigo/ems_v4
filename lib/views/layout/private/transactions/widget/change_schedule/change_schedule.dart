@@ -14,6 +14,8 @@ class ChangeSchedule extends StatefulWidget {
 class _ChangeScheduleState extends State<ChangeSchedule> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
       decoration: const BoxDecoration(
@@ -54,13 +56,13 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
             ],
           ),
           Positioned(
-            bottom: 25,
+            bottom: size.height * .10,
             right: 10,
             child: FloatingActionButton(
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                context.go('');
+                context.push('/change_schedule_form');
               },
               child: const Icon(
                 Icons.add,
