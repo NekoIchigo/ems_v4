@@ -69,7 +69,7 @@ class MessageTab extends StatelessWidget {
                     Icons.send_rounded,
                     color: Colors.white,
                   ),
-                  size: const Size(115, 20),
+                  size: Size(size.width * .3, 20),
                 )
               ],
             ),

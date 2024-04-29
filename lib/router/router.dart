@@ -24,6 +24,7 @@ import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/d
 import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records/time_records.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_container.dart';
 import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart';
@@ -268,6 +269,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const Overtime(),
+              ),
+            ),
+            GoRoute(
+              path: "/overtime_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const OvertimeForm(),
               ),
             ),
             GoRoute(

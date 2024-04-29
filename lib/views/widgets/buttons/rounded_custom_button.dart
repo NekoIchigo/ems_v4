@@ -77,6 +77,7 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
             ),
             Text(
               widget.label,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: widget.textColor ?? Colors.white,
                 fontSize: widget.fontSize ?? 15,
