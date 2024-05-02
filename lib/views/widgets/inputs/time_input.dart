@@ -43,7 +43,7 @@ class _TimeInputState extends State<TimeInput> {
         child: Center(
           child: Text(
             _selectedTime,
-            style: const TextStyle(fontSize: 16),
+            style: defaultStyle,
           ),
         ),
       ),

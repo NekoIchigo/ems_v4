@@ -41,11 +41,7 @@ class _OvertimeState extends State<Overtime> {
               const Center(
                 child: Text(
                   "Overtime",
-                  style: TextStyle(
-                    color: primaryBlue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: titleStyle,
                 ),
               ),
               const SizedBox(height: 20),

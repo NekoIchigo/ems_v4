@@ -13,7 +13,10 @@ class ScheduleDTR extends StatelessWidget {
           children: [
             const SizedBox(
               width: 70,
-              child: Text("Schedule"),
+              child: Text(
+                "Schedule",
+                style: defaultStyle,
+              ),
             ),
             Expanded(
               child: isLoading
@@ -21,12 +24,13 @@ class ScheduleDTR extends StatelessWidget {
                   : Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        color: lightGray,
+                        color: bgLightGray,
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: const Text(
                         "M-Sat 08:30 am - 05:30 pm (RD Sun)",
                         overflow: TextOverflow.ellipsis,
+                        style: defaultStyle,
                       ),
                     ),
             ),
@@ -37,7 +41,7 @@ class ScheduleDTR extends StatelessWidget {
           children: [
             const SizedBox(
               width: 70,
-              child: Text("DTR"),
+              child: Text("DTR", style: defaultStyle),
             ),
             Expanded(
               child: isLoading
@@ -45,12 +49,13 @@ class ScheduleDTR extends StatelessWidget {
                   : Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        color: lightGray,
+                        color: bgLightGray,
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: const Text(
                         "08:30 am to --:-- --",
                         overflow: TextOverflow.ellipsis,
+                        style: defaultStyle,
                       ),
                     ),
             )

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class ReasonInput extends StatefulWidget {
   const ReasonInput({
     super.key,
-    required this.readOnly,
+    this.readOnly = false,
     this.showNumberLabel = true,
   });
 
@@ -39,6 +39,7 @@ class _ReasonInputState extends State<ReasonInput> {
           padding: const EdgeInsets.fromLTRB(25, 15, 0, 0),
           child: TextFormField(
             maxLines: 3,
+            style: defaultStyle,
             decoration: const InputDecoration(
               hintText: "Enter here",
               contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),

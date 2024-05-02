@@ -61,7 +61,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
-              style: TextStyle(color: _dates.isEmpty ? gray : Colors.black),
+              style: defaultStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,
@@ -92,7 +92,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
-              style: const TextStyle(color: gray),
+              style: defaultStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,
@@ -118,7 +118,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[1]),
-              style: const TextStyle(color: gray),
+              style: defaultStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,
