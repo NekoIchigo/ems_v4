@@ -12,7 +12,6 @@ class TransactionController extends GetxController {
 
   Future getDTROnDate(DateTime? date) async {
     isLoading.value = true;
-    print(date.toString().split(" ")[0]);
     var result = await apiCall.postRequest(
       apiUrl: "/dtr-correction/get-attendance-info",
       data: {

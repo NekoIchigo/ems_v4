@@ -10,7 +10,6 @@ import 'package:ems_v4/views/widgets/inputs/schedule_drt_.dart';
 import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:ems_v4/views/widgets/inputs/timer_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class OvertimeForm extends StatefulWidget {
@@ -24,6 +23,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
   late Size size;
   final TransactionController _transactionController =
       Get.find<TransactionController>();
+  final TextEditingController _totalTime = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
