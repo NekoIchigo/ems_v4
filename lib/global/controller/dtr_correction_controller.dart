@@ -12,18 +12,20 @@ class DTRCorrectionController extends GetxController {
   Future getDTROnDate(DateTime? date) async {
     isLoading.value = true;
     print(date.toString().split(" ")[0]);
-    var result = await apiCall.postRequest(
+    apiCall
+        .postRequest(
       apiUrl: "/dtr-correction/get-attendance-info",
       data: {
         "attendance_date": date.toString().split(" ")[0],
       },
       catchError: (error) {},
-    );
-
-    if (result.containsKey("success") && result["success"] == true) {
-      log(result["data"]["schedules"].toString());
-      dtrModels = result["data"];
-    }
-    isLoading.value = false;
+    )
+        .then((result) {
+      if (result.containsKey("success") && result["success"] == true) {
+        log(result["data"]["schedules"].toString());
+        dtrModels = result["data"]["schedules"];
+      }
+      isLoading.value = false;
+    });
   }
 }
