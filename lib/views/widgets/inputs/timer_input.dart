@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 class TimeTextField extends StatelessWidget {
   const TimeTextField({
     super.key,
-    this.label = "Time (HH:MM)",
+    this.label,
     this.hint = "00:00",
   });
 
-  final String label;
+  final String? label;
   final String hint;
 
   @override

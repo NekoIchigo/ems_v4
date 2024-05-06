@@ -40,6 +40,7 @@ class _ReasonInputState extends State<ReasonInput> {
           child: TextFormField(
             maxLines: 3,
             style: defaultStyle,
+            readOnly: widget.readOnly,
             decoration: const InputDecoration(
               hintText: "Enter here",
               contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -53,36 +54,37 @@ class _ReasonInputState extends State<ReasonInput> {
           child: TextButton(
             onPressed: () async {
               // TODO: Setup file_picker in IOS with Podfile
+              if (!widget.readOnly) {
+                FilePickerResult? result = await FilePicker.platform.pickFiles(
+                  allowMultiple: true,
+                  // type: FileType.custom,
+                  // allowedExtensions: ['jpg', 'pdf', 'doc'],
+                );
 
-              FilePickerResult? result = await FilePicker.platform.pickFiles(
-                allowMultiple: true,
-                // type: FileType.custom,
-                // allowedExtensions: ['jpg', 'pdf', 'doc'],
-              );
-              if (result != null) {
-                files = result.paths.map((path) => File(path!)).toList();
-              } else {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text(
-                          'You did not select any file or something went bad.'),
-                      behavior: SnackBarBehavior.floating,
-                      margin: EdgeInsets.only(
-                        bottom: size.height - 130,
-                        right: 20,
-                        left: 20,
+                // print(file.name);
+                // print(file.bytes);
+                // print(file.size);
+                // print(file.extension);
+                // print(file.path);
+                if (result != null) {
+                  files = result.paths.map((path) => File(path!)).toList();
+                } else {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text(
+                            'You did not select any file or something went bad.'),
+                        behavior: SnackBarBehavior.floating,
+                        margin: EdgeInsets.only(
+                          bottom: size.height - 130,
+                          right: 20,
+                          left: 20,
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 }
               }
-
-              // print(file.name);
-              // print(file.bytes);
-              // print(file.size);
-              // print(file.extension);
-              // print(file.path);
             },
             child: Row(
               children: [
