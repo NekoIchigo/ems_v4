@@ -85,59 +85,63 @@ class _OvertimeFormState extends State<OvertimeForm> {
   }
 
   Widget formField2() {
-    return ColumnBuilder(
-      itemCount: _transactionController.schedules.length,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: const EdgeInsets.fromLTRB(25, 0, 0, 15),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(color: gray),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Column(
-            children: [
-              const ScheduleDTR(isLoading: false),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: size.width * .55,
-                    child: const Text(
-                      'Overtime Start Time',
-                      style: mediumStyle,
+    return Obx(
+      () => ColumnBuilder(
+        itemCount: _transactionController.schedules.isEmpty
+            ? 1
+            : _transactionController.schedules.length,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.fromLTRB(25, 0, 0, 15),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(color: gray),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Column(
+              children: [
+                ScheduleDTR(isLoading: _transactionController.isLoading.isTrue),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: size.width * .55,
+                      child: const Text(
+                        'Overtime Start Time',
+                        style: mediumStyle,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: TimeInput(
-                      selectedTime: (value) {},
+                    Expanded(
+                      child: TimeInput(
+                        selectedTime: (value) {},
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: size.width * .55,
-                    child: const Text(
-                      'No. of Hours',
-                      style: mediumStyle,
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: size.width * .55,
+                      child: const Text(
+                        'No. of Hours',
+                        style: mediumStyle,
+                      ),
                     ),
-                  ),
-                  const Expanded(
-                    child: TimeTextField(
-                      label: "",
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        );
-      },
+                    const Expanded(
+                      child: TimeTextField(
+                        label: "",
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

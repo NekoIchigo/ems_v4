@@ -65,6 +65,17 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+                      const SizedBox(height: 20),
+                      Text(
+                        textAlign: TextAlign.center,
+                        extraData['type'] == 'off'
+                            ? "When you enable your GPS,  you will experience the complete functionality of the GEMS app."
+                            : "When you allow your location permission with GEMS, we can verify your physical presence when clocking in or out, accurately record your work hours, and ensure compliance with company policies.",
+                        style: const TextStyle(
+                          color: darkGray,
+                          fontSize: 13,
+                        ),
+                      ),
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 10.0),

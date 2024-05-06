@@ -3,8 +3,16 @@ import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleDTR extends StatelessWidget {
-  const ScheduleDTR({super.key, required this.isLoading});
+  const ScheduleDTR({
+    super.key,
+    required this.isLoading,
+    this.scheduleName,
+    this.dtrRange,
+  });
+
   final bool isLoading;
+  final String? scheduleName;
+  final String? dtrRange;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,8 +35,8 @@ class ScheduleDTR extends StatelessWidget {
                         color: bgLightGray,
                         borderRadius: BorderRadius.circular(3),
                       ),
-                      child: const Text(
-                        "M-Sat 08:30 am - 05:30 pm (RD Sun)",
+                      child: Text(
+                        scheduleName ?? "--",
                         overflow: TextOverflow.ellipsis,
                         style: defaultStyle,
                       ),
@@ -52,8 +60,8 @@ class ScheduleDTR extends StatelessWidget {
                         color: bgLightGray,
                         borderRadius: BorderRadius.circular(3),
                       ),
-                      child: const Text(
-                        "08:30 am to --:-- --",
+                      child: Text(
+                        dtrRange ?? "00:00 to 00:00",
                         overflow: TextOverflow.ellipsis,
                         style: defaultStyle,
                       ),

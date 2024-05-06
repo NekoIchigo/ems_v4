@@ -23,9 +23,9 @@ class DTRCorrectionController extends GetxController {
         .then((result) {
       if (result.containsKey("success") && result["success"] == true) {
         log(result["data"]["schedules"].toString());
-        dtrModels = result["data"]["schedules"];
+        dtrModels.value = result["data"]["schedules"];
+        print(dtrModels);
       }
-      isLoading.value = false;
-    });
+    }).whenComplete(() => isLoading.value = false);
   }
 }
