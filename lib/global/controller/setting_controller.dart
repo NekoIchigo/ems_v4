@@ -108,6 +108,7 @@ class SettingsController extends GetxController {
       navigatorKey.currentContext!
           .go('/no-permission', extra: {'path': path, 'type': 'off'});
     }
+
     permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.whileInUse ||
@@ -137,29 +138,16 @@ class SettingsController extends GetxController {
           } else {
             permission = await Geolocator.requestPermission();
           }
-        }
-
-        hasLocation.value = true;
-        isFirstCheck.value = false;
-        _localStorage.setBool('first_loc_check', false);
-      } else {
-        if (permission == LocationPermission.denied) {
-          // Permissions are denied, next time you could try
-          // requesting permissions again (this is also where
-          // Android's shouldShowRequestPermissionRationale
-          // returned true. According to Android guidelines
-          // your App should show an explanatory UI now.
-          hasLocation.value = false;
-          navigatorKey.currentContext!.go('/no-permission',
-              extra: {'path': path, 'type': 'no_permission'});
-        }
-        if (permission == LocationPermission.deniedForever) {
-          // Permissions are denied forever, handle appropriately.
+        } else if (permission == LocationPermission.deniedForever) {
           hasLocation.value = false;
           navigatorKey.currentContext!.go('/no-permission',
               extra: {'path': path, 'type': 'no_permission'});
         }
       }
+
+      hasLocation.value = true;
+      isFirstCheck.value = false;
+      _localStorage.setBool('first_loc_check', false);
     }
   }
 }

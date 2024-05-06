@@ -14,6 +14,8 @@ class Overtime extends StatefulWidget {
 class _OvertimeState extends State<Overtime> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
       decoration: const BoxDecoration(
@@ -39,11 +41,7 @@ class _OvertimeState extends State<Overtime> {
               const Center(
                 child: Text(
                   "Overtime",
-                  style: TextStyle(
-                    color: primaryBlue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: titleStyle,
                 ),
               ),
               const SizedBox(height: 20),
@@ -54,13 +52,13 @@ class _OvertimeState extends State<Overtime> {
             ],
           ),
           Positioned(
-            bottom: 25,
+            bottom: size.height * .10,
             right: 10,
             child: FloatingActionButton(
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                context.go('');
+                context.push('/overtime_form');
               },
               child: const Icon(
                 Icons.add,

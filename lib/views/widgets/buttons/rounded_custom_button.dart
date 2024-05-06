@@ -13,6 +13,7 @@ class RoundedCustomButton extends StatefulWidget {
   final bool? isLoading;
   final bool? disabled;
   final double? fontSize;
+  final Widget? icon;
   const RoundedCustomButton({
     super.key,
     required this.onPressed,
@@ -25,6 +26,7 @@ class RoundedCustomButton extends StatefulWidget {
     this.isLoading,
     this.disabled,
     this.fontSize,
+    this.icon,
   });
 
   @override
@@ -64,8 +66,18 @@ class _RoundedCustomButtonState extends State<RoundedCustomButton> {
                 ),
               ),
             ),
+            Visibility(
+              visible: widget.icon != null,
+              child: Row(
+                children: [
+                  widget.icon ?? Container(),
+                  const SizedBox(width: 10)
+                ],
+              ),
+            ),
             Text(
               widget.label,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: widget.textColor ?? Colors.white,
                 fontSize: widget.fontSize ?? 15,

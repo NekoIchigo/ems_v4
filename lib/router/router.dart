@@ -17,14 +17,26 @@ import 'package:ems_v4/views/layout/private/time_entries/widgets/attendance_log.
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule_form.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_form.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave_form.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime_form.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/time_records/time_records.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_container.dart';
 import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart';
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:ems_v4/views/layout/public/splash_screen.dart';
-import 'package:ems_v4/views/widgets/errors/maintendance.dart';
+import 'package:ems_v4/views/widgets/errors/maintenance.dart';
 import 'package:ems_v4/views/widgets/errors/no_internet.dart';
 import 'package:ems_v4/views/widgets/errors/no_location_permission.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,6 +56,24 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
             child: child),
   );
 }
+
+// CustomTransitionPage buildPageWithDefaultTransition<T>({
+//   required BuildContext context,
+//   required GoRouterState state,
+//   required Widget child,
+// }) {
+//   return CustomTransitionPage<T>(
+//     key: state.pageKey,
+//     child: child,
+//     transitionsBuilder: (context, _, secondaryAnimation, child) {
+//       return CupertinoPageRoute(
+//         builder: (context) => child,
+//         settings: RouteSettings(
+//             name: state.pageKey.toString()), // Pass route settings
+//       ).buildTransitions(context, _, secondaryAnimation, child);
+//     },
+//   );
+// }
 
 final router = GoRouter(
   navigatorKey: navigatorKey,
@@ -182,10 +212,118 @@ final router = GoRouter(
             ),
           ],
         ),
+        ShellRoute(
+          pageBuilder: (context, state, child) =>
+              buildPageWithDefaultTransition<void>(
+                  context: context,
+                  state: state,
+                  child: Transactions(child: child)),
+          routes: [
+            GoRoute(
+              path: '/transaction',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const TransactionMenu(),
+              ),
+            ),
+            GoRoute(
+              path: "/time_records",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const TimeRecords(),
+              ),
+            ),
+            GoRoute(
+              path: "/dtr_correction",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const DTRCorrection(),
+              ),
+            ),
+            GoRoute(
+              path: "/dtr_correction_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const DTRCorrectionForm(),
+              ),
+            ),
+            GoRoute(
+              path: "/leave",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const LeavePage(),
+              ),
+            ),
+            GoRoute(
+              path: "/leave_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const LeaveForm(),
+              ),
+            ),
+            GoRoute(
+              path: "/overtime",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const Overtime(),
+              ),
+            ),
+            GoRoute(
+              path: "/overtime_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const OvertimeForm(),
+              ),
+            ),
+            GoRoute(
+              path: "/change_schedule",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangeSchedule(),
+              ),
+            ),
+            GoRoute(
+              path: "/change_schedule_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangeScheduleForm(),
+              ),
+            ),
+            GoRoute(
+              path: "/change_restday",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangeRestday(),
+              ),
+            ),
+          ],
+        ),
         GoRoute(
-          path: '/transaction',
+          path: '/notification',
           pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-              context: context, state: state, child: const Transactions()),
+              context: context, state: state, child: const NotificationPage()),
         ),
         GoRoute(
           path: '/notification',

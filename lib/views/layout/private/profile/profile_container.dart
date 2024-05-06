@@ -166,8 +166,8 @@ class _ProfileContainerState extends State<ProfileContainer> {
         title: 'Success',
         hasMessage: true,
         message: value
-            ? "You can now log in using your fingerprint."
-            : "Your fingerprint login has been successfully disabled.",
+            ? "You can now log in using your biometrics."
+            : "Your biometrics login has been successfully disabled.",
         buttonNumber: 0,
         hasCustomWidget: false,
         withCloseButton: true,

@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/widgets/under_maintenance.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/logs_tab.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/message_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -92,14 +93,11 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   widget.detailPage,
-                  const UnderMaintenance(
-                    hasLogo: false,
-                  ),
-                  const UnderMaintenance(
-                    hasLogo: false,
-                  ),
+                  const MessageTab(),
+                  const LogsTab(),
                 ],
               ),
             ),

@@ -49,9 +49,9 @@ class _CustomDateInputState extends State<CustomDateInput> {
   List<Widget> single() {
     return [
       Container(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFFc4c4c4)),
+          border: Border.all(color: gray),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Row(
@@ -61,7 +61,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
-              style: TextStyle(color: _dates.isEmpty ? gray : Colors.black),
+              style: defaultStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,
@@ -80,7 +80,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
       const Text("From date"),
       const SizedBox(height: 5),
       Container(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: Border.all(color: gray),
           borderRadius: BorderRadius.circular(5),
@@ -92,7 +92,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
-              style: const TextStyle(color: gray),
+              style: defaultStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,
@@ -106,7 +106,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
       const Text("End date"),
       const SizedBox(height: 5),
       Container(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: Border.all(color: gray),
           borderRadius: BorderRadius.circular(5),
@@ -118,7 +118,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[1]),
-              style: const TextStyle(color: gray),
+              style: defaultStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,

@@ -3,18 +3,18 @@ import 'dart:developer';
 import 'package:ems_v4/global/api.dart';
 import 'package:get/get.dart';
 
-class TransactionController extends GetxController {
-  RxInt pageIndex = 0.obs;
+class DTRCorrectionController extends GetxController {
   RxBool isLoading = false.obs;
   ApiCall apiCall = ApiCall();
-  RxList schedules = [].obs;
-  final int routerKey = 3;
-
+  RxList dtrModels = [].obs;
+  // ! properly analize how to get the dtr of each schedule.
+  // ! it must be in attendance masters to get the record.
   Future getDTROnDate(DateTime? date) async {
     isLoading.value = true;
+    print(date.toString().split(" ")[0]);
     apiCall
         .postRequest(
-      apiUrl: "/attendance-records/get-attendance-info",
+      apiUrl: "/dtr-correction/get-attendance-info",
       data: {
         "attendance_date": date.toString().split(" ")[0],
       },
@@ -23,12 +23,9 @@ class TransactionController extends GetxController {
         .then((result) {
       if (result.containsKey("success") && result["success"] == true) {
         log(result["data"]["schedules"].toString());
-        schedules.value = result["data"]["schedules"];
+        dtrModels.value = result["data"]["schedules"];
+        print(dtrModels);
       }
     }).whenComplete(() => isLoading.value = false);
-  }
-
-  void resetSchedules() {
-    schedules.value = [];
   }
 }

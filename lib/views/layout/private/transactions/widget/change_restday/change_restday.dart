@@ -38,7 +38,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               const SizedBox(height: 25),
               const Center(
                 child: Text(
-                  "Overtime",
+                  "Change Restday",
                   style: TextStyle(
                     color: primaryBlue,
                     fontWeight: FontWeight.bold,
