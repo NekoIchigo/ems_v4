@@ -14,6 +14,8 @@ class ChangeRestday extends StatefulWidget {
 class _ChangeRestdayState extends State<ChangeRestday> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
       decoration: const BoxDecoration(
@@ -54,13 +56,13 @@ class _ChangeRestdayState extends State<ChangeRestday> {
             ],
           ),
           Positioned(
-            bottom: 25,
+            bottom: size.height * .10,
             right: 10,
             child: FloatingActionButton(
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                context.go('');
+                context.push('');
               },
               child: const Icon(
                 Icons.add,

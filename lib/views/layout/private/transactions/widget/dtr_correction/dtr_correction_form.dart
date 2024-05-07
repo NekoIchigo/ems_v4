@@ -1,5 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
+import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
@@ -19,8 +19,9 @@ class DTRCorrectionForm extends StatefulWidget {
 class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   late Size size;
   String _selectedTime = "--:-- --";
-  final DTRCorrectionController _correctionController =
-      Get.find<DTRCorrectionController>();
+  String attendanceDate = "";
+
+  final TransactionController _controller = Get.find<TransactionController>();
   final TextEditingController _reason = TextEditingController();
 
   @override
@@ -50,7 +51,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                       CustomDateInput(
                         type: "single",
                         onDateTimeChanged: (value) {
-                          _correctionController.getDTROnDate(value[0]);
+                          attendanceDate = value[0].toString().split(" ")[0];
+                          _controller.getDTROnDate(attendanceDate);
                         },
                         child: Container(),
                       ),
@@ -110,7 +112,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                   child: Text("Schedule"),
                 ),
                 Expanded(
-                  child: _correctionController.isLoading.isTrue
+                  child: _controller.isLoading.isTrue
                       ? const CustomLoader(height: 30)
                       : Container(
                           padding: const EdgeInsets.all(5),
@@ -134,7 +136,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                   child: Text("DTR"),
                 ),
                 Expanded(
-                  child: _correctionController.isLoading.isTrue
+                  child: _controller.isLoading.isTrue
                       ? const CustomLoader(height: 30)
                       : Container(
                           padding: const EdgeInsets.all(5),
@@ -184,7 +186,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           "${time.hourOfPeriod}:${time.minute.toString().padLeft(2, '0')} $period";
                     });
                   },
-                  child: _correctionController.isLoading.isTrue
+                  child: _controller.isLoading.isTrue
                       ? CustomLoader(height: 35, width: size.width * .19)
                       : Container(
                           padding: const EdgeInsets.symmetric(
@@ -235,7 +237,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           "${time.hourOfPeriod}:${time.minute.toString().padLeft(2, '0')} $period";
                     });
                   },
-                  child: _correctionController.isLoading.isTrue
+                  child: _controller.isLoading.isTrue
                       ? CustomLoader(height: 35, width: size.width * .19)
                       : Container(
                           padding: const EdgeInsets.symmetric(

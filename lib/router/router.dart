@@ -16,8 +16,10 @@ import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/attendance_log.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
+import 'package:ems_v4/views/layout/private/transactions/transaction_result.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_form.dart';
@@ -228,6 +230,15 @@ final router = GoRouter(
                   child: Transactions(child: child)),
           routes: [
             GoRoute(
+              path: '/transaction_result',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const TransactionResult(),
+              ),
+            ),
+            GoRoute(
               path: '/transaction',
               pageBuilder: (context, state) =>
                   buildPageWithDefaultTransition<void>(
@@ -324,6 +335,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const ChangeRestday(),
+              ),
+            ),
+            GoRoute(
+              path: "/change_restday_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangeRestdayForm(),
               ),
             ),
           ],
