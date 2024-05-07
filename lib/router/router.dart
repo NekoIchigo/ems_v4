@@ -33,6 +33,7 @@ import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart'
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:ems_v4/views/layout/public/splash_screen.dart';
+import 'package:ems_v4/views/widgets/errors/location_message.dart';
 import 'package:ems_v4/views/widgets/errors/maintenance.dart';
 import 'package:ems_v4/views/widgets/errors/no_internet.dart';
 import 'package:ems_v4/views/widgets/errors/no_location_permission.dart';
@@ -94,6 +95,11 @@ final router = GoRouter(
           context: context, state: state, child: const Maintenance()),
     ),
     GoRoute(
+      path: '/first_location',
+      pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+          context: context, state: state, child: const LocationMessage()),
+    ),
+    GoRoute(
       path: '/no-internet',
       pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
           context: context, state: state, child: NoInternet()),
@@ -121,11 +127,13 @@ final router = GoRouter(
           context: context, state: state, child: const ForgotPINContainer()),
     ),
     GoRoute(
-        path: '/create_password',
-        pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-            context: context,
-            state: state,
-            child: const CreatePasswordContainer())),
+      path: '/create_password',
+      pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+        context: context,
+        state: state,
+        child: const CreatePasswordContainer(),
+      ),
+    ),
     ShellRoute(
       pageBuilder: (context, state, child) =>
           buildPageWithDefaultTransition<void>(

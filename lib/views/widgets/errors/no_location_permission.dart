@@ -70,7 +70,7 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                         textAlign: TextAlign.center,
                         extraData['type'] == 'off'
                             ? "When you enable your GPS,  you will experience the complete functionality of the GEMS app."
-                            : "When you allow your location permission with GEMS, we can verify your physical presence when clocking in or out, accurately record your work hours, and ensure compliance with company policies.",
+                            : "When you allow your location permission with GEMS, your physical presence will be verified when clocking in or out and accurately record your work hours.",
                         style: const TextStyle(
                           color: darkGray,
                           fontSize: 13,
@@ -98,8 +98,8 @@ class _NoLocationPermissionState extends State<NoLocationPermission> {
                         label: isSettingsOpen
                             ? 'Try Again'
                             : extraData['type'] == 'off'
-                                ? 'Allow GPS'
-                                : 'Allow Location Permission',
+                                ? 'Enable GPS'
+                                : 'Enable Location Permission',
                         size: Size(size.width * .60, 30),
                         fontSize: 14,
                       ),

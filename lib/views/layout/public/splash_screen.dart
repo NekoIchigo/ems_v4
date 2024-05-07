@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _settings.updateTimeToRealTime();
     await _settings.checkAppVersionMaintenance();
     await _authService.initAuth();
-    await _settings.checkLocationPermission('/');
+    await _settings.checkFirstLogin();
 
     Timer(const Duration(seconds: 1), () {
       if (_settings.isMaintenance.isFalse) {
