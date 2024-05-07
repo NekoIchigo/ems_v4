@@ -35,7 +35,7 @@ class SettingsController extends GetxController {
   Future getServerTime() async {
     isLoading.value = true;
     var result = await apiCall.getRequest(
-      apiUrl: '/server-time',
+      apiUrl: '/mobile/server-time',
       catchError: (error) => isLoading.value = false,
     );
 
@@ -68,7 +68,7 @@ class SettingsController extends GetxController {
         isLoading.value = true;
         var result = await apiCall.postRequest(
           data: {'version': value.currentVersion},
-          apiUrl: '/check-maintenance',
+          apiUrl: '/mobile/check-maintenance',
           catchError: (error) => isLoading.value = false,
         );
 

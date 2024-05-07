@@ -95,7 +95,7 @@ class CreatePasswordController extends GetxController {
 
       var result = await apiCall.postRequest(
           data: {'email': email},
-          apiUrl: '/mail-reset-otp',
+          apiUrl: '/mobile/mail-reset-otp',
           catchError: (error) => isLoading.value = false);
       if (result.containsKey('success') && result['success']) {
         showDialog(
@@ -133,7 +133,7 @@ class CreatePasswordController extends GetxController {
     };
     var result = await apiCall.postRequest(
         data: data,
-        apiUrl: '/otp-validation',
+        apiUrl: '/mobile/otp-validation',
         catchError: (error) => isLoading.value = false);
     if (result.containsKey('success') && result['success']) {
       animateToThirdPage();
@@ -155,7 +155,7 @@ class CreatePasswordController extends GetxController {
     };
     var result = await apiCall.postRequest(
       data: data,
-      apiUrl: '/reset-password',
+      apiUrl: '/mobile/reset-password',
       catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {
@@ -197,7 +197,7 @@ class CreatePasswordController extends GetxController {
     };
     var result = await apiCall.postRequest(
       data: data,
-      apiUrl: '/change-password',
+      apiUrl: '/mobile/change-password',
       catchError: (error) => isLoading.value = false,
     );
 
@@ -243,7 +243,7 @@ class CreatePasswordController extends GetxController {
     };
     var result = await apiCall.postRequest(
       data: data,
-      apiUrl: '/change-pin',
+      apiUrl: '/mobile/change-pin',
       catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {
@@ -298,7 +298,7 @@ class CreatePasswordController extends GetxController {
     isLoading.value = true;
 
     var result = await apiCall.getRequest(
-      apiUrl: '/first-login',
+      apiUrl: '/mobile/first-login',
       catchError: (error) => isLoading.value = false,
     );
     _localStorage.setBool('auth_biometrics', biometrics);

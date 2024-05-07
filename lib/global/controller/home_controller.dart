@@ -46,7 +46,7 @@ class HomeController extends GetxController {
     isLoading.value = true;
 
     var result = await apiCall.getRequest(
-      apiUrl: '/check-shift/1',
+      apiUrl: '/mobile/check-shift/1',
       catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {
@@ -97,7 +97,7 @@ class HomeController extends GetxController {
         'latitude': position.latitude,
         'longitude': position.longitude,
       },
-      apiUrl: '/calculate-location/${_authService.employee!.value.id}',
+      apiUrl: '/mobile/calculate-location/${_authService.employee!.value.id}',
       catchError: (error) => isLoading.value = false,
     );
 
@@ -144,7 +144,7 @@ class HomeController extends GetxController {
         'latitude': position.latitude,
         'longitude': position.longitude,
       },
-      apiUrl: '/calculate-location/${_authService.employee!.value.id}',
+      apiUrl: '/mobile/calculate-location/${_authService.employee!.value.id}',
       catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {
@@ -207,7 +207,7 @@ class HomeController extends GetxController {
         'health_check': healthCheckStr,
         'health_temperature': temperature,
       },
-      apiUrl: '/clock-in',
+      apiUrl: '/mobile/clock-in',
       catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {
@@ -246,7 +246,7 @@ class HomeController extends GetxController {
         'clocked_out_location_setting':
             attendance.value.clockedOutLocationSetting,
       },
-      apiUrl: '/clock-out',
+      apiUrl: '/mobile/clock-out',
       catchError: (error) => isLoading.value = false,
     );
     if (result.containsKey('success') && result['success']) {

@@ -14,7 +14,7 @@ class TransactionController extends GetxController {
     isLoading.value = true;
     apiCall
         .postRequest(
-      apiUrl: "/attendance-records/get-attendance-info",
+      apiUrl: "/mobile/attendance-records/get-attendance-info",
       data: {
         "attendance_date": date.toString().split(" ")[0],
       },
