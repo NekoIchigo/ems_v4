@@ -63,7 +63,6 @@ class _OvertimeFormState extends State<OvertimeForm> {
                           onDateTimeChanged: (value) {
                             attendanceDate = value[0].toString().split(" ")[0];
                             _transactionController.getDTROnDate(attendanceDate);
-                            print(attendanceDate);
                           },
                           child: Container(),
                         ),
@@ -89,7 +88,6 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                 "reason": _reason.text,
                               };
 
-                              print(data);
                               _overtime.submitRequest(data);
                             },
                             isLoading: _overtime.isSubmitting.isTrue,

@@ -46,8 +46,18 @@ class _ReasonInputState extends State<ReasonInput> {
             readOnly: widget.readOnly,
             decoration: const InputDecoration(
               hintText: "Enter here",
+              hintStyle: defaultStyle,
               contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: gray,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: gray,
+                ),
+              ),
             ),
           ),
         ),
