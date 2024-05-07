@@ -16,6 +16,8 @@ class LeaveForm extends StatefulWidget {
 }
 
 class _LeaveFormState extends State<LeaveForm> {
+  final TextEditingController _reason = TextEditingController();
+
   final List<String> _list = <String>[
     'Leave Type 1',
     'Leave Type 2',
@@ -52,7 +54,10 @@ class _LeaveFormState extends State<LeaveForm> {
                     ),
                     const NumberLabel(label: "Edit time record", number: 2),
                     formField2(),
-                    const ReasonInput(readOnly: true),
+                    ReasonInput(
+                      readOnly: true,
+                      controller: _reason,
+                    ),
                     RoundedCustomButton(
                       onPressed: () {},
                       label: "Submit",

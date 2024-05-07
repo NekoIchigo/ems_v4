@@ -10,13 +10,13 @@ class TransactionController extends GetxController {
   RxString dtrRange = "00:00 to 00:00".obs, scheduleName = "Schedule name".obs;
   final int routerKey = 3;
 
-  Future getDTROnDate(DateTime? date) async {
+  Future getDTROnDate(String? date) async {
     isLoading.value = true;
     apiCall
         .postRequest(
       apiUrl: "/mobile/attendance-records/get-attendance-info",
       data: {
-        "attendance_date": date.toString().split(" ")[0],
+        "attendance_date": date,
       },
       catchError: (error) {},
     )

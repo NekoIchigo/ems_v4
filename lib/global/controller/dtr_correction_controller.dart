@@ -14,7 +14,7 @@ class DTRCorrectionController extends GetxController {
     print(date.toString().split(" ")[0]);
     apiCall
         .postRequest(
-      apiUrl: "/dtr-correction/get-attendance-info",
+      apiUrl: "/mobile/dtr-correction/get-attendance-info",
       data: {
         "attendance_date": date.toString().split(" ")[0],
       },

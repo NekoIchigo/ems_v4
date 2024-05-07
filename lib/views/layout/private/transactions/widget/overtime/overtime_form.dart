@@ -1,5 +1,8 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
+import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -23,7 +26,12 @@ class _OvertimeFormState extends State<OvertimeForm> {
   late Size size;
   final TransactionController _transactionController =
       Get.find<TransactionController>();
-  final TextEditingController _totalTime = TextEditingController();
+  final AuthController _auth = Get.find<AuthController>();
+
+  final TextEditingController _reason = TextEditingController();
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+  final OvertimeController _overtime = Get.find<OvertimeController>();
+  String attendanceDate = "", timeStart = "";
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +61,9 @@ class _OvertimeFormState extends State<OvertimeForm> {
                         CustomDateInput(
                           type: "single",
                           onDateTimeChanged: (value) {
-                            _transactionController.getDTROnDate(value[0]);
+                            attendanceDate = value[0].toString().split(" ")[0];
+                            _transactionController.getDTROnDate(attendanceDate);
+                            print(attendanceDate);
                           },
                           child: Container(),
                         ),
@@ -63,13 +73,31 @@ class _OvertimeFormState extends State<OvertimeForm> {
                         const SizedBox(height: 15),
                         formField2(),
                         const SizedBox(height: 15),
-                        const ReasonInput(readOnly: false),
-                        RoundedCustomButton(
-                          onPressed: () {},
-                          label: "Submit",
-                          size: Size(size.width * .4, 40),
-                          radius: 8,
-                          bgColor: gray, //primaryBlue
+                        ReasonInput(
+                          readOnly: false,
+                          controller: _reason,
+                        ),
+                        Obx(
+                          () => RoundedCustomButton(
+                            onPressed: () {
+                              var data = {
+                                "date_of_ot": attendanceDate,
+                                "time_start": timeStart,
+                                "no_of_hours": "1.5",
+                                "company_id": _auth.company.value.id,
+                                "employee_id": _auth.employee?.value.id,
+                                "reason": _reason.text,
+                              };
+
+                              print(data);
+                              _overtime.submitRequest(data);
+                            },
+                            isLoading: _overtime.isSubmitting.isTrue,
+                            label: "Submit",
+                            size: Size(size.width * .4, 40),
+                            radius: 8,
+                            bgColor: gray, //primaryBlue
+                          ),
                         ),
                         const SizedBox(height: 50),
                       ],
@@ -117,7 +145,9 @@ class _OvertimeFormState extends State<OvertimeForm> {
                   ),
                   Expanded(
                     child: TimeInput(
-                      selectedTime: (value) {},
+                      selectedTime: (value) {
+                        timeStart = _dateTimeUtils.time12to24(value);
+                      },
                     ),
                   ),
                 ],

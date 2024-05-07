@@ -10,10 +10,12 @@ class ReasonInput extends StatefulWidget {
     super.key,
     this.readOnly = false,
     this.showNumberLabel = true,
+    required this.controller,
   });
 
   final bool showNumberLabel;
   final bool readOnly;
+  final TextEditingController controller;
 
   @override
   State<ReasonInput> createState() => _ReasonInputState();
@@ -39,6 +41,7 @@ class _ReasonInputState extends State<ReasonInput> {
           padding: const EdgeInsets.fromLTRB(25, 15, 0, 0),
           child: TextFormField(
             maxLines: 3,
+            controller: widget.controller,
             style: defaultStyle,
             readOnly: widget.readOnly,
             decoration: const InputDecoration(

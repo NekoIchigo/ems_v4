@@ -21,6 +21,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   String _selectedTime = "--:-- --";
   final DTRCorrectionController _correctionController =
       Get.find<DTRCorrectionController>();
+  final TextEditingController _reason = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         child: formField2(),
                       ),
                       const SizedBox(height: 15),
-                      const ReasonInput(readOnly: true),
+                      ReasonInput(
+                        readOnly: true,
+                        controller: _reason,
+                      ),
                       RoundedCustomButton(
                         onPressed: () {},
                         label: "Submit",

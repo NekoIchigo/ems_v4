@@ -3,6 +3,7 @@ import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
+import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/global/controller/profile_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
     Get.put(ProfileController());
     Get.put(HomeController());
     Get.put(DTRCorrectionController());
+    Get.put(OvertimeController());
 
     return MaterialApp.router(
       routerConfig: router,
