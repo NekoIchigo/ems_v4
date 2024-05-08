@@ -29,4 +29,13 @@ class OvertimeController extends GetxController {
       isSubmitting.value = false;
     });
   }
+
+  Future<void> getAllOvertime() async {
+    isLoading.value = true;
+    _apiCall.getRequest(apiUrl: "/overtime", catchError: () {}).then((value) {
+      print(value);
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
+  }
 }
