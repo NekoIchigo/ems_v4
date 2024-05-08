@@ -32,7 +32,7 @@ class ProfileController extends GetxController {
         'id': userData['id'],
         'image': image,
       },
-      apiUrl: '/update-personal-info',
+      apiUrl: '/mobile/update-personal-info',
       catchError: (error) => isLoading.value = false,
     );
 

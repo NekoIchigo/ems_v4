@@ -12,7 +12,7 @@ class HomeViewModel extends ChangeNotifier {
     _isLoading = true;
     try {
       var response = await _apiCall.getRequest(
-          apiUrl: '/check-shift', catchError: (error) => {});
+          apiUrl: '/mobile/mobile/check-shift', catchError: (error) => {});
       var result = jsonDecode(response.body);
 
       if (result.containsKey('success') && result['success']) {}

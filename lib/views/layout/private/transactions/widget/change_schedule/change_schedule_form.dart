@@ -21,6 +21,8 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     'Schedule Type 3',
   ];
   List<bool> isSelected = [true, false];
+  final TextEditingController _reason = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -63,7 +65,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         child: formField2(),
                       ),
                       const SizedBox(height: 15),
-                      const ReasonInput(readOnly: true),
+                      ReasonInput(
+                        readOnly: true,
+                        controller: _reason,
+                      ),
                       RoundedCustomButton(
                         onPressed: () {},
                         label: "Submit",

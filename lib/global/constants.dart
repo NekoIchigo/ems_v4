@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-// const globalBaseUrl = "https://gems-stg.globalland.com.ph/"; // stg
+// const globalBaseUrl = "https://stg-ems.globalland.com.ph/"; // stg
 const globalBaseUrl = "https://gems.globalland.com.ph/"; // prod
-// const globalBaseUrl = "http://10.10.10.79:8000/"; // local
+// const globalBaseUrl = "http://localhost:8000/"; // local
 const primaryBlue = Color(0xFF2465C7);
 const navBlue = Color(0xFF274D85);
 const bgPrimaryBlue = Color(0xFF1F4583);
 const bgSecondaryBlue = Color(0xFF2465C7);
 const bgSky = Color(0xFF699BF7);
-const bgLightGray = Color(0xFFd5d5d5);
+const bgLightGray = Color(0xFFECECEC);
 const lightGray = Color(0xFFD3D3D3);
 const darkGray = Color(0xFF404040);
 const gray = Color(0xFF888888);

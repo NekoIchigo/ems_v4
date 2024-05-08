@@ -35,7 +35,7 @@ class SettingsController extends GetxController {
   Future getServerTime() async {
     isLoading.value = true;
     var result = await apiCall.getRequest(
-      apiUrl: '/server-time',
+      apiUrl: '/mobile/server-time',
       catchError: (error) => isLoading.value = false,
     );
 
@@ -68,7 +68,7 @@ class SettingsController extends GetxController {
         isLoading.value = true;
         var result = await apiCall.postRequest(
           data: {'version': value.currentVersion},
-          apiUrl: '/check-maintenance',
+          apiUrl: '/mobile/check-maintenance',
           catchError: (error) => isLoading.value = false,
         );
 
@@ -92,7 +92,7 @@ class SettingsController extends GetxController {
     });
   }
 
-  Future checkLocationPermission(String path) async {
+  Future oldCheckLocationPermission(String path) async {
     _localStorage = await SharedPreferences.getInstance();
 
     bool serviceEnabled;
@@ -148,6 +148,41 @@ class SettingsController extends GetxController {
       hasLocation.value = true;
       isFirstCheck.value = false;
       _localStorage.setBool('first_loc_check', false);
+    }
+  }
+
+  Future checkFirstLogin() async {
+    _localStorage = await SharedPreferences.getInstance();
+    isFirstCheck.value = _localStorage.getBool("first_loc_check") ?? true;
+
+    if (isFirstCheck.isTrue) {
+      isFirstCheck.value = false;
+      _localStorage.setBool('first_loc_check', false);
+      navigatorKey.currentContext!.go("/first_location");
+    }
+  }
+
+  Future checkLocationService(String path) async {
+    bool serviceEnabled;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      navigatorKey.currentContext!
+          .go('/no-permission', extra: {'path': path, 'type': 'off'});
+    }
+  }
+
+  Future checkLocationPermission(String path) async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      hasLocation.value = false;
+      navigatorKey.currentContext!
+          .go('/no-permission', extra: {'path': path, 'type': 'no_permission'});
     }
   }
 }

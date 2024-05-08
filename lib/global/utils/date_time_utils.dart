@@ -40,4 +40,11 @@ class DateTimeUtils {
       return 'Good evening,';
     }
   }
+
+  String time12to24(time) {
+    return time.replaceAllMapped(
+        RegExp(r'(\d+):(\d+) (AM|PM)'),
+        (Match m) =>
+            '${m[3] == 'AM' ? (m[1] == '12' ? '00' : m[1]) : int.parse(m[1]!) + 12}:${m[2]}');
+  }
 }

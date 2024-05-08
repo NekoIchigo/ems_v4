@@ -16,8 +16,10 @@ import 'package:ems_v4/views/layout/private/time_entries/time_entries.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/attendance_log.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_health_declaration.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
+import 'package:ems_v4/views/layout/private/transactions/transaction_result.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_form.dart';
@@ -33,6 +35,7 @@ import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart'
 import 'package:ems_v4/views/layout/public/login.dart';
 import 'package:ems_v4/views/layout/public/pin_login.dart';
 import 'package:ems_v4/views/layout/public/splash_screen.dart';
+import 'package:ems_v4/views/widgets/errors/location_message.dart';
 import 'package:ems_v4/views/widgets/errors/maintenance.dart';
 import 'package:ems_v4/views/widgets/errors/no_internet.dart';
 import 'package:ems_v4/views/widgets/errors/no_location_permission.dart';
@@ -94,6 +97,11 @@ final router = GoRouter(
           context: context, state: state, child: const Maintenance()),
     ),
     GoRoute(
+      path: '/first_location',
+      pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+          context: context, state: state, child: const LocationMessage()),
+    ),
+    GoRoute(
       path: '/no-internet',
       pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
           context: context, state: state, child: NoInternet()),
@@ -121,11 +129,13 @@ final router = GoRouter(
           context: context, state: state, child: const ForgotPINContainer()),
     ),
     GoRoute(
-        path: '/create_password',
-        pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-            context: context,
-            state: state,
-            child: const CreatePasswordContainer())),
+      path: '/create_password',
+      pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+        context: context,
+        state: state,
+        child: const CreatePasswordContainer(),
+      ),
+    ),
     ShellRoute(
       pageBuilder: (context, state, child) =>
           buildPageWithDefaultTransition<void>(
@@ -219,6 +229,15 @@ final router = GoRouter(
                   state: state,
                   child: Transactions(child: child)),
           routes: [
+            GoRoute(
+              path: '/transaction_result',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const TransactionResult(),
+              ),
+            ),
             GoRoute(
               path: '/transaction',
               pageBuilder: (context, state) =>
@@ -316,6 +335,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const ChangeRestday(),
+              ),
+            ),
+            GoRoute(
+              path: "/change_restday_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ChangeRestdayForm(),
               ),
             ),
           ],

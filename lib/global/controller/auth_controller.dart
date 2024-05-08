@@ -38,7 +38,7 @@ class AuthController extends GetxController {
     setLocalAuth();
     if (token != null) {
       var result = await apiCall.getRequest(
-        apiUrl: '/check-token',
+        apiUrl: '/mobile/check-token',
         catchError: (error) {},
       );
       if (!result.containsKey('token')) {
@@ -113,7 +113,7 @@ class AuthController extends GetxController {
     };
 
     final result = await apiCall.postRequest(
-      apiUrl: '/login',
+      apiUrl: '/mobile/login',
       data: data,
       catchError: (error) {
         isLoading.value = false;
@@ -180,7 +180,7 @@ class AuthController extends GetxController {
     if (email != null) {
       final Map<String, String> data = {'email': email, 'pin': password};
       final result = await apiCall.postRequest(
-        apiUrl: '/pin-auth',
+        apiUrl: '/mobile/pin-auth',
         data: data,
         catchError: (error) {
           isLoading.value = false;
@@ -278,7 +278,8 @@ class AuthController extends GetxController {
 
     await apiCall
         .postRequest(
-            apiUrl: '/logout', catchError: (error) => isLoading.value = false)
+            apiUrl: '/mobile/logout',
+            catchError: (error) => isLoading.value = false)
         .then((value) {
       setAuthStatus();
       setLocalAuth();

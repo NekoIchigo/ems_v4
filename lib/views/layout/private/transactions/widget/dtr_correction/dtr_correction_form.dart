@@ -1,10 +1,12 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
+import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
+import 'package:ems_v4/views/widgets/inputs/schedule_drt_.dart';
+import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,9 +20,11 @@ class DTRCorrectionForm extends StatefulWidget {
 
 class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   late Size size;
-  String _selectedTime = "--:-- --";
-  final DTRCorrectionController _correctionController =
-      Get.find<DTRCorrectionController>();
+  String _clockin = "--:-- --", _clockout = "--:-- --";
+  String attendanceDate = "";
+
+  final TransactionController _controller = Get.find<TransactionController>();
+  final TextEditingController _reason = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +53,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                       CustomDateInput(
                         type: "single",
                         onDateTimeChanged: (value) {
-                          _correctionController.getDTROnDate(value[0]);
+                          attendanceDate = value[0].toString().split(" ")[0];
+                          _controller.getDTROnDate(attendanceDate);
                         },
                         child: Container(),
                       ),
@@ -63,7 +68,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         child: formField2(),
                       ),
                       const SizedBox(height: 15),
-                      const ReasonInput(readOnly: true),
+                      ReasonInput(
+                        readOnly: true,
+                        controller: _reason,
+                      ),
                       RoundedCustomButton(
                         onPressed: () {},
                         label: "Submit",
@@ -99,52 +107,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         ),
         child: Column(
           children: [
-            Row(
-              children: [
-                const SizedBox(
-                  width: 70,
-                  child: Text("Schedule"),
-                ),
-                Expanded(
-                  child: _correctionController.isLoading.isTrue
-                      ? const CustomLoader(height: 30)
-                      : Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: lightGray,
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: const Text(
-                            "M-Sat 08:30 am - 05:30 pm (RD Sun)",
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const SizedBox(
-                  width: 70,
-                  child: Text("DTR"),
-                ),
-                Expanded(
-                  child: _correctionController.isLoading.isTrue
-                      ? const CustomLoader(height: 30)
-                      : Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: lightGray,
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: const Text(
-                            "08:30 am to --:-- --",
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                )
-              ],
+            ScheduleDTR(
+              isLoading: _controller.isLoading.value,
+              scheduleName: "",
+              dtrRange: "",
             ),
             const SizedBox(height: 8),
             Row(
@@ -159,40 +125,19 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     ),
                     child: const Text(
                       "Clock In",
-                      style: TextStyle(fontSize: 16),
+                      style: defaultStyle,
                     ),
                   ),
                 ),
                 const SizedBox(width: 10),
-                InkWell(
-                  onTap: () async {
-                    final TimeOfDay time = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                          initialEntryMode: TimePickerEntryMode.dial,
-                        ) ??
-                        TimeOfDay.now();
-
-                    String period = time.period == DayPeriod.am ? 'AM' : 'PM';
-
-                    setState(() {
-                      _selectedTime =
-                          "${time.hourOfPeriod}:${time.minute.toString().padLeft(2, '0')} $period";
-                    });
-                  },
-                  child: _correctionController.isLoading.isTrue
-                      ? CustomLoader(height: 35, width: size.width * .19)
-                      : Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: gray),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: Text(
-                            _selectedTime,
-                            style: const TextStyle(fontSize: 16),
-                          ),
+                SizedBox(
+                  width: 100,
+                  child: _controller.isLoading.isTrue
+                      ? const CustomLoader(height: 35)
+                      : TimeInput(
+                          selectedTime: (value) async {
+                            _clockin = value;
+                          },
                         ),
                 ),
               ],
@@ -210,40 +155,19 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     ),
                     child: const Text(
                       "Clock Out",
-                      style: TextStyle(fontSize: 16),
+                      style: defaultStyle,
                     ),
                   ),
                 ),
                 const SizedBox(width: 10),
-                InkWell(
-                  onTap: () async {
-                    final TimeOfDay time = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                          initialEntryMode: TimePickerEntryMode.dial,
-                        ) ??
-                        TimeOfDay.now();
-
-                    String period = time.period == DayPeriod.am ? 'AM' : 'PM';
-
-                    setState(() {
-                      _selectedTime =
-                          "${time.hourOfPeriod}:${time.minute.toString().padLeft(2, '0')} $period";
-                    });
-                  },
-                  child: _correctionController.isLoading.isTrue
-                      ? CustomLoader(height: 35, width: size.width * .19)
-                      : Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: gray),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: Text(
-                            _selectedTime,
-                            style: const TextStyle(fontSize: 16),
-                          ),
+                SizedBox(
+                  width: 100,
+                  child: _controller.isLoading.isTrue
+                      ? const CustomLoader(height: 35)
+                      : TimeInput(
+                          selectedTime: (value) async {
+                            _clockout = value;
+                          },
                         ),
                 ),
               ],
