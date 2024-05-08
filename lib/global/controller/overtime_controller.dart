@@ -16,10 +16,11 @@ class OvertimeController extends GetxController {
       catchError: () {},
     )
         .then((result) {
+      print(result);
       navigatorKey.currentContext!.push(
         "/transaction_result",
         extra: {
-          "result": result["success"],
+          "result": result["success"] ?? false,
           "message": result["message"],
           "path": "/overtime",
         },
