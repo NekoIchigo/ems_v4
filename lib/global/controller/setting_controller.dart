@@ -153,7 +153,7 @@ class SettingsController extends GetxController {
 
   Future checkFirstLogin() async {
     _localStorage = await SharedPreferences.getInstance();
-    isFirstCheck.value = _localStorage.getBool("first_loc_check") ?? true;
+    isFirstCheck.value = true;
 
     if (isFirstCheck.isTrue) {
       isFirstCheck.value = false;

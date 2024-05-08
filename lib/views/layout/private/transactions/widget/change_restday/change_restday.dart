@@ -62,7 +62,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                context.push('');
+                context.push('/change_restday_form');
               },
               child: const Icon(
                 Icons.add,

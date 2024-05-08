@@ -1,7 +1,9 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class Overtime extends StatefulWidget {
@@ -12,6 +14,14 @@ class Overtime extends StatefulWidget {
 }
 
 class _OvertimeState extends State<Overtime> {
+  final OvertimeController _overtimeController = Get.find<OvertimeController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _overtimeController.getAllOvertime();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

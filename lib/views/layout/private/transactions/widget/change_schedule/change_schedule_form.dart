@@ -1,10 +1,13 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ChangeScheduleForm extends StatefulWidget {
   const ChangeScheduleForm({super.key});
@@ -15,13 +18,20 @@ class ChangeScheduleForm extends StatefulWidget {
 
 class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   late Size size;
-  final List<String> _list = <String>[
-    'Schedule Type 1',
-    'Schedule Type 2',
-    'Schedule Type 3',
-  ];
+
   List<bool> isSelected = [true, false];
   final TextEditingController _reason = TextEditingController();
+  final AuthController _auth = Get.find<AuthController>();
+  final ChangeScheduleController _scheduleController =
+      Get.find<ChangeScheduleController>();
+
+  String? dateStart, dateEnd, _startTimeError, _totalHoursError;
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleController.getScheduleByType("Fixed Schedule");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +80,17 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         controller: _reason,
                       ),
                       RoundedCustomButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          var data = {
+                            "start_date": dateStart,
+                            "end_date": dateEnd,
+                            "new_schedule": "",
+                            "company_id": _auth.company.value.id,
+                            "employee_id": _auth.employee?.value.id,
+                            "reason": _reason.text,
+                          };
+                          _scheduleController.sendRequest(data);
+                        },
                         label: "Submit",
                         size: Size(size.width * .4, 40),
                         radius: 8,
@@ -101,7 +121,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Schedule Type"),
+              const Text(
+                "Schedule Type",
+                style: defaultStyle,
+              ),
               ToggleButtons(
                 isSelected: isSelected,
                 constraints: BoxConstraints.tight(Size(size.width * .2, 25)),
@@ -118,7 +141,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         buttonIndex < isSelected.length;
                         buttonIndex++) {
                       if (buttonIndex == index) {
-                        isSelected[buttonIndex] = !isSelected[buttonIndex];
+                        _scheduleController.getScheduleByType(
+                          index == 0 ? "Fixed Schedule" : "Flexi Schedule",
+                        );
+
+                        isSelected[buttonIndex] = true;
                       } else {
                         isSelected[buttonIndex] = false;
                       }
@@ -133,29 +160,45 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
             ],
           ),
           const SizedBox(height: 10),
-          DropdownMenu<String>(
-            initialSelection: _list.first,
-            width: size.width * .84,
-            inputDecorationTheme: const InputDecorationTheme(
-              constraints: BoxConstraints(maxHeight: 45),
-              contentPadding: EdgeInsetsDirectional.all(5),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: gray),
+          Obx(
+            () => DropdownMenu(
+              width: size.width * .84,
+              textStyle: defaultStyle,
+              hintText: "Select schedule",
+              trailingIcon: _scheduleController.isLoading.value
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeCap: StrokeCap.round,
+                        strokeWidth: 3,
+                      ),
+                    )
+                  : null,
+              enabled: _scheduleController.isLoading.isFalse,
+              inputDecorationTheme: const InputDecorationTheme(
+                constraints: BoxConstraints(maxHeight: 45),
+                contentPadding: EdgeInsetsDirectional.all(5),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: gray),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: gray),
+                ),
               ),
+              onSelected: (value) {
+                setState(() {
+                  // _dropdownValue = value!;
+                });
+              },
+              dropdownMenuEntries:
+                  _scheduleController.schedules.map<DropdownMenuEntry>((value) {
+                return DropdownMenuEntry(
+                  value: value,
+                  label: value,
+                );
+              }).toList(),
             ),
-            onSelected: (String? value) {
-              // This is called when the user selects an item.
-              setState(() {
-                // _dropdownValue = value!;
-              });
-            },
-            dropdownMenuEntries:
-                _list.map<DropdownMenuEntry<String>>((String value) {
-              return DropdownMenuEntry<String>(
-                value: value,
-                label: value,
-              );
-            }).toList(),
           ),
         ],
       ),

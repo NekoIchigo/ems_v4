@@ -89,6 +89,7 @@ class _LeaveFormState extends State<LeaveForm> {
           DropdownMenu<String>(
             initialSelection: _list.first,
             width: size.width * .84,
+            textStyle: defaultStyle,
             trailingIcon: const Icon(
               Icons.arrow_drop_down_rounded,
               size: 25,

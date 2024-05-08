@@ -48,3 +48,8 @@ const TextStyle hintStyle = TextStyle(
   color: lightGray,
   fontSize: 14,
 );
+
+const TextStyle errorStyle = TextStyle(
+  color: colorError,
+  fontSize: 14,
+);
