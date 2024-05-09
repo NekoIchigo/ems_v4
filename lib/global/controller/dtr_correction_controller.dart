@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
@@ -27,11 +29,30 @@ class DTRCorrectionController extends GetxController {
         extra: {
           "result": result["success"] ?? false,
           "message": result["message"],
-          "path": "/overtime",
+          "path": "/dtr_correction",
         },
       );
     }).whenComplete(() {
       isSubmitting.value = false;
+    });
+  }
+
+  Future<void> getAllDTR() async {
+    isLoading.value = true;
+    _apiCall
+        .getRequest(
+      apiUrl: "/mobile/dtr-correction",
+      catchError: () {},
+    )
+        .then((result) {
+      final data = result["data"];
+      log(data.toString());
+      approvedList.value = data["approved"];
+      pendingList.value = data["pending"];
+      rejectedList.value = data["rejected"];
+      cancelledList.value = data["cancelled"];
+    }).whenComplete(() {
+      isLoading.value = false;
     });
   }
 }

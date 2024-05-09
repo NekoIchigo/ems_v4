@@ -2,6 +2,7 @@ import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/create_password_controller.dart';
+import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
@@ -13,6 +14,7 @@ import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/view_model/home_view_model.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_corrections.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,6 +50,7 @@ class MyApp extends StatelessWidget {
     Get.put(ChangeScheduleController());
     Get.put(LeaveController());
     Get.put(ChangeRestdayController());
+    Get.put(DTRCorrectionController());
 
     return MaterialApp.router(
       routerConfig: router,

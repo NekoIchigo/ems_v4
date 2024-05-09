@@ -1,6 +1,8 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
+import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
@@ -24,9 +26,13 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   String _clockin = "--:-- --", _clockout = "--:-- --";
   String attendanceDate = "";
 
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+
   final TransactionController _controller = Get.find<TransactionController>();
   final TextEditingController _reason = TextEditingController();
   final AuthController _auth = Get.find<AuthController>();
+  final DTRCorrectionController _dtrCorrection =
+      Get.find<DTRCorrectionController>();
 
   @override
   Widget build(BuildContext context) {
@@ -71,26 +77,39 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                       ),
                       const SizedBox(height: 15),
                       ReasonInput(
-                        readOnly: true,
+                        readOnly: false,
                         controller: _reason,
                       ),
-                      RoundedCustomButton(
-                        onPressed: () {
-                          var data = {
-                            "date_of_correction": attendanceDate,
-                            "employee_id": _auth.employee?.value.id,
-                            "reason": _reason.text,
-                            "time_of_record": [
-                              {
-                                "company_id": _auth.company.value.id,
-                              }
-                            ],
-                          };
-                        },
-                        label: "Submit",
-                        size: Size(size.width * .4, 40),
-                        radius: 8,
-                        bgColor: gray, //primaryBlue
+                      Obx(
+                        () => RoundedCustomButton(
+                          onPressed: () {
+                            var data = {
+                              "date_of_correction": attendanceDate,
+                              "employee_id": _auth.employee?.value.id,
+                              "reason": _reason.text,
+                              "company_id": _auth.company.value.id,
+                              "time_of_record": [
+                                {
+                                  "company_id": _auth.company.value.id,
+                                  "employee_id": _auth.employee?.value.id,
+                                  "schedule_id":
+                                      _controller.schedules.first["id"],
+                                  "attendance_date": attendanceDate,
+                                  "attendance_record_id": null,
+                                  "clock_in": _clockin,
+                                  "clock_out": _clockout,
+                                  "reason": _reason.text,
+                                }
+                              ],
+                            };
+                            _dtrCorrection.submitRequest(data);
+                          },
+                          isLoading: _dtrCorrection.isSubmitting.value,
+                          label: "Submit",
+                          size: Size(size.width * .4, 40),
+                          radius: 8,
+                          bgColor: gray, //primaryBlue
+                        ),
                       ),
                       const SizedBox(height: 50),
                     ],
@@ -149,7 +168,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                       ? const CustomLoader(height: 35)
                       : TimeInput(
                           selectedTime: (value) async {
-                            _clockin = value;
+                            _clockin = _dateTimeUtils.time12to24(value);
                           },
                         ),
                 ),
@@ -179,7 +198,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                       ? const CustomLoader(height: 35)
                       : TimeInput(
                           selectedTime: (value) async {
-                            _clockout = value;
+                            _clockout = _dateTimeUtils.time12to24(value);
                           },
                         ),
                 ),
