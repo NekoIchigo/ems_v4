@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -25,6 +26,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
 
   final TransactionController _controller = Get.find<TransactionController>();
   final TextEditingController _reason = TextEditingController();
+  final AuthController _auth = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,18 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         controller: _reason,
                       ),
                       RoundedCustomButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          var data = {
+                            "date_of_correction": attendanceDate,
+                            "employee_id": _auth.employee?.value.id,
+                            "reason": _reason.text,
+                            "time_of_record": [
+                              {
+                                "company_id": _auth.company.value.id,
+                              }
+                            ],
+                          };
+                        },
                         label: "Submit",
                         size: Size(size.width * .4, 40),
                         radius: 8,
@@ -109,8 +122,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
           children: [
             ScheduleDTR(
               isLoading: _controller.isLoading.value,
-              scheduleName: "",
-              dtrRange: "",
+              scheduleName: _controller.scheduleName.value,
+              dtrRange: _controller.dtrRange.value,
             ),
             const SizedBox(height: 8),
             Row(
