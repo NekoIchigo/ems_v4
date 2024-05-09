@@ -52,7 +52,12 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              const TransactionsTabs(
+                approvedList: [],
+                cancelledList: [],
+                pendingList: [],
+                rejectedList: [],
+              ),
             ],
           ),
           Positioned(

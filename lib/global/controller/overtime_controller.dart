@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,10 @@ import 'package:go_router/go_router.dart';
 
 class OvertimeController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
+  RxList approvedList = [].obs,
+      pendingList = [].obs,
+      rejectedList = [].obs,
+      cancelledList = [].obs;
   final ApiCall _apiCall = ApiCall();
 
   Future<void> submitRequest(Map<String, dynamic> data) async {
@@ -34,8 +40,13 @@ class OvertimeController extends GetxController {
     isLoading.value = true;
     _apiCall
         .getRequest(apiUrl: "/mobile/overtime", catchError: () {})
-        .then((value) {
-      print(value);
+        .then((result) {
+      final data = result["data"];
+      log(data.toString());
+      approvedList.value = data["approved"];
+      pendingList.value = data["pending"];
+      rejectedList.value = data["rejected"];
+      cancelledList.value = data["cancelled"];
     }).whenComplete(() {
       isLoading.value = false;
     });

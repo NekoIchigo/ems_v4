@@ -52,7 +52,12 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              const TransactionsTabs(
+                approvedList: [],
+                cancelledList: [],
+                pendingList: [],
+                rejectedList: [],
+              ),
             ],
           ),
           Positioned(

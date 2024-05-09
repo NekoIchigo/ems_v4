@@ -1,5 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/overtime_controller.dart';
+import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ class Overtime extends StatefulWidget {
 
 class _OvertimeState extends State<Overtime> {
   final OvertimeController _overtimeController = Get.find<OvertimeController>();
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
   @override
   void initState() {
@@ -58,7 +61,63 @@ class _OvertimeState extends State<Overtime> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              Obx(
+                () => TransactionsTabs(
+                  approvedList: _overtimeController.approvedList
+                      .map((request) => TransactionItem(
+                            id: request["id"],
+                            title: _dateTimeUtils.fromLaravelDateFormat(
+                                request["attendance_date"]),
+                            dateCreated: _dateTimeUtils
+                                .fromLaravelDateFormat(request["created_at"]),
+                            subtitle:
+                                "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
+                            status: request["status"],
+                            type: "",
+                          ))
+                      .toList(),
+                  cancelledList: _overtimeController.cancelledList
+                      .map((request) => TransactionItem(
+                            id: request["id"],
+                            title: _dateTimeUtils.fromLaravelDateFormat(
+                                request["attendance_date"]),
+                            dateCreated: _dateTimeUtils
+                                .fromLaravelDateFormat(request["created_at"]),
+                            subtitle:
+                                "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
+                            status: request["status"],
+                            type: "",
+                          ))
+                      .toList(),
+                  pendingList: _overtimeController.pendingList
+                      .map((request) => TransactionItem(
+                            id: request["id"],
+                            title: _dateTimeUtils.fromLaravelDateFormat(
+                                request["attendance_date"]),
+                            dateCreated: _dateTimeUtils
+                                .fromLaravelDateFormat(request["created_at"]),
+                            subtitle:
+                                "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
+                            status: request["status"],
+                            type: "",
+                          ))
+                      .toList(),
+                  rejectedList: _overtimeController.rejectedList
+                      .map((request) => TransactionItem(
+                            id: request["id"],
+                            title: _dateTimeUtils.fromLaravelDateFormat(
+                                request["attendance_date"]),
+                            dateCreated: _dateTimeUtils
+                                .fromLaravelDateFormat(request["created_at"]),
+                            subtitle:
+                                "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
+                            status: request["status"],
+                            type: "",
+                          ))
+                      .toList(),
+                  isLoading: _overtimeController.isLoading.value,
+                ),
+              ),
             ],
           ),
           Positioned(

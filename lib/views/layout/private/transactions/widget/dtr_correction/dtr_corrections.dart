@@ -52,7 +52,12 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              const TransactionsTabs(
+                approvedList: [],
+                cancelledList: [],
+                pendingList: [],
+                rejectedList: [],
+              ),
             ],
           ),
           Positioned(

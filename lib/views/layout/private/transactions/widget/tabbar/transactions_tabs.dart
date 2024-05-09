@@ -4,7 +4,20 @@ import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/approved_
 import 'package:flutter/material.dart';
 
 class TransactionsTabs extends StatefulWidget {
-  const TransactionsTabs({super.key});
+  const TransactionsTabs({
+    super.key,
+    required this.pendingList,
+    required this.approvedList,
+    required this.rejectedList,
+    required this.cancelledList,
+    this.isLoading = true,
+  });
+
+  final List<TransactionItem> pendingList;
+  final List<TransactionItem> approvedList;
+  final List<TransactionItem> rejectedList;
+  final List<TransactionItem> cancelledList;
+  final bool isLoading;
 
   @override
   State<TransactionsTabs> createState() => _TransactionsTabsState();
@@ -41,6 +54,7 @@ class _TransactionsTabsState extends State<TransactionsTabs>
     subtitle: 'Type: Clock in | Time: 09:20 am',
     type: 'DTR Correction',
   );
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -75,10 +89,10 @@ class _TransactionsTabsState extends State<TransactionsTabs>
           child: TabBarView(
             controller: _tabController,
             children: [
-              ApprovedListview(items: [item, item]),
-              ApprovedListview(items: [item, item, item]),
-              ApprovedListview(items: [item, item]),
-              const ApprovedListview(items: []),
+              ApprovedListview(items: widget.pendingList),
+              ApprovedListview(items: widget.approvedList),
+              ApprovedListview(items: widget.rejectedList),
+              ApprovedListview(items: widget.cancelledList),
             ],
           ),
         ),
