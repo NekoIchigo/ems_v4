@@ -29,7 +29,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
             right: 0,
             child: IconButton(
               onPressed: () {
-                context.pop();
+                context.go("/transaction");
               },
               icon: const Icon(Icons.close),
             ),

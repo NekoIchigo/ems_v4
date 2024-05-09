@@ -32,6 +32,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final OvertimeController _overtime = Get.find<OvertimeController>();
   String attendanceDate = "", timeStart = "";
+  String? _dateError, _startTimeError, _totalHoursError;
 
   @override
   Widget build(BuildContext context) {

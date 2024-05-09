@@ -1,7 +1,9 @@
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/create_password_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
+import 'package:ems_v4/global/controller/leave_controller.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/global/controller/profile_controller.dart';
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
     Get.put(HomeController());
     Get.put(OvertimeController());
     Get.put(ChangeScheduleController());
+    Get.put(LeaveController());
+    Get.put(ChangeRestdayController());
 
     return MaterialApp.router(
       routerConfig: router,

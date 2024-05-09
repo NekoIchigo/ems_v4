@@ -29,7 +29,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
             right: 0,
             child: IconButton(
               onPressed: () {
-                context.pop();
+                context.go("/transaction");
               },
               icon: const Icon(Icons.close),
             ),

@@ -48,7 +48,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
             height: size.height * .86,
             child: SelectedItemTabs(
               status: "Pending",
-              title: "DTR Correction",
+              title: "Change Schedule",
               detailPage: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),

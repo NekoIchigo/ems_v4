@@ -29,7 +29,7 @@ class _LeavePageState extends State<LeavePage> {
             right: 0,
             child: IconButton(
               onPressed: () {
-                context.pop();
+                context.go("/transaction");
               },
               icon: const Icon(Icons.close),
             ),
