@@ -66,8 +66,10 @@ class _TransactionsTabsState extends State<TransactionsTabs>
               const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
           tabs: _tabs,
           labelStyle: const TextStyle(color: Colors.white, fontSize: 14),
-          unselectedLabelStyle:
-              const TextStyle(color: bgPrimaryBlue, fontSize: 14),
+          unselectedLabelStyle: const TextStyle(
+            color: bgPrimaryBlue,
+            fontSize: 14,
+          ),
           indicator: BoxDecoration(
             color: bgPrimaryBlue,
             borderRadius: BorderRadius.circular(20),
