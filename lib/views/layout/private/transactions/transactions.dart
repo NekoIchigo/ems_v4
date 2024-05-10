@@ -15,9 +15,8 @@ class Transactions extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child:
-          // child,
-          const Center(child: ComingSoon()),
+      child: child,
+      // const Center(child: ComingSoon()),
     );
   }
 }
