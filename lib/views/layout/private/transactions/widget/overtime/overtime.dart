@@ -63,58 +63,10 @@ class _OvertimeState extends State<Overtime> {
               ),
               Obx(
                 () => TransactionsTabs(
-                  approvedList: _overtimeController.approvedList
-                      .map((request) => TransactionItem(
-                            id: request["id"],
-                            title: _dateTimeUtils.fromLaravelDateFormat(
-                                request["attendance_date"]),
-                            dateCreated: _dateTimeUtils
-                                .fromLaravelDateFormat(request["created_at"]),
-                            subtitle:
-                                "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
-                            status: request["status"],
-                            type: "",
-                          ))
-                      .toList(),
-                  cancelledList: _overtimeController.cancelledList
-                      .map((request) => TransactionItem(
-                            id: request["id"],
-                            title: _dateTimeUtils.fromLaravelDateFormat(
-                                request["attendance_date"]),
-                            dateCreated: _dateTimeUtils
-                                .fromLaravelDateFormat(request["created_at"]),
-                            subtitle:
-                                "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
-                            status: request["status"],
-                            type: "",
-                          ))
-                      .toList(),
-                  pendingList: _overtimeController.pendingList
-                      .map((request) => TransactionItem(
-                            id: request["id"],
-                            title: _dateTimeUtils.fromLaravelDateFormat(
-                                request["attendance_date"]),
-                            dateCreated: _dateTimeUtils
-                                .fromLaravelDateFormat(request["created_at"]),
-                            subtitle:
-                                "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
-                            status: request["status"],
-                            type: "",
-                          ))
-                      .toList(),
-                  rejectedList: _overtimeController.rejectedList
-                      .map((request) => TransactionItem(
-                            id: request["id"],
-                            title: _dateTimeUtils.fromLaravelDateFormat(
-                                request["attendance_date"]),
-                            dateCreated: _dateTimeUtils
-                                .fromLaravelDateFormat(request["created_at"]),
-                            subtitle:
-                                "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
-                            status: request["status"],
-                            type: "",
-                          ))
-                      .toList(),
+                  approvedList: formatList(_overtimeController.approvedList),
+                  cancelledList: formatList(_overtimeController.cancelledList),
+                  pendingList: formatList(_overtimeController.pendingList),
+                  rejectedList: formatList(_overtimeController.rejectedList),
                   isLoading: _overtimeController.isLoading.value,
                 ),
               ),
@@ -139,5 +91,21 @@ class _OvertimeState extends State<Overtime> {
         ],
       ),
     );
+  }
+
+  List<TransactionItem> formatList(List data) {
+    return data
+        .map((request) => TransactionItem(
+              id: request["id"],
+              title: _dateTimeUtils
+                  .fromLaravelDateFormat(request["attendance_date"]),
+              dateCreated:
+                  _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
+              subtitle:
+                  "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
+              status: request["status"],
+              type: "",
+            ))
+        .toList();
   }
 }

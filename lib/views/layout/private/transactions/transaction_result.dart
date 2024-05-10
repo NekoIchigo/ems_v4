@@ -26,6 +26,7 @@ class TransactionResult extends StatelessWidget {
               width: 100,
             ),
           ),
+          const SizedBox(height: 50),
           Text(
             extraData["message"] ?? "Successfully sent a request.",
             style: defaultStyle,

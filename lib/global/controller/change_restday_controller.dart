@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,11 @@ import 'package:go_router/go_router.dart';
 class ChangeRestdayController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
   final ApiCall _apiCall = ApiCall();
+
+  RxList approvedList = [].obs,
+      pendingList = [].obs,
+      rejectedList = [].obs,
+      cancelledList = [].obs;
 
   RxList<Map<String, dynamic>> days = [
     {"day": "Sun", "value": false, "name": "Sunday"},
@@ -32,5 +39,17 @@ class ChangeRestdayController extends GetxController {
     }).whenComplete(() {
       isSubmitting.value = false;
     });
+  }
+
+  Future<void> getAllChangeRestday() async {
+    isLoading.value = true;
+    _apiCall.getRequest(apiUrl: "/mobile/", catchError: () {}).then((result) {
+      final data = result["data"];
+      log(data.toString());
+      approvedList.value = data["approved"];
+      pendingList.value = data["pending"];
+      rejectedList.value = data["rejected"];
+      cancelledList.value = data["cancelled"];
+    }).whenComplete(() => isLoading.value = true);
   }
 }

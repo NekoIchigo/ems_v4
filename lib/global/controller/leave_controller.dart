@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,11 @@ class LeaveController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
   RxList leaves = [].obs;
   final ApiCall _apiCall = ApiCall();
+
+  RxList approvedList = [].obs,
+      pendingList = [].obs,
+      rejectedList = [].obs,
+      cancelledList = [].obs;
 
   Future<void> submitRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
@@ -33,11 +40,14 @@ class LeaveController extends GetxController {
   }
 
   Future<void> getLeaveCredit() async {
-    _apiCall
-        .getRequest(
-          apiUrl: "/save-leave-request",
-          catchError: () {},
-        )
-        .then((value) {});
+    isLoading.value = true;
+    _apiCall.getRequest(apiUrl: "/mobile", catchError: () {}).then((result) {
+      final data = result["data"];
+      log(data.toString());
+      approvedList.value = data["approved"];
+      pendingList.value = data["pending"];
+      rejectedList.value = data["rejected"];
+      cancelledList.value = data["cancelled"];
+    }).whenComplete(() => isLoading.value = true);
   }
 }

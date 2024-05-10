@@ -69,58 +69,11 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               ),
               Obx(
                 () => TransactionsTabs(
-                  approvedList: _correctionController.approvedList
-                      .map((request) => TransactionItem(
-                            id: request["id"],
-                            title: _dateTimeUtils.fromLaravelDateFormat(
-                                request["attendance_date"]),
-                            dateCreated: _dateTimeUtils
-                                .fromLaravelDateFormat(request["created_at"]),
-                            subtitle:
-                                "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))} | Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}",
-                            status: request["status"],
-                            type: "",
-                          ))
-                      .toList(),
-                  cancelledList: _correctionController.cancelledList
-                      .map((request) => TransactionItem(
-                            id: request["id"],
-                            title: _dateTimeUtils.fromLaravelDateFormat(
-                                request["attendance_date"]),
-                            dateCreated: _dateTimeUtils
-                                .fromLaravelDateFormat(request["created_at"]),
-                            subtitle:
-                                "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))} | Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}",
-                            status: request["status"],
-                            type: "",
-                          ))
-                      .toList(),
-                  pendingList: _correctionController.pendingList
-                      .map((request) => TransactionItem(
-                            id: request["id"],
-                            title: _dateTimeUtils.fromLaravelDateFormat(
-                                request["attendance_date"]),
-                            dateCreated: _dateTimeUtils
-                                .fromLaravelDateFormat(request["created_at"]),
-                            subtitle:
-                                "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))} | Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}",
-                            status: request["status"],
-                            type: "",
-                          ))
-                      .toList(),
-                  rejectedList: _correctionController.rejectedList
-                      .map((request) => TransactionItem(
-                            id: request["id"],
-                            title: _dateTimeUtils.fromLaravelDateFormat(
-                                request["attendance_date"]),
-                            dateCreated: _dateTimeUtils
-                                .fromLaravelDateFormat(request["created_at"]),
-                            subtitle:
-                                "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))} | Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}",
-                            status: request["status"],
-                            type: "",
-                          ))
-                      .toList(),
+                  approvedList: formatList(_correctionController.approvedList),
+                  cancelledList:
+                      formatList(_correctionController.cancelledList),
+                  pendingList: formatList(_correctionController.pendingList),
+                  rejectedList: formatList(_correctionController.rejectedList),
                   isLoading: _correctionController.isLoading.value,
                 ),
               ),
@@ -145,5 +98,23 @@ class _DTRCorrectionState extends State<DTRCorrection> {
         ],
       ),
     );
+  }
+
+  List<TransactionItem> formatList(List data) {
+    return data
+        .map(
+          (request) => TransactionItem(
+            id: request["id"],
+            title: _dateTimeUtils
+                .fromLaravelDateFormat(request["attendance_date"]),
+            dateCreated:
+                _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
+            subtitle:
+                "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))} | Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}",
+            status: request["status"],
+            type: "",
+          ),
+        )
+        .toList();
   }
 }

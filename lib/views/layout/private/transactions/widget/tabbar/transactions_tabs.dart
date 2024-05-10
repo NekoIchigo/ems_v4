@@ -89,10 +89,22 @@ class _TransactionsTabsState extends State<TransactionsTabs>
           child: TabBarView(
             controller: _tabController,
             children: [
-              ApprovedListview(items: widget.pendingList),
-              ApprovedListview(items: widget.approvedList),
-              ApprovedListview(items: widget.rejectedList),
-              ApprovedListview(items: widget.cancelledList),
+              ApprovedListview(
+                items: widget.pendingList,
+                isLoading: widget.isLoading,
+              ),
+              ApprovedListview(
+                items: widget.approvedList,
+                isLoading: widget.isLoading,
+              ),
+              ApprovedListview(
+                items: widget.rejectedList,
+                isLoading: widget.isLoading,
+              ),
+              ApprovedListview(
+                items: widget.cancelledList,
+                isLoading: widget.isLoading,
+              ),
             ],
           ),
         ),

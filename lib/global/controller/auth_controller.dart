@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
+import 'package:store_version_checker/store_version_checker.dart';
 
 class AuthController extends GetxController {
   late SharedPreferences _localStorage;
@@ -27,12 +28,16 @@ class AuthController extends GetxController {
       hasUser = false.obs,
       isMaintenance = false.obs,
       isSupported = false.obs;
-  RxString pinError = ''.obs;
+  RxString pinError = ''.obs, appVersion = ''.obs;
   String? token;
   late Rx<Company> company;
   Rx<Employee>? employee;
 
   Future<void> initAuth() async {
+    final checker = StoreVersionChecker();
+    final appCheckerData = await checker.checkUpdate();
+    appVersion.value = appCheckerData.currentVersion;
+
     _localStorage = await SharedPreferences.getInstance();
     token = _localStorage.getString('token');
     setLocalAuth();
@@ -105,11 +110,11 @@ class AuthController extends GetxController {
     }
     _localStorage = await SharedPreferences.getInstance();
     isLoading.value = true;
-
     final data = {
       'email': email,
       'password': password,
-      'code': code.toUpperCase()
+      'code': code.toUpperCase(),
+      'version': appVersion.value,
     };
 
     final result = await apiCall.postRequest(
@@ -178,7 +183,11 @@ class AuthController extends GetxController {
     String? email = await isEmailSaved();
 
     if (email != null) {
-      final Map<String, String> data = {'email': email, 'pin': password};
+      final Map<String, String> data = {
+        'email': email,
+        'pin': password,
+        'version': appVersion.value,
+      };
       final result = await apiCall.postRequest(
         apiUrl: '/mobile/pin-auth',
         data: data,
