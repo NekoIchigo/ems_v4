@@ -14,7 +14,7 @@ class LocationDisclosure extends StatelessWidget {
       child: Dialog(
         child: Container(
           width: size.width * .8,
-          height: size.height * .68,
+          height: size.height * .65,
           padding: const EdgeInsets.symmetric(
             vertical: 20,
             horizontal: 10,
