@@ -1,7 +1,12 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
+import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:go_router/go_router.dart';
 
 class DTRCorrection extends StatefulWidget {
@@ -12,6 +17,16 @@ class DTRCorrection extends StatefulWidget {
 }
 
 class _DTRCorrectionState extends State<DTRCorrection> {
+  final DTRCorrectionController _correctionController =
+      Get.find<DTRCorrectionController>();
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+
+  @override
+  void initState() {
+    super.initState();
+    _correctionController.getAllDTR();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,7 +44,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
             right: 0,
             child: IconButton(
               onPressed: () {
-                context.pop();
+                context.go("/transaction");
               },
               icon: const Icon(Icons.close),
             ),
@@ -52,7 +67,16 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              Obx(
+                () => TransactionsTabs(
+                  approvedList: formatList(_correctionController.approvedList),
+                  cancelledList:
+                      formatList(_correctionController.cancelledList),
+                  pendingList: formatList(_correctionController.pendingList),
+                  rejectedList: formatList(_correctionController.rejectedList),
+                  isLoading: _correctionController.isLoading.value,
+                ),
+              ),
             ],
           ),
           Positioned(
@@ -74,5 +98,23 @@ class _DTRCorrectionState extends State<DTRCorrection> {
         ],
       ),
     );
+  }
+
+  List<TransactionItem> formatList(List data) {
+    return data
+        .map(
+          (request) => TransactionItem(
+            id: request["id"],
+            title: _dateTimeUtils
+                .fromLaravelDateFormat(request["attendance_date"]),
+            dateCreated:
+                _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
+            subtitle:
+                "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))} | Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}",
+            status: request["status"],
+            type: "",
+          ),
+        )
+        .toList();
   }
 }

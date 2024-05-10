@@ -1,7 +1,11 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/change_restday_controller.dart';
+import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class ChangeRestday extends StatefulWidget {
@@ -12,6 +16,16 @@ class ChangeRestday extends StatefulWidget {
 }
 
 class _ChangeRestdayState extends State<ChangeRestday> {
+  final ChangeRestdayController _changeRestday =
+      Get.find<ChangeRestdayController>();
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+
+  @override
+  void initState() {
+    super.initState();
+    _changeRestday.getAllChangeRestday();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,7 +43,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
             right: 0,
             child: IconButton(
               onPressed: () {
-                context.pop();
+                context.go("/transaction");
               },
               icon: const Icon(Icons.close),
             ),
@@ -52,7 +66,13 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              TransactionsTabs(
+                approvedList: formatList(_changeRestday.approvedList),
+                cancelledList: formatList(_changeRestday.cancelledList),
+                pendingList: formatList(_changeRestday.pendingList),
+                rejectedList: formatList(_changeRestday.rejectedList),
+                isLoading: _changeRestday.isLoading.value,
+              ),
             ],
           ),
           Positioned(
@@ -62,7 +82,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                context.push('');
+                context.push('/change_restday_form');
               },
               child: const Icon(
                 Icons.add,
@@ -74,5 +94,20 @@ class _ChangeRestdayState extends State<ChangeRestday> {
         ],
       ),
     );
+  }
+
+  List<TransactionItem> formatList(List data) {
+    return data
+        .map((request) => TransactionItem(
+              id: request["id"],
+              title: _dateTimeUtils
+                  .fromLaravelDateFormat(request["attendance_date"]),
+              dateCreated:
+                  _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
+              subtitle: "New Restday: ${request['total_hours']}",
+              status: request["status"],
+              type: "",
+            ))
+        .toList();
   }
 }

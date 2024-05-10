@@ -30,6 +30,25 @@ class TransactionController extends GetxController {
     }).whenComplete(() => isLoading.value = false);
   }
 
+  Future getDTROnDateRange(String? dateStart, String? dateEnd) async {
+    isLoading.value = true;
+    apiCall
+        .postRequest(
+      apiUrl: "/mobile/attendance-records/get-attendances-info",
+      data: {
+        "start_date": dateStart,
+        "end_date": dateEnd,
+      },
+      catchError: () {},
+    )
+        .then((result) {
+      print(result);
+      schedules.value = result["data"]["schedules"];
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
+  }
+
   void resetData() {
     schedules.value = [];
     transactionData.value = {};

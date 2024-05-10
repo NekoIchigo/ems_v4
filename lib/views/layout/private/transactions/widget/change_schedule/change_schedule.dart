@@ -29,7 +29,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
             right: 0,
             child: IconButton(
               onPressed: () {
-                context.pop();
+                context.go("/transaction");
               },
               icon: const Icon(Icons.close),
             ),
@@ -52,7 +52,12 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              const TransactionsTabs(
+                approvedList: [],
+                cancelledList: [],
+                pendingList: [],
+                rejectedList: [],
+              ),
             ],
           ),
           Positioned(

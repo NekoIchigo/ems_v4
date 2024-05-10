@@ -3,16 +3,20 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/layout/private/time_entries/widgets/custom_date_bottomsheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class CustomDateInput extends StatefulWidget {
   final ValueChanged<List<DateTime?>> onDateTimeChanged;
   final String type; // range or single
   final Widget child;
+  final String? error;
+
   const CustomDateInput({
     super.key,
     required this.onDateTimeChanged,
     required this.child,
     required this.type,
+    this.error,
   });
 
   @override
@@ -71,13 +75,20 @@ class _CustomDateInputState extends State<CustomDateInput> {
           ],
         ),
       ),
+      Visibility(
+        visible: widget.error != null,
+        child: Text(
+          widget.error ?? "",
+          style: errorStyle,
+        ),
+      ),
       widget.child,
     ];
   }
 
   List<Widget> range() {
     return [
-      const Text("From date"),
+      const Text("From date", style: defaultStyle),
       const SizedBox(height: 5),
       Container(
         padding: const EdgeInsets.all(10),
@@ -103,7 +114,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
         ),
       ),
       const SizedBox(height: 10),
-      const Text("End date"),
+      const Text("End date", style: defaultStyle),
       const SizedBox(height: 5),
       Container(
         padding: const EdgeInsets.all(10),
@@ -126,6 +137,13 @@ class _CustomDateInputState extends State<CustomDateInput> {
               size: 20,
             ),
           ],
+        ),
+      ),
+      Visibility(
+        visible: widget.error != null,
+        child: Text(
+          widget.error ?? "",
+          style: errorStyle,
         ),
       ),
       widget.child,
