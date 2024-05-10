@@ -47,4 +47,10 @@ class DateTimeUtils {
         (Match m) =>
             '${m[3] == 'AM' ? (m[1] == '12' ? '00' : m[1]) : int.parse(m[1]!) + 12}:${m[2]}');
   }
+
+  String fromLaravelDateFormat(date) {
+    DateTime dateTime = DateTime.parse(date);
+
+    return DateFormat("MMMM dd, yyyy").format(dateTime);
+  }
 }

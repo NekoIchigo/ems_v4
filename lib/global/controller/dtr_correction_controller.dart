@@ -5,19 +5,20 @@ import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class OvertimeController extends GetxController {
+class DTRCorrectionController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
+  final ApiCall _apiCall = ApiCall();
+
   RxList approvedList = [].obs,
       pendingList = [].obs,
       rejectedList = [].obs,
       cancelledList = [].obs;
-  final ApiCall _apiCall = ApiCall();
 
   Future<void> submitRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
     _apiCall
         .postRequest(
-      apiUrl: "/save-overtime",
+      apiUrl: "/save-dtr",
       data: data,
       catchError: () {},
     )
@@ -28,7 +29,7 @@ class OvertimeController extends GetxController {
         extra: {
           "result": result["success"] ?? false,
           "message": result["message"],
-          "path": "/overtime",
+          "path": "/dtr_correction",
         },
       );
     }).whenComplete(() {
@@ -36,10 +37,13 @@ class OvertimeController extends GetxController {
     });
   }
 
-  Future<void> getAllOvertime() async {
+  Future<void> getAllDTR() async {
     isLoading.value = true;
     _apiCall
-        .getRequest(apiUrl: "/mobile/overtime", catchError: () {})
+        .getRequest(
+      apiUrl: "/mobile/dtr-correction",
+      catchError: () {},
+    )
         .then((result) {
       final data = result["data"];
       log(data.toString());

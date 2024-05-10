@@ -5,19 +5,22 @@ import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class OvertimeController extends GetxController {
+class LeaveController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
+  RxList leaves = [].obs;
+  final ApiCall _apiCall = ApiCall();
+
   RxList approvedList = [].obs,
       pendingList = [].obs,
       rejectedList = [].obs,
       cancelledList = [].obs;
-  final ApiCall _apiCall = ApiCall();
 
   Future<void> submitRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
+
     _apiCall
         .postRequest(
-      apiUrl: "/save-overtime",
+      apiUrl: "/save-leave-request",
       data: data,
       catchError: () {},
     )
@@ -36,19 +39,15 @@ class OvertimeController extends GetxController {
     });
   }
 
-  Future<void> getAllOvertime() async {
+  Future<void> getLeaveCredit() async {
     isLoading.value = true;
-    _apiCall
-        .getRequest(apiUrl: "/mobile/overtime", catchError: () {})
-        .then((result) {
+    _apiCall.getRequest(apiUrl: "/mobile", catchError: () {}).then((result) {
       final data = result["data"];
       log(data.toString());
       approvedList.value = data["approved"];
       pendingList.value = data["pending"];
       rejectedList.value = data["rejected"];
       cancelledList.value = data["cancelled"];
-    }).whenComplete(() {
-      isLoading.value = false;
-    });
+    }).whenComplete(() => isLoading.value = true);
   }
 }

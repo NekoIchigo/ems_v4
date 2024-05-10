@@ -15,6 +15,7 @@ class Input extends StatefulWidget {
   final Function(String)? onChanged;
   final Function(String?) validator;
   final Widget? prefixIcon;
+  final TextInputType? textInputType;
 
   const Input({
     super.key,
@@ -31,6 +32,7 @@ class Input extends StatefulWidget {
     this.hintText,
     required this.validator,
     this.prefixIcon,
+    this.textInputType,
   });
 
   @override
@@ -63,6 +65,7 @@ class _InputState extends State<Input> {
           controller: widget.textController,
           readOnly: widget.disabled ?? false,
           onChanged: widget.onChanged,
+          keyboardType: widget.textInputType,
           style: const TextStyle(color: gray, fontSize: 14),
           decoration: InputDecoration(
             filled: true,

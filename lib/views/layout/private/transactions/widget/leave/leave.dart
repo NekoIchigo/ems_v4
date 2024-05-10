@@ -29,7 +29,7 @@ class _LeavePageState extends State<LeavePage> {
             right: 0,
             child: IconButton(
               onPressed: () {
-                context.pop();
+                context.go("/transaction");
               },
               icon: const Icon(Icons.close),
             ),
@@ -52,7 +52,12 @@ class _LeavePageState extends State<LeavePage> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              const TransactionsTabs(
+                approvedList: [],
+                cancelledList: [],
+                pendingList: [],
+                rejectedList: [],
+              ),
             ],
           ),
           Positioned(

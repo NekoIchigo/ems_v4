@@ -1,7 +1,11 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/overtime_controller.dart';
+import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class Overtime extends StatefulWidget {
@@ -12,6 +16,15 @@ class Overtime extends StatefulWidget {
 }
 
 class _OvertimeState extends State<Overtime> {
+  final OvertimeController _overtimeController = Get.find<OvertimeController>();
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+
+  @override
+  void initState() {
+    super.initState();
+    _overtimeController.getAllOvertime();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,7 +42,7 @@ class _OvertimeState extends State<Overtime> {
             right: 0,
             child: IconButton(
               onPressed: () {
-                context.pop();
+                context.go("/transaction");
               },
               icon: const Icon(Icons.close),
             ),
@@ -48,7 +61,15 @@ class _OvertimeState extends State<Overtime> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              const TransactionsTabs(),
+              Obx(
+                () => TransactionsTabs(
+                  approvedList: formatList(_overtimeController.approvedList),
+                  cancelledList: formatList(_overtimeController.cancelledList),
+                  pendingList: formatList(_overtimeController.pendingList),
+                  rejectedList: formatList(_overtimeController.rejectedList),
+                  isLoading: _overtimeController.isLoading.value,
+                ),
+              ),
             ],
           ),
           Positioned(
@@ -70,5 +91,21 @@ class _OvertimeState extends State<Overtime> {
         ],
       ),
     );
+  }
+
+  List<TransactionItem> formatList(List data) {
+    return data
+        .map((request) => TransactionItem(
+              id: request["id"],
+              title: _dateTimeUtils
+                  .fromLaravelDateFormat(request["attendance_date"]),
+              dateCreated:
+                  _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
+              subtitle:
+                  "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
+              status: request["status"],
+              type: "",
+            ))
+        .toList();
   }
 }
