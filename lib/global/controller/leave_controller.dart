@@ -31,7 +31,7 @@ class LeaveController extends GetxController {
         extra: {
           "result": result["success"] ?? false,
           "message": result["message"],
-          "path": "/overtime",
+          "path": "/leave",
         },
       );
     }).whenComplete(() {
@@ -39,15 +39,19 @@ class LeaveController extends GetxController {
     });
   }
 
-  Future<void> getLeaveCredit() async {
+  Future<void> getAllLeave() async {
     isLoading.value = true;
-    _apiCall.getRequest(apiUrl: "/mobile", catchError: () {}).then((result) {
+    _apiCall
+        .getRequest(apiUrl: "/mobile/leave", catchError: () {})
+        .then((result) {
       final data = result["data"];
       log(data.toString());
       approvedList.value = data["approved"];
       pendingList.value = data["pending"];
       rejectedList.value = data["rejected"];
       cancelledList.value = data["cancelled"];
-    }).whenComplete(() => isLoading.value = true);
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
   }
 }

@@ -1,4 +1,3 @@
-import 'package:ems_v4/views/widgets/coming_soon.dart';
 import 'package:flutter/material.dart';
 
 class Transactions extends StatelessWidget {
@@ -15,9 +14,8 @@ class Transactions extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child:
-          // child,
-          const Center(child: ComingSoon()),
+      child: child,
+      // const Center(child: ComingSoon()),
     );
   }
 }

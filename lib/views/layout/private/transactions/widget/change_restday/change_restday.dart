@@ -66,12 +66,14 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               MonthFilterDropdown(
                 onChanged: (p0) {},
               ),
-              TransactionsTabs(
-                approvedList: formatList(_changeRestday.approvedList),
-                cancelledList: formatList(_changeRestday.cancelledList),
-                pendingList: formatList(_changeRestday.pendingList),
-                rejectedList: formatList(_changeRestday.rejectedList),
-                isLoading: _changeRestday.isLoading.value,
+              Obx(
+                () => TransactionsTabs(
+                  approvedList: formatList(_changeRestday.approvedList),
+                  cancelledList: formatList(_changeRestday.cancelledList),
+                  pendingList: formatList(_changeRestday.pendingList),
+                  rejectedList: formatList(_changeRestday.rejectedList),
+                  isLoading: _changeRestday.isLoading.isTrue,
+                ),
               ),
             ],
           ),
@@ -100,11 +102,11 @@ class _ChangeRestdayState extends State<ChangeRestday> {
     return data
         .map((request) => TransactionItem(
               id: request["id"],
-              title: _dateTimeUtils
-                  .fromLaravelDateFormat(request["attendance_date"]),
+              title:
+                  "${_dateTimeUtils.fromLaravelDateFormat(request["start_date"])} - ${_dateTimeUtils.fromLaravelDateFormat(request["end_date"])}",
               dateCreated:
                   _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
-              subtitle: "New Restday: ${request['total_hours']}",
+              subtitle: "New Restday: ${request['new_rest_days'].join(", ")}",
               status: request["status"],
               type: "",
             ))

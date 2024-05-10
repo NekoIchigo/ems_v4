@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/router/router.dart';
@@ -9,6 +11,11 @@ class ChangeScheduleController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
   RxList schedules = [].obs;
   final ApiCall _apiCall = ApiCall();
+
+  RxList approvedList = [].obs,
+      pendingList = [].obs,
+      rejectedList = [].obs,
+      cancelledList = [].obs;
 
   Future<void> sendRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
@@ -43,6 +50,22 @@ class ChangeScheduleController extends GetxController {
           .map<String>((schedule) => schedule["name"] as String)
           .toList();
       print(schedules);
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
+  }
+
+  Future<void> getAllChangeSchedule() async {
+    isLoading.value = true;
+    _apiCall
+        .getRequest(apiUrl: "/mobile/change-schedule", catchError: () {})
+        .then((result) {
+      final data = result["data"];
+      log(data.toString());
+      approvedList.value = data["approved"];
+      pendingList.value = data["pending"];
+      rejectedList.value = data["rejected"];
+      cancelledList.value = data["cancelled"];
     }).whenComplete(() {
       isLoading.value = false;
     });

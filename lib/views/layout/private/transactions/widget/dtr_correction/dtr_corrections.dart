@@ -74,7 +74,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
                       formatList(_correctionController.cancelledList),
                   pendingList: formatList(_correctionController.pendingList),
                   rejectedList: formatList(_correctionController.rejectedList),
-                  isLoading: _correctionController.isLoading.value,
+                  isLoading: _correctionController.isLoading.isTrue,
                 ),
               ),
             ],

@@ -66,7 +66,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                 ),
                 const SizedBox(height: 15),
                 ReasonInput(
-                  readOnly: true,
+                  readOnly: false,
                   controller: _reason,
                 ),
                 RoundedCustomButton(
@@ -87,7 +87,6 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                       "schedule_id": 1,
                       "reason": _reason.text,
                     };
-                    print(data);
                     _changeRestday.sendRequest(data);
                   },
                   label: "Submit",

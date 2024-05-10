@@ -67,7 +67,7 @@ class _OvertimeState extends State<Overtime> {
                   cancelledList: formatList(_overtimeController.cancelledList),
                   pendingList: formatList(_overtimeController.pendingList),
                   rejectedList: formatList(_overtimeController.rejectedList),
-                  isLoading: _overtimeController.isLoading.value,
+                  isLoading: _overtimeController.isLoading.isTrue,
                 ),
               ),
             ],

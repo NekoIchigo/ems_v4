@@ -76,7 +76,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                       ),
                       const SizedBox(height: 15),
                       ReasonInput(
-                        readOnly: true,
+                        readOnly: false,
                         controller: _reason,
                       ),
                       RoundedCustomButton(

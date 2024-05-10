@@ -43,13 +43,17 @@ class ChangeRestdayController extends GetxController {
 
   Future<void> getAllChangeRestday() async {
     isLoading.value = true;
-    _apiCall.getRequest(apiUrl: "/mobile/", catchError: () {}).then((result) {
+    _apiCall
+        .getRequest(apiUrl: "/mobile/change-restday", catchError: () {})
+        .then((result) {
       final data = result["data"];
       log(data.toString());
       approvedList.value = data["approved"];
       pendingList.value = data["pending"];
       rejectedList.value = data["rejected"];
       cancelledList.value = data["cancelled"];
-    }).whenComplete(() => isLoading.value = true);
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
   }
 }
