@@ -67,6 +67,9 @@ class _LeavePageState extends State<LeavePage> {
               ),
               Obx(
                 () => TransactionsTabs(
+                  onTap: (TransactionItem? item) {
+                    print(item.toString());
+                  },
                   approvedList: formatList(_leave.approvedList),
                   cancelledList: formatList(_leave.cancelledList),
                   pendingList: formatList(_leave.pendingList),

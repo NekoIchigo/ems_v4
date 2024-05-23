@@ -68,6 +68,9 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               ),
               Obx(
                 () => TransactionsTabs(
+                  onTap: (TransactionItem? item) {
+                    print(item.toString());
+                  },
                   approvedList: formatList(_changeSchedule.approvedList),
                   cancelledList: formatList(_changeSchedule.cancelledList),
                   pendingList: formatList(_changeSchedule.pendingList),

@@ -11,6 +11,7 @@ class TransactionsTabs extends StatefulWidget {
     required this.rejectedList,
     required this.cancelledList,
     this.isLoading = true,
+    required this.onTap,
   });
 
   final List<TransactionItem> pendingList;
@@ -18,6 +19,7 @@ class TransactionsTabs extends StatefulWidget {
   final List<TransactionItem> rejectedList;
   final List<TransactionItem> cancelledList;
   final bool isLoading;
+  final Function(TransactionItem?) onTap;
 
   @override
   State<TransactionsTabs> createState() => _TransactionsTabsState();
@@ -94,18 +96,22 @@ class _TransactionsTabsState extends State<TransactionsTabs>
               ApprovedListview(
                 items: widget.pendingList,
                 isLoading: widget.isLoading,
+                onTap: widget.onTap,
               ),
               ApprovedListview(
                 items: widget.approvedList,
                 isLoading: widget.isLoading,
+                onTap: widget.onTap,
               ),
               ApprovedListview(
                 items: widget.rejectedList,
                 isLoading: widget.isLoading,
+                onTap: widget.onTap,
               ),
               ApprovedListview(
                 items: widget.cancelledList,
                 isLoading: widget.isLoading,
+                onTap: widget.onTap,
               ),
             ],
           ),

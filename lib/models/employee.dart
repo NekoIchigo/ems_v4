@@ -75,4 +75,8 @@ class Employee {
   setProfileBase64(String newProfileBase64) {
     profileBase64 = newProfileBase64;
   }
+
+  String fullName() {
+    return "$firstName $lastName";
+  }
 }

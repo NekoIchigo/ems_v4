@@ -35,6 +35,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       height: size.height * .86,
       child: SelectedItemTabs(
+        pageCount: 1,
         status: "Pending",
         title: "DTR Correction",
         detailPage: SingleChildScrollView(

@@ -44,6 +44,7 @@ class _LeaveFormState extends State<LeaveForm> {
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             height: size.height * .86,
             child: SelectedItemTabs(
+              pageCount: 1,
               title: "Leave",
               detailPage: SingleChildScrollView(
                 child: Column(

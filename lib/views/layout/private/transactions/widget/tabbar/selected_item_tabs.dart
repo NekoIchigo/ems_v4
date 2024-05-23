@@ -8,11 +8,13 @@ class SelectedItemTabs extends StatefulWidget {
   final String? status;
   final String title;
   final Widget detailPage;
+  final int pageCount;
   const SelectedItemTabs({
     super.key,
     this.status,
     required this.title,
     required this.detailPage,
+    required this.pageCount,
   });
 
   @override
@@ -21,24 +23,60 @@ class SelectedItemTabs extends StatefulWidget {
 
 class _SelectedItemTabsState extends State<SelectedItemTabs>
     with SingleTickerProviderStateMixin {
-  final List<Widget> _tabs = [
-    const Tab(text: "Details"),
-    const Tab(text: "Message"),
-    const Tab(text: "Logs"),
+  final List<String> _tabsTitle = [
+    "Details",
+    "Message",
+    "Logs",
   ];
+  List<Tab> _tabs = [];
+  List<Widget> _tabContent = [];
 
   late TabController _tabController;
 
   @override
   void initState() {
+    _tabs = getTabs(widget.pageCount);
+    _tabController = getTabController();
+    _tabContent = getTabContent(widget.pageCount);
     super.initState();
-    _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  List<Tab> getTabs(int count) {
+    _tabs.clear();
+    for (int i = 0; i < count; i++) {
+      _tabs.add(getTab(_tabsTitle[i]));
+    }
+    return _tabs;
+  }
+
+  Tab getTab(String title) {
+    return Tab(
+      text: title,
+    );
+  }
+
+  TabController getTabController() {
+    return TabController(length: widget.pageCount, vsync: this);
+  }
+
+  List<Widget> getTabContent(int count) {
+    List<Widget> contents = [
+      widget.detailPage,
+      const MessageTab(),
+      const LogsTab(),
+    ];
+    _tabContent.clear();
+    for (int i = 0; i < count; i++) {
+      _tabContent.add(contents[i]);
+    }
+
+    return _tabContent;
   }
 
   @override
@@ -94,11 +132,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
               child: TabBarView(
                 controller: _tabController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  widget.detailPage,
-                  const MessageTab(),
-                  const LogsTab(),
-                ],
+                children: _tabContent,
               ),
             ),
           ],

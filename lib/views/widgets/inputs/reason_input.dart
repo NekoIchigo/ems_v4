@@ -10,12 +10,14 @@ class ReasonInput extends StatefulWidget {
     super.key,
     this.readOnly = false,
     this.showNumberLabel = true,
+    this.number = 3,
     required this.controller,
   });
 
   final bool showNumberLabel;
   final bool readOnly;
   final TextEditingController controller;
+  final int number;
 
   @override
   State<ReasonInput> createState() => _ReasonInputState();
@@ -32,9 +34,9 @@ class _ReasonInputState extends State<ReasonInput> {
       children: [
         Visibility(
           visible: widget.showNumberLabel,
-          child: const NumberLabel(
+          child: NumberLabel(
             label: "Reason",
-            number: 3,
+            number: widget.number,
           ),
         ),
         Padding(

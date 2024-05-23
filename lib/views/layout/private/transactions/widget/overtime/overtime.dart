@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/transaction_item.dart';
@@ -17,6 +18,7 @@ class Overtime extends StatefulWidget {
 
 class _OvertimeState extends State<Overtime> {
   final OvertimeController _overtimeController = Get.find<OvertimeController>();
+  final MessageController _messaging = Get.find<MessageController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
   @override
@@ -63,6 +65,16 @@ class _OvertimeState extends State<Overtime> {
               ),
               Obx(
                 () => TransactionsTabs(
+                  onTap: (TransactionItem? item) {
+                    print(item?.toMap().toString());
+                    context.push('/overtime_form', extra: item?.toMap());
+                    _messaging.unsubscribeInChannel();
+                    _messaging.subscribeInChannel(
+                      channelName: "leave-request-chat-${item!.id}",
+                    );
+                    _messaging.fetchChatHistory(
+                        item.id.toString(), "overtime-request-chat");
+                  },
                   approvedList: formatList(_overtimeController.approvedList),
                   cancelledList: formatList(_overtimeController.cancelledList),
                   pendingList: formatList(_overtimeController.pendingList),

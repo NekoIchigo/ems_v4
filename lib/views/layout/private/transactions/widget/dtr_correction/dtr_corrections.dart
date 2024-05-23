@@ -69,6 +69,9 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               ),
               Obx(
                 () => TransactionsTabs(
+                  onTap: (TransactionItem? item) {
+                    print(item.toString());
+                  },
                   approvedList: formatList(_correctionController.approvedList),
                   cancelledList:
                       formatList(_correctionController.cancelledList),

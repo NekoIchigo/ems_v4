@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final AuthController _authService = Get.find<AuthController>();
   final SettingsController _settings = Get.find<SettingsController>();
+  final MessageController _messaging = Get.find<MessageController>();
   final GlobalKey _key = GlobalKey();
 
   @override
@@ -33,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await _settings.checkAppVersionMaintenance();
     await _authService.initAuth();
     await _settings.checkFirstLogin();
+    await _messaging.subscribeInChannel();
 
     Timer(const Duration(seconds: 1), () {
       if (_settings.isMaintenance.isFalse) {

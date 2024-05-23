@@ -6,6 +6,7 @@ import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/global/controller/profile_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
@@ -23,7 +24,6 @@ final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(
     MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => HomeViewModel())],
@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
     Get.put(LeaveController());
     Get.put(ChangeRestdayController());
     Get.put(DTRCorrectionController());
+    Get.put(MessageController());
 
     return MaterialApp.router(
       routerConfig: router,

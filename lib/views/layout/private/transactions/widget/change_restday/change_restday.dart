@@ -68,6 +68,9 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               ),
               Obx(
                 () => TransactionsTabs(
+                  onTap: (TransactionItem? item) {
+                    print(item.toString());
+                  },
                   approvedList: formatList(_changeRestday.approvedList),
                   cancelledList: formatList(_changeRestday.cancelledList),
                   pendingList: formatList(_changeRestday.pendingList),

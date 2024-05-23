@@ -14,6 +14,7 @@ import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:ems_v4/views/widgets/inputs/timer_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class OvertimeForm extends StatefulWidget {
   const OvertimeForm({super.key});
@@ -37,6 +38,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    final Map<String, dynamic>? extraData =
+        GoRouterState.of(context).extra as Map<String, dynamic>?;
 
     return Container(
       decoration: const BoxDecoration(
@@ -50,6 +53,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               height: size.height * .86,
               child: SelectedItemTabs(
+                pageCount: extraData != null ? 3 : 1,
                 title: "Overtime",
                 detailPage: SingleChildScrollView(
                   child: Padding(
