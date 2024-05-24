@@ -140,7 +140,7 @@ class MessageController extends GetxController {
         "type": "leave-request-chat",
         "parent_id": 1,
         "user_id": _auth.employee?.value.userId,
-        "user_fullname": "Reydan John Belen",
+        "user_fullname": _auth.employee?.value.fullName(),
         "isTyping": isTyping,
       }
     };
