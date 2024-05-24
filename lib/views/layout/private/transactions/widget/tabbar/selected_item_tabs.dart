@@ -68,7 +68,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
   List<Widget> getTabContent(int count) {
     List<Widget> contents = [
       widget.detailPage,
-      const MessageTab(),
+      MessageTab(),
       const LogsTab(),
     ];
     _tabContent.clear();

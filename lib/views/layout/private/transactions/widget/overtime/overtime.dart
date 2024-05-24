@@ -67,13 +67,13 @@ class _OvertimeState extends State<Overtime> {
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
                     print(item?.toMap().toString());
-                    context.push('/overtime_form', extra: item?.toMap());
-                    _messaging.unsubscribeInChannel();
+                    // _messaging.unsubscribeInChannel();
                     _messaging.subscribeInChannel(
                       channelName: "leave-request-chat-${item!.id}",
                     );
                     _messaging.fetchChatHistory(
                         item.id.toString(), "overtime-request-chat");
+                    context.push('/overtime_form', extra: item?.toMap());
                   },
                   approvedList: formatList(_overtimeController.approvedList),
                   cancelledList: formatList(_overtimeController.cancelledList),

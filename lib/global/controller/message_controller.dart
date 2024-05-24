@@ -11,14 +11,14 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 // import 'package:web_socket_channel/status.dart' as status;
 
 class MessageController extends GetxController {
-  late WebSocketChannel channel;
-  late StreamSubscription subscription;
   final AuthController _auth = Get.find<AuthController>();
+  late StreamSubscription subscription;
+  final ApiCall _apiCall = ApiCall();
+  late WebSocketChannel channel;
   String? currentChannel;
-  RxBool isLoading = false.obs;
+  RxBool isLoading = false.obs, isListening = false.obs;
   RxMap channelData = {"message": null}.obs;
   RxList chatHistory = [].obs;
-  ApiCall _apiCall = ApiCall();
 
   Future<void> subscribeInChannel({String channelName = "ems-chat"}) async {
     try {
@@ -36,8 +36,8 @@ class MessageController extends GetxController {
       );
       print("listening");
       currentChannel = channelName;
-      // subscription = channel.stream.listen((message) {
-      //   channelData.value = message;
+      // subscription = channel.stream.listen((event) {
+      //   channelData = jsonDecode(event);
       // });
     } catch (error) {
       showDialog(
@@ -92,29 +92,64 @@ class MessageController extends GetxController {
     }
   }
 
-  void sendMessageInChannel({
+  Future<void> sendMessageInChannel({
     String? message,
+    required String type,
     required String parentId,
-  }) {
-    final payloadMessage = {
-      'type': 'chat',
-      'user_id': _auth.employee?.value.userId,
-      'employee_id': _auth.employee?.value.id,
-      'company_id': _auth.company.value.id,
-      'parent_id': parentId,
-      'message': message,
-      'attachments': [],
-      'employee_name': _auth.employee?.value.fullName(),
-      'status': 'Delivered',
-      'created_at': 'none',
-    };
+  }) async {
+    isLoading.value = true;
+    var response = await _apiCall.postRequest(
+        apiUrl: '/send-chat',
+        data: {
+          "company_id": _auth.company.value.id,
+          "parent_id": parentId,
+          "type": type,
+          "employee_id": _auth.employee?.value.id,
+          "message": message,
+          "attachments": [],
+        },
+        catchError: () {});
+    print(response);
+    if (response['success']) {
+      final payloadMessage = {
+        'type': 'chat',
+        'user_id': _auth.employee?.value.userId,
+        'employee_id': _auth.employee?.value.id,
+        'company_id': _auth.company.value.id,
+        'parent_id': parentId,
+        'message': message,
+        'attachments': [],
+        'employee_name': _auth.employee?.value.fullName(),
+        'status': 'Delivered',
+        'created_at': 'none',
+      };
+      final payload = jsonEncode({
+        'action': 'message',
+        'channel': currentChannel,
+        'message': payloadMessage,
+      });
+      channel.sink.add(payload);
+      isLoading.value = false;
+    }
+  }
 
+  void sendTypingStatusInChannel(bool isTyping) {
+    final payloadMessage = {
+      "channel": "leave-request-chat-1",
+      "message": {
+        "type": "leave-request-chat",
+        "parent_id": 1,
+        "user_id": _auth.employee?.value.userId,
+        "user_fullname": "Reydan John Belen",
+        "isTyping": isTyping,
+      }
+    };
     final payload = jsonEncode({
       'action': 'message',
       'channel': currentChannel,
       'message': payloadMessage,
     });
-
+    print(payload);
     channel.sink.add(payload);
   }
 }
