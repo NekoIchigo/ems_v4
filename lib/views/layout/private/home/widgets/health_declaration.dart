@@ -264,6 +264,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                           )
                               .then((value) {
                             context.go('/result');
+                            _homeController.isLoading.value = false;
                           });
                         }
                       },

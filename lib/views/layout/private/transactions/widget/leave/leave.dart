@@ -86,6 +86,7 @@ class _LeavePageState extends State<LeavePage> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
+                _leave.getAvailableLeave();
                 context.push('/leave_form');
               },
               child: const Icon(
@@ -101,18 +102,18 @@ class _LeavePageState extends State<LeavePage> {
   }
 
   List<TransactionItem> formatList(List data) {
-    return data
-        .map((request) => TransactionItem(
-              id: request["id"],
-              title: _dateTimeUtils
-                  .fromLaravelDateFormat(request["attendance_date"]),
-              dateCreated:
-                  _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
-              subtitle:
-                  "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
-              status: request["status"],
-              type: "",
-            ))
-        .toList();
+    return data.map((request) {
+      String title =
+          "${_dateTimeUtils.fromLaravelDateFormat(request["start_date"])} to ${_dateTimeUtils.fromLaravelDateFormat(request["end_date"])}";
+      return TransactionItem(
+        id: request["id"],
+        title: title,
+        dateCreated:
+            _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
+        subtitle: "Leave count: ${request['leave_count']}",
+        status: request["status"],
+        type: "",
+      );
+    }).toList();
   }
 }

@@ -28,7 +28,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
 
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
-  final TransactionController _controller = Get.find<TransactionController>();
+  final TransactionController _transactionController =
+      Get.find<TransactionController>();
   final TextEditingController _reason = TextEditingController();
   final AuthController _auth = Get.find<AuthController>();
   final DTRCorrectionController _dtrCorrection =
@@ -49,7 +50,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
             height: size.height * .86,
             child: SelectedItemTabs(
               pageCount: 1,
-              status: "Pending",
+              status: "",
               title: "DTR Correction",
               detailPage: SingleChildScrollView(
                 child: Padding(
@@ -63,7 +64,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         type: "single",
                         onDateTimeChanged: (value) {
                           attendanceDate = value[0].toString().split(" ")[0];
-                          _controller.getDTROnDate(attendanceDate);
+                          _transactionController.getDTROnDate(attendanceDate);
                         },
                         child: Container(),
                       ),
@@ -85,16 +86,14 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         () => RoundedCustomButton(
                           onPressed: () {
                             var data = {
-                              "date_of_correction": attendanceDate,
-                              "employee_id": _auth.employee?.value.id,
                               "reason": _reason.text,
                               "company_id": _auth.company.value.id,
+                              "date_of_correction": attendanceDate,
+                              "employee_id": _auth.employee?.value.id,
                               "time_of_record": [
                                 {
-                                  "company_id": _auth.company.value.id,
-                                  "employee_id": _auth.employee?.value.id,
-                                  "schedule_id":
-                                      _controller.schedules.first["id"],
+                                  "schedule_id": _transactionController
+                                      .schedules.first["id"],
                                   "attendance_date": attendanceDate,
                                   "attendance_record_id": null,
                                   "clock_in": _clockin,
@@ -114,11 +113,6 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                       ),
                       const SizedBox(height: 50),
                     ],
-                    // .map((widget) => Padding(
-                    //       padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
-                    //       child: widget,
-                    //     ))
-                    // .toList(),
                   ),
                 ),
               ),
@@ -141,9 +135,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         child: Column(
           children: [
             ScheduleDTR(
-              isLoading: _controller.isLoading.value,
-              scheduleName: _controller.scheduleName.value,
-              dtrRange: _controller.dtrRange.value,
+              isLoading: _transactionController.isLoading.value,
+              scheduleName: _transactionController.scheduleName.value,
+              dtrRange: _transactionController.dtrRange.value,
             ),
             const SizedBox(height: 8),
             Row(
@@ -165,7 +159,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                 const SizedBox(width: 10),
                 SizedBox(
                   width: 100,
-                  child: _controller.isLoading.isTrue
+                  child: _transactionController.isLoading.isTrue
                       ? const CustomLoader(height: 35)
                       : TimeInput(
                           selectedTime: (value) async {
@@ -195,7 +189,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                 const SizedBox(width: 10),
                 SizedBox(
                   width: 100,
-                  child: _controller.isLoading.isTrue
+                  child: _transactionController.isLoading.isTrue
                       ? const CustomLoader(height: 35)
                       : TimeInput(
                           selectedTime: (value) async {

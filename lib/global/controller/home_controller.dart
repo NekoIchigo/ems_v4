@@ -208,7 +208,7 @@ class HomeController extends GetxController {
         'health_temperature': temperature,
       },
       apiUrl: '/mobile/clock-in',
-      catchError: (error) => isLoading.value = false,
+      catchError: () {},
     );
     if (result.containsKey('success') && result['success']) {
       _timeEntriesController.getAttendanceList(days: 1);
@@ -229,8 +229,6 @@ class HomeController extends GetxController {
         },
       );
     }
-
-    isLoading.value = false;
   }
 
   Future clockOut({required BuildContext context}) async {
@@ -247,7 +245,7 @@ class HomeController extends GetxController {
             attendance.value.clockedOutLocationSetting,
       },
       apiUrl: '/mobile/clock-out',
-      catchError: (error) => isLoading.value = false,
+      catchError: () {},
     );
     if (result.containsKey('success') && result['success']) {
       _timeEntriesController.getAttendanceList(days: 1);
@@ -268,8 +266,6 @@ class HomeController extends GetxController {
         },
       );
     }
-
-    isLoading.value = false;
   }
 
   String getWorkingHrs({DateTime? dateTimeIn, DateTime? dateTimeOut}) {
