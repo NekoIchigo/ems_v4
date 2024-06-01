@@ -71,22 +71,46 @@ class CustomDateBottomsheet extends StatelessWidget {
                 onPressed: () {
                   if (type == "range") {
                     if (dates.length == 2) {
+                      dates[0] = dates[0]?.add(
+                        const Duration(seconds: 1),
+                      );
+                      dates[1] = dates[1]?.add(
+                        const Duration(
+                          hours: 23,
+                          minutes: 59,
+                          seconds: 59,
+                        ),
+                      );
                       Navigator.of(context).pop(dates);
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text('Please select the date range.'),
-                          behavior: SnackBarBehavior.floating,
-                          margin: EdgeInsets.only(
-                            bottom: size.height - 130,
-                            right: 20,
-                            left: 20,
+                      dates.add(
+                        dates[0]?.add(
+                          const Duration(
+                            hours: 23,
+                            minutes: 59,
+                            seconds: 59,
                           ),
                         ),
                       );
+                      Navigator.of(context).pop(dates);
+
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     content: const Text('Please select the date range.'),
+                      //     behavior: SnackBarBehavior.floating,
+                      //     margin: EdgeInsets.only(
+                      //       bottom: size.height - 130,
+                      //       right: 20,
+                      //       left: 20,
+                      //     ),
+                      //   ),
+                      // );
                     }
                   } else {
                     if (dates.isNotEmpty) {
+                      dates[0] = dates[0]?.add(
+                        const Duration(seconds: 1),
+                      );
                       Navigator.of(context).pop(dates);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(

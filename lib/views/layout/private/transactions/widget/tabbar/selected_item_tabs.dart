@@ -23,60 +23,39 @@ class SelectedItemTabs extends StatefulWidget {
 
 class _SelectedItemTabsState extends State<SelectedItemTabs>
     with SingleTickerProviderStateMixin {
-  final List<String> _tabsTitle = [
-    "Details",
-    "Message",
-    "Logs",
-  ];
-  List<Tab> _tabs = [];
-  List<Widget> _tabContent = [];
+  late List<Widget> _tabs;
 
   late TabController _tabController;
 
   @override
   void initState() {
-    _tabs = getTabs(widget.pageCount);
-    _tabController = getTabController();
-    _tabContent = getTabContent(widget.pageCount);
     super.initState();
+    _tabs = [
+      const Tab(text: "Details"),
+      Tab(
+        child: Text(
+          'Message',
+          style: TextStyle(
+            color: widget.pageCount == 1 ? gray : Colors.black,
+          ),
+        ),
+      ),
+      Tab(
+        child: Text(
+          'Logs',
+          style: TextStyle(
+            color: widget.pageCount == 1 ? gray : Colors.black,
+          ),
+        ),
+      ),
+    ];
+    _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  List<Tab> getTabs(int count) {
-    _tabs.clear();
-    for (int i = 0; i < count; i++) {
-      _tabs.add(getTab(_tabsTitle[i]));
-    }
-    return _tabs;
-  }
-
-  Tab getTab(String title) {
-    return Tab(
-      text: title,
-    );
-  }
-
-  TabController getTabController() {
-    return TabController(length: widget.pageCount, vsync: this);
-  }
-
-  List<Widget> getTabContent(int count) {
-    List<Widget> contents = [
-      widget.detailPage,
-      MessageTab(),
-      const LogsTab(),
-    ];
-    _tabContent.clear();
-    for (int i = 0; i < count; i++) {
-      _tabContent.add(contents[i]);
-    }
-
-    return _tabContent;
   }
 
   @override
@@ -127,12 +106,21 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
                   const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
               tabs: _tabs,
               controller: _tabController,
+              onTap: (value) {
+                if (widget.pageCount == 1) {
+                  _tabController.index = 0;
+                }
+              },
             ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: _tabContent,
+                children: [
+                  widget.detailPage,
+                  const MessageTab(),
+                  const LogsTab(),
+                ],
               ),
             ),
           ],

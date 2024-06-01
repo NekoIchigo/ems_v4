@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:ems_v4/global/constants.dart';
@@ -11,23 +12,24 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class MessageTab extends StatefulWidget {
-  MessageTab({super.key});
+  const MessageTab({super.key});
 
   @override
   State<MessageTab> createState() => _MessageTabState();
 }
 
 class _MessageTabState extends State<MessageTab>
-    with AutomaticKeepAliveClientMixin {
+// with AutomaticKeepAliveClientMixin
+{
   final MessageController _messaging = Get.find<MessageController>();
   final AuthController _auth = Get.find<AuthController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final TextEditingController _messageController = TextEditingController();
   final _focusNode = FocusNode();
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -52,7 +54,7 @@ class _MessageTabState extends State<MessageTab>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    // super.build(context);
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -72,7 +74,7 @@ class _MessageTabState extends State<MessageTab>
                 children: [
                   StreamBuilder(
                     initialData: _messaging.chatHistory,
-                    stream: _messaging.channel.stream,
+                    stream: _messaging.channel.value.stream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         var data = snapshot.data;

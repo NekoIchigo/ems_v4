@@ -14,7 +14,7 @@ class MessageController extends GetxController {
   final AuthController _auth = Get.find<AuthController>();
   late StreamSubscription subscription;
   final ApiCall _apiCall = ApiCall();
-  late WebSocketChannel channel;
+  late Rx<WebSocketChannel> channel;
   String? currentChannel;
   RxBool isLoading = false.obs, isListening = false.obs;
   RxMap channelData = {"message": null}.obs;
@@ -23,12 +23,12 @@ class MessageController extends GetxController {
   Future<void> subscribeInChannel({String channelName = "ems-chat"}) async {
     try {
       final wsUrl = Uri.parse('wss://dev-api.globallandexchange.com.ph');
-      channel = WebSocketChannel.connect(wsUrl);
+      channel = WebSocketChannel.connect(wsUrl).obs;
 
-      await channel.ready;
+      await channel.value.ready;
 
       // Subscribe to a channel
-      channel.sink.add(
+      channel.value.sink.add(
         jsonEncode({
           "action": "subscribe",
           "channel": channelName,
@@ -82,7 +82,7 @@ class MessageController extends GetxController {
 
   void unsubscribeInChannel() {
     if (currentChannel != null) {
-      channel.sink.add(
+      channel.value.sink.add(
         jsonEncode({
           "action": "unsubscribe",
           "channel": currentChannel,
@@ -128,7 +128,7 @@ class MessageController extends GetxController {
         'channel': currentChannel,
         'message': payloadMessage,
       });
-      channel.sink.add(payload);
+      channel.value.sink.add(payload);
       isLoading.value = false;
     }
   }
@@ -150,6 +150,6 @@ class MessageController extends GetxController {
       'message': payloadMessage,
     });
     print(payload);
-    channel.sink.add(payload);
+    channel.value.sink.add(payload);
   }
 }

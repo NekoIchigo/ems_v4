@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/models/schedule.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +10,8 @@ import 'package:go_router/go_router.dart';
 class ChangeScheduleController extends GetxController {
   final AuthController _authController = Get.find<AuthController>();
   RxBool isLoading = false.obs, isSubmitting = false.obs;
-  RxList schedules = [].obs;
+  RxList<Schedule> schedules = [Schedule(id: 0, name: "No Schedule")].obs;
+  Rx<Schedule> selectedSchedule = Schedule(id: 0, name: "No Schedule").obs;
   final ApiCall _apiCall = ApiCall();
 
   RxList approvedList = [].obs,
@@ -21,7 +23,7 @@ class ChangeScheduleController extends GetxController {
     isSubmitting.value = true;
     _apiCall
         .postRequest(
-            apiUrl: "/save-change-restday", data: data, catchError: () {})
+            apiUrl: "/save-change-schedule", data: data, catchError: () {})
         .then((result) {
       print(result);
       navigatorKey.currentContext!.push("/transaction_result", extra: {
@@ -46,10 +48,12 @@ class ChangeScheduleController extends GetxController {
       catchError: () {},
     )
         .then((result) {
+      print(result);
+
       schedules.value = result["data"]
-          .map<String>((schedule) => schedule["name"] as String)
+          .map<Schedule>((schedule) =>
+              Schedule(id: schedule['id'], name: schedule['name']))
           .toList();
-      print(schedules);
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -69,5 +73,22 @@ class ChangeScheduleController extends GetxController {
     }).whenComplete(() {
       isLoading.value = false;
     });
+  }
+
+  Future fetchScheduleList(List<DateTime?> dates) async {
+    print(dates);
+    isLoading.value = true;
+    var response = await _apiCall.getRequest(
+      apiUrl: "/fetch-employee-schedule-list",
+      parameters: {
+        "company_id": _authController.company.value.id,
+        "employee_id": _authController.employee?.value.id,
+        "from": dates[0],
+        "to": dates[1],
+      },
+      catchError: () {},
+    );
+    print(response);
+    isLoading.value = false;
   }
 }

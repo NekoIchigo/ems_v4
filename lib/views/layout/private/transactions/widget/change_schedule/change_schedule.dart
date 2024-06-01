@@ -87,6 +87,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
+                _changeSchedule.getScheduleByType("Fixed Schedule");
                 context.push('/change_schedule_form');
               },
               child: const Icon(
@@ -102,19 +103,20 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
   }
 
   List<TransactionItem> formatList(List data) {
-    return data
-        .map((request) => TransactionItem(
-              id: request["id"],
-              title: _dateTimeUtils.fromLaravelDateFormat(
-                request["attendance_date"],
-              ),
-              dateCreated: _dateTimeUtils.fromLaravelDateFormat(
-                request["created_at"],
-              ),
-              subtitle: "Hours: Schedule Name",
-              status: request["status"],
-              type: "",
-            ))
-        .toList();
+    print(data);
+    return data.map((request) {
+      String title =
+          "${_dateTimeUtils.fromLaravelDateFormat(request["start_date"])} to ${_dateTimeUtils.fromLaravelDateFormat(request["end_date"])}";
+      return TransactionItem(
+        id: request["id"],
+        title: title,
+        dateCreated: _dateTimeUtils.fromLaravelDateFormat(
+          request["created_at"],
+        ),
+        subtitle: "New Schedule: Schedule Name",
+        status: request["status"],
+        type: "",
+      );
+    }).toList();
   }
 }

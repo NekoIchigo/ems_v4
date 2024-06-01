@@ -23,6 +23,18 @@ const colorError = Color(0xFFCB1212);
 const colorSuccess = Color(0xFF0FA958);
 const colorNoRecord = Color(0xFFC2C2C2);
 
+const congressBlue50 = Color(0xFFeff8ff);
+const congressBlue100 = Color(0xFFdceefd);
+const congressBlue200 = Color(0xFFc0e2fd);
+const congressBlue300 = Color(0xFF95d1fb);
+const congressBlue400 = Color(0xFF63b7f7);
+const congressBlue500 = Color(0xFF3f99f2);
+const congressBlue600 = Color(0xFF297be7);
+const congressBlue700 = Color(0xFF2166d4);
+const congressBlue800 = Color(0xFF2153ac);
+const congressBlue900 = Color(0xFF1f4583);
+const congressBlue950 = Color(0xFF182d53);
+
 const TextStyle titleStyle = TextStyle(
   color: gray,
   fontSize: 18,

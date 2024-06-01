@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
+import 'package:ems_v4/models/schedule.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
@@ -25,13 +26,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   final ChangeScheduleController _scheduleController =
       Get.find<ChangeScheduleController>();
 
-  String? dateStart, dateEnd, _startTimeError, _totalHoursError;
-
-  @override
-  void initState() {
-    super.initState();
-    _scheduleController.getScheduleByType("Fixed Schedule");
-  }
+  String? dateStart, dateEnd;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +43,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
             height: size.height * .86,
             child: SelectedItemTabs(
               pageCount: 1,
-              status: "Pending",
+              status: "",
               title: "Change Schedule",
               detailPage: SingleChildScrollView(
                 child: Padding(
@@ -61,7 +56,9 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                       CustomDateInput(
                         type: "range",
                         onDateTimeChanged: (value) {
-                          print(value);
+                          dateStart = value[0].toString().split(" ")[0];
+                          dateEnd = value[1].toString().split(" ")[0];
+                          _scheduleController.fetchScheduleList(value);
                         },
                         child: Container(),
                       ),
@@ -80,22 +77,26 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         readOnly: false,
                         controller: _reason,
                       ),
-                      RoundedCustomButton(
-                        onPressed: () {
-                          var data = {
-                            "start_date": dateStart,
-                            "end_date": dateEnd,
-                            "new_schedule": "",
-                            "company_id": _auth.company.value.id,
-                            "employee_id": _auth.employee?.value.id,
-                            "reason": _reason.text,
-                          };
-                          _scheduleController.sendRequest(data);
-                        },
-                        label: "Submit",
-                        size: Size(size.width * .4, 40),
-                        radius: 8,
-                        bgColor: gray, //primaryBlue
+                      Obx(
+                        () => RoundedCustomButton(
+                          onPressed: () {
+                            var data = {
+                              "start_date": dateStart,
+                              "end_date": dateEnd,
+                              "new_schedule":
+                                  _scheduleController.selectedSchedule.value.id,
+                              "company_id": _auth.company.value.id,
+                              "employee_id": _auth.employee?.value.id,
+                              "reason": _reason.text,
+                            };
+                            _scheduleController.sendRequest(data);
+                          },
+                          isLoading: _scheduleController.isSubmitting.value,
+                          label: "Submit",
+                          size: Size(size.width * .4, 40),
+                          radius: 8,
+                          bgColor: gray, //primaryBlue
+                        ),
                       ),
                       const SizedBox(height: 50),
                     ],
@@ -142,11 +143,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         buttonIndex < isSelected.length;
                         buttonIndex++) {
                       if (buttonIndex == index) {
+                        isSelected[buttonIndex] = true;
+
                         _scheduleController.getScheduleByType(
                           index == 0 ? "Fixed Schedule" : "Flexi Schedule",
                         );
-
-                        isSelected[buttonIndex] = true;
                       } else {
                         isSelected[buttonIndex] = false;
                       }
@@ -162,7 +163,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
           ),
           const SizedBox(height: 10),
           Obx(
-            () => DropdownMenu(
+            () => DropdownMenu<Schedule>(
               width: size.width * .84,
               textStyle: defaultStyle,
               hintText: "Select schedule",
@@ -189,14 +190,14 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
               ),
               onSelected: (value) {
                 setState(() {
-                  // _dropdownValue = value!;
+                  _scheduleController.selectedSchedule.value = value!;
                 });
               },
-              dropdownMenuEntries:
-                  _scheduleController.schedules.map<DropdownMenuEntry>((value) {
+              dropdownMenuEntries: _scheduleController.schedules
+                  .map<DropdownMenuEntry<Schedule>>((value) {
                 return DropdownMenuEntry(
                   value: value,
-                  label: value,
+                  label: value.name,
                 );
               }).toList(),
             ),

@@ -73,7 +73,7 @@ class _OvertimeState extends State<Overtime> {
                     );
                     _messaging.fetchChatHistory(
                         item.id.toString(), "overtime-request-chat");
-                    context.push('/overtime_form', extra: item?.toMap());
+                    context.push('/overtime_form', extra: item.toMap());
                   },
                   approvedList: formatList(_overtimeController.approvedList),
                   cancelledList: formatList(_overtimeController.cancelledList),
