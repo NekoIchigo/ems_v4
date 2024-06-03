@@ -25,7 +25,6 @@ class ChangeScheduleController extends GetxController {
         .postRequest(
             apiUrl: "/save-change-schedule", data: data, catchError: () {})
         .then((result) {
-      print(result);
       navigatorKey.currentContext!.push("/transaction_result", extra: {
         "result": result["success"],
         "message": result["message"],
@@ -48,8 +47,6 @@ class ChangeScheduleController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      print(result);
-
       schedules.value = result["data"]
           .map<Schedule>((schedule) =>
               Schedule(id: schedule['id'], name: schedule['name']))
@@ -76,9 +73,7 @@ class ChangeScheduleController extends GetxController {
   }
 
   Future fetchScheduleList(List<DateTime?> dates) async {
-    print(dates);
-    isLoading.value = true;
-    var response = await _apiCall.getRequest(
+    await _apiCall.getRequest(
       apiUrl: "/fetch-employee-schedule-list",
       parameters: {
         "company_id": _authController.company.value.id,
@@ -88,7 +83,6 @@ class ChangeScheduleController extends GetxController {
       },
       catchError: () {},
     );
-    print(response);
     isLoading.value = false;
   }
 }

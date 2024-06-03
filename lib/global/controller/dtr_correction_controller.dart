@@ -23,7 +23,6 @@ class DTRCorrectionController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      print(result);
       navigatorKey.currentContext!.push(
         "/transaction_result",
         extra: {

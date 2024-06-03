@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:ems_v4/global/constants.dart';
@@ -8,7 +7,6 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class MessageTab extends StatefulWidget {
@@ -28,7 +26,6 @@ class _MessageTabState extends State<MessageTab>
   final _focusNode = FocusNode();
 
   // @override
-  // // TODO: implement wantKeepAlive
   // bool get wantKeepAlive => true;
 
   @override
@@ -80,7 +77,6 @@ class _MessageTabState extends State<MessageTab>
                         var data = snapshot.data;
                         bool? isTyping = false;
                         String? userFullName = '';
-                        print("data: ${snapshot.data}");
                         if (snapshot.data is String) {
                           data = jsonDecode(snapshot.data);
                           isTyping = data['message']['isTyping'];

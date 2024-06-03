@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
+import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
@@ -18,12 +19,15 @@ class ChangeRestdayForm extends StatefulWidget {
 }
 
 class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
-  final TransactionController _controller = Get.find<TransactionController>();
+  final TransactionController _transactionController =
+      Get.find<TransactionController>();
   final AuthController _auth = Get.find<AuthController>();
   final ChangeRestdayController _changeRestday =
       Get.find<ChangeRestdayController>();
+  final ChangeScheduleController _scheduleController =
+      Get.find<ChangeScheduleController>();
   final TextEditingController _reason = TextEditingController();
-  String? _startTimeError, _totalHoursError;
+  // String? _startTimeError, _totalHoursError;
 
   String? startDate, endDate;
   late Size size;
@@ -36,8 +40,8 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
       height: size.height * .86,
       child: SelectedItemTabs(
         pageCount: 1,
-        status: "Pending",
-        title: "DTR Correction",
+        status: "",
+        title: "Change Restday",
         detailPage: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -52,7 +56,9 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                     print(value);
                     startDate = value[0].toString().split(" ").first;
                     endDate = value[1].toString().split(" ").first;
-                    _controller.getDTROnDateRange(startDate, endDate);
+                    _transactionController.getDTROnDateRange(
+                        startDate, endDate);
+                    _scheduleController.fetchScheduleList(value);
                   },
                   child: Container(),
                 ),
@@ -70,30 +76,33 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                   readOnly: false,
                   controller: _reason,
                 ),
-                RoundedCustomButton(
-                  onPressed: () {
-                    List newRestDays = _changeRestday.days
-                        .where((day) => day["value"])
-                        .map((day) => day["name"])
-                        .toList();
+                Obx(
+                  () => RoundedCustomButton(
+                    onPressed: () {
+                      List newRestDays = _changeRestday.days
+                          .where((day) => day["value"])
+                          .map((day) => day["name"])
+                          .toList();
 
-                    var data = {
-                      "company_id": _auth.company.value.id,
-                      "employee_id": _auth.employee?.value.id,
-                      "start_date": startDate,
-                      "end_date": endDate,
-                      "new_rest_days": newRestDays,
-                      "current_rest_days":
-                          _controller.schedules.first["rest_days"],
-                      "schedule_id": 1,
-                      "reason": _reason.text,
-                    };
-                    _changeRestday.sendRequest(data);
-                  },
-                  label: "Submit",
-                  size: Size(size.width * .4, 40),
-                  radius: 8,
-                  bgColor: gray, //primaryBlue
+                      var data = {
+                        "company_id": _auth.company.value.id,
+                        "employee_id": _auth.employee?.value.id,
+                        "start_date": startDate,
+                        "end_date": endDate,
+                        "new_rest_days": newRestDays,
+                        "current_rest_days":
+                            _transactionController.schedules.first["rest_days"],
+                        "schedule_id": 1,
+                        "reason": _reason.text,
+                      };
+                      _changeRestday.sendRequest(data);
+                    },
+                    isLoading: _changeRestday.isSubmitting.value,
+                    label: "Submit",
+                    size: Size(size.width * .4, 40),
+                    radius: 8,
+                    bgColor: gray, //primaryBlue
+                  ),
                 ),
                 const SizedBox(height: 60),
               ],

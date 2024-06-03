@@ -21,7 +21,6 @@ class LeaveController extends GetxController {
 
   Future<void> submitRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
-    print("submit");
     _apiCall
         .postRequest(
       apiUrl: "/save-leave-request",
@@ -29,7 +28,6 @@ class LeaveController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      print(result);
       navigatorKey.currentContext!.push(
         "/transaction_result",
         extra: {
