@@ -69,7 +69,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    print(item.toString());
+                    context.push('/change_restday_form', extra: item?.toMap());
                   },
                   approvedList: formatList(_changeRestday.approvedList),
                   cancelledList: formatList(_changeRestday.cancelledList),
@@ -102,17 +102,18 @@ class _ChangeRestdayState extends State<ChangeRestday> {
   }
 
   List<TransactionItem> formatList(List data) {
-    return data
-        .map((request) => TransactionItem(
-              id: request["id"],
-              title:
-                  "${_dateTimeUtils.fromLaravelDateFormat(request["start_date"])} - ${_dateTimeUtils.fromLaravelDateFormat(request["end_date"])}",
-              dateCreated:
-                  _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
-              subtitle: "New Restday: ${request['new_rest_days'].join(", ")}",
-              status: request["status"],
-              type: "",
-            ))
-        .toList();
+    return data.map((request) {
+      return TransactionItem(
+        id: request["id"],
+        title:
+            "${_dateTimeUtils.fromLaravelDateFormat(request["start_date"])} - ${_dateTimeUtils.fromLaravelDateFormat(request["end_date"])}",
+        dateCreated:
+            _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
+        subtitle: "New Restday: ${request['new_rest_days'].join(", ")}",
+        status: request["status"],
+        type: "",
+        data: request,
+      );
+    }).toList();
   }
 }

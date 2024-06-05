@@ -194,6 +194,5 @@ class TimeEntriesController extends GetxController {
   void showClose() {
     hasClose.value = !hasClose.value;
     hasClose.refresh();
-    print(hasClose.value);
   }
 }

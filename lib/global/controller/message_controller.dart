@@ -34,11 +34,7 @@ class MessageController extends GetxController {
           "channel": channelName,
         }),
       );
-      print("listening");
       currentChannel = channelName;
-      // subscription = channel.stream.listen((event) {
-      //   channelData = jsonDecode(event);
-      // });
     } catch (error) {
       showDialog(
         context: navigatorKey.currentContext!,
@@ -76,7 +72,6 @@ class MessageController extends GetxController {
       },
     );
     isLoading.value = false;
-    print(response);
     chatHistory.value = response["data"];
   }
 
@@ -109,7 +104,6 @@ class MessageController extends GetxController {
           "attachments": [],
         },
         catchError: () {});
-    print(response);
     if (response['success']) {
       final payloadMessage = {
         'type': 'chat',
@@ -149,7 +143,6 @@ class MessageController extends GetxController {
       'channel': currentChannel,
       'message': payloadMessage,
     });
-    print(payload);
     channel.value.sink.add(payload);
   }
 }

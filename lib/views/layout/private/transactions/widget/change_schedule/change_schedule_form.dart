@@ -100,11 +100,6 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                       ),
                       const SizedBox(height: 50),
                     ],
-                    // .map((widget) => Padding(
-                    //       padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
-                    //       child: widget,
-                    //     ))
-                    // .toList(),
                   ),
                 ),
               ),

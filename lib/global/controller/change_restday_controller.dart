@@ -26,12 +26,10 @@ class ChangeRestdayController extends GetxController {
 
   Future<void> sendRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
-    print(data);
     _apiCall
         .postRequest(
             apiUrl: "/save-change-restday", data: data, catchError: () {})
         .then((result) {
-      print(result);
       navigatorKey.currentContext!.push("/transaction_result", extra: {
         "result": result["success"],
         "message": result["message"],

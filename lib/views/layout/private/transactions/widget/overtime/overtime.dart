@@ -66,8 +66,6 @@ class _OvertimeState extends State<Overtime> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    print(item?.toMap().toString());
-                    // _messaging.unsubscribeInChannel();
                     _messaging.subscribeInChannel(
                       channelName: "leave-request-chat-${item!.id}",
                     );
@@ -117,6 +115,7 @@ class _OvertimeState extends State<Overtime> {
                   "Hours: ${request['total_hours']} | Start time ${request['start_time']}",
               status: request["status"],
               type: "",
+              data: request,
             ))
         .toList();
   }

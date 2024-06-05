@@ -68,7 +68,7 @@ class _LeavePageState extends State<LeavePage> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    print(item.toString());
+                    context.push('/leave_form', extra: item?.toMap());
                   },
                   approvedList: formatList(_leave.approvedList),
                   cancelledList: formatList(_leave.cancelledList),
@@ -113,6 +113,7 @@ class _LeavePageState extends State<LeavePage> {
         subtitle: "Leave count: ${request['leave_count']}",
         status: request["status"],
         type: "",
+        data: request,
       );
     }).toList();
   }

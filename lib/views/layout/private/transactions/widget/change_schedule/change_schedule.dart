@@ -69,7 +69,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    print(item.toString());
+                    context.push('/change_schedule_form', extra: item?.toMap());
                   },
                   approvedList: formatList(_changeSchedule.approvedList),
                   cancelledList: formatList(_changeSchedule.cancelledList),
@@ -103,7 +103,6 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
   }
 
   List<TransactionItem> formatList(List data) {
-    print(data);
     return data.map((request) {
       String title =
           "${_dateTimeUtils.fromLaravelDateFormat(request["start_date"])} to ${_dateTimeUtils.fromLaravelDateFormat(request["end_date"])}";
@@ -116,6 +115,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
         subtitle: "New Schedule: Schedule Name",
         status: request["status"],
         type: "",
+        data: request,
       );
     }).toList();
   }

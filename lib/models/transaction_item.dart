@@ -5,6 +5,7 @@ class TransactionItem {
   final String subtitle;
   final String status;
   final String type;
+  final Map<String, dynamic> data;
 
   TransactionItem({
     required this.id,
@@ -13,17 +14,18 @@ class TransactionItem {
     required this.subtitle,
     required this.status,
     required this.type,
+    required this.data,
   });
 
   factory TransactionItem.fromJson(Map<String, dynamic> json) {
     return TransactionItem(
-      id: json['id'] as int,
-      title: json['title'] as String,
-      dateCreated: json['date_created'] as String,
-      subtitle: json['subtitle'] as String,
-      status: json['status'] as String,
-      type: json['type'] as String,
-    );
+        id: json['id'] as int,
+        title: json['title'] as String,
+        dateCreated: json['date_created'] as String,
+        subtitle: json['subtitle'] as String,
+        status: json['status'] as String,
+        type: json['type'] as String,
+        data: json['data'] as Map<String, dynamic>);
   }
 
   Map<String, dynamic> toMap() {
@@ -34,6 +36,7 @@ class TransactionItem {
       'subtitle': subtitle,
       'status': status,
       'type': type,
+      'data': data,
     };
   }
 }

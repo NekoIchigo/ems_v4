@@ -231,7 +231,7 @@ class _TimeEntriesHealthDeclarationState
                   size: Size(size.width * .4, 40),
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
             ],
           ),
         ),

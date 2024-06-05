@@ -6,7 +6,6 @@ import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transacti
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:go_router/go_router.dart';
 
 class DTRCorrection extends StatefulWidget {
@@ -70,7 +69,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    print(item.toString());
+                    context.push("/dtr_correction_form", extra: item?.toMap());
                   },
                   approvedList: formatList(_correctionController.approvedList),
                   cancelledList:
@@ -116,6 +115,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
                 "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))} | Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}",
             status: request["status"],
             type: "",
+            data: request,
           ),
         )
         .toList();

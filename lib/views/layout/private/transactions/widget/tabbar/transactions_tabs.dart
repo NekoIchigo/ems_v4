@@ -48,15 +48,6 @@ class _TransactionsTabsState extends State<TransactionsTabs>
     super.dispose();
   }
 
-  TransactionItem item = TransactionItem(
-    id: 1,
-    title: 'January 09, 2024',
-    dateCreated: 'January 10, 2024',
-    status: 'Pending',
-    subtitle: 'Type: Clock in | Time: 09:20 am',
-    type: 'DTR Correction',
-  );
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

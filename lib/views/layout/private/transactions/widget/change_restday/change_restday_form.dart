@@ -53,7 +53,6 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                 CustomDateInput(
                   type: "range",
                   onDateTimeChanged: (value) {
-                    print(value);
                     startDate = value[0].toString().split(" ").first;
                     endDate = value[1].toString().split(" ").first;
                     _transactionController.getDTROnDateRange(
@@ -66,11 +65,6 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                 const NumberLabel(label: "Select new restday", number: 2),
                 const SizedBox(height: 15),
                 formField2(),
-                const SizedBox(height: 15),
-                Visibility(
-                  visible: false,
-                  child: formField2(),
-                ),
                 const SizedBox(height: 15),
                 ReasonInput(
                   readOnly: false,
@@ -106,11 +100,6 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                 ),
                 const SizedBox(height: 60),
               ],
-              // .map((widget) => Padding(
-              //       padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
-              //       child: widget,
-              //     ))
-              // .toList(),
             ),
           ),
         ),

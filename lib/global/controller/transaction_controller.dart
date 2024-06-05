@@ -26,7 +26,6 @@ class TransactionController extends GetxController {
         transactionData.value = result["data"];
         dtrRange.value = transactionData["dtr"];
         scheduleName.value = transactionData["schedules"][0]["name"];
-        print("getDTROnDate: ${schedules.first}");
       }
     }).whenComplete(() => isLoading.value = false);
   }
@@ -43,9 +42,7 @@ class TransactionController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      print(result);
       schedules.value = result["data"]["schedules"];
-      print("getDTROnDateRange: ${schedules.first}");
     }).whenComplete(() {
       isLoading.value = false;
     });
