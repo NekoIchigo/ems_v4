@@ -53,4 +53,23 @@ class DateTimeUtils {
 
     return DateFormat("MMMM dd, yyyy").format(dateTime);
   }
+
+  double timeToDecimal(String time) {
+    List<String> parts = time.split(':');
+    int hours = int.parse(parts[0]);
+    int minutes = int.parse(parts[1]);
+
+    double decimalHours = hours + (minutes / 60);
+    return decimalHours;
+  }
+
+  String decimalToTime(double decimalHours) {
+    int hours = decimalHours.toInt();
+    int minutes = ((decimalHours - hours) * 60).toInt();
+
+    String formattedHours = hours.toString().padLeft(2, '0');
+    String formattedMinutes = minutes.toString().padLeft(2, '0');
+
+    return '$formattedHours:$formattedMinutes';
+  }
 }

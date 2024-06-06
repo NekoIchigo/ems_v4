@@ -7,8 +7,9 @@ class TimeTextField extends StatelessWidget {
     super.key,
     this.label,
     this.hint = "00:00",
+    required this.controller,
   });
-
+  final TextEditingController controller;
   final String? label;
   final String hint;
 
@@ -21,6 +22,7 @@ class TimeTextField extends StatelessWidget {
       ],
       textAlign: TextAlign.center,
       style: defaultStyle,
+      controller: controller,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,

@@ -30,9 +30,11 @@ class _OvertimeFormState extends State<OvertimeForm> {
   final AuthController _auth = Get.find<AuthController>();
 
   final TextEditingController _reason = TextEditingController();
+  final TextEditingController _totalHours = TextEditingController();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final OvertimeController _overtime = Get.find<OvertimeController>();
   String attendanceDate = "", timeStart = "";
+  String? fromDate;
   // String? _dateError, _startTimeError, _totalHoursError;
 
   @override
@@ -40,7 +42,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
-
+    fillInValues(extraData?['data']);
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -54,6 +56,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
               height: size.height * .86,
               child: SelectedItemTabs(
                 pageCount: extraData != null ? 3 : 1,
+                status: extraData?['status'] ?? "",
                 title: "Overtime",
                 detailPage: SingleChildScrollView(
                   child: Padding(
@@ -65,6 +68,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
                         const SizedBox(height: 15),
                         CustomDateInput(
                           type: "single",
+                          fromDate: fromDate,
                           onDateTimeChanged: (value) {
                             attendanceDate = value[0].toString().split(" ")[0];
                             _transactionController.getDTROnDate(attendanceDate);
@@ -87,7 +91,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
                               var data = {
                                 "date_of_ot": attendanceDate,
                                 "time_start": timeStart,
-                                "no_of_hours": "1.5",
+                                "no_of_hours": _dateTimeUtils
+                                    .timeToDecimal(_totalHours.text),
                                 "company_id": _auth.company.value.id,
                                 "employee_id": _auth.employee?.value.id,
                                 "reason": _reason.text,
@@ -148,7 +153,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
                   ),
                   Expanded(
                     child: TimeInput(
-                      value: "",
+                      value: timeStart,
                       selectedTime: (value) {
                         timeStart = _dateTimeUtils.time12to24(value);
                       },
@@ -167,8 +172,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
                       style: mediumStyle,
                     ),
                   ),
-                  const Expanded(
-                    child: TimeTextField(),
+                  Expanded(
+                    child: TimeTextField(controller: _totalHours),
                   )
                 ],
               ),
@@ -177,5 +182,26 @@ class _OvertimeFormState extends State<OvertimeForm> {
         );
       },
     );
+  }
+
+  void fillInValues(Map<String, dynamic>? data) {
+    _transactionController.scheduleName.value = "Schedule name";
+    _transactionController.dtrRange.value = "00:00 to 00:00";
+
+    print(data);
+
+    if (data != null) {
+      _reason.text = data["reason"];
+      fromDate = _dateTimeUtils.formatDate(
+          dateTime: DateTime.tryParse(data['attendance_date']));
+      timeStart = _dateTimeUtils.formatTime(
+        dateTime: DateTime.tryParse(data["start_time"]),
+      );
+      _totalHours.text =
+          _dateTimeUtils.decimalToTime(double.parse(data['total_hours']));
+      _transactionController.getDTROnDate(
+        data['attendance_date'],
+      );
+    }
   }
 }

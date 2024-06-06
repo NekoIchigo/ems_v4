@@ -67,7 +67,7 @@ class _OvertimeState extends State<Overtime> {
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
                     _messaging.subscribeInChannel(
-                      channelName: "leave-request-chat-${item!.id}",
+                      channelName: "overtime-request-chat-${item!.id}",
                     );
                     _messaging.fetchChatHistory(
                         item.id.toString(), "overtime-request-chat");

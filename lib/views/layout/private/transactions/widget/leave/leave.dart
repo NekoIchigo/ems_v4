@@ -65,9 +65,11 @@ class _LeavePageState extends State<LeavePage> {
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
                     _messaging.subscribeInChannel(
-                      channelName: "leave-request-chat-${item?.id}",
+                      channelName: "leave-request-chat-${item!.id}",
                     );
-                    context.push('/leave_form', extra: item?.toMap());
+                    _messaging.fetchChatHistory(
+                        item.id.toString(), "leave-request-chat");
+                    context.push('/leave_form', extra: item.toMap());
                   },
                   approvedList: formatList(_leave.approvedList),
                   cancelledList: formatList(_leave.cancelledList),

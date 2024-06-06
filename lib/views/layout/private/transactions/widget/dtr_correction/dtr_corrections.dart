@@ -66,8 +66,10 @@ class _DTRCorrectionState extends State<DTRCorrection> {
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
                     _messaging.subscribeInChannel(
-                      channelName: "leave-request-chat-${item!.id}",
+                      channelName: "dtr-request-chat-${item!.id}",
                     );
+                    _messaging.fetchChatHistory(
+                        item.id.toString(), "dtr-request-chat");
                     context.push("/dtr_correction_form", extra: item.toMap());
                   },
                   approvedList: formatList(_correctionController.approvedList),
