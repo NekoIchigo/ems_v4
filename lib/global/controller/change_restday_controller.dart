@@ -2,6 +2,7 @@ import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class ChangeRestdayController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
@@ -13,14 +14,14 @@ class ChangeRestdayController extends GetxController {
       rejectedList = [].obs,
       cancelledList = [].obs;
 
-  RxList<Map<String, dynamic>> days = [
-    {"day": "Sun", "value": false, "name": "Sunday"},
-    {"day": "Mon", "value": false, "name": "Monday"},
-    {"day": "Tue", "value": false, "name": "Tuesday"},
-    {"day": "Wed", "value": false, "name": "Wednesday"},
-    {"day": "Thu", "value": false, "name": "Thursday"},
-    {"day": "Fri", "value": false, "name": "Friday"},
-    {"day": "Sat", "value": false, "name": "Saturday"},
+  RxList<ValueItem> days = [
+    const ValueItem(label: "Sunday", value: "Sunday"),
+    const ValueItem(label: "Monday", value: "Monday"),
+    const ValueItem(label: "Tuesday", value: "Tuesday"),
+    const ValueItem(label: "Wednesday", value: "Wednesday"),
+    const ValueItem(label: "Thursday", value: "Thursday"),
+    const ValueItem(label: "Friday", value: "Friday"),
+    const ValueItem(label: "Saturday", value: "Saturday"),
   ].obs;
 
   Future<void> sendRequest(Map<String, dynamic> data) async {
