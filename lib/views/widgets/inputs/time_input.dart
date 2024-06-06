@@ -2,15 +2,20 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:flutter/material.dart';
 
 class TimeInput extends StatefulWidget {
-  final ValueChanged<String> selectedTime;
-  const TimeInput({super.key, required this.selectedTime});
+  final ValueChanged<String?> selectedTime;
+  final String value;
+  const TimeInput({
+    super.key,
+    required this.selectedTime,
+    this.value = '00:00 AM',
+  });
 
   @override
   State<TimeInput> createState() => _TimeInputState();
 }
 
 class _TimeInputState extends State<TimeInput> {
-  String _selectedTime = '00:00 AM';
+  String? _selectedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,7 @@ class _TimeInputState extends State<TimeInput> {
         ),
         child: Center(
           child: Text(
-            _selectedTime,
+            _selectedTime ?? widget.value,
             style: defaultStyle,
           ),
         ),

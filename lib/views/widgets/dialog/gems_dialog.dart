@@ -91,13 +91,13 @@ class GemsDialog extends StatelessWidget {
                     visible: hasLottie ?? true,
                     child: Lottie.asset(
                       type == "question"
-                          ? 'assets/lottie/question.json'
+                          ? 'assets/lottie/question-icon-2.json'
                           : type == "error"
                               ? 'assets/lottie/error-icon-2.json'
                               : type == "success"
                                   ? 'assets/lottie/success-icon-4.json'
                                   : "assets/lottie/info.json",
-                      repeat: false,
+                      repeat: true,
                       width: 50,
                       height: 50,
                       fit: BoxFit.fill,
@@ -157,10 +157,9 @@ class GemsDialog extends StatelessWidget {
                                 onPressed: cancelPress,
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          12), // <-- Radius
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
-                                    backgroundColor: Colors.white),
+                                    backgroundColor: gray),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 5.0, vertical: 10.0),
@@ -169,7 +168,7 @@ class GemsDialog extends StatelessWidget {
                                     style: GoogleFonts.outfit(
                                       textStyle: const TextStyle(
                                           fontSize: 14.0,
-                                          color: textblack,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.w400),
                                     ),
                                   ),
@@ -184,10 +183,10 @@ class GemsDialog extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: okPress,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: okButtonBGColor ?? primaryBlue,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
+                                backgroundColor: okButtonBGColor ?? primaryBlue,
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(

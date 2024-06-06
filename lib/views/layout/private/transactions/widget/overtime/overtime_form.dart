@@ -148,6 +148,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
                   ),
                   Expanded(
                     child: TimeInput(
+                      value: "",
                       selectedTime: (value) {
                         timeStart = _dateTimeUtils.time12to24(value);
                       },

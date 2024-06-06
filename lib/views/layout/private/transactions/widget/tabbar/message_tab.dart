@@ -17,16 +17,15 @@ class MessageTab extends StatefulWidget {
 }
 
 class _MessageTabState extends State<MessageTab>
-// with AutomaticKeepAliveClientMixin
-{
+    with AutomaticKeepAliveClientMixin {
   final MessageController _messaging = Get.find<MessageController>();
   final AuthController _auth = Get.find<AuthController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final TextEditingController _messageController = TextEditingController();
   final _focusNode = FocusNode();
 
-  // @override
-  // bool get wantKeepAlive => true;
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -51,7 +50,7 @@ class _MessageTabState extends State<MessageTab>
 
   @override
   Widget build(BuildContext context) {
-    // super.build(context);
+    super.build(context);
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),

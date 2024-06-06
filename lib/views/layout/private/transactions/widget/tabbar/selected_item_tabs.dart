@@ -36,7 +36,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
         child: Text(
           'Message',
           style: TextStyle(
-            color: widget.pageCount == 1 ? gray : Colors.black,
+            color: widget.pageCount == 1 ? gray : darkGray,
           ),
         ),
       ),
@@ -44,7 +44,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
         child: Text(
           'Logs',
           style: TextStyle(
-            color: widget.pageCount == 1 ? gray : Colors.black,
+            color: widget.pageCount == 1 ? gray : darkGray,
           ),
         ),
       ),
@@ -68,9 +68,9 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
           child: Text(
             widget.status ?? '',
             style: TextStyle(
-              color: widget.status == "Pending"
+              color: widget.status == "pending"
                   ? orange
-                  : widget.status == "Approved"
+                  : widget.status == "approved"
                       ? colorSuccess
                       : colorError,
             ),

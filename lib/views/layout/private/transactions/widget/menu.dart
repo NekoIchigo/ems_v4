@@ -1,7 +1,9 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class TransactionMenu extends StatefulWidget {
@@ -12,6 +14,9 @@ class TransactionMenu extends StatefulWidget {
 }
 
 class _TransactionMenuState extends State<TransactionMenu> {
+  final DTRCorrectionController _dtrCorrection =
+      Get.find<DTRCorrectionController>();
+
   final List transactionItems = [
     {
       "title": "Time Records",
@@ -93,9 +98,13 @@ class _TransactionMenuState extends State<TransactionMenu> {
               ),
               itemCount: transactionItems.length,
               itemBuilder: (context, index) {
+                String path = transactionItems[index]["path"];
                 return TransactionMenuButton(
                   onPressed: () {
-                    context.push(transactionItems[index]["path"]);
+                    if (path == "/dtr_correction") {
+                      _dtrCorrection.getAllDTR();
+                    } else if (path == "/leave") {}
+                    context.push(path);
                   },
                   title: transactionItems[index]["title"],
                   child: Center(

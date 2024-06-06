@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 class DTRCorrectionController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
+  RxMap<String, dynamic> errors = {"errors": 0}.obs;
   final ApiCall _apiCall = ApiCall();
 
   RxList approvedList = [].obs,
@@ -23,14 +24,21 @@ class DTRCorrectionController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      navigatorKey.currentContext!.push(
-        "/transaction_result",
-        extra: {
-          "result": result["success"] ?? false,
-          "message": result["message"],
-          "path": "/dtr_correction",
-        },
-      );
+      print(result);
+
+      if (result.containsKey('success') && result['success']) {
+        getAllDTR();
+        navigatorKey.currentContext!.push(
+          "/transaction_result",
+          extra: {
+            "result": result["success"] ?? false,
+            "message": result["message"],
+            "path": "/dtr_correction",
+          },
+        );
+      } else {
+        errors.value = result;
+      }
     }).whenComplete(() {
       isSubmitting.value = false;
     });

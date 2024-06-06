@@ -11,6 +11,7 @@ import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class LeaveForm extends StatefulWidget {
   const LeaveForm({super.key});
@@ -40,6 +41,9 @@ class _LeaveFormState extends State<LeaveForm> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    final Map<String, dynamic>? extraData =
+        GoRouterState.of(context).extra as Map<String, dynamic>?;
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -51,7 +55,7 @@ class _LeaveFormState extends State<LeaveForm> {
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             height: size.height * .86,
             child: SelectedItemTabs(
-              pageCount: 1,
+              pageCount: extraData != null ? 3 : 1,
               title: "Leave",
               detailPage: SingleChildScrollView(
                 child: Column(

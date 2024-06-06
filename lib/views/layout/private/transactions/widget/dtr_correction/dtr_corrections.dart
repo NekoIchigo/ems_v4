@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
@@ -19,12 +20,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
   final DTRCorrectionController _correctionController =
       Get.find<DTRCorrectionController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
-
-  @override
-  void initState() {
-    super.initState();
-    _correctionController.getAllDTR();
-  }
+  final MessageController _messaging = Get.find<MessageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +65,10 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    context.push("/dtr_correction_form", extra: item?.toMap());
+                    _messaging.subscribeInChannel(
+                      channelName: "leave-request-chat-${item!.id}",
+                    );
+                    context.push("/dtr_correction_form", extra: item.toMap());
                   },
                   approvedList: formatList(_correctionController.approvedList),
                   cancelledList:

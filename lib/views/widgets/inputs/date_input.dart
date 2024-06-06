@@ -8,6 +8,9 @@ class CustomDateInput extends StatefulWidget {
   final ValueChanged<List<DateTime?>> onDateTimeChanged;
   final String type; // range or single
   final Widget child;
+  final String? fromDate;
+  final String? toDate;
+  final bool readOnly;
   final String? error;
 
   const CustomDateInput({
@@ -15,6 +18,9 @@ class CustomDateInput extends StatefulWidget {
     required this.onDateTimeChanged,
     required this.child,
     required this.type,
+    this.fromDate,
+    this.toDate,
+    this.readOnly = false,
     this.error,
   });
 
@@ -32,12 +38,14 @@ class _CustomDateInputState extends State<CustomDateInput> {
 
     return InkWell(
       onTap: () async {
-        _dates = await showModalBottomSheet(
-          context: navigatorKey.currentContext!,
-          builder: (context) => CustomDateBottomsheet(type: widget.type),
-        );
-        widget.onDateTimeChanged(_dates);
-        setState(() {});
+        if (!widget.readOnly) {
+          _dates = await showModalBottomSheet(
+            context: navigatorKey.currentContext!,
+            builder: (context) => CustomDateBottomsheet(type: widget.type),
+          );
+          widget.onDateTimeChanged(_dates);
+          setState(() {});
+        }
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 25.0),
@@ -62,7 +70,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
           children: [
             Text(
               _dates.isEmpty
-                  ? "mm/dd/yyyy"
+                  ? widget.fromDate ?? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
               style: defaultStyle,
             ),
@@ -100,7 +108,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
           children: [
             Text(
               _dates.isEmpty
-                  ? "mm/dd/yyyy"
+                  ? widget.fromDate ?? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
               style: defaultStyle,
             ),
@@ -126,7 +134,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
           children: [
             Text(
               _dates.isEmpty
-                  ? "mm/dd/yyyy"
+                  ? widget.toDate ?? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[1]),
               style: defaultStyle,
             ),
