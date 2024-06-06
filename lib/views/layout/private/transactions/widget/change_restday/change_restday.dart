@@ -21,12 +21,6 @@ class _ChangeRestdayState extends State<ChangeRestday> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
   @override
-  void initState() {
-    super.initState();
-    _changeRestday.getAllChangeRestday();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 

@@ -1,6 +1,9 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/change_restday_controller.dart';
+import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
+import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +21,11 @@ class _TransactionMenuState extends State<TransactionMenu> {
   final DTRCorrectionController _dtrCorrection =
       Get.find<DTRCorrectionController>();
   final LeaveController _leave = Get.find<LeaveController>();
+  final OvertimeController _overtimeController = Get.find<OvertimeController>();
+  final ChangeScheduleController _changeSchedule =
+      Get.find<ChangeScheduleController>();
+  final ChangeRestdayController _changeRestday =
+      Get.find<ChangeRestdayController>();
 
   final List transactionItems = [
     {
@@ -107,6 +115,12 @@ class _TransactionMenuState extends State<TransactionMenu> {
                       _dtrCorrection.getAllDTR();
                     } else if (path == "/leave") {
                       _leave.getAllLeave();
+                    } else if (path == "/overtime") {
+                      _overtimeController.getAllOvertime();
+                    } else if (path == "/change_schedule") {
+                      _changeSchedule.getAllChangeSchedule();
+                    } else if (path == "/change_restday") {
+                      _changeRestday.getAllChangeRestday();
                     }
                     context.push(path);
                   },

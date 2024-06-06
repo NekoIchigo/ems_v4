@@ -6,6 +6,7 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
@@ -86,25 +87,63 @@ class _OvertimeFormState extends State<OvertimeForm> {
                           controller: _reason,
                         ),
                         Obx(
-                          () => RoundedCustomButton(
-                            onPressed: () {
-                              var data = {
-                                "date_of_ot": attendanceDate,
-                                "time_start": timeStart,
-                                "no_of_hours": _dateTimeUtils
-                                    .timeToDecimal(_totalHours.text),
-                                "company_id": _auth.company.value.id,
-                                "employee_id": _auth.employee?.value.id,
-                                "reason": _reason.text,
-                              };
+                          () => Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: extraData != null,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 15.0),
+                                  child: RoundedCustomButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return GemsDialog(
+                                            title: "Cancel Request",
+                                            hasMessage: true,
+                                            withCloseButton: true,
+                                            hasCustomWidget: false,
+                                            message:
+                                                "Are you sure you want to cancel your request ?",
+                                            type: "question",
+                                            cancelPress: () {},
+                                            okPress: () {},
+                                            okText: "Yes",
+                                            okButtonBGColor: bgPrimaryBlue,
+                                            buttonNumber: 2,
+                                          );
+                                        },
+                                      );
+                                    },
+                                    label: "Cancel",
+                                    radius: 8,
+                                    size: Size(size.width * .4, 40),
+                                    bgColor: gray,
+                                  ),
+                                ),
+                              ),
+                              RoundedCustomButton(
+                                onPressed: () {
+                                  var data = {
+                                    "date_of_ot": attendanceDate,
+                                    "time_start": timeStart,
+                                    "no_of_hours": _dateTimeUtils
+                                        .timeToDecimal(_totalHours.text),
+                                    "company_id": _auth.company.value.id,
+                                    "employee_id": _auth.employee?.value.id,
+                                    "reason": _reason.text,
+                                  };
 
-                              _overtime.submitRequest(data);
-                            },
-                            isLoading: _overtime.isSubmitting.isTrue,
-                            label: "Submit",
-                            size: Size(size.width * .4, 40),
-                            radius: 8,
-                            bgColor: gray, //primaryBlue
+                                  _overtime.submitRequest(data);
+                                },
+                                isLoading: _overtime.isSubmitting.isTrue,
+                                label: "Submit",
+                                size: Size(size.width * .4, 40),
+                                radius: 8,
+                                bgColor: bgPrimaryBlue, //primaryBlue
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 50),

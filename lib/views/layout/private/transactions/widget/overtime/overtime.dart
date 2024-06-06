@@ -22,12 +22,6 @@ class _OvertimeState extends State<Overtime> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
   @override
-  void initState() {
-    super.initState();
-    _overtimeController.getAllOvertime();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 

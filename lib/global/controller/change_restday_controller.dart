@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 class ChangeRestdayController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
   final ApiCall _apiCall = ApiCall();
+  RxMap<String, dynamic> errors = {"errors": 0}.obs;
 
   RxList approvedList = [].obs,
       pendingList = [].obs,
@@ -30,11 +31,15 @@ class ChangeRestdayController extends GetxController {
         .postRequest(
             apiUrl: "/save-change-restday", data: data, catchError: () {})
         .then((result) {
-      navigatorKey.currentContext!.push("/transaction_result", extra: {
-        "result": result["success"],
-        "message": result["message"],
-        "path": "/change_restday",
-      });
+      if (result.containsKey('success') && result['success']) {
+        navigatorKey.currentContext!.push("/transaction_result", extra: {
+          "result": result["success"],
+          "message": result["message"],
+          "path": "/change_restday",
+        });
+      } else {
+        errors.value = result;
+      }
     }).whenComplete(() {
       isSubmitting.value = false;
     });

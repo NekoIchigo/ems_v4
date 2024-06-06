@@ -21,12 +21,6 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
   @override
-  void initState() {
-    super.initState();
-    _changeSchedule.getAllChangeSchedule();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 

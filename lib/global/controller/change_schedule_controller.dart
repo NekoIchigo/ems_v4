@@ -13,6 +13,7 @@ class ChangeScheduleController extends GetxController {
   RxList<Schedule> schedules = [Schedule(id: 0, name: "No Schedule")].obs;
   Rx<Schedule> selectedSchedule = Schedule(id: 0, name: "No Schedule").obs;
   final ApiCall _apiCall = ApiCall();
+  RxMap<String, dynamic> errors = {"errors": 0}.obs;
 
   RxList approvedList = [].obs,
       pendingList = [].obs,
@@ -47,10 +48,15 @@ class ChangeScheduleController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      schedules.value = result["data"]
-          .map<Schedule>((schedule) =>
-              Schedule(id: schedule['id'], name: schedule['name']))
-          .toList();
+      if (result.containsKey('success') && result['success']) {
+        getAllChangeSchedule();
+        schedules.value = result["data"]
+            .map<Schedule>((schedule) =>
+                Schedule(id: schedule['id'], name: schedule['name']))
+            .toList();
+      } else {
+        errors.value = result;
+      }
     }).whenComplete(() {
       isLoading.value = false;
     });

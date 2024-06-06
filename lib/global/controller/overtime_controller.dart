@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 class OvertimeController extends GetxController {
   RxBool isLoading = false.obs, isSubmitting = false.obs;
+  RxMap<String, dynamic> errors = {"errors": 0}.obs;
   RxList approvedList = [].obs,
       pendingList = [].obs,
       rejectedList = [].obs,
@@ -20,14 +21,19 @@ class OvertimeController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      navigatorKey.currentContext!.push(
-        "/transaction_result",
-        extra: {
-          "result": result["success"] ?? false,
-          "message": result["message"],
-          "path": "/overtime",
-        },
-      );
+      if (result.containsKey('success') && result['success']) {
+        getAllOvertime();
+        navigatorKey.currentContext!.push(
+          "/transaction_result",
+          extra: {
+            "result": result["success"] ?? false,
+            "message": result["message"],
+            "path": "/overtime",
+          },
+        );
+      } else {
+        errors.value = result;
+      }
     }).whenComplete(() {
       isSubmitting.value = false;
     });
