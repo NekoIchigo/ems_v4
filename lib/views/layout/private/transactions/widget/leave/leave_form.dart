@@ -2,9 +2,11 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
+import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/employee_leave.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
@@ -23,6 +25,7 @@ class LeaveForm extends StatefulWidget {
 class _LeaveFormState extends State<LeaveForm> {
   final TextEditingController _reason = TextEditingController();
   final TextEditingController _leaveCount = TextEditingController();
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
   final AuthController _auth = Get.find<AuthController>();
   final LeaveController _leaveController = Get.find<LeaveController>();
@@ -33,16 +36,11 @@ class _LeaveFormState extends State<LeaveForm> {
   late Size size;
 
   @override
-  void initState() {
-    _leaveController.selectedLeave.value = EmployeeLeave(id: 0);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
+    fillInValues(extraData?['data']);
 
     return Container(
       decoration: const BoxDecoration(
@@ -63,6 +61,8 @@ class _LeaveFormState extends State<LeaveForm> {
                     const NumberLabel(label: "Select the date", number: 1),
                     CustomDateInput(
                       type: "range",
+                      fromDate: startDate,
+                      toDate: endDate,
                       onDateTimeChanged: (value) {
                         startDate = value[0].toString().split(" ").first;
                         endDate = value[1].toString().split(" ").first;
@@ -106,7 +106,7 @@ class _LeaveFormState extends State<LeaveForm> {
                       label: "Leave details",
                       number: 3,
                     ),
-                    formField2(),
+                    formField2(extraData),
                     ReasonInput(
                       readOnly: false,
                       controller: _reason,
@@ -122,25 +122,63 @@ class _LeaveFormState extends State<LeaveForm> {
                             _leaveController
                                     .selectedLeave.value.employeeCredits !=
                                 0;
-                        return RoundedCustomButton(
-                          onPressed: () {
-                            var data = {
-                              "company_id": _auth.company.value.id,
-                              "employee_id": _auth.employee?.value.id,
-                              "leave_count": _leaveCount.text,
-                              "start_date": startDate,
-                              "end_date": endDate,
-                              "leave_type": employeeLeave.leaveId,
-                              "reason": _reason.text,
-                            };
-                            _leaveController.submitRequest(data);
-                          },
-                          disabled: !hasCredits,
-                          label: "Submit",
-                          size: Size(size.width * .4, 40),
-                          radius: 8,
-                          isLoading: _leaveController.isSubmitting.isTrue,
-                          bgColor: gray, //primaryBlue
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                              visible: extraData != null,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 15.0),
+                                child: RoundedCustomButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return GemsDialog(
+                                          title: "Cancel Request",
+                                          hasMessage: true,
+                                          withCloseButton: true,
+                                          hasCustomWidget: false,
+                                          message:
+                                              "Are you sure you want to cancel your request ?",
+                                          type: "question",
+                                          cancelPress: () {},
+                                          okPress: () {},
+                                          okText: "Yes",
+                                          okButtonBGColor: bgPrimaryBlue,
+                                          buttonNumber: 2,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  label: "Cancel",
+                                  radius: 8,
+                                  size: Size(size.width * .4, 40),
+                                  bgColor: gray,
+                                ),
+                              ),
+                            ),
+                            RoundedCustomButton(
+                              onPressed: () {
+                                var data = {
+                                  "company_id": _auth.company.value.id,
+                                  "employee_id": _auth.employee?.value.id,
+                                  "leave_count": _leaveCount.text,
+                                  "start_date": startDate,
+                                  "end_date": endDate,
+                                  "leave_type": employeeLeave.leaveId,
+                                  "reason": _reason.text,
+                                };
+                                _leaveController.submitRequest(data);
+                              },
+                              disabled: !hasCredits,
+                              label: "Submit",
+                              size: Size(size.width * .4, 40),
+                              radius: 8,
+                              isLoading: _leaveController.isSubmitting.isTrue,
+                              bgColor: bgPrimaryBlue, //primaryBlue
+                            ),
+                          ],
                         );
                       },
                     ),
@@ -160,14 +198,14 @@ class _LeaveFormState extends State<LeaveForm> {
     );
   }
 
-  Widget formField2() {
+  Widget formField2(extraData) {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0),
       child: Obx(
         () => Column(
           children: [
             Visibility(
-              visible: _leaveController.isLoading.isFalse,
+              visible: _leaveController.isLoading.isFalse && extraData == null,
               child: DropdownMenu<EmployeeLeave>(
                 width: size.width * .84,
                 textStyle: defaultStyle,
@@ -176,6 +214,7 @@ class _LeaveFormState extends State<LeaveForm> {
                   Icons.arrow_drop_down_rounded,
                   size: 25,
                 ),
+                initialSelection: null,
                 inputDecorationTheme: const InputDecorationTheme(
                   constraints: BoxConstraints(maxHeight: 45),
                   contentPadding: EdgeInsetsDirectional.all(5),
@@ -190,9 +229,25 @@ class _LeaveFormState extends State<LeaveForm> {
                     .map<DropdownMenuEntry<EmployeeLeave>>((value) {
                   return DropdownMenuEntry<EmployeeLeave>(
                     value: value,
-                    label: value.name,
+                    label: value.name ?? "",
                   );
                 }).toList(),
+              ),
+            ),
+            Visibility(
+              visible: _leaveController.isLoading.isFalse && extraData != null,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                width: size.width,
+                decoration: BoxDecoration(
+                  border: Border.all(color: gray),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                child: Text(
+                  _leaveController.selectedLeave.value.name ?? "",
+                  style: const TextStyle(color: gray),
+                ),
               ),
             ),
             Visibility(
@@ -225,5 +280,20 @@ class _LeaveFormState extends State<LeaveForm> {
         ),
       ),
     );
+  }
+
+  Future<void> fillInValues(Map<String, dynamic>? data) async {
+    if (data != null) {
+      _reason.text = data["reason"];
+      startDate = _dateTimeUtils.formatDate(
+          dateTime: DateTime.tryParse(data['start_date']));
+      endDate = _dateTimeUtils.formatDate(
+          dateTime: DateTime.tryParse(data['end_date']));
+      _leaveCount.text = data['leave_count'].toString();
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _leaveController.getAvailableLeave(data['leave_id']);
+      });
+    }
   }
 }

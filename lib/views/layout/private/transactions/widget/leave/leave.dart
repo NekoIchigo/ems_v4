@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
@@ -18,12 +19,7 @@ class LeavePage extends StatefulWidget {
 class _LeavePageState extends State<LeavePage> {
   final LeaveController _leave = Get.find<LeaveController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
-
-  @override
-  void initState() {
-    super.initState();
-    _leave.getAllLeave();
-  }
+  final MessageController _messaging = Get.find<MessageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +64,9 @@ class _LeavePageState extends State<LeavePage> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
+                    _messaging.subscribeInChannel(
+                      channelName: "leave-request-chat-${item?.id}",
+                    );
                     context.push('/leave_form', extra: item?.toMap());
                   },
                   approvedList: formatList(_leave.approvedList),
@@ -86,7 +85,7 @@ class _LeavePageState extends State<LeavePage> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _leave.getAvailableLeave();
+                _leave.getAllLeave();
                 context.push('/leave_form');
               },
               child: const Icon(

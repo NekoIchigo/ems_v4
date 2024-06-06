@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
@@ -24,8 +22,6 @@ class DTRCorrectionController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      print(result);
-
       if (result.containsKey('success') && result['success']) {
         getAllDTR();
         navigatorKey.currentContext!.push(
@@ -53,7 +49,6 @@ class DTRCorrectionController extends GetxController {
     )
         .then((result) {
       final data = result["data"];
-      log(data.toString());
       approvedList.value = data["approved"];
       pendingList.value = data["pending"];
       rejectedList.value = data["rejected"];
