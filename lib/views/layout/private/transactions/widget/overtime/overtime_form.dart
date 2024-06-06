@@ -107,7 +107,9 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                             message:
                                                 "Are you sure you want to cancel your request ?",
                                             type: "question",
-                                            cancelPress: () {},
+                                            cancelPress: () {
+                                              Navigator.of(context).pop();
+                                            },
                                             okPress: () {},
                                             okText: "Yes",
                                             okButtonBGColor: bgPrimaryBlue,

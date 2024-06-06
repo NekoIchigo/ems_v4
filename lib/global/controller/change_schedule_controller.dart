@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/models/schedule.dart';
@@ -36,7 +34,7 @@ class ChangeScheduleController extends GetxController {
     });
   }
 
-  Future<void> getScheduleByType(String type) async {
+  Future<void> getScheduleByType(String type, int? newScheduleId) async {
     isLoading.value = true;
     _apiCall
         .getRequest(
@@ -54,6 +52,15 @@ class ChangeScheduleController extends GetxController {
             .map<Schedule>((schedule) =>
                 Schedule(id: schedule['id'], name: schedule['name']))
             .toList();
+        if (newScheduleId != null) {
+          Schedule? item = schedules
+              .where((schedule) {
+                return schedule.id == newScheduleId;
+              })
+              .toList()
+              .firstOrNull;
+          if (item != null) selectedSchedule.value = item;
+        }
       } else {
         errors.value = result;
       }
@@ -68,7 +75,6 @@ class ChangeScheduleController extends GetxController {
         .getRequest(apiUrl: "/mobile/change-schedule", catchError: () {})
         .then((result) {
       final data = result["data"];
-      log(data.toString());
       approvedList.value = data["approved"];
       pendingList.value = data["pending"];
       rejectedList.value = data["rejected"];

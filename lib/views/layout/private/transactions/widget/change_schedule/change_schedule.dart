@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
@@ -19,6 +20,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
   final ChangeScheduleController _changeSchedule =
       Get.find<ChangeScheduleController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+  final MessageController _messaging = Get.find<MessageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,12 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    context.push('/change_schedule_form', extra: item?.toMap());
+                    _messaging.subscribeInChannel(
+                      channelName: "change-schedule-request-chat-${item!.id}",
+                    );
+                    _messaging.fetchChatHistory(
+                        item.id.toString(), "change-schedule-request-chat");
+                    context.push('/change_schedule_form', extra: item.toMap());
                   },
                   approvedList: formatList(_changeSchedule.approvedList),
                   cancelledList: formatList(_changeSchedule.cancelledList),
@@ -81,7 +88,6 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _changeSchedule.getScheduleByType("Fixed Schedule");
                 context.push('/change_schedule_form');
               },
               child: const Icon(
