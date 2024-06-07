@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
@@ -19,6 +20,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
   final ChangeRestdayController _changeRestday =
       Get.find<ChangeRestdayController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+  final MessageController _messaging = Get.find<MessageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,13 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    context.push('/change_restday_form', extra: item?.toMap());
+                    _changeRestday.getLogs(item!.id);
+                    _messaging.subscribeInChannel(
+                      channelName: "restday-request-chat-${item.id}",
+                    );
+                    _messaging.fetchChatHistory(
+                        item.id.toString(), "restday-request-chat");
+                    context.push('/change_restday_form', extra: item.toMap());
                   },
                   approvedList: formatList(_changeRestday.approvedList),
                   cancelledList: formatList(_changeRestday.cancelledList),

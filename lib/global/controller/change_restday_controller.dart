@@ -57,4 +57,18 @@ class ChangeRestdayController extends GetxController {
       isLoading.value = false;
     });
   }
+
+  Future getLogs(int id) async {
+    isLoading.value = true;
+    _apiCall
+        .getRequest(
+      apiUrl: "/mobile/change-restday-request/$id/log",
+      catchError: () {},
+    )
+        .then((response) {
+      print(response);
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
+  }
 }
