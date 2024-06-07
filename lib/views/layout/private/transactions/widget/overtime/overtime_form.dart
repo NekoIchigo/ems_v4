@@ -229,8 +229,6 @@ class _OvertimeFormState extends State<OvertimeForm> {
     _transactionController.scheduleName.value = "Schedule name";
     _transactionController.dtrRange.value = "00:00 to 00:00";
 
-    print(data);
-
     if (data != null) {
       _reason.text = data["reason"];
       fromDate = _dateTimeUtils.formatDate(

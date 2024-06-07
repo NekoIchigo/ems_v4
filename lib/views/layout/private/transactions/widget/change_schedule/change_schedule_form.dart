@@ -255,7 +255,6 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   }
 
   void fillInValues(Map<String, dynamic>? data) {
-    print(data);
     if (data != null) {
       _reason.text = data["reason"];
       dateStart = _dateTimeUtils.formatDate(

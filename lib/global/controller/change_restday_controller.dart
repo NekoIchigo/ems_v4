@@ -14,15 +14,15 @@ class ChangeRestdayController extends GetxController {
       rejectedList = [].obs,
       cancelledList = [].obs;
 
-  RxList<ValueItem> days = [
-    const ValueItem(label: "Sunday", value: "Sunday"),
-    const ValueItem(label: "Monday", value: "Monday"),
-    const ValueItem(label: "Tuesday", value: "Tuesday"),
-    const ValueItem(label: "Wednesday", value: "Wednesday"),
-    const ValueItem(label: "Thursday", value: "Thursday"),
-    const ValueItem(label: "Friday", value: "Friday"),
-    const ValueItem(label: "Saturday", value: "Saturday"),
-  ].obs;
+  // RxList<ValueItem> days = [
+  // const ValueItem(label: "Sunday", value: "Sunday"),
+  // const ValueItem(label: "Monday", value: "Monday"),
+  // const ValueItem(label: "Tuesday", value: "Tuesday"),
+  // const ValueItem(label: "Wednesday", value: "Wednesday"),
+  // const ValueItem(label: "Thursday", value: "Thursday"),
+  // const ValueItem(label: "Friday", value: "Friday"),
+  // const ValueItem(label: "Saturday", value: "Saturday"),
+  // ].obs;
 
   Future<void> sendRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;

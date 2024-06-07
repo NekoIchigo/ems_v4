@@ -33,6 +33,15 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
   final TextEditingController _reason = TextEditingController();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final MultiSelectController _multiSelectController = MultiSelectController();
+  List<ValueItem> restdayList = [
+    const ValueItem(label: "Sunday", value: "Sunday"),
+    const ValueItem(label: "Monday", value: "Monday"),
+    const ValueItem(label: "Tuesday", value: "Tuesday"),
+    const ValueItem(label: "Wednesday", value: "Wednesday"),
+    const ValueItem(label: "Thursday", value: "Thursday"),
+    const ValueItem(label: "Friday", value: "Friday"),
+    const ValueItem(label: "Saturday", value: "Saturday"),
+  ];
 
   // String? _startTimeError, _totalHoursError;
 
@@ -171,7 +180,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
           borderWidth: 1,
           hintColor: gray,
           borderRadius: 3,
-          options: _changeRestday.days,
+          options: restdayList,
         )
         // ListView.builder(
         //   padding: EdgeInsets.zero,
@@ -199,21 +208,32 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
   }
 
   Future<void> fillInValues(Map<String, dynamic>? data) async {
-    print(data);
     if (data != null) {
-      List<String> newRestDays = data['new_rest_days'];
+      List newRestDays = data['new_rest_days'];
 
       _reason.text = data["reason"];
       startDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['start_date']));
       endDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['end_date']));
-      for (String restDay in newRestDays) {
-        _multiSelectController.addSelectedOption(
-          ValueItem(label: restDay, value: restDay),
-        );
-      }
-      WidgetsBinding.instance.addPostFrameCallback((_) {});
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _multiSelectController.setOptions([
+          const ValueItem(label: "Sunday", value: "Sunday"),
+          const ValueItem(label: "Monday", value: "Monday"),
+          const ValueItem(label: "Tuesday", value: "Tuesday"),
+          const ValueItem(label: "Wednesday", value: "Wednesday"),
+          const ValueItem(label: "Thursday", value: "Thursday"),
+          const ValueItem(label: "Friday", value: "Friday"),
+          const ValueItem(label: "Saturday", value: "Saturday"),
+        ]);
+
+        for (String restDay in newRestDays) {
+          _multiSelectController.addSelectedOption(_multiSelectController
+              .options
+              .firstWhere((option) => option.value == restDay));
+        }
+      });
     }
   }
 }
