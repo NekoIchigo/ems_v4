@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -77,5 +78,31 @@ class DTRCorrectionController extends GetxController {
     }).whenComplete(() {
       isLogsLoading.value = false;
     });
+  }
+
+  Future cancelRequest(int id, BuildContext context) async {
+    if (id != 0) {
+      isLoading.value = true;
+      _apiCall
+          .postRequest(
+        apiUrl: '/dtr-request/cancel',
+        data: {"id": id},
+        catchError: () {},
+      )
+          .then((response) {
+        Navigator.of(context).pop();
+        getAllDTR();
+        navigatorKey.currentContext!.push(
+          "/transaction_result",
+          extra: {
+            "result": response["success"] ?? false,
+            "message": response["message"],
+            "path": "/dtr_correction",
+          },
+        );
+      }).whenComplete(() {
+        isLoading.value = false;
+      });
+    }
   }
 }

@@ -27,6 +27,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   late Size size;
   String _clockin = "--:-- --", _clockout = "--:-- --", attendanceDate = "";
   String? fromDate;
+  int transactionId = 0;
 
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
@@ -117,7 +118,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                                           cancelPress: () {
                                             Navigator.of(context).pop();
                                           },
-                                          okPress: () {},
+                                          okPress: () {
+                                            _dtrCorrection.cancelRequest(
+                                                transactionId, context);
+                                          },
                                           okText: "Yes",
                                           okButtonBGColor: bgPrimaryBlue,
                                           buttonNumber: 2,
@@ -263,6 +267,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
     _transactionController.dtrRange.value = "00:00 to 00:00";
 
     if (data != null) {
+      transactionId = data['id'];
       _reason.text = data["reason"];
       fromDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['attendance_date']));

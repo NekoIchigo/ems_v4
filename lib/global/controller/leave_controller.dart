@@ -3,6 +3,7 @@ import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/models/employee_leave.dart';
 import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -112,5 +113,31 @@ class LeaveController extends GetxController {
     }).whenComplete(() {
       isLogsLoading.value = false;
     });
+  }
+
+  Future cancelRequest(int id, BuildContext context) async {
+    if (id != 0) {
+      isLoading.value = true;
+      _apiCall
+          .postRequest(
+        apiUrl: '/leave-request/cancel',
+        data: {"id": id},
+        catchError: () {},
+      )
+          .then((result) {
+        Navigator.of(context).pop();
+        getAllLeave();
+        navigatorKey.currentContext!.push(
+          "/transaction_result",
+          extra: {
+            "result": result["success"] ?? false,
+            "message": result["message"],
+            "path": "/leave",
+          },
+        );
+      }).whenComplete(() {
+        isLoading.value = false;
+      });
+    }
   }
 }

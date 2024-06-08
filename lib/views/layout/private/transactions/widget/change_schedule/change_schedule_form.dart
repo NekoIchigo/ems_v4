@@ -29,6 +29,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   final ChangeScheduleController _scheduleController =
       Get.find<ChangeScheduleController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+  int transactionId = 0;
 
   String? dateStart, dateEnd;
 
@@ -110,7 +111,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                                           cancelPress: () {
                                             Navigator.of(context).pop();
                                           },
-                                          okPress: () {},
+                                          okPress: () {
+                                            _scheduleController.cancelRequest(
+                                                transactionId, context);
+                                          },
                                           okText: "Yes",
                                           okButtonBGColor: bgPrimaryBlue,
                                           buttonNumber: 2,
@@ -259,6 +263,8 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
 
   void fillInValues(Map<String, dynamic>? data) {
     if (data != null) {
+      transactionId = data['id'];
+
       _reason.text = data["reason"];
       dateStart = _dateTimeUtils.formatDate(
         dateTime: DateTime.tryParse(
