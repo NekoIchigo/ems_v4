@@ -29,6 +29,7 @@ import 'package:ems_v4/views/layout/private/transactions/widget/leave/leave_form
 import 'package:ems_v4/views/layout/private/transactions/widget/menu.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/overtime/overtime_form.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/time_records/attendance_report.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/time_records/time_records.dart';
 import 'package:ems_v4/views/layout/public/forgot_password/forgot_password_container.dart';
 import 'package:ems_v4/views/layout/public/forgot_pin/forgot_pin_container.dart';
@@ -254,6 +255,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const TimeRecords(),
+              ),
+            ),
+            GoRoute(
+              path: "/attendance_reports",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const AttendanceReport(),
               ),
             ),
             GoRoute(

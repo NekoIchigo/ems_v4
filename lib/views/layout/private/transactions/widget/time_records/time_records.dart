@@ -1,6 +1,5 @@
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,9 +54,6 @@ class _TimeRecordsState extends State<TimeRecords> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MonthFilterDropdown(
-                        onChanged: (p0) {},
-                      ),
                       Obx(
                         () => SizedBox(
                           height: size.height * .55,
@@ -66,116 +62,31 @@ class _TimeRecordsState extends State<TimeRecords> {
                               : ListView.builder(
                                   padding: EdgeInsets.zero,
                                   physics: const BouncingScrollPhysics(),
-                                  itemCount:
-                                      _timeEntriesController.attendances.length,
+                                  itemCount: 1,
                                   itemBuilder: (context, index) {
-                                    final attendance = _timeEntriesController
-                                        .attendances[index];
-
-                                    return Container(
-                                      padding: const EdgeInsets.only(bottom: 5),
-                                      height: 70,
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                              width: 1, color: lightGray),
+                                    return Column(
+                                      children: [
+                                        ListTile(
+                                          leading: const Icon(
+                                            Icons.calendar_month_rounded,
+                                            color: bgPrimaryBlue,
+                                          ),
+                                          trailing: const Icon(
+                                            Icons.chevron_right_rounded,
+                                            color: gray,
+                                          ),
+                                          title: const Text(
+                                            "May 1 - May 15, 2024",
+                                            style:
+                                                TextStyle(color: bgPrimaryBlue),
+                                          ),
+                                          onTap: () {
+                                            // print('test');
+                                            context.push('/attendance_reports');
+                                          },
                                         ),
-                                      ),
-                                      child: ListTile(
-                                        onTap: () {
-                                          context.push('/attendance-log');
-                                          _timeEntriesController
-                                              .hasClose.value = true;
-                                        },
-                                        title: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const Icon(
-                                                  Icons.access_time,
-                                                  color: primaryBlue,
-                                                  size: 20,
-                                                ),
-                                                const SizedBox(width: 15),
-                                                Text(
-                                                  attendance.formattedClockIn ??
-                                                      "??/??/??/ | ??:??",
-                                                  style: const TextStyle(
-                                                    color: primaryBlue,
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 5),
-                                                Expanded(
-                                                  child: Text(
-                                                    attendance
-                                                            .clockedInLocationType ??
-                                                        "",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                    style: const TextStyle(
-                                                      color: darkGray,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Visibility(
-                                              visible:
-                                                  attendance.clockOutAt != null,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  const Icon(
-                                                    Icons.access_time_filled,
-                                                    color: primaryBlue,
-                                                    size: 20,
-                                                  ),
-                                                  const SizedBox(width: 15),
-                                                  Text(
-                                                    attendance
-                                                            .formattedClockOut ??
-                                                        "??/??/??/ | ??:??",
-                                                    style: const TextStyle(
-                                                      color: primaryBlue,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 5),
-                                                  Expanded(
-                                                    child: Text(
-                                                      attendance
-                                                              .clockedOutLocationType ??
-                                                          "",
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        color: darkGray,
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        trailing: const Icon(
-                                          Icons.navigate_next,
-                                          color: gray,
-                                          size: 20,
-                                        ),
-                                      ),
+                                        const Divider(),
+                                      ],
                                     );
                                   },
                                 ),
