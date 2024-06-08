@@ -1,13 +1,18 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/models/schedule.dart';
+import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class ChangeScheduleController extends GetxController {
   final AuthController _authController = Get.find<AuthController>();
-  RxBool isLoading = false.obs, isSubmitting = false.obs;
+  RxBool isLoading = false.obs,
+      isSubmitting = false.obs,
+      isLogsLoading = false.obs;
+  Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
+
   RxList<Schedule> schedules = [Schedule(id: 0, name: "No Schedule")].obs;
   Rx<Schedule> selectedSchedule = Schedule(id: 0, name: "No Schedule").obs;
   final ApiCall _apiCall = ApiCall();
@@ -96,5 +101,22 @@ class ChangeScheduleController extends GetxController {
       catchError: () {},
     );
     isLoading.value = false;
+  }
+
+  Future getLogs(int id) async {
+    isLogsLoading.value = true;
+    _apiCall
+        .getRequest(
+      apiUrl: "/mobile/change-schedule-request/$id/log",
+      catchError: () {},
+    )
+        .then((response) {
+      selectedTransactionLogs.value = TransactionLogs(
+        requestData: response['data'],
+        approvalHistory: response['approval_history'],
+      );
+    }).whenComplete(() {
+      isLogsLoading.value = false;
+    });
   }
 }

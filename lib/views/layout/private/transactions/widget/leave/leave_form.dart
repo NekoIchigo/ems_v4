@@ -54,6 +54,7 @@ class _LeaveFormState extends State<LeaveForm> {
             height: size.height * .86,
             child: SelectedItemTabs(
               pageCount: extraData != null ? 3 : 1,
+              isLogsLoading: false,
               title: "Leave",
               detailPage: SingleChildScrollView(
                 child: Column(

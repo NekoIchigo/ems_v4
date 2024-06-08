@@ -59,6 +59,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
               pageCount: extraData != null ? 3 : 1,
               status: extraData?['status'] ?? "",
               title: "DTR Correction",
+              transactionLogs: _dtrCorrection.selectedTransactionLogs.value,
+              isLogsLoading: _dtrCorrection.isLogsLoading.value,
               detailPage: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),

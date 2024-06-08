@@ -1,27 +1,20 @@
 import 'package:ems_v4/global/api.dart';
+import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class ChangeRestdayController extends GetxController {
-  RxBool isLoading = false.obs, isSubmitting = false.obs;
+  RxBool isLoading = false.obs,
+      isSubmitting = false.obs,
+      isLogsLoading = false.obs;
   final ApiCall _apiCall = ApiCall();
   RxMap<String, dynamic> errors = {"errors": 0}.obs;
-
+  Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
   RxList approvedList = [].obs,
       pendingList = [].obs,
       rejectedList = [].obs,
       cancelledList = [].obs;
-
-  // RxList<ValueItem> days = [
-  // const ValueItem(label: "Sunday", value: "Sunday"),
-  // const ValueItem(label: "Monday", value: "Monday"),
-  // const ValueItem(label: "Tuesday", value: "Tuesday"),
-  // const ValueItem(label: "Wednesday", value: "Wednesday"),
-  // const ValueItem(label: "Thursday", value: "Thursday"),
-  // const ValueItem(label: "Friday", value: "Friday"),
-  // const ValueItem(label: "Saturday", value: "Saturday"),
-  // ].obs;
 
   Future<void> sendRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
@@ -59,16 +52,19 @@ class ChangeRestdayController extends GetxController {
   }
 
   Future getLogs(int id) async {
-    isLoading.value = true;
+    isLogsLoading.value = true;
     _apiCall
         .getRequest(
       apiUrl: "/mobile/change-restday-request/$id/log",
       catchError: () {},
     )
         .then((response) {
-      print(response);
+      selectedTransactionLogs.value = TransactionLogs(
+        requestData: response['data'],
+        approvalHistory: response['approval_history'],
+      );
     }).whenComplete(() {
-      isLoading.value = false;
+      isLogsLoading.value = false;
     });
   }
 }

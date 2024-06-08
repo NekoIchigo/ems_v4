@@ -65,8 +65,9 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
+                    _changeSchedule.getLogs(item!.id);
                     _messaging.subscribeInChannel(
-                      channelName: "change-schedule-request-chat-${item!.id}",
+                      channelName: "change-schedule-request-chat-${item.id}",
                     );
                     _messaging.fetchChatHistory(
                         item.id.toString(), "change-schedule-request-chat");

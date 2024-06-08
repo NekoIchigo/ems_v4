@@ -1,10 +1,14 @@
 import 'package:ems_v4/global/api.dart';
+import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class DTRCorrectionController extends GetxController {
-  RxBool isLoading = false.obs, isSubmitting = false.obs;
+  RxBool isLoading = false.obs,
+      isSubmitting = false.obs,
+      isLogsLoading = false.obs;
+  Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
   RxMap<String, dynamic> errors = {"errors": 0}.obs;
   final ApiCall _apiCall = ApiCall();
 
@@ -55,6 +59,23 @@ class DTRCorrectionController extends GetxController {
       cancelledList.value = data["cancelled"];
     }).whenComplete(() {
       isLoading.value = false;
+    });
+  }
+
+  Future getLogs(int id) async {
+    isLogsLoading.value = true;
+    _apiCall
+        .getRequest(
+      apiUrl: "/mobile/dtr-request/$id/log",
+      catchError: () {},
+    )
+        .then((response) {
+      selectedTransactionLogs.value = TransactionLogs(
+        requestData: response['data'],
+        approvalHistory: response['approval_history'],
+      );
+    }).whenComplete(() {
+      isLogsLoading.value = false;
     });
   }
 }

@@ -65,8 +65,9 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
+                    _correctionController.getLogs(item!.id);
                     _messaging.subscribeInChannel(
-                      channelName: "dtr-request-chat-${item!.id}",
+                      channelName: "dtr-request-chat-${item.id}",
                     );
                     _messaging.fetchChatHistory(
                         item.id.toString(), "dtr-request-chat");

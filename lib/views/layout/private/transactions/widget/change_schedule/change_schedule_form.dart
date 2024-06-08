@@ -52,6 +52,9 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
             height: size.height * .86,
             child: SelectedItemTabs(
               pageCount: extraData != null ? 3 : 1,
+              transactionLogs:
+                  _scheduleController.selectedTransactionLogs.value,
+              isLogsLoading: _scheduleController.isLogsLoading.value,
               status: "",
               title: "Change Schedule",
               detailPage: SingleChildScrollView(

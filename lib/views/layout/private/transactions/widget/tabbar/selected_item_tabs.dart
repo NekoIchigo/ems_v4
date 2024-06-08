@@ -1,7 +1,9 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/logs_tab.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/message_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class SelectedItemTabs extends StatefulWidget {
@@ -9,12 +11,16 @@ class SelectedItemTabs extends StatefulWidget {
   final String title;
   final Widget detailPage;
   final int pageCount;
+  final TransactionLogs? transactionLogs;
+  final bool isLogsLoading;
   const SelectedItemTabs({
     super.key,
     this.status,
     required this.title,
     required this.detailPage,
     required this.pageCount,
+    this.transactionLogs,
+    required this.isLogsLoading,
   });
 
   @override
@@ -66,7 +72,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
           top: 5,
           left: 0,
           child: Text(
-            widget.status ?? '',
+            widget.status?.capitalize ?? '',
             style: TextStyle(
               color: widget.status == "pending"
                   ? orange
@@ -119,7 +125,10 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
                 children: [
                   widget.detailPage,
                   const MessageTab(),
-                  const LogsTab(),
+                  LogsTab(
+                    isLoading: widget.isLogsLoading,
+                    transactionLogs: widget.transactionLogs,
+                  ),
                 ],
               ),
             ),

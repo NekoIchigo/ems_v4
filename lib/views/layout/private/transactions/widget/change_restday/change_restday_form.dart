@@ -57,42 +57,44 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       height: size.height * .86,
-      child: SelectedItemTabs(
-        pageCount: extraData != null ? 3 : 1,
-        status: "",
-        title: "Change Restday",
-        detailPage: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 15),
-                const NumberLabel(label: "Select the date", number: 1),
-                const SizedBox(height: 15),
-                CustomDateInput(
-                  type: "range",
-                  fromDate: startDate,
-                  toDate: endDate,
-                  onDateTimeChanged: (value) {
-                    startDate = value[0].toString().split(" ").first;
-                    endDate = value[1].toString().split(" ").first;
-                    _transactionController.getDTROnDateRange(
-                        startDate, endDate);
-                    _scheduleController.fetchScheduleList(value);
-                  },
-                  child: Container(),
-                ),
-                const SizedBox(height: 15),
-                const NumberLabel(label: "Select new restday", number: 2),
-                const SizedBox(height: 15),
-                formField2(),
-                const SizedBox(height: 15),
-                ReasonInput(
-                  readOnly: false,
-                  controller: _reason,
-                ),
-                Obx(
-                  () => Row(
+      child: Obx(
+        () => SelectedItemTabs(
+          transactionLogs: _changeRestday.selectedTransactionLogs.value,
+          pageCount: extraData != null ? 3 : 1,
+          isLogsLoading: _changeRestday.isLogsLoading.value,
+          status: extraData?['status'] ?? "",
+          title: "Change Restday",
+          detailPage: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                children: [
+                  const SizedBox(height: 15),
+                  const NumberLabel(label: "Select the date", number: 1),
+                  const SizedBox(height: 15),
+                  CustomDateInput(
+                    type: "range",
+                    fromDate: startDate,
+                    toDate: endDate,
+                    onDateTimeChanged: (value) {
+                      startDate = value[0].toString().split(" ").first;
+                      endDate = value[1].toString().split(" ").first;
+                      _transactionController.getDTROnDateRange(
+                          startDate, endDate);
+                      _scheduleController.fetchScheduleList(value);
+                    },
+                    child: Container(),
+                  ),
+                  const SizedBox(height: 15),
+                  const NumberLabel(label: "Select new restday", number: 2),
+                  const SizedBox(height: 15),
+                  formField2(),
+                  const SizedBox(height: 15),
+                  ReasonInput(
+                    readOnly: false,
+                    controller: _reason,
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Visibility(
@@ -158,9 +160,9 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 60),
-              ],
+                  const SizedBox(height: 60),
+                ],
+              ),
             ),
           ),
         ),

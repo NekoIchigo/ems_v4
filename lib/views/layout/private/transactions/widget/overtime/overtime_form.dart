@@ -57,6 +57,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
               height: size.height * .86,
               child: SelectedItemTabs(
                 pageCount: extraData != null ? 3 : 1,
+                isLogsLoading: false,
                 status: extraData?['status'] ?? "",
                 title: "Overtime",
                 detailPage: SingleChildScrollView(
