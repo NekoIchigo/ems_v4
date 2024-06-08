@@ -63,6 +63,7 @@ class _OvertimeState extends State<Overtime> {
                     _messaging.subscribeInChannel(
                       channelName: "overtime-request-chat-${item!.id}",
                     );
+                    _overtimeController.getLogs(item.id);
                     _messaging.fetchChatHistory(
                         item.id.toString(), "overtime-request-chat");
                     context.push('/overtime_form', extra: item.toMap());

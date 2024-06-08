@@ -1,12 +1,16 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/models/employee_leave.dart';
+import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class LeaveController extends GetxController {
-  RxBool isLoading = false.obs, isSubmitting = false.obs;
+  RxBool isLoading = false.obs,
+      isSubmitting = false.obs,
+      isLogsLoading = false.obs;
+  Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
   final AuthController _auth = Get.find<AuthController>();
   RxMap<String, dynamic> errors = {"errors": 0}.obs;
   RxList<EmployeeLeave> leaves = [EmployeeLeave(id: 0)].obs;
@@ -91,5 +95,22 @@ class LeaveController extends GetxController {
       if (item != null) selectedLeave.value = item;
     }
     isLoading.value = false;
+  }
+
+  Future getLogs(int id) async {
+    isLogsLoading.value = true;
+    _apiCall
+        .getRequest(
+      apiUrl: "/mobile/leave-request/$id/log",
+      catchError: () {},
+    )
+        .then((response) {
+      selectedTransactionLogs.value = TransactionLogs(
+        requestData: response['data'],
+        approvalHistory: response['approval_history'],
+      );
+    }).whenComplete(() {
+      isLogsLoading.value = false;
+    });
   }
 }

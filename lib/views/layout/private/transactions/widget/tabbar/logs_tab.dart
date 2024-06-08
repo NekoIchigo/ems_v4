@@ -21,26 +21,27 @@ class LogsTab extends StatelessWidget {
     final DateTimeUtils dateTimeUtils = DateTimeUtils();
     String creatorName = "", status = "", createdAt = "", updatedAt = "";
     List approvalHistory = [], level1 = [], level2 = [];
-
     if (transactionLogs != null) {
       var data = transactionLogs?.requestData?['data'];
-      print(transactionLogs!.requestData!['data']);
-      approvalHistory = transactionLogs?.requestData?['approval_history'];
-      creatorName = data['employee_name']['employee_name'];
+      if (data != null) {
+        approvalHistory =
+            transactionLogs?.requestData?['approval_history'] ?? [];
+        creatorName = data['employee_name']['employee_name'];
 
-      status = data['status'];
+        status = data['status'];
 
-      createdAt = dateTimeUtils.formatDate(
-        dateTime: DateTime.parse(data['created_at']),
-      );
-      updatedAt = dateTimeUtils.formatDate(
-        dateTime: DateTime.parse(data['updated_at']),
-      );
-      for (var approval in approvalHistory) {
-        if (approval['level'] == 1) {
-          level1.add(approval);
-        } else if (approval['level'] == 2) {
-          level2.add(approval);
+        createdAt = dateTimeUtils.formatDate(
+          dateTime: DateTime.parse(data['created_at']),
+        );
+        updatedAt = dateTimeUtils.formatDate(
+          dateTime: DateTime.parse(data['updated_at']),
+        );
+        for (var approval in approvalHistory) {
+          if (approval['level'] == 1) {
+            level1.add(approval);
+          } else if (approval['level'] == 2) {
+            level2.add(approval);
+          }
         }
       }
     }
@@ -71,7 +72,7 @@ class LogsTab extends StatelessWidget {
                 child: const Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: CustomLoader(
-                    height: 20,
+                    height: 30,
                     borderRadius: 5,
                   ),
                 ),
@@ -110,7 +111,7 @@ class LogsTab extends StatelessWidget {
                 child: const Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: CustomLoader(
-                    height: 20,
+                    height: 30,
                     borderRadius: 5,
                   ),
                 ),
@@ -223,7 +224,7 @@ class LogsTab extends StatelessWidget {
                 child: const Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: CustomLoader(
-                    height: 20,
+                    height: 30,
                     borderRadius: 5,
                   ),
                 ),

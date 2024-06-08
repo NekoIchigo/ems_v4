@@ -55,6 +55,10 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
 
     fillInValues(extraData?['data']);
     return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       height: size.height * .86,
       child: Obx(
