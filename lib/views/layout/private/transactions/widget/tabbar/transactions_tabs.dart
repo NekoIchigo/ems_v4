@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/approved_listview.dart';
+import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsTabs extends StatefulWidget {
@@ -27,6 +28,7 @@ class TransactionsTabs extends StatefulWidget {
 
 class _TransactionsTabsState extends State<TransactionsTabs>
     with SingleTickerProviderStateMixin {
+  late Size size;
   final List<Widget> _tabs = [
     const Tab(text: "Pending"),
     const Tab(text: "Approved"),
@@ -50,7 +52,7 @@ class _TransactionsTabsState extends State<TransactionsTabs>
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
     return Column(
       children: [
         TabBar(
@@ -84,30 +86,50 @@ class _TransactionsTabsState extends State<TransactionsTabs>
           child: TabBarView(
             controller: _tabController,
             children: [
-              ApprovedListview(
-                items: widget.pendingList,
-                isLoading: widget.isLoading,
-                onTap: widget.onTap,
-              ),
-              ApprovedListview(
-                items: widget.approvedList,
-                isLoading: widget.isLoading,
-                onTap: widget.onTap,
-              ),
-              ApprovedListview(
-                items: widget.rejectedList,
-                isLoading: widget.isLoading,
-                onTap: widget.onTap,
-              ),
-              ApprovedListview(
-                items: widget.cancelledList,
-                isLoading: widget.isLoading,
-                onTap: widget.onTap,
-              ),
+              widget.isLoading
+                  ? listLoader()
+                  : ApprovedListview(
+                      items: widget.pendingList,
+                      onTap: widget.onTap,
+                    ),
+              widget.isLoading
+                  ? listLoader()
+                  : ApprovedListview(
+                      items: widget.approvedList,
+                      onTap: widget.onTap,
+                    ),
+              widget.isLoading
+                  ? listLoader()
+                  : ApprovedListview(
+                      items: widget.rejectedList,
+                      onTap: widget.onTap,
+                    ),
+              widget.isLoading
+                  ? listLoader()
+                  : ApprovedListview(
+                      items: widget.cancelledList,
+                      onTap: widget.onTap,
+                    ),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget listLoader() {
+    return ListView.builder(
+      itemCount: 4,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: CustomLoader(
+            width: size.width,
+            height: 80,
+            borderRadius: 10,
+          ),
+        );
+      },
     );
   }
 }
