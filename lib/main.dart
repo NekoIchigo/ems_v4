@@ -11,6 +11,7 @@ import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/global/controller/profile_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
+import 'package:ems_v4/global/controller/timre_records_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/router/router.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
     Get.put(ChangeRestdayController());
     Get.put(DTRCorrectionController());
     Get.put(MessageController());
+    Get.put(TimeRecordsController());
 
     return MaterialApp.router(
       routerConfig: router,
