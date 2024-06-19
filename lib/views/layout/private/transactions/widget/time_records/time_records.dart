@@ -1,9 +1,11 @@
-import 'package:ems_v4/global/controller/time_entries_controller.dart';
+import 'dart:convert';
+
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
+import 'package:ems_v4/global/controller/time_records_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TimeRecords extends StatefulWidget {
   const TimeRecords({super.key});
@@ -13,12 +15,19 @@ class TimeRecords extends StatefulWidget {
 }
 
 class _TimeRecordsState extends State<TimeRecords> {
-  final TimeEntriesController _timeEntriesController =
-      Get.find<TimeEntriesController>();
+  final TimeRecordsController _recordsController =
+      Get.find<TimeRecordsController>();
+  late Size size;
+
+  @override
+  void initState() {
+    _recordsController.fetchCutoffPeriods();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -47,6 +56,7 @@ class _TimeRecordsState extends State<TimeRecords> {
                   fontSize: 18,
                 ),
               ),
+              const SizedBox(height: 15),
               SingleChildScrollView(
                 physics: const NeverScrollableScrollPhysics(),
                 child: Padding(
@@ -56,37 +66,62 @@ class _TimeRecordsState extends State<TimeRecords> {
                     children: [
                       Obx(
                         () => SizedBox(
-                          height: size.height * .55,
-                          child: _timeEntriesController.isLoading.isTrue
-                              ? const ListShimmer(listLength: 10)
+                          height: size.height * .60,
+                          child: _recordsController.isLoading.isTrue
+                              ? loader()
                               : ListView.builder(
                                   padding: EdgeInsets.zero,
                                   physics: const BouncingScrollPhysics(),
-                                  itemCount: 1,
+                                  itemCount:
+                                      _recordsController.cutoffPeriods.length,
                                   itemBuilder: (context, index) {
-                                    return Column(
-                                      children: [
-                                        ListTile(
-                                          leading: const Icon(
-                                            Icons.calendar_month_rounded,
+                                    var item =
+                                        _recordsController.cutoffPeriods[index];
+                                    var cutoff = jsonDecode(item["cutoff"]);
+                                    DateTime date =
+                                        DateTime.parse(item['created_at']);
+
+                                    return Container(
+                                      margin: const EdgeInsets.only(bottom: 15),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: gray),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: ListTile(
+                                        leading: const Icon(
+                                          Icons.calendar_month_rounded,
+                                          color: bgPrimaryBlue,
+                                          size: 30,
+                                        ),
+                                        trailing: const Icon(
+                                          Icons.chevron_right_rounded,
+                                          color: gray,
+                                        ),
+                                        title: Text(
+                                          "${cutoff['start_day']} - ${cutoff['end_day']}, ${date.year}",
+                                          style: const TextStyle(
                                             color: bgPrimaryBlue,
                                           ),
-                                          trailing: const Icon(
-                                            Icons.chevron_right_rounded,
-                                            color: gray,
-                                          ),
-                                          title: const Text(
-                                            "May 1 - May 15, 2024",
-                                            style:
-                                                TextStyle(color: bgPrimaryBlue),
-                                          ),
-                                          onTap: () {
-                                            // print('test');
-                                            context.push('/attendance_reports');
-                                          },
                                         ),
-                                        const Divider(),
-                                      ],
+                                        subtitle: Text(
+                                          item['status'] == 0
+                                              ? "Not posted"
+                                              : "Posted",
+                                          style: const TextStyle(
+                                              color: gray, fontSize: 12),
+                                        ),
+                                        onTap: () {
+                                          _recordsController
+                                              .fetchAttendanceMasters(
+                                            item['id'],
+                                          );
+                                          context.push(
+                                            '/attendance_reports',
+                                            extra:
+                                                "${cutoff['start_day']} - ${cutoff['end_day']}, ${date.year}",
+                                          );
+                                        },
+                                      ),
                                     );
                                   },
                                 ),
@@ -100,6 +135,29 @@ class _TimeRecordsState extends State<TimeRecords> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget loader() {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.zero,
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: const Color(0xFFc9c9c9),
+          highlightColor: const Color(0xFFe6e6e6),
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            width: size.width * 0.5,
+            height: 50,
+            decoration: BoxDecoration(
+              color: primaryBlue,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+      },
     );
   }
 }

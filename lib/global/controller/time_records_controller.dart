@@ -13,13 +13,13 @@ class TimeRecordsController extends GetxController {
     isLoading.value = true;
     _apiCall
         .getRequest(
-            apiUrl: '/mobile/cutoff/index',
+            apiUrl: '/mobile/cutoff/list',
             parameters: {
-              'company_id': _auth.company.value.id,
+              'employee_id': _auth.employee?.value.id,
             },
             catchError: () {})
         .then((response) {
-      print(response);
+      print("response: $response");
       if (response.containsKey('success') && response['success']) {
         cutoffPeriods.value = response['data'];
       }
@@ -43,6 +43,8 @@ class TimeRecordsController extends GetxController {
       if (response.containsKey('success') && response['success']) {
         attendanceMasters.value = response['data'];
       }
-    }).whenComplete(() {});
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
   }
 }

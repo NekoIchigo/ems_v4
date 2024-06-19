@@ -4,7 +4,6 @@ import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
 import 'package:ems_v4/global/controller/overtime_controller.dart';
-import 'package:ems_v4/global/controller/timre_records_controller.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -27,8 +26,6 @@ class _TransactionMenuState extends State<TransactionMenu> {
       Get.find<ChangeScheduleController>();
   final ChangeRestdayController _changeRestday =
       Get.find<ChangeRestdayController>();
-  final TimeRecordsController _timeRecordsController =
-      Get.find<TimeRecordsController>();
 
   final List transactionItems = [
     {
@@ -124,8 +121,6 @@ class _TransactionMenuState extends State<TransactionMenu> {
                       _changeSchedule.getAllChangeSchedule();
                     } else if (path == "/change_restday") {
                       _changeRestday.getAllChangeRestday();
-                    } else if (path == "/time_records") {
-                      _timeRecordsController.fetchCutoffPeriods();
                     }
 
                     context.push(path);
