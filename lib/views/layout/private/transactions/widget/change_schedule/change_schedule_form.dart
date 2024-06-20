@@ -51,44 +51,44 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             height: size.height * .86,
-            child: SelectedItemTabs(
-              pageCount: extraData != null ? 3 : 1,
-              transactionLogs:
-                  _scheduleController.selectedTransactionLogs.value,
-              isLogsLoading: _scheduleController.isLogsLoading.value,
-              status: "",
-              title: "Change Schedule",
-              detailPage: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 15),
-                      const NumberLabel(label: "Select the date", number: 1),
-                      const SizedBox(height: 15),
-                      CustomDateInput(
-                        type: "range",
-                        fromDate: dateStart,
-                        toDate: dateEnd,
-                        onDateTimeChanged: (value) {
-                          dateStart = value[0].toString().split(" ")[0];
-                          dateEnd = value[1].toString().split(" ")[0];
-                          _scheduleController.fetchScheduleList(value);
-                        },
-                        child: Container(),
-                      ),
-                      const SizedBox(height: 15),
-                      const NumberLabel(
-                          label: "Change schedule details", number: 2),
-                      const SizedBox(height: 15),
-                      formField2(),
-                      const SizedBox(height: 15),
-                      ReasonInput(
-                        readOnly: false,
-                        controller: _reason,
-                      ),
-                      Obx(
-                        () => Row(
+            child: Obx(
+              () => SelectedItemTabs(
+                pageCount: extraData != null ? 3 : 1,
+                transactionLogs:
+                    _scheduleController.selectedTransactionLogs.value,
+                isLogsLoading: _scheduleController.isLogsLoading.value,
+                status: "",
+                title: "Change Schedule",
+                detailPage: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        const NumberLabel(label: "Select the date", number: 1),
+                        const SizedBox(height: 15),
+                        CustomDateInput(
+                          type: "range",
+                          fromDate: dateStart,
+                          toDate: dateEnd,
+                          onDateTimeChanged: (value) {
+                            dateStart = value[0].toString().split(" ")[0];
+                            dateEnd = value[1].toString().split(" ")[0];
+                            _scheduleController.fetchScheduleList(value);
+                          },
+                          child: Container(),
+                        ),
+                        const SizedBox(height: 15),
+                        const NumberLabel(
+                            label: "Change schedule details", number: 2),
+                        const SizedBox(height: 15),
+                        formField2(),
+                        const SizedBox(height: 15),
+                        ReasonInput(
+                          readOnly: false,
+                          controller: _reason,
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Visibility(
@@ -151,9 +151,9 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 50),
-                    ],
+                        const SizedBox(height: 50),
+                      ],
+                    ),
                   ),
                 ),
               ),
