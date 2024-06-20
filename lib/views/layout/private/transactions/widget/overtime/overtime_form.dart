@@ -55,41 +55,45 @@ class _OvertimeFormState extends State<OvertimeForm> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               height: size.height * .86,
-              child: SelectedItemTabs(
-                pageCount: extraData != null ? 3 : 1,
-                transactionLogs: _overtime.selectedTransactionLogs.value,
-                isLogsLoading: _overtime.isLogsLoading.value,
-                status: extraData?['status'] ?? "",
-                title: "Overtime",
-                detailPage: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 15),
-                        const NumberLabel(label: "Select the date", number: 1),
-                        const SizedBox(height: 15),
-                        CustomDateInput(
-                          type: "single",
-                          fromDate: fromDate,
-                          onDateTimeChanged: (value) {
-                            attendanceDate = value[0].toString().split(" ")[0];
-                            _transactionController.getDTROnDate(attendanceDate);
-                          },
-                          child: Container(),
-                        ),
-                        const SizedBox(height: 15),
-                        const SizedBox(height: 15),
-                        const NumberLabel(label: "Edit time record", number: 2),
-                        const SizedBox(height: 15),
-                        formField2(),
-                        const SizedBox(height: 15),
-                        ReasonInput(
-                          readOnly: false,
-                          controller: _reason,
-                        ),
-                        Obx(
-                          () => Row(
+              child: Obx(
+                () => SelectedItemTabs(
+                  pageCount: extraData != null ? 3 : 1,
+                  transactionLogs: _overtime.selectedTransactionLogs.value,
+                  isLogsLoading: _overtime.isLogsLoading.value,
+                  status: extraData?['status'] ?? "",
+                  title: "Overtime",
+                  detailPage: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 15),
+                          const NumberLabel(
+                              label: "Select the date", number: 1),
+                          const SizedBox(height: 15),
+                          CustomDateInput(
+                            type: "single",
+                            fromDate: fromDate,
+                            onDateTimeChanged: (value) {
+                              attendanceDate =
+                                  value[0].toString().split(" ")[0];
+                              _transactionController
+                                  .getDTROnDate(attendanceDate);
+                            },
+                            child: Container(),
+                          ),
+                          const SizedBox(height: 15),
+                          const SizedBox(height: 15),
+                          const NumberLabel(
+                              label: "Edit time record", number: 2),
+                          const SizedBox(height: 15),
+                          formField2(),
+                          const SizedBox(height: 15),
+                          ReasonInput(
+                            readOnly: false,
+                            controller: _reason,
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Visibility(
@@ -149,9 +153,9 @@ class _OvertimeFormState extends State<OvertimeForm> {
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 50),
-                      ],
+                          const SizedBox(height: 50),
+                        ],
+                      ),
                     ),
                   ),
                 ),

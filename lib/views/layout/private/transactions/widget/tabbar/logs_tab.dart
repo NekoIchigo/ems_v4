@@ -155,7 +155,16 @@ class LogsTab extends StatelessWidget {
                                           ['employee_name'],
                                     ),
                                   ),
-                                  Text(approverStatus.capitalize ?? ""),
+                                  Text(
+                                    approverStatus.capitalize ?? "",
+                                    style: TextStyle(
+                                      color: status == "pending"
+                                          ? orange
+                                          : status == "approved"
+                                              ? colorSuccess
+                                              : colorError,
+                                    ),
+                                  ),
                                   const SizedBox(width: 10),
                                   Text(approverDate),
                                 ],
@@ -204,7 +213,16 @@ class LogsTab extends StatelessWidget {
                                             ['employee_name'],
                                       ),
                                     ),
-                                    Text(approverStatus.capitalize ?? ""),
+                                    Text(
+                                      approverStatus.capitalize ?? "",
+                                      style: TextStyle(
+                                        color: status == "pending"
+                                            ? orange
+                                            : status == "approved"
+                                                ? colorSuccess
+                                                : colorError,
+                                      ),
+                                    ),
                                     const SizedBox(width: 10),
                                     Text(approverDate),
                                   ],
