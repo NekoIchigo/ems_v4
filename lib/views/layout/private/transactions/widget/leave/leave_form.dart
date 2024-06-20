@@ -52,79 +52,78 @@ class _LeaveFormState extends State<LeaveForm> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             height: size.height * .86,
-            child: SelectedItemTabs(
-              pageCount: extraData != null ? 3 : 1,
-              transactionLogs: _leaveController.selectedTransactionLogs.value,
-              isLogsLoading: _leaveController.isLogsLoading.value,
-              title: "Leave",
-              detailPage: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const NumberLabel(label: "Select the date", number: 1),
-                    CustomDateInput(
-                      type: "range",
-                      fromDate: startDate,
-                      toDate: endDate,
-                      onDateTimeChanged: (value) {
-                        startDate = value[0].toString().split(" ").first;
-                        endDate = value[1].toString().split(" ").first;
-                        final difference =
-                            value[1]!.difference(value[0]!).inDays + 1;
-                        _transaction.getDTROnDateRange(startDate, endDate);
-                        setState(() {
-                          _leaveCount.text = difference.toString();
-                        });
-                      },
-                      child: Container(),
-                    ),
-                    const NumberLabel(
-                      label: "Leave count(0.5 for half day)",
-                      number: 2,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 25.0),
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _leaveCount,
-                        style: defaultStyle,
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          hintText: "Enter leave count",
-                          hintStyle: defaultStyle,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 10,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: gray),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: gray),
+            child: Obx(
+              () {
+                EmployeeLeave employeeLeave =
+                    _leaveController.selectedLeave.value;
+                bool hasCredits = _leaveController
+                            .selectedLeave.value.employeeCredits !=
+                        null ||
+                    _leaveController.selectedLeave.value.employeeCredits != 0;
+                return SelectedItemTabs(
+                  pageCount: extraData != null ? 3 : 1,
+                  transactionLogs:
+                      _leaveController.selectedTransactionLogs.value,
+                  isLogsLoading: _leaveController.isLogsLoading.value,
+                  title: "Leave",
+                  detailPage: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const NumberLabel(label: "Select the date", number: 1),
+                        CustomDateInput(
+                          type: "range",
+                          fromDate: startDate,
+                          toDate: endDate,
+                          onDateTimeChanged: (value) {
+                            startDate = value[0].toString().split(" ").first;
+                            endDate = value[1].toString().split(" ").first;
+                            final difference =
+                                value[1]!.difference(value[0]!).inDays + 1;
+                            _transaction.getDTROnDateRange(startDate, endDate);
+                            setState(() {
+                              _leaveCount.text = difference.toString();
+                            });
+                          },
+                          child: Container(),
+                        ),
+                        const NumberLabel(
+                          label: "Leave count(0.5 for half day)",
+                          number: 2,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25.0),
+                          child: TextField(
+                            keyboardType: TextInputType.number,
+                            controller: _leaveCount,
+                            style: defaultStyle,
+                            decoration: const InputDecoration(
+                              isDense: true,
+                              hintText: "Enter leave count",
+                              hintStyle: defaultStyle,
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 10,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: gray),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: gray),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    const NumberLabel(
-                      label: "Leave details",
-                      number: 3,
-                    ),
-                    formField2(extraData),
-                    ReasonInput(
-                      readOnly: false,
-                      controller: _reason,
-                      number: 4,
-                    ),
-                    Obx(
-                      () {
-                        EmployeeLeave employeeLeave =
-                            _leaveController.selectedLeave.value;
-                        bool hasCredits = _leaveController
-                                    .selectedLeave.value.employeeCredits !=
-                                null ||
-                            _leaveController
-                                    .selectedLeave.value.employeeCredits !=
-                                0;
-                        return Row(
+                        const NumberLabel(
+                          label: "Leave details",
+                          number: 3,
+                        ),
+                        formField2(extraData),
+                        ReasonInput(
+                          readOnly: false,
+                          controller: _reason,
+                          number: 4,
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Visibility(
@@ -183,18 +182,19 @@ class _LeaveFormState extends State<LeaveForm> {
                               bgColor: bgPrimaryBlue, //primaryBlue
                             ),
                           ],
-                        );
-                      },
+                        ),
+                        const SizedBox(height: 50),
+                      ]
+                          .map((widget) => Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 15, 10, 0),
+                                child: widget,
+                              ))
+                          .toList(),
                     ),
-                    const SizedBox(height: 50),
-                  ]
-                      .map((widget) => Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
-                            child: widget,
-                          ))
-                      .toList(),
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ],
