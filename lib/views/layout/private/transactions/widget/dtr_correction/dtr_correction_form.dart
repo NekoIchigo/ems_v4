@@ -56,46 +56,46 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             height: size.height * .86,
-            child: SelectedItemTabs(
-              pageCount: extraData != null ? 3 : 1,
-              status: extraData?['status'] ?? "",
-              title: "DTR Correction",
-              transactionLogs: _dtrCorrection.selectedTransactionLogs.value,
-              isLogsLoading: _dtrCorrection.isLogsLoading.value,
-              detailPage: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 15),
-                      const NumberLabel(label: "Select the date", number: 1),
-                      const SizedBox(height: 15),
-                      CustomDateInput(
-                        type: "single",
-                        fromDate: fromDate,
-                        readOnly: fromDate != null,
-                        onDateTimeChanged: (value) {
-                          attendanceDate = value[0].toString().split(" ")[0];
-                          _transactionController.getDTROnDate(attendanceDate);
-                        },
-                        child: Container(),
-                      ),
-                      const SizedBox(height: 15),
-                      const NumberLabel(label: "Edit time record", number: 2),
-                      const SizedBox(height: 15),
-                      formField2(),
-                      const SizedBox(height: 15),
-                      Visibility(
-                        visible: false,
-                        child: formField2(),
-                      ),
-                      const SizedBox(height: 15),
-                      ReasonInput(
-                        readOnly: false,
-                        controller: _reason,
-                      ),
-                      Obx(
-                        () => Row(
+            child: Obx(
+              () => SelectedItemTabs(
+                pageCount: extraData != null ? 3 : 1,
+                status: extraData?['status'] ?? "",
+                title: "DTR Correction",
+                transactionLogs: _dtrCorrection.selectedTransactionLogs.value,
+                isLogsLoading: _dtrCorrection.isLogsLoading.value,
+                detailPage: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        const NumberLabel(label: "Select the date", number: 1),
+                        const SizedBox(height: 15),
+                        CustomDateInput(
+                          type: "single",
+                          fromDate: fromDate,
+                          readOnly: fromDate != null,
+                          onDateTimeChanged: (value) {
+                            attendanceDate = value[0].toString().split(" ")[0];
+                            _transactionController.getDTROnDate(attendanceDate);
+                          },
+                          child: Container(),
+                        ),
+                        const SizedBox(height: 15),
+                        const NumberLabel(label: "Edit time record", number: 2),
+                        const SizedBox(height: 15),
+                        formField2(),
+                        const SizedBox(height: 15),
+                        Visibility(
+                          visible: false,
+                          child: formField2(),
+                        ),
+                        const SizedBox(height: 15),
+                        ReasonInput(
+                          readOnly: false,
+                          controller: _reason,
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Visibility(
@@ -165,9 +165,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 50),
-                    ],
+                        const SizedBox(height: 50),
+                      ],
+                    ),
                   ),
                 ),
               ),
