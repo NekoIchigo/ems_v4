@@ -11,6 +11,7 @@ import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -98,71 +99,75 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                     readOnly: false,
                     controller: _reason,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Visibility(
-                        visible: extraData != null,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 15.0),
-                          child: RoundedCustomButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return GemsDialog(
-                                    title: "Cancel Request",
-                                    hasMessage: true,
-                                    withCloseButton: true,
-                                    hasCustomWidget: false,
-                                    message:
-                                        "Are you sure you want to cancel your request ?",
-                                    type: "question",
-                                    cancelPress: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    okPress: () {},
-                                    okText: "Yes",
-                                    okButtonBGColor: bgPrimaryBlue,
-                                    buttonNumber: 2,
-                                  );
-                                },
-                              );
-                            },
-                            label: "Cancel",
-                            radius: 8,
-                            size: Size(size.width * .4, 40),
-                            bgColor: gray,
+                  Visibility(
+                    visible:
+                        extraData == null || extraData['status'] == 'pending',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Visibility(
+                          visible: extraData != null,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 15.0),
+                            child: RoundedCustomButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return GemsDialog(
+                                      title: "Cancel Request",
+                                      hasMessage: true,
+                                      withCloseButton: true,
+                                      hasCustomWidget: false,
+                                      message:
+                                          "Are you sure you want to cancel your request ?",
+                                      type: "question",
+                                      cancelPress: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      okPress: () {},
+                                      okText: "Yes",
+                                      okButtonBGColor: bgPrimaryBlue,
+                                      buttonNumber: 2,
+                                    );
+                                  },
+                                );
+                              },
+                              label: "Cancel",
+                              radius: 8,
+                              size: Size(size.width * .4, 40),
+                              bgColor: gray,
+                            ),
                           ),
                         ),
-                      ),
-                      RoundedCustomButton(
-                        onPressed: () {
-                          List newRestDays = _multiSelectController
-                              .selectedOptions
-                              .map((item) => item.value)
-                              .toList();
+                        RoundedCustomButton(
+                          onPressed: () {
+                            List newRestDays = _multiSelectController
+                                .selectedOptions
+                                .map((item) => item.value)
+                                .toList();
 
-                          var data = {
-                            "company_id": _auth.company.value.id,
-                            "employee_id": _auth.employee?.value.id,
-                            "start_date": startDate,
-                            "end_date": endDate,
-                            "new_rest_days": newRestDays,
-                            "current_rest_days": _transactionController
-                                .schedules.first["rest_days"],
-                            "schedule_id": 1,
-                            "reason": _reason.text,
-                          };
-                          _changeRestday.sendRequest(data);
-                        },
-                        isLoading: _changeRestday.isSubmitting.value,
-                        label: extraData != null ? "Update" : "Submit",
-                        size: Size(size.width * .4, 40),
-                        radius: 8,
-                        bgColor: bgPrimaryBlue, //primaryBlue
-                      ),
-                    ],
+                            var data = {
+                              "company_id": _auth.company.value.id,
+                              "employee_id": _auth.employee?.value.id,
+                              "start_date": startDate,
+                              "end_date": endDate,
+                              "new_rest_days": newRestDays,
+                              "current_rest_days": _transactionController
+                                  .schedules.first["rest_days"],
+                              "schedule_id": 1,
+                              "reason": _reason.text,
+                            };
+                            _changeRestday.sendRequest(data);
+                          },
+                          isLoading: _changeRestday.isSubmitting.value,
+                          label: extraData != null ? "Update" : "Submit",
+                          size: Size(size.width * .4, 40),
+                          radius: 8,
+                          bgColor: bgPrimaryBlue, //primaryBlue
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 60),
                 ],

@@ -12,6 +12,7 @@ import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -123,65 +124,69 @@ class _LeaveFormState extends State<LeaveForm> {
                           controller: _reason,
                           number: 4,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Visibility(
-                              visible: extraData != null,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 15.0),
-                                child: RoundedCustomButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return GemsDialog(
-                                          title: "Cancel Request",
-                                          hasMessage: true,
-                                          withCloseButton: true,
-                                          hasCustomWidget: false,
-                                          message:
-                                              "Are you sure you want to cancel your request ?",
-                                          type: "question",
-                                          cancelPress: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          okPress: () {},
-                                          okText: "Yes",
-                                          okButtonBGColor: bgPrimaryBlue,
-                                          buttonNumber: 2,
-                                        );
-                                      },
-                                    );
-                                  },
-                                  label: "Cancel",
-                                  radius: 8,
-                                  size: Size(size.width * .4, 40),
-                                  bgColor: gray,
+                        Visibility(
+                          visible: extraData == null ||
+                              extraData['status'] == 'pending',
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: extraData != null,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 15.0),
+                                  child: RoundedCustomButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return GemsDialog(
+                                            title: "Cancel Request",
+                                            hasMessage: true,
+                                            withCloseButton: true,
+                                            hasCustomWidget: false,
+                                            message:
+                                                "Are you sure you want to cancel your request ?",
+                                            type: "question",
+                                            cancelPress: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            okPress: () {},
+                                            okText: "Yes",
+                                            okButtonBGColor: bgPrimaryBlue,
+                                            buttonNumber: 2,
+                                          );
+                                        },
+                                      );
+                                    },
+                                    label: "Cancel",
+                                    radius: 8,
+                                    size: Size(size.width * .4, 40),
+                                    bgColor: gray,
+                                  ),
                                 ),
                               ),
-                            ),
-                            RoundedCustomButton(
-                              onPressed: () {
-                                var data = {
-                                  "company_id": _auth.company.value.id,
-                                  "employee_id": _auth.employee?.value.id,
-                                  "leave_count": _leaveCount.text,
-                                  "start_date": startDate,
-                                  "end_date": endDate,
-                                  "leave_type": employeeLeave.leaveId,
-                                  "reason": _reason.text,
-                                };
-                                _leaveController.submitRequest(data);
-                              },
-                              disabled: !hasCredits,
-                              label: "Submit",
-                              size: Size(size.width * .4, 40),
-                              radius: 8,
-                              isLoading: _leaveController.isSubmitting.isTrue,
-                              bgColor: bgPrimaryBlue, //primaryBlue
-                            ),
-                          ],
+                              RoundedCustomButton(
+                                onPressed: () {
+                                  var data = {
+                                    "company_id": _auth.company.value.id,
+                                    "employee_id": _auth.employee?.value.id,
+                                    "leave_count": _leaveCount.text,
+                                    "start_date": startDate,
+                                    "end_date": endDate,
+                                    "leave_type": employeeLeave.leaveId,
+                                    "reason": _reason.text,
+                                  };
+                                  _leaveController.submitRequest(data);
+                                },
+                                disabled: !hasCredits,
+                                label: "Submit",
+                                size: Size(size.width * .4, 40),
+                                radius: 8,
+                                isLoading: _leaveController.isSubmitting.isTrue,
+                                bgColor: bgPrimaryBlue, //primaryBlue
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 50),
                       ]
