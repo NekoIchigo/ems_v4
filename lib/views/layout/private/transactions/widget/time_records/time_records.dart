@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/time_records_controller.dart';
+import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -69,62 +70,66 @@ class _TimeRecordsState extends State<TimeRecords> {
                           height: size.height * .60,
                           child: _recordsController.isLoading.isTrue
                               ? loader()
-                              : ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount:
-                                      _recordsController.cutoffPeriods.length,
-                                  itemBuilder: (context, index) {
-                                    var item =
-                                        _recordsController.cutoffPeriods[index];
-                                    var cutoff = jsonDecode(item["cutoff"]);
-                                    DateTime date =
-                                        DateTime.parse(item['created_at']);
+                              : _recordsController.cutoffPeriods.isEmpty
+                                  ? const NoResult()
+                                  : ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: _recordsController
+                                          .cutoffPeriods.length,
+                                      itemBuilder: (context, index) {
+                                        var item = _recordsController
+                                            .cutoffPeriods[index];
+                                        var cutoff = jsonDecode(item["cutoff"]);
+                                        DateTime date =
+                                            DateTime.parse(item['created_at']);
 
-                                    return Container(
-                                      margin: const EdgeInsets.only(bottom: 15),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: gray),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: ListTile(
-                                        leading: const Icon(
-                                          Icons.calendar_month_rounded,
-                                          color: bgPrimaryBlue,
-                                          size: 30,
-                                        ),
-                                        trailing: const Icon(
-                                          Icons.chevron_right_rounded,
-                                          color: gray,
-                                        ),
-                                        title: Text(
-                                          "${cutoff['start_day']} - ${cutoff['end_day']}, ${date.year}",
-                                          style: const TextStyle(
-                                            color: bgPrimaryBlue,
+                                        return Container(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 15),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: gray),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                        ),
-                                        subtitle: Text(
-                                          item['status'] == 0
-                                              ? "Not posted"
-                                              : "Posted",
-                                          style: const TextStyle(
-                                              color: gray, fontSize: 12),
-                                        ),
-                                        onTap: () {
-                                          _recordsController
-                                              .fetchAttendanceMasters(
-                                            item['id'],
-                                          );
-                                          context.push(
-                                            '/attendance_reports',
-                                            extra:
-                                                "${cutoff['start_day']} - ${cutoff['end_day']}, ${date.year}",
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
+                                          child: ListTile(
+                                            leading: const Icon(
+                                              Icons.calendar_month_rounded,
+                                              color: bgPrimaryBlue,
+                                              size: 30,
+                                            ),
+                                            trailing: const Icon(
+                                              Icons.chevron_right_rounded,
+                                              color: gray,
+                                            ),
+                                            title: Text(
+                                              "${cutoff['start_day']} - ${cutoff['end_day']}, ${date.year}",
+                                              style: const TextStyle(
+                                                color: bgPrimaryBlue,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              item['status'] == 0
+                                                  ? "Not posted"
+                                                  : "Posted",
+                                              style: const TextStyle(
+                                                  color: gray, fontSize: 12),
+                                            ),
+                                            onTap: () {
+                                              _recordsController
+                                                  .fetchAttendanceMasters(
+                                                item['id'],
+                                              );
+                                              context.push(
+                                                '/attendance_reports',
+                                                extra:
+                                                    "${cutoff['start_day']} - ${cutoff['end_day']}, ${date.year}",
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
                         ),
                       ),
                     ],
