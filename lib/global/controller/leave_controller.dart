@@ -33,7 +33,7 @@ class LeaveController extends GetxController {
     )
         .then((result) {
       if (result.containsKey('success') && result['success']) {
-        getAllLeave();
+        getAllLeave(30, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push(
           "/transaction_result",
           extra: {
@@ -50,16 +50,24 @@ class LeaveController extends GetxController {
     });
   }
 
-  Future<void> getAllLeave() async {
+  Future<void> getAllLeave(int days, startDate, endDate) async {
     isLoading.value = true;
     _apiCall
-        .getRequest(apiUrl: "/mobile/leave", catchError: () {})
+        .getRequest(
+      apiUrl: "/mobile/leave",
+      parameters: {
+        "days": days,
+        "startDate": startDate,
+        "emdDate": endDate,
+      },
+      catchError: () {},
+    )
         .then((result) {
       final data = result["data"];
-      approvedList.value = data["approved"];
-      pendingList.value = data["pending"];
-      rejectedList.value = data["rejected"];
-      cancelledList.value = data["cancelled"];
+      approvedList.value = data["approved"]['data'];
+      pendingList.value = data["pending"]['data'];
+      rejectedList.value = data["rejected"]['data'];
+      cancelledList.value = data["cancelled"]['data'];
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -126,7 +134,7 @@ class LeaveController extends GetxController {
       )
           .then((result) {
         Navigator.of(context).pop();
-        getAllLeave();
+        getAllLeave(30, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push(
           "/transaction_result",
           extra: {

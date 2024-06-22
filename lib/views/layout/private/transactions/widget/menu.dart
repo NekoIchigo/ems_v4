@@ -118,7 +118,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
                         DateTime.now(),
                       );
                     } else if (path == "/leave") {
-                      _leave.getAllLeave();
+                      _leave.getAllLeave(30, DateTime.now(), DateTime.now());
                     } else if (path == "/overtime") {
                       _overtimeController.getAllOvertime(
                         30,

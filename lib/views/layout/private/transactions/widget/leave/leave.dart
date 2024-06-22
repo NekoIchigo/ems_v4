@@ -59,7 +59,20 @@ class _LeavePageState extends State<LeavePage> {
               ),
               const SizedBox(height: 20),
               MonthFilterDropdown(
-                onChanged: (p0) {},
+                onChanged: (value) {
+                  DateTime startDate = DateTime.now();
+                  DateTime endDate = DateTime.now();
+
+                  if (value['day'] == 0) {
+                    startDate = value['dates'][0];
+                    endDate = value['dates'][1];
+                  }
+                  _leave.getAllLeave(
+                    value['day'],
+                    startDate,
+                    endDate,
+                  );
+                },
               ),
               Obx(
                 () => TransactionsTabs(
@@ -88,7 +101,7 @@ class _LeavePageState extends State<LeavePage> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _leave.getAllLeave();
+                _leave.getAllLeave(30, DateTime.now(), DateTime.now());
                 context.push('/leave_form');
               },
               child: const Icon(
