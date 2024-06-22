@@ -31,6 +31,7 @@ class _LeaveFormState extends State<LeaveForm> {
   final AuthController _auth = Get.find<AuthController>();
   final LeaveController _leaveController = Get.find<LeaveController>();
   final TransactionController _transaction = Get.find<TransactionController>();
+  int transactionId = 0;
 
   String? startDate, endDate;
 
@@ -150,7 +151,10 @@ class _LeaveFormState extends State<LeaveForm> {
                                             cancelPress: () {
                                               Navigator.of(context).pop();
                                             },
-                                            okPress: () {},
+                                            okPress: () {
+                                              _leaveController.cancelRequest(
+                                                  transactionId, context);
+                                            },
                                             okText: "Yes",
                                             okButtonBGColor: bgPrimaryBlue,
                                             buttonNumber: 2,
@@ -293,6 +297,7 @@ class _LeaveFormState extends State<LeaveForm> {
 
   Future<void> fillInValues(Map<String, dynamic>? data) async {
     if (data != null) {
+      transactionId = data['id'];
       _reason.text = data["reason"];
       startDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['start_date']));

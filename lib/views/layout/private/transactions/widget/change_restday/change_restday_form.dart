@@ -11,7 +11,6 @@ import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -43,6 +42,8 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
     const ValueItem(label: "Friday", value: "Friday"),
     const ValueItem(label: "Saturday", value: "Saturday"),
   ];
+
+  int transactionId = 0;
 
   // String? _startTimeError, _totalHoursError;
 
@@ -125,7 +126,10 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                                       cancelPress: () {
                                         Navigator.of(context).pop();
                                       },
-                                      okPress: () {},
+                                      okPress: () {
+                                        _changeRestday.cancelRequest(
+                                            transactionId, context);
+                                      },
                                       okText: "Yes",
                                       okButtonBGColor: bgPrimaryBlue,
                                       buttonNumber: 2,
@@ -220,6 +224,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
 
   Future<void> fillInValues(Map<String, dynamic>? data) async {
     if (data != null) {
+      transactionId = data['id'];
       List newRestDays = data['new_rest_days'];
 
       _reason.text = data["reason"];

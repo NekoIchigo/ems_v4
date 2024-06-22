@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -75,29 +76,29 @@ class ChangeRestdayController extends GetxController {
     });
   }
 
-  // Future cancelRequest(int id, BuildContext context) async {
-  //   if (id != 0) {
-  //     isLoading.value = true;
-  //     _apiCall
-  //         .postRequest(
-  //       apiUrl: '/overtime-request/cancel',
-  //       data: {"id": id},
-  //       catchError: () {},
-  //     )
-  //         .then((response) {
-  //       Navigator.of(context).pop();
-  //       getAllOvertime(30, DateTime.now(), DateTime.now());
-  //       navigatorKey.currentContext!.push(
-  //         "/transaction_result",
-  //         extra: {
-  //           "result": response["success"] ?? false,
-  //           "message": response["message"],
-  //           "path": "/overtime",
-  //         },
-  //       );
-  //     }).whenComplete(() {
-  //       isLoading.value = false;
-  //     });
-  //   }
-  // }
+  Future cancelRequest(int id, BuildContext context) async {
+    if (id != 0) {
+      isLoading.value = true;
+      _apiCall
+          .postRequest(
+        apiUrl: '/overtime-request/cancel',
+        data: {"id": id},
+        catchError: () {},
+      )
+          .then((response) {
+        Navigator.of(context).pop();
+        getAllChangeRestday(30, DateTime.now(), DateTime.now());
+        navigatorKey.currentContext!.push(
+          "/transaction_result",
+          extra: {
+            "result": response["success"] ?? false,
+            "message": response["message"],
+            "path": "/overtime",
+          },
+        );
+      }).whenComplete(() {
+        isLoading.value = false;
+      });
+    }
+  }
 }
