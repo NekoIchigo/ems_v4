@@ -126,7 +126,11 @@ class _TransactionMenuState extends State<TransactionMenu> {
                         DateTime.now(),
                       );
                     } else if (path == "/change_schedule") {
-                      _changeSchedule.getAllChangeSchedule();
+                      _changeSchedule.getAllChangeSchedule(
+                        30,
+                        DateTime.now(),
+                        DateTime.now(),
+                      );
                     } else if (path == "/change_restday") {
                       _changeRestday.getAllChangeRestday();
                     }

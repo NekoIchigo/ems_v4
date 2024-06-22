@@ -101,7 +101,7 @@ class _LeavePageState extends State<LeavePage> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _leave.getAllLeave(30, DateTime.now(), DateTime.now());
+                // _leave.getAllLeave(30, DateTime.now(), DateTime.now());
                 context.push('/leave_form');
               },
               child: const Icon(

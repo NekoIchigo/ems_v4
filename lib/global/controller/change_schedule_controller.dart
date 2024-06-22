@@ -53,7 +53,7 @@ class ChangeScheduleController extends GetxController {
     )
         .then((result) {
       if (result.containsKey('success') && result['success']) {
-        getAllChangeSchedule();
+        getAllChangeSchedule(30, DateTime.now(), DateTime.now());
         schedules.value = result["data"]
             .map<Schedule>((schedule) =>
                 Schedule(id: schedule['id'], name: schedule['name']))
@@ -75,16 +75,24 @@ class ChangeScheduleController extends GetxController {
     });
   }
 
-  Future<void> getAllChangeSchedule() async {
+  Future<void> getAllChangeSchedule(int days, startDate, endDate) async {
     isLoading.value = true;
     _apiCall
-        .getRequest(apiUrl: "/mobile/change-schedule", catchError: () {})
+        .getRequest(
+      apiUrl: "/mobile/change-schedule",
+      parameters: {
+        "days": days,
+        "startDate": startDate,
+        "emdDate": endDate,
+      },
+      catchError: () {},
+    )
         .then((result) {
       final data = result["data"];
-      approvedList.value = data["approved"];
-      pendingList.value = data["pending"];
-      rejectedList.value = data["rejected"];
-      cancelledList.value = data["cancelled"];
+      approvedList.value = data["approved"]['data'];
+      pendingList.value = data["pending"]['data'];
+      rejectedList.value = data["rejected"]['data'];
+      cancelledList.value = data["cancelled"]['data'];
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -132,7 +140,7 @@ class ChangeScheduleController extends GetxController {
       )
           .then((result) {
         Navigator.of(context).pop();
-        getAllChangeSchedule();
+        getAllChangeSchedule(30, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push("/transaction_result", extra: {
           "result": result["success"],
           "message": result["message"],
