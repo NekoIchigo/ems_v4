@@ -55,7 +55,20 @@ class _OvertimeState extends State<Overtime> {
               ),
               const SizedBox(height: 20),
               MonthFilterDropdown(
-                onChanged: (p0) {},
+                onChanged: (value) {
+                  DateTime startDate = DateTime.now();
+                  DateTime endDate = DateTime.now();
+
+                  if (value['day'] == 0) {
+                    startDate = value['dates'][0];
+                    endDate = value['dates'][1];
+                  }
+                  _overtimeController.getAllOvertime(
+                    value['day'],
+                    startDate,
+                    endDate,
+                  );
+                },
               ),
               Obx(
                 () => TransactionsTabs(

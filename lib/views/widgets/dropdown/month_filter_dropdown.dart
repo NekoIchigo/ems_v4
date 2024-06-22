@@ -13,12 +13,14 @@ class MonthFilterDropdown extends StatefulWidget {
 
 class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
   final List _list = [
-    {'month': 1, 'label': 'Last month'},
-    {'month': 6, 'label': 'Last 6 months'},
-    {'month': 12, 'label': 'Last 12 months'},
-    {'month': 24, 'label': 'Last 24 months'},
-    {'month': 0, 'label': 'Custom date range'},
+    {'day': 1, 'label': 'Today'},
+    {'day': 7, 'label': 'Last 7 days'},
+    {'day': 30, 'label': 'Last 30 days'},
+    {'day': 90, 'label': 'Last 3 months'},
+    {'day': 0, 'label': 'Custom date range'},
   ];
+
+  List? dates;
 
   late Object dropdownValue;
   @override
@@ -49,17 +51,18 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
               elevation: 16,
               isExpanded: true,
               style: const TextStyle(color: gray),
-              onChanged: (value) {
+              onChanged: (value) async {
                 // This is called when the user selects an item.
-                if (value["month"] == 0) {
-                  showModalBottomSheet(
+                if (value["day"] == 0) {
+                  dates = await showModalBottomSheet(
                     context: navigatorKey.currentContext!,
                     builder: (context) =>
                         const CustomDateBottomsheet(type: 'range'),
                   );
-                } else {
-                  widget.onChanged(value);
+                  value["dates"] = dates;
                 }
+                widget.onChanged(value);
+
                 setState(() {
                   dropdownValue = value!;
                 });

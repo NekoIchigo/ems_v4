@@ -14,7 +14,6 @@ import 'package:ems_v4/views/widgets/inputs/schedule_drt_.dart';
 import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:ems_v4/views/widgets/inputs/timer_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,6 +29,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
   final TransactionController _transactionController =
       Get.find<TransactionController>();
   final AuthController _auth = Get.find<AuthController>();
+  int transactionId = 0;
 
   final TextEditingController _reason = TextEditingController();
   final TextEditingController _totalHours = TextEditingController();
@@ -120,8 +120,18 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                               cancelPress: () {
                                                 Navigator.of(context).pop();
                                               },
-                                              okPress: () {},
-                                              okText: "Yes",
+                                              okPress: () {
+                                                if (_overtime
+                                                    .isLoading.isFalse) {
+                                                  _overtime.cancelRequest(
+                                                    transactionId,
+                                                    context,
+                                                  );
+                                                }
+                                              },
+                                              okText: _overtime.isLoading.isTrue
+                                                  ? "Loading..."
+                                                  : "Yes",
                                               okButtonBGColor: bgPrimaryBlue,
                                               buttonNumber: 2,
                                             );
@@ -241,6 +251,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
     _transactionController.dtrRange.value = "00:00 to 00:00";
 
     if (data != null) {
+      transactionId = data['id'];
+
       _reason.text = data["reason"];
       fromDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['attendance_date']));

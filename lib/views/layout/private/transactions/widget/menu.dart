@@ -116,7 +116,11 @@ class _TransactionMenuState extends State<TransactionMenu> {
                     } else if (path == "/leave") {
                       _leave.getAllLeave();
                     } else if (path == "/overtime") {
-                      _overtimeController.getAllOvertime();
+                      _overtimeController.getAllOvertime(
+                        30,
+                        DateTime.now(),
+                        DateTime.now(),
+                      );
                     } else if (path == "/change_schedule") {
                       _changeSchedule.getAllChangeSchedule();
                     } else if (path == "/change_restday") {
