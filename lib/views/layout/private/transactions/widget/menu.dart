@@ -118,7 +118,11 @@ class _TransactionMenuState extends State<TransactionMenu> {
                         DateTime.now(),
                       );
                     } else if (path == "/leave") {
-                      _leave.getAllLeave(30, DateTime.now(), DateTime.now());
+                      _leave.getAllLeave(
+                        30,
+                        DateTime.now(),
+                        DateTime.now(),
+                      );
                     } else if (path == "/overtime") {
                       _overtimeController.getAllOvertime(
                         30,
@@ -132,7 +136,11 @@ class _TransactionMenuState extends State<TransactionMenu> {
                         DateTime.now(),
                       );
                     } else if (path == "/change_restday") {
-                      _changeRestday.getAllChangeRestday();
+                      _changeRestday.getAllChangeRestday(
+                        30,
+                        DateTime.now(),
+                        DateTime.now(),
+                      );
                     }
 
                     context.push(path);

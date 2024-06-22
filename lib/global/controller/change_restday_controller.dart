@@ -23,6 +23,7 @@ class ChangeRestdayController extends GetxController {
             apiUrl: "/save-change-restday", data: data, catchError: () {})
         .then((result) {
       if (result.containsKey('success') && result['success']) {
+        getAllChangeRestday(30, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push("/transaction_result", extra: {
           "result": result["success"],
           "message": result["message"],
@@ -36,16 +37,22 @@ class ChangeRestdayController extends GetxController {
     });
   }
 
-  Future<void> getAllChangeRestday() async {
+  Future<void> getAllChangeRestday(int days, startDate, endDate) async {
     isLoading.value = true;
-    _apiCall
-        .getRequest(apiUrl: "/mobile/change-restday", catchError: () {})
-        .then((result) {
+    _apiCall.getRequest(
+      apiUrl: "/mobile/change-restday",
+      catchError: () {},
+      parameters: {
+        "days": days,
+        "startDate": startDate,
+        "emdDate": endDate,
+      },
+    ).then((result) {
       final data = result["data"];
-      approvedList.value = data["approved"];
-      pendingList.value = data["pending"];
-      rejectedList.value = data["rejected"];
-      cancelledList.value = data["cancelled"];
+      approvedList.value = data["approved"]['data'];
+      pendingList.value = data["pending"]['data'];
+      rejectedList.value = data["rejected"]['data'];
+      cancelledList.value = data["cancelled"]['data'];
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -67,4 +74,30 @@ class ChangeRestdayController extends GetxController {
       isLogsLoading.value = false;
     });
   }
+
+  // Future cancelRequest(int id, BuildContext context) async {
+  //   if (id != 0) {
+  //     isLoading.value = true;
+  //     _apiCall
+  //         .postRequest(
+  //       apiUrl: '/overtime-request/cancel',
+  //       data: {"id": id},
+  //       catchError: () {},
+  //     )
+  //         .then((response) {
+  //       Navigator.of(context).pop();
+  //       getAllOvertime(30, DateTime.now(), DateTime.now());
+  //       navigatorKey.currentContext!.push(
+  //         "/transaction_result",
+  //         extra: {
+  //           "result": response["success"] ?? false,
+  //           "message": response["message"],
+  //           "path": "/overtime",
+  //         },
+  //       );
+  //     }).whenComplete(() {
+  //       isLoading.value = false;
+  //     });
+  //   }
+  // }
 }
