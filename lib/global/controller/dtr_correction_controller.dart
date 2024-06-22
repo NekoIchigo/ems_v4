@@ -28,7 +28,7 @@ class DTRCorrectionController extends GetxController {
     )
         .then((result) {
       if (result.containsKey('success') && result['success']) {
-        getAllDTR();
+        getAllDTR(30, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push(
           "/transaction_result",
           extra: {
@@ -45,19 +45,24 @@ class DTRCorrectionController extends GetxController {
     });
   }
 
-  Future<void> getAllDTR() async {
+  Future<void> getAllDTR(int days, startDate, endDate) async {
     isLoading.value = true;
     _apiCall
         .getRequest(
       apiUrl: "/mobile/dtr-correction",
+      parameters: {
+        "days": days,
+        "startDate": startDate,
+        "emdDate": endDate,
+      },
       catchError: () {},
     )
         .then((result) {
       final data = result["data"];
-      approvedList.value = data["approved"];
-      pendingList.value = data["pending"];
-      rejectedList.value = data["rejected"];
-      cancelledList.value = data["cancelled"];
+      approvedList.value = data["approved"]['data'];
+      pendingList.value = data["pending"]['data'];
+      rejectedList.value = data["rejected"]['data'];
+      cancelledList.value = data["cancelled"]['data'];
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -91,7 +96,7 @@ class DTRCorrectionController extends GetxController {
       )
           .then((response) {
         Navigator.of(context).pop();
-        getAllDTR();
+        getAllDTR(30, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push(
           "/transaction_result",
           extra: {

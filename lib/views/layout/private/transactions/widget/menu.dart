@@ -112,7 +112,11 @@ class _TransactionMenuState extends State<TransactionMenu> {
                 return TransactionMenuButton(
                   onPressed: () {
                     if (path == "/dtr_correction") {
-                      _dtrCorrection.getAllDTR();
+                      _dtrCorrection.getAllDTR(
+                        30,
+                        DateTime.now(),
+                        DateTime.now(),
+                      );
                     } else if (path == "/leave") {
                       _leave.getAllLeave();
                     } else if (path == "/overtime") {

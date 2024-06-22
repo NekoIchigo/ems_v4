@@ -57,7 +57,6 @@ class OvertimeController extends GetxController {
             catchError: () {})
         .then((result) {
       final data = result["data"];
-      print(data);
       approvedList.value = data["approved"]["data"];
       pendingList.value = data["pending"]["data"];
       rejectedList.value = data["rejected"]["data"];
