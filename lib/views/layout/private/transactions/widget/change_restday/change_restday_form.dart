@@ -45,7 +45,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
 
   int transactionId = 0;
 
-  // String? _startTimeError, _totalHoursError;
+  String? dateError, restdayError, reasonError;
 
   String? startDate, endDate;
   late Size size;
@@ -88,17 +88,40 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                       _transactionController.getDTROnDateRange(
                           startDate, endDate);
                       _scheduleController.fetchScheduleList(value);
+                      setState(() {
+                        dateError = null;
+                      });
                     },
+                    error: dateError,
                     child: Container(),
                   ),
                   const SizedBox(height: 15),
                   const NumberLabel(label: "Select new restday", number: 2),
                   const SizedBox(height: 15),
                   formField2(),
+                  Visibility(
+                    visible: restdayError != null,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 25.0),
+                        child: Text(
+                          restdayError ?? "",
+                          style: errorStyle,
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 15),
                   ReasonInput(
                     readOnly: false,
                     controller: _reason,
+                    error: reasonError,
+                    onChanged: (value) {
+                      setState(() {
+                        reasonError = null;
+                      });
+                    },
                   ),
                   Visibility(
                     visible:
@@ -146,23 +169,11 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                         ),
                         RoundedCustomButton(
                           onPressed: () {
-                            List newRestDays = _multiSelectController
-                                .selectedOptions
-                                .map((item) => item.value)
-                                .toList();
-
-                            var data = {
-                              "company_id": _auth.company.value.id,
-                              "employee_id": _auth.employee?.value.id,
-                              "start_date": startDate,
-                              "end_date": endDate,
-                              "new_rest_days": newRestDays,
-                              "current_rest_days": _transactionController
-                                  .schedules.first["rest_days"],
-                              "schedule_id": 1,
-                              "reason": _reason.text,
-                            };
-                            _changeRestday.sendRequest(data);
+                            if (extraData != null) {
+                              // TODO : update function goes here
+                            } else {
+                              submitForm();
+                            }
                           },
                           isLoading: _changeRestday.isSubmitting.value,
                           label: extraData != null ? "Update" : "Submit",
@@ -185,41 +196,23 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
 
   Widget formField2() {
     return Container(
-        padding: const EdgeInsets.only(left: 25),
-        width: size.width * .90,
-        height: 50,
-        child: MultiSelectDropDown(
-          controller: _multiSelectController,
-          onOptionSelected: (selectedOptions) {},
-          borderColor: gray,
-          borderWidth: 1,
-          hintColor: gray,
-          borderRadius: 3,
-          options: restdayList,
-        )
-        // ListView.builder(
-        //   padding: EdgeInsets.zero,
-        //   scrollDirection: Axis.horizontal,
-        //   itemCount: 7,
-        //   itemBuilder: (context, index) {
-        //     Map<String, dynamic> item = _changeRestday.days[index];
-
-        //     return Row(
-        //       children: [
-        //         Checkbox(
-        //           value: item["value"],
-        //           onChanged: (value) {
-        //             setState(() {
-        //               item["value"] = value;
-        //             });
-        //           },
-        //         ),
-        //         Text(item["day"]),
-        //       ],
-        //     );
-        //   },
-        // ),
-        );
+      padding: const EdgeInsets.only(left: 25),
+      width: size.width * .90,
+      height: 50,
+      child: MultiSelectDropDown(
+        controller: _multiSelectController,
+        onOptionSelected: (selectedOptions) {
+          setState(() {
+            restdayError = null;
+          });
+        },
+        borderColor: gray,
+        borderWidth: 1,
+        hintColor: gray,
+        borderRadius: 3,
+        options: restdayList,
+      ),
+    );
   }
 
   Future<void> fillInValues(Map<String, dynamic>? data) async {
@@ -251,5 +244,42 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
         }
       });
     }
+  }
+
+  void submitForm() {
+    bool hasError = false;
+    setState(() {
+      if (_reason.text == "") {
+        reasonError = 'This field is required.';
+        hasError = true;
+      }
+      if (startDate == null) {
+        dateError = 'This field is required.';
+        hasError = true;
+      }
+      if (_multiSelectController.selectedOptions.isEmpty) {
+        restdayError = 'This field is required.';
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      return;
+    }
+    List newRestDays = _multiSelectController.selectedOptions
+        .map((item) => item.value)
+        .toList();
+
+    var data = {
+      "company_id": _auth.company.value.id,
+      "employee_id": _auth.employee?.value.id,
+      "start_date": startDate,
+      "end_date": endDate,
+      "new_rest_days": newRestDays,
+      "current_rest_days": _transactionController.schedules.first["rest_days"],
+      "schedule_id": 1,
+      "reason": _reason.text,
+    };
+    _changeRestday.sendRequest(data);
   }
 }
