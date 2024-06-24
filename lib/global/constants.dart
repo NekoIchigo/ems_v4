@@ -63,5 +63,5 @@ const TextStyle hintStyle = TextStyle(
 
 const TextStyle errorStyle = TextStyle(
   color: colorError,
-  fontSize: 14,
+  fontSize: 12,
 );

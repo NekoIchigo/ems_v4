@@ -12,6 +12,7 @@ import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:ems_v4/views/widgets/inputs/schedule_drt_.dart';
 import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class DTRCorrectionForm extends StatefulWidget {
 class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   late Size size;
   String _clockin = "--:-- --", _clockout = "--:-- --", attendanceDate = "";
-  String? fromDate;
+  String? fromDate, dateError, timeChangeError, reasonError;
   int transactionId = 0;
 
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
@@ -79,13 +80,30 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           onDateTimeChanged: (value) {
                             attendanceDate = value[0].toString().split(" ")[0];
                             _transactionController.getDTROnDate(attendanceDate);
+                            setState(() {
+                              dateError = "";
+                            });
                           },
+                          error: dateError,
                           child: Container(),
                         ),
                         const SizedBox(height: 15),
                         const NumberLabel(label: "Edit time record", number: 2),
                         const SizedBox(height: 15),
                         formField2(),
+                        Visibility(
+                          visible: timeChangeError != null,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 25.0),
+                              child: Text(
+                                timeChangeError ?? "",
+                                style: errorStyle,
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 15),
                         Visibility(
                           visible: false,
@@ -95,6 +113,12 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         ReasonInput(
                           readOnly: false,
                           controller: _reason,
+                          error: reasonError,
+                          onChanged: (value) {
+                            setState(() {
+                              reasonError = "";
+                            });
+                          },
                         ),
                         Visibility(
                           visible: extraData == null ||
@@ -141,25 +165,12 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                                 ),
                               ),
                               RoundedCustomButton(
-                                onPressed: () async {
-                                  var data = {
-                                    "reason": _reason.text,
-                                    "company_id": _auth.company.value.id,
-                                    "date_of_correction": attendanceDate,
-                                    "employee_id": _auth.employee?.value.id,
-                                    "time_of_record": [
-                                      {
-                                        "schedule_id": _transactionController
-                                            .schedules.first["id"],
-                                        "attendance_date": attendanceDate,
-                                        "attendance_record_id": null,
-                                        "clock_in": _clockin,
-                                        "clock_out": _clockout,
-                                        "reason": _reason.text,
-                                      }
-                                    ],
-                                  };
-                                  _dtrCorrection.submitRequest(data);
+                                onPressed: () {
+                                  if (extraData != null) {
+                                    // TODO : update function goes here
+                                  } else {
+                                    submitForm();
+                                  }
                                 },
                                 isLoading: _dtrCorrection.isSubmitting.value,
                                 label: extraData != null ? "Update" : "Submit",
@@ -225,6 +236,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           value: _clockin,
                           selectedTime: (value) async {
                             _clockin = _dateTimeUtils.time12to24(value);
+                            setState(() {
+                              timeChangeError = null;
+                            });
                           },
                         ),
                 ),
@@ -256,6 +270,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           value: _clockout,
                           selectedTime: (value) async {
                             _clockout = _dateTimeUtils.time12to24(value);
+                            setState(() {
+                              timeChangeError = null;
+                            });
                           },
                         ),
                 ),
@@ -288,5 +305,46 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         data['attendance_date'],
       );
     }
+  }
+
+  void submitForm() {
+    bool hasError = false;
+
+    setState(() {
+      if (_reason.text == "") {
+        reasonError = 'This field is required.';
+        hasError = true;
+      }
+      if (attendanceDate == "") {
+        dateError = 'This field is required.';
+        hasError = true;
+      }
+      if (_clockin == "--:-- --" && _clockout == "--:-- --") {
+        timeChangeError = 'There must be a changes in this field';
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      return;
+    }
+
+    var data = {
+      "reason": _reason.text,
+      "company_id": _auth.company.value.id,
+      "date_of_correction": attendanceDate,
+      "employee_id": _auth.employee?.value.id,
+      "time_of_record": [
+        {
+          "schedule_id": _transactionController.schedules.first["id"],
+          "attendance_date": attendanceDate,
+          "attendance_record_id": null,
+          "clock_in": _clockin,
+          "clock_out": _clockout,
+          "reason": _reason.text,
+        }
+      ],
+    };
+    _dtrCorrection.submitRequest(data);
   }
 }

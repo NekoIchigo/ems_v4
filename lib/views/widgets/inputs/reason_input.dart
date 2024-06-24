@@ -4,6 +4,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ReasonInput extends StatefulWidget {
   const ReasonInput({
@@ -12,11 +13,15 @@ class ReasonInput extends StatefulWidget {
     this.showNumberLabel = true,
     this.number = 3,
     required this.controller,
+    this.error,
+    this.onChanged,
   });
 
+  final String? error;
   final bool showNumberLabel;
   final bool readOnly;
   final TextEditingController controller;
+  final ValueChanged? onChanged;
   final int number;
 
   @override
@@ -46,6 +51,7 @@ class _ReasonInputState extends State<ReasonInput> {
             controller: widget.controller,
             style: defaultStyle,
             readOnly: widget.readOnly,
+            onChanged: widget.onChanged,
             decoration: const InputDecoration(
               hintText: "Enter here",
               hintStyle: defaultStyle,
@@ -61,6 +67,13 @@ class _ReasonInputState extends State<ReasonInput> {
                 ),
               ),
             ),
+          ),
+        ),
+        Visibility(
+          visible: widget.error != null,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+            child: Text(widget.error ?? "", style: errorStyle),
           ),
         ),
         Container(
