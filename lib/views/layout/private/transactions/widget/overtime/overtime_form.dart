@@ -35,9 +35,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
   final TextEditingController _totalHours = TextEditingController();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final OvertimeController _overtime = Get.find<OvertimeController>();
-  String attendanceDate = "", timeStart = "";
-  String? fromDate;
-  // String? _dateError, _startTimeError, _totalHoursError;
+  String attendanceDate = "", timeStart = "--:-- --";
+  String? fromDate, dateError, startTimeError, totalHoursError, reasonError;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +79,11 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                   value[0].toString().split(" ")[0];
                               _transactionController
                                   .getDTROnDate(attendanceDate);
+                              setState(() {
+                                dateError = null;
+                              });
                             },
+                            error: dateError,
                             child: Container(),
                           ),
                           const SizedBox(height: 15),
@@ -93,6 +96,12 @@ class _OvertimeFormState extends State<OvertimeForm> {
                           ReasonInput(
                             readOnly: false,
                             controller: _reason,
+                            error: reasonError,
+                            onChanged: (value) {
+                              setState(() {
+                                reasonError = "";
+                              });
+                            },
                           ),
                           Visibility(
                             visible: extraData == null ||
@@ -106,37 +115,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                     padding: const EdgeInsets.only(right: 15.0),
                                     child: RoundedCustomButton(
                                       onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return GemsDialog(
-                                              title: "Cancel Request",
-                                              hasMessage: true,
-                                              withCloseButton: true,
-                                              hasCustomWidget: false,
-                                              message:
-                                                  "Are you sure you want to cancel your request ?",
-                                              type: "question",
-                                              cancelPress: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              okPress: () {
-                                                if (_overtime
-                                                    .isLoading.isFalse) {
-                                                  _overtime.cancelRequest(
-                                                    transactionId,
-                                                    context,
-                                                  );
-                                                }
-                                              },
-                                              okText: _overtime.isLoading.isTrue
-                                                  ? "Loading..."
-                                                  : "Yes",
-                                              okButtonBGColor: bgPrimaryBlue,
-                                              buttonNumber: 2,
-                                            );
-                                          },
-                                        );
+                                        cancelDialog();
                                       },
                                       label: "Cancel",
                                       radius: 8,
@@ -147,17 +126,11 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                 ),
                                 RoundedCustomButton(
                                   onPressed: () {
-                                    var data = {
-                                      "date_of_ot": attendanceDate,
-                                      "time_start": timeStart,
-                                      "no_of_hours": _dateTimeUtils
-                                          .timeToDecimal(_totalHours.text),
-                                      "company_id": _auth.company.value.id,
-                                      "employee_id": _auth.employee?.value.id,
-                                      "reason": _reason.text,
-                                    };
-
-                                    _overtime.submitRequest(data);
+                                    if (extraData != null) {
+                                      // TODO : update function goes here
+                                    } else {
+                                      submitForm();
+                                    }
                                   },
                                   isLoading: _overtime.isSubmitting.isTrue,
                                   label: "Submit",
@@ -218,10 +191,23 @@ class _OvertimeFormState extends State<OvertimeForm> {
                       value: timeStart,
                       selectedTime: (value) {
                         timeStart = _dateTimeUtils.time12to24(value);
+                        setState(() {
+                          startTimeError = null;
+                        });
                       },
                     ),
                   ),
                 ],
+              ),
+              Visibility(
+                visible: startTimeError != null,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    startTimeError ?? "",
+                    style: errorStyle,
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               Row(
@@ -235,9 +221,26 @@ class _OvertimeFormState extends State<OvertimeForm> {
                     ),
                   ),
                   Expanded(
-                    child: TimeTextField(controller: _totalHours),
+                    child: TimeTextField(
+                      controller: _totalHours,
+                      onChanged: (value) {
+                        setState(() {
+                          totalHoursError = null;
+                        });
+                      },
+                    ),
                   )
                 ],
+              ),
+              Visibility(
+                visible: totalHoursError != null,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    totalHoursError ?? "",
+                    style: errorStyle,
+                  ),
+                ),
               ),
             ],
           ),
@@ -265,5 +268,73 @@ class _OvertimeFormState extends State<OvertimeForm> {
         data['attendance_date'],
       );
     }
+  }
+
+  void submitForm() {
+    bool hasError = false;
+    setState(() {
+      if (_reason.text == "") {
+        reasonError = 'This field is required.';
+        hasError = true;
+      }
+      if (attendanceDate == "") {
+        dateError = 'This field is required.';
+        hasError = true;
+      }
+      if (timeStart == "--:-- --") {
+        startTimeError = 'This field is required.';
+        hasError = true;
+      }
+
+      if (_totalHours.text == "") {
+        totalHoursError = 'This field is required.';
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      return;
+    }
+
+    var data = {
+      "date_of_ot": attendanceDate,
+      "time_start": timeStart,
+      "no_of_hours": _dateTimeUtils.timeToDecimal(_totalHours.text),
+      "company_id": _auth.company.value.id,
+      "employee_id": _auth.employee?.value.id,
+      "reason": _reason.text,
+    };
+
+    _overtime.submitRequest(data);
+  }
+
+  void cancelDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return GemsDialog(
+          title: "Cancel Request",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Are you sure you want to cancel your request ?",
+          type: "question",
+          cancelPress: () {
+            Navigator.of(context).pop();
+          },
+          okPress: () {
+            if (_overtime.isLoading.isFalse) {
+              _overtime.cancelRequest(
+                transactionId,
+                context,
+              );
+            }
+          },
+          okText: _overtime.isLoading.isTrue ? "Loading..." : "Yes",
+          okButtonBGColor: bgPrimaryBlue,
+          buttonNumber: 2,
+        );
+      },
+    );
   }
 }

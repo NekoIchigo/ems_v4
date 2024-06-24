@@ -8,7 +8,9 @@ class TimeTextField extends StatelessWidget {
     this.label,
     this.hint = "00:00",
     required this.controller,
+    this.onChanged,
   });
+  final ValueChanged? onChanged;
   final TextEditingController controller;
   final String? label;
   final String hint;
@@ -23,6 +25,7 @@ class TimeTextField extends StatelessWidget {
       textAlign: TextAlign.center,
       style: defaultStyle,
       controller: controller,
+      onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
