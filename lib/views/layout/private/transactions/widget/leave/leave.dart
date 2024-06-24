@@ -2,6 +2,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
 import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/models/employee_leave.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
 import 'package:ems_v4/views/widgets/dropdown/month_filter_dropdown.dart';
@@ -101,7 +102,8 @@ class _LeavePageState extends State<LeavePage> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                // _leave.getAllLeave(30, DateTime.now(), DateTime.now());
+                _leave.getAvailableLeave(null);
+                _leave.selectedLeave.value = EmployeeLeave(id: 0);
                 context.push('/leave_form');
               },
               child: const Icon(

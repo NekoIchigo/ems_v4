@@ -12,7 +12,6 @@ import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,7 +32,12 @@ class _LeaveFormState extends State<LeaveForm> {
   final TransactionController _transaction = Get.find<TransactionController>();
   int transactionId = 0;
 
-  String? startDate, endDate;
+  String? startDate,
+      endDate,
+      dateError,
+      leaveCountError,
+      leaveError,
+      reasonError;
 
   late Size size;
 
@@ -56,8 +60,6 @@ class _LeaveFormState extends State<LeaveForm> {
             height: size.height * .86,
             child: Obx(
               () {
-                EmployeeLeave employeeLeave =
-                    _leaveController.selectedLeave.value;
                 bool hasCredits = _leaveController
                             .selectedLeave.value.employeeCredits !=
                         null ||
@@ -71,11 +73,14 @@ class _LeaveFormState extends State<LeaveForm> {
                   detailPage: SingleChildScrollView(
                     child: Column(
                       children: [
+                        const SizedBox(height: 10),
                         const NumberLabel(label: "Select the date", number: 1),
+                        const SizedBox(height: 10),
                         CustomDateInput(
                           type: "range",
                           fromDate: startDate,
                           toDate: endDate,
+                          error: dateError,
                           onDateTimeChanged: (value) {
                             startDate = value[0].toString().split(" ").first;
                             endDate = value[1].toString().split(" ").first;
@@ -84,20 +89,28 @@ class _LeaveFormState extends State<LeaveForm> {
                             _transaction.getDTROnDateRange(startDate, endDate);
                             setState(() {
                               _leaveCount.text = difference.toString();
+                              dateError = null;
                             });
                           },
                           child: Container(),
                         ),
+                        const SizedBox(height: 10),
                         const NumberLabel(
                           label: "Leave count(0.5 for half day)",
                           number: 2,
                         ),
+                        const SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.only(left: 25.0),
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: _leaveCount,
                             style: defaultStyle,
+                            onChanged: (value) {
+                              setState(() {
+                                leaveCountError = null;
+                              });
+                            },
                             decoration: const InputDecoration(
                               isDense: true,
                               hintText: "Enter leave count",
@@ -115,15 +128,36 @@ class _LeaveFormState extends State<LeaveForm> {
                             ),
                           ),
                         ),
+                        Visibility(
+                          visible: leaveCountError != null,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 25.0),
+                              child: Text(
+                                leaveCountError ?? "",
+                                style: errorStyle,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
                         const NumberLabel(
                           label: "Leave details",
                           number: 3,
                         ),
+                        const SizedBox(height: 10),
                         formField2(extraData),
                         ReasonInput(
                           readOnly: false,
                           controller: _reason,
                           number: 4,
+                          error: reasonError,
+                          onChanged: (value) {
+                            setState(() {
+                              reasonError = null;
+                            });
+                          },
                         ),
                         Visibility(
                           visible: extraData == null ||
@@ -171,16 +205,11 @@ class _LeaveFormState extends State<LeaveForm> {
                               ),
                               RoundedCustomButton(
                                 onPressed: () {
-                                  var data = {
-                                    "company_id": _auth.company.value.id,
-                                    "employee_id": _auth.employee?.value.id,
-                                    "leave_count": _leaveCount.text,
-                                    "start_date": startDate,
-                                    "end_date": endDate,
-                                    "leave_type": employeeLeave.leaveId,
-                                    "reason": _reason.text,
-                                  };
-                                  _leaveController.submitRequest(data);
+                                  if (extraData != null) {
+                                    // TODO : update function goes here
+                                  } else {
+                                    submitForm();
+                                  }
                                 },
                                 disabled: !hasCredits,
                                 label: "Submit",
@@ -196,7 +225,7 @@ class _LeaveFormState extends State<LeaveForm> {
                       ]
                           .map((widget) => Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(10, 15, 10, 0),
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: widget,
                               ))
                           .toList(),
@@ -218,7 +247,7 @@ class _LeaveFormState extends State<LeaveForm> {
         () => Column(
           children: [
             Visibility(
-              visible: _leaveController.isLoading.isFalse && extraData == null,
+              visible: _leaveController.isLoading.isFalse,
               child: DropdownMenu<EmployeeLeave>(
                 width: size.width * .84,
                 textStyle: defaultStyle,
@@ -227,9 +256,11 @@ class _LeaveFormState extends State<LeaveForm> {
                   Icons.arrow_drop_down_rounded,
                   size: 25,
                 ),
-                initialSelection: null,
+                initialSelection: extraData == null
+                    ? null
+                    : _leaveController.selectedLeave.value,
                 inputDecorationTheme: const InputDecorationTheme(
-                  constraints: BoxConstraints(maxHeight: 45),
+                  constraints: BoxConstraints(maxHeight: 43),
                   contentPadding: EdgeInsetsDirectional.all(5),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: gray),
@@ -237,6 +268,9 @@ class _LeaveFormState extends State<LeaveForm> {
                 ),
                 onSelected: (value) {
                   _leaveController.selectedLeave.value = value!;
+                  setState(() {
+                    leaveError = null;
+                  });
                 },
                 dropdownMenuEntries: _leaveController.leaves
                     .map<DropdownMenuEntry<EmployeeLeave>>((value) {
@@ -248,18 +282,12 @@ class _LeaveFormState extends State<LeaveForm> {
               ),
             ),
             Visibility(
-              visible: _leaveController.isLoading.isFalse && extraData != null,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                width: size.width,
-                decoration: BoxDecoration(
-                  border: Border.all(color: gray),
-                  borderRadius: BorderRadius.circular(3),
-                ),
+              visible: leaveError != null,
+              child: Align(
+                alignment: Alignment.centerLeft,
                 child: Text(
-                  _leaveController.selectedLeave.value.name ?? "",
-                  style: const TextStyle(color: gray),
+                  leaveError ?? "",
+                  style: errorStyle,
                 ),
               ),
             ),
@@ -309,5 +337,44 @@ class _LeaveFormState extends State<LeaveForm> {
         _leaveController.getAvailableLeave(data['leave_id']);
       });
     }
+  }
+
+  void submitForm() {
+    bool hasError = false;
+    EmployeeLeave employeeLeave = _leaveController.selectedLeave.value;
+    setState(() {
+      if (_reason.text == "") {
+        reasonError = 'This field is required.';
+        hasError = true;
+      }
+      if (startDate == null) {
+        dateError = 'This field is required.';
+        hasError = true;
+      }
+      if (leaveCountError == null) {
+        leaveCountError = 'This field is required.';
+        hasError = true;
+      }
+
+      if (_leaveController.selectedLeave.value.id == 0) {
+        leaveError = 'This field is required.';
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      return;
+    }
+
+    var data = {
+      "company_id": _auth.company.value.id,
+      "employee_id": _auth.employee?.value.id,
+      "leave_count": _leaveCount.text,
+      "start_date": startDate,
+      "end_date": endDate,
+      "leave_type": employeeLeave.leaveId,
+      "reason": _reason.text,
+    };
+    _leaveController.submitRequest(data);
   }
 }
