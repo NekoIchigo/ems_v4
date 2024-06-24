@@ -67,13 +67,14 @@ class _TimeRecordsState extends State<TimeRecords> {
                     children: [
                       Obx(
                         () => SizedBox(
-                          height: size.height * .60,
+                          height: size.height * .70,
                           child: _recordsController.isLoading.isTrue
                               ? loader()
                               : _recordsController.cutoffPeriods.isEmpty
                                   ? const NoResult()
                                   : ListView.builder(
-                                      padding: EdgeInsets.zero,
+                                      padding:
+                                          const EdgeInsets.only(bottom: 30),
                                       physics: const BouncingScrollPhysics(),
                                       itemCount: _recordsController
                                           .cutoffPeriods.length,
@@ -155,7 +156,7 @@ class _TimeRecordsState extends State<TimeRecords> {
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 5),
             width: size.width * 0.5,
-            height: 50,
+            height: 75,
             decoration: BoxDecoration(
               color: primaryBlue,
               borderRadius: BorderRadius.circular(10),

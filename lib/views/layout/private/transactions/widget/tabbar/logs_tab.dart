@@ -158,9 +158,9 @@ class LogsTab extends StatelessWidget {
                                   Text(
                                     approverStatus.capitalize ?? "",
                                     style: TextStyle(
-                                      color: status == "pending"
+                                      color: approverStatus == "pending"
                                           ? orange
-                                          : status == "approved"
+                                          : approverStatus == "approved"
                                               ? colorSuccess
                                               : colorError,
                                     ),
@@ -216,9 +216,9 @@ class LogsTab extends StatelessWidget {
                                     Text(
                                       approverStatus.capitalize ?? "",
                                       style: TextStyle(
-                                        color: status == "pending"
+                                        color: approverStatus == "pending"
                                             ? orange
-                                            : status == "approved"
+                                            : approverStatus == "approved"
                                                 ? colorSuccess
                                                 : colorError,
                                       ),
