@@ -10,7 +10,6 @@ import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,7 +31,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   int transactionId = 0;
 
-  String? dateStart, dateEnd;
+  String? dateStart, dateEnd, dateError, scheduleError, reasonError;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +75,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                             dateStart = value[0].toString().split(" ")[0];
                             dateEnd = value[1].toString().split(" ")[0];
                             _scheduleController.fetchScheduleList(value);
+                            setState(() {
+                              dateError = null;
+                            });
                           },
+                          error: dateError,
                           child: Container(),
                         ),
                         const SizedBox(height: 15),
@@ -88,6 +91,12 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         ReasonInput(
                           readOnly: false,
                           controller: _reason,
+                          error: reasonError,
+                          onChanged: (value) {
+                            setState(() {
+                              reasonError = null;
+                            });
+                          },
                         ),
                         Visibility(
                           visible: extraData == null ||
@@ -101,30 +110,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                                   padding: const EdgeInsets.only(right: 15.0),
                                   child: RoundedCustomButton(
                                     onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return GemsDialog(
-                                            title: "Cancel Request",
-                                            hasMessage: true,
-                                            withCloseButton: true,
-                                            hasCustomWidget: false,
-                                            message:
-                                                "Are you sure you want to cancel your request ?",
-                                            type: "question",
-                                            cancelPress: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            okPress: () {
-                                              _scheduleController.cancelRequest(
-                                                  transactionId, context);
-                                            },
-                                            okText: "Yes",
-                                            okButtonBGColor: bgPrimaryBlue,
-                                            buttonNumber: 2,
-                                          );
-                                        },
-                                      );
+                                      showCancelDialog();
                                     },
                                     label: "Cancel",
                                     radius: 8,
@@ -135,17 +121,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                               ),
                               RoundedCustomButton(
                                 onPressed: () {
-                                  var data = {
-                                    "start_date": dateStart,
-                                    "end_date": dateEnd,
-                                    "current_schedule_id": 1,
-                                    "new_schedule": _scheduleController
-                                        .selectedSchedule.value.id,
-                                    "company_id": _auth.company.value.id,
-                                    "employee_id": _auth.employee?.value.id,
-                                    "reason": _reason.text,
-                                  };
-                                  _scheduleController.sendRequest(data);
+                                  if (extraData != null) {
+                                    // TODO : update function goes here
+                                  } else {
+                                    submitForm();
+                                  }
                                 },
                                 isLoading:
                                     _scheduleController.isSubmitting.value,
@@ -251,6 +231,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
               onSelected: (value) {
                 setState(() {
                   _scheduleController.selectedSchedule.value = value!;
+                  scheduleError = null;
                 });
               },
               dropdownMenuEntries: _scheduleController.schedules
@@ -260,6 +241,16 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                   label: value.name,
                 );
               }).toList(),
+            ),
+          ),
+          Visibility(
+            visible: scheduleError != null,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                scheduleError ?? "",
+                style: errorStyle,
+              ),
             ),
           ),
         ],
@@ -290,5 +281,63 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
         );
       });
     }
+  }
+
+  void submitForm() {
+    bool hasError = false;
+
+    setState(() {
+      if (_reason.text == "") {
+        reasonError = 'This field is required.';
+        hasError = true;
+      }
+      if (dateStart == null) {
+        dateError = 'This field is required.';
+        hasError = true;
+      }
+      if (_scheduleController.selectedSchedule.value.id == 0) {
+        scheduleError = 'This field is required.';
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      return;
+    }
+    var data = {
+      "start_date": dateStart,
+      "end_date": dateEnd,
+      "current_schedule_id": 1,
+      "new_schedule": _scheduleController.selectedSchedule.value.id,
+      "company_id": _auth.company.value.id,
+      "employee_id": _auth.employee?.value.id,
+      "reason": _reason.text,
+    };
+    _scheduleController.sendRequest(data);
+  }
+
+  void showCancelDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return GemsDialog(
+          title: "Cancel Request",
+          hasMessage: true,
+          withCloseButton: true,
+          hasCustomWidget: false,
+          message: "Are you sure you want to cancel your request ?",
+          type: "question",
+          cancelPress: () {
+            Navigator.of(context).pop();
+          },
+          okPress: () {
+            _scheduleController.cancelRequest(transactionId, context);
+          },
+          okText: "Yes",
+          okButtonBGColor: bgPrimaryBlue,
+          buttonNumber: 2,
+        );
+      },
+    );
   }
 }
