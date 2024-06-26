@@ -351,7 +351,7 @@ class _LeaveFormState extends State<LeaveForm> {
         dateError = 'This field is required.';
         hasError = true;
       }
-      if (leaveCountError == null) {
+      if (_leaveCount.text == '') {
         leaveCountError = 'This field is required.';
         hasError = true;
       }
