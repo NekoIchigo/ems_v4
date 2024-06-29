@@ -14,8 +14,9 @@ class LeaveController extends GetxController {
   Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
   final AuthController _auth = Get.find<AuthController>();
   RxMap<String, dynamic> errors = {"errors": 0}.obs;
-  RxList<EmployeeLeave> leaves =
-      [EmployeeLeave(id: 0, name: "-- Select Leave --")].obs;
+  RxList<EmployeeLeave> leaves = [
+    EmployeeLeave(id: 0, name: "-- Select Leave --"),
+  ].obs;
   final ApiCall _apiCall = ApiCall();
   Rx<EmployeeLeave> selectedLeave = EmployeeLeave(id: 0).obs;
 
