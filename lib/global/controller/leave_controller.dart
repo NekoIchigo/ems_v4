@@ -45,6 +45,7 @@ class LeaveController extends GetxController {
           },
         );
       } else {
+        print(result);
         errors.value = result;
       }
     }).whenComplete(() {

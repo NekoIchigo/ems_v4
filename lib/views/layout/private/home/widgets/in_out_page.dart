@@ -6,6 +6,7 @@ import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -113,14 +114,18 @@ class _InOutPageState extends State<InOutPage> {
           ),
           const SizedBox(height: 8),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 'Today\'s Schedule : ',
                 style: TextStyle(color: gray, fontWeight: FontWeight.bold),
               ),
-              Text(
-                '${_dateTimeUtils.formatTime(dateTime: _homeController.workStart.value)} to ${_dateTimeUtils.formatTime(dateTime: _homeController.workEnd.value)}',
-                style: const TextStyle(color: gray),
+              SizedBox(
+                width: size.width * .5,
+                child: Text(
+                  '${_homeController.workStart.value} to ${_homeController.workEnd.value}',
+                  style: const TextStyle(color: gray),
+                ),
               ),
             ],
           ),

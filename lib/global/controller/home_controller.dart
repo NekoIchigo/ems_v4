@@ -18,7 +18,7 @@ class HomeController extends GetxController {
   final ApiCall apiCall = ApiCall();
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
   final SettingsController _settings = Get.find<SettingsController>();
-  Rx<DateTime> workStart = DateTime.now().obs, workEnd = DateTime.now().obs;
+  Rx<String> workStart = "??:??".obs, workEnd = "??:??".obs;
 
   RxString currentLocation = ''.obs;
   RxBool isInsideVicinity = false.obs,
@@ -38,8 +38,8 @@ class HomeController extends GetxController {
     isNewShift = false.obs;
 
     attendance = AttendanceRecord().obs;
-    workStart = DateTime.now().obs;
-    workEnd = DateTime.now().obs;
+    workStart.value = "??:??";
+    workEnd.value = "??:??";
   }
 
   Future checkNewShift() async {
@@ -51,13 +51,12 @@ class HomeController extends GetxController {
     );
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
+
       isNewShift.value = data['is_new_shift'];
       isClockInOutComplete.value = data['is_shift_complete'];
       isClockOut.value = data['is_clockout'];
-      workStart.value =
-          DateTime.parse("2024-01-01 ${data['schedule']['work_start']}");
-      workEnd.value =
-          DateTime.parse("2024-01-01 ${data['schedule']['work_end']}");
+      workStart.value = data['work_start'];
+      workEnd.value = data['work_end'];
 
       if (data['current_attendance_record'] != null) {
         attendance =
