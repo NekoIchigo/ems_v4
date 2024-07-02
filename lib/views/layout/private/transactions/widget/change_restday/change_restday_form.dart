@@ -6,7 +6,7 @@ import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/cancel_request_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
@@ -46,7 +46,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
   int transactionId = 0;
 
   String? dateError, restdayError, reasonError;
-
+  bool isLoading = true;
   String? startDate, endDate;
   late Size size;
   @override
@@ -137,27 +137,21 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                               onPressed: () {
                                 showDialog(
                                   context: context,
-                                  builder: (context) {
-                                    return GemsDialog(
-                                      title: "Cancel Request",
-                                      hasMessage: true,
-                                      withCloseButton: true,
-                                      hasCustomWidget: false,
-                                      message:
-                                          "Are you sure you want to cancel your request ?",
-                                      type: "question",
-                                      cancelPress: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      okPress: () {
+                                  builder: (context) => CancelRequestDialog(
+                                    isLoading: isLoading,
+                                    title: "Cancel DTR Correction Request",
+                                    onPressed: () {
+                                      if (_changeRestday.isLoading.isFalse) {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
                                         _changeRestday.cancelRequest(
-                                            transactionId, context);
-                                      },
-                                      okText: "Yes",
-                                      okButtonBGColor: bgPrimaryBlue,
-                                      buttonNumber: 2,
-                                    );
-                                  },
+                                          transactionId,
+                                          context,
+                                        );
+                                      }
+                                    },
+                                  ),
                                 );
                               },
                               label: "Cancel",

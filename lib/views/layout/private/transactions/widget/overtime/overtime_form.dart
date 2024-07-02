@@ -6,7 +6,7 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
-import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
+import 'package:ems_v4/views/widgets/dialog/cancel_request_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
@@ -36,6 +36,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final OvertimeController _overtime = Get.find<OvertimeController>();
   String attendanceDate = "", timeStart = "--:-- --";
+  bool isLoading = false;
   String? fromDate, dateError, startTimeError, totalHoursError, reasonError;
 
   @override
@@ -115,7 +116,25 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                     padding: const EdgeInsets.only(right: 15.0),
                                     child: RoundedCustomButton(
                                       onPressed: () {
-                                        cancelDialog();
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              CancelRequestDialog(
+                                            isLoading: isLoading,
+                                            title: "Cancel Overtime Request",
+                                            onPressed: () {
+                                              if (_overtime.isLoading.isFalse) {
+                                                setState(() {
+                                                  isLoading = true;
+                                                });
+                                                _overtime.cancelRequest(
+                                                  transactionId,
+                                                  context,
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        );
                                       },
                                       label: "Cancel",
                                       radius: 8,
@@ -306,35 +325,5 @@ class _OvertimeFormState extends State<OvertimeForm> {
     };
 
     _overtime.submitRequest(data);
-  }
-
-  void cancelDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return GemsDialog(
-          title: "Cancel Request",
-          hasMessage: true,
-          withCloseButton: true,
-          hasCustomWidget: false,
-          message: "Are you sure you want to cancel your request ?",
-          type: "question",
-          cancelPress: () {
-            Navigator.of(context).pop();
-          },
-          okPress: () {
-            if (_overtime.isLoading.isFalse) {
-              _overtime.cancelRequest(
-                transactionId,
-                context,
-              );
-            }
-          },
-          okText: _overtime.isLoading.isTrue ? "Loading..." : "Yes",
-          okButtonBGColor: bgPrimaryBlue,
-          buttonNumber: 2,
-        );
-      },
-    );
   }
 }
