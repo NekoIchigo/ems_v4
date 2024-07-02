@@ -3,6 +3,8 @@ import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/models/schedule.dart';
 import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -30,11 +32,28 @@ class ChangeScheduleController extends GetxController {
         .postRequest(
             apiUrl: "/save-change-schedule", data: data, catchError: () {})
         .then((result) {
-      navigatorKey.currentContext!.push("/transaction_result", extra: {
-        "result": result["success"],
-        "message": result["message"],
-        "path": "/change_schedule",
-      });
+      if (result.containsKey('success') && result['success']) {
+        navigatorKey.currentContext!.push("/transaction_result", extra: {
+          "result": result["success"],
+          "message": result["message"],
+          "path": "/change_schedule",
+        });
+      } else {
+        showDialog(
+          context: navigatorKey.currentContext!,
+          builder: (context) {
+            return GemsDialog(
+              title: "Oops!",
+              hasMessage: true,
+              withCloseButton: true,
+              hasCustomWidget: false,
+              message: result['message'],
+              type: "error",
+              buttonNumber: 0,
+            );
+          },
+        );
+      }
     }).whenComplete(() {
       isSubmitting.value = false;
     });

@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
+import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +38,20 @@ class OvertimeController extends GetxController {
           },
         );
       } else {
-        errors.value = result;
+        showDialog(
+          context: navigatorKey.currentContext!,
+          builder: (context) {
+            return GemsDialog(
+              title: "Oops!",
+              hasMessage: true,
+              withCloseButton: true,
+              hasCustomWidget: false,
+              message: result['message'],
+              type: "error",
+              buttonNumber: 0,
+            );
+          },
+        );
       }
     }).whenComplete(() {
       isSubmitting.value = false;
