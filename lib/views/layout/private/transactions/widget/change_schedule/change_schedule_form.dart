@@ -149,15 +149,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                               ),
                               RoundedCustomButton(
                                 onPressed: () {
-                                  if (extraData != null) {
-                                    // TODO : update function goes here
-                                  } else {
-                                    submitForm();
-                                  }
+                                  submitForm(extraData != null);
                                 },
                                 isLoading:
                                     _scheduleController.isSubmitting.value,
-                                label: "Submit",
+                                label: extraData != null ? "Update" : "Submit",
                                 size: Size(size.width * .4, 40),
                                 radius: 8,
                                 bgColor: bgPrimaryBlue, //primaryBlue
@@ -286,7 +282,6 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   }
 
   void fillInValues(Map<String, dynamic>? data) {
-    print(data);
     if (data != null) {
       transactionId = data['id'];
 
@@ -310,7 +305,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     }
   }
 
-  void submitForm() {
+  void submitForm(bool isUpdate) {
     bool hasError = false;
 
     setState(() {
@@ -340,6 +335,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,
     };
-    _scheduleController.sendRequest(data);
+
+    if (isUpdate) {
+      _scheduleController.updateRequestForm(data);
+    } else {
+      _scheduleController.sendRequest(data);
+    }
   }
 }

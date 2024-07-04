@@ -171,5 +171,25 @@ class ChangeScheduleController extends GetxController {
     }
   }
 
-  Future updateRequestForm() async {}
+  Future updateRequestForm(Map<String, dynamic> data) async {
+    isLoading.value = true;
+    _apiCall
+        .postRequest(
+      apiUrl: "/change-schedule/update",
+      data: data,
+      catchError: () {},
+    )
+        .then((result) {
+      navigatorKey.currentContext!.push(
+        "/transaction_result",
+        extra: {
+          "result": result["success"] ?? false,
+          "message": result["message"],
+          "path": "/change_schedule",
+        },
+      );
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
+  }
 }
