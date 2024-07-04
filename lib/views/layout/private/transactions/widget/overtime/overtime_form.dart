@@ -40,11 +40,19 @@ class _OvertimeFormState extends State<OvertimeForm> {
   String? fromDate, dateError, startTimeError, totalHoursError, reasonError;
 
   @override
+  void initState() {
+    if (_overtime.transactionData['id'] != 0) {
+      fillInValues(_overtime.transactionData['data']);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
-    fillInValues(extraData?['data']);
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -145,14 +153,11 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                 ),
                                 RoundedCustomButton(
                                   onPressed: () {
-                                    if (extraData != null) {
-                                      // TODO : update function goes here
-                                    } else {
-                                      submitForm();
-                                    }
+                                    submitForm(extraData != null);
                                   },
                                   isLoading: _overtime.isSubmitting.isTrue,
-                                  label: "Submit",
+                                  label:
+                                      extraData != null ? "Update" : "Submit",
                                   size: Size(size.width * .4, 40),
                                   radius: 8,
                                   bgColor: bgPrimaryBlue, //primaryBlue
@@ -271,7 +276,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
   void fillInValues(Map<String, dynamic>? data) {
     _transactionController.scheduleName.value = "Schedule name";
     _transactionController.dtrRange.value = "00:00 to 00:00";
-
+    print(data);
     if (data != null) {
       transactionId = data['id'];
 
@@ -286,10 +291,11 @@ class _OvertimeFormState extends State<OvertimeForm> {
       _transactionController.getDTROnDate(
         data['attendance_date'],
       );
+      attendanceDate = fromDate ?? "";
     }
   }
 
-  void submitForm() {
+  void submitForm(bool isUpdate) {
     bool hasError = false;
     setState(() {
       if (_reason.text == "") {
@@ -316,14 +322,19 @@ class _OvertimeFormState extends State<OvertimeForm> {
     }
 
     var data = {
-      "date_of_ot": attendanceDate,
-      "time_start": timeStart,
-      "no_of_hours": _dateTimeUtils.timeToDecimal(_totalHours.text),
+      "id": isUpdate ? transactionId : null,
+      "attendance_date": attendanceDate,
+      "start_time": timeStart,
+      "total_hours": _dateTimeUtils.timeToDecimal(_totalHours.text),
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,
     };
 
-    _overtime.submitRequest(data);
+    if (isUpdate) {
+      _overtime.updateRequestForm(data);
+    } else {
+      _overtime.submitRequest(data);
+    }
   }
 }

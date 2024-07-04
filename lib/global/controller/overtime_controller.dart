@@ -11,7 +11,8 @@ class OvertimeController extends GetxController {
       isSubmitting = false.obs,
       isLogsLoading = false.obs;
   Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
-  RxMap<String, dynamic> errors = {"errors": 0}.obs;
+  RxMap<String, dynamic> errors = {"errors": 0}.obs,
+      transactionData = {"id": "0"}.obs;
   RxList approvedList = [].obs,
       pendingList = [].obs,
       rejectedList = [].obs,
@@ -123,5 +124,26 @@ class OvertimeController extends GetxController {
     }
   }
 
-  Future updateRequestForm() async {}
+  Future updateRequestForm(Map<String, dynamic> data) async {
+    isSubmitting.value = true;
+    _apiCall
+        .postRequest(
+      apiUrl: "/overtime-request/update",
+      data: data,
+      catchError: () {},
+    )
+        .then((result) {
+      getAllOvertime(30, DateTime.now(), DateTime.now());
+      navigatorKey.currentContext!.push(
+        "/transaction_result",
+        extra: {
+          "result": result["success"] ?? false,
+          "message": result["message"],
+          "path": "/overtime",
+        },
+      );
+    }).whenComplete(() {
+      isSubmitting.value = false;
+    });
+  }
 }
