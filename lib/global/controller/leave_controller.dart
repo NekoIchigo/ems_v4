@@ -5,7 +5,6 @@ import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,7 +14,8 @@ class LeaveController extends GetxController {
       isLogsLoading = false.obs;
   Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
   final AuthController _auth = Get.find<AuthController>();
-  RxMap<String, dynamic> errors = {"errors": 0}.obs;
+  RxMap<String, dynamic> errors = {"errors": 0}.obs,
+      transactionData = {"id": "0"}.obs;
   RxList<EmployeeLeave> leaves = [
     EmployeeLeave(id: 0, name: "-- Select Leave --"),
   ].obs;
@@ -167,7 +167,7 @@ class LeaveController extends GetxController {
   }
 
   Future updateRequestForm(Map<String, dynamic> data) async {
-    isLoading.value = true;
+    isSubmitting.value = true;
     _apiCall
         .postRequest(
       apiUrl: "/leave-request/update",
@@ -175,6 +175,7 @@ class LeaveController extends GetxController {
       catchError: () {},
     )
         .then((result) {
+      getAllLeave(30, DateTime.now(), DateTime.now());
       navigatorKey.currentContext!.push(
         "/transaction_result",
         extra: {
@@ -184,7 +185,7 @@ class LeaveController extends GetxController {
         },
       );
     }).whenComplete(() {
-      isLoading.value = false;
+      isSubmitting.value = false;
     });
   }
 }

@@ -84,6 +84,7 @@ class _LeavePageState extends State<LeavePage> {
                     _messaging.fetchChatHistory(
                         item.id.toString(), "leave-request-chat");
                     _leave.getLogs(item.id);
+                    _leave.transactionData = item.toMap().obs;
                     context.push('/leave_form', extra: item.toMap());
                   },
                   approvedList: formatList(_leave.approvedList),

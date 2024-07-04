@@ -103,7 +103,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
                           formField2(),
                           const SizedBox(height: 15),
                           ReasonInput(
-                            readOnly: false,
+                            readOnly: extraData?['status'] != 'pending' &&
+                                extraData != null,
                             controller: _reason,
                             error: reasonError,
                             onChanged: (value) {

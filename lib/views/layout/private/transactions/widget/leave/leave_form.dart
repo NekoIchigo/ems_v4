@@ -12,7 +12,6 @@ import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -44,11 +43,18 @@ class _LeaveFormState extends State<LeaveForm> {
   late Size size;
 
   @override
+  void initState() {
+    if (_leaveController.transactionData['id'] != 0) {
+      fillInValues(_leaveController.transactionData['data']);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
-    fillInValues(extraData?['data']);
 
     return Container(
       decoration: const BoxDecoration(
@@ -152,7 +158,8 @@ class _LeaveFormState extends State<LeaveForm> {
                         const SizedBox(height: 10),
                         formField2(extraData),
                         ReasonInput(
-                          readOnly: extraData?['status'] != 'pending',
+                          readOnly: extraData?['status'] != 'pending' &&
+                              extraData != null,
                           controller: _reason,
                           number: 4,
                           error: reasonError,
@@ -204,11 +211,7 @@ class _LeaveFormState extends State<LeaveForm> {
                                   extraData['status'] == 'pending',
                               child: RoundedCustomButton(
                                 onPressed: () {
-                                  if (extraData != null) {
-                                    updateForm();
-                                  } else {
-                                    submitForm();
-                                  }
+                                  submitForm(extraData != null);
                                 },
                                 disabled: !hasCredits,
                                 label: extraData?['status'] == 'pending'
@@ -340,7 +343,7 @@ class _LeaveFormState extends State<LeaveForm> {
     }
   }
 
-  void submitForm() {
+  void submitForm(bool isUpdate) {
     bool hasError = false;
     EmployeeLeave employeeLeave = _leaveController.selectedLeave.value;
     setState(() {
@@ -368,46 +371,7 @@ class _LeaveFormState extends State<LeaveForm> {
     }
 
     var data = {
-      "company_id": _auth.company.value.id,
-      "employee_id": _auth.employee?.value.id,
-      "leave_count": _leaveCount.text,
-      "start_date": startDate,
-      "end_date": endDate,
-      "leave_type": employeeLeave.leaveId,
-      "reason": _reason.text,
-    };
-    _leaveController.submitRequest(data);
-  }
-
-  updateForm() {
-    bool hasError = false;
-    EmployeeLeave employeeLeave = _leaveController.selectedLeave.value;
-    setState(() {
-      if (_reason.text == "") {
-        reasonError = 'This field is required.';
-        hasError = true;
-      }
-      if (startDate == null) {
-        dateError = 'This field is required.';
-        hasError = true;
-      }
-      if (_leaveCount.text == '') {
-        leaveCountError = 'This field is required.';
-        hasError = true;
-      }
-
-      if (_leaveController.selectedLeave.value.id == 0) {
-        leaveError = 'This field is required.';
-        hasError = true;
-      }
-    });
-
-    if (hasError) {
-      return;
-    }
-
-    var data = {
-      "id": transactionId,
+      "id": isUpdate ? transactionId : null,
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "leave_count": _leaveCount.text,
@@ -416,6 +380,10 @@ class _LeaveFormState extends State<LeaveForm> {
       "leave_id": employeeLeave.leaveId,
       "reason": _reason.text,
     };
-    _leaveController.updateRequestForm(data);
+    if (isUpdate) {
+      _leaveController.updateRequestForm(data);
+    } else {
+      _leaveController.submitRequest(data);
+    }
   }
 }
