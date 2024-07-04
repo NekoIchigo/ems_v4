@@ -12,6 +12,7 @@ import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,7 +32,7 @@ class _LeaveFormState extends State<LeaveForm> {
   final LeaveController _leaveController = Get.find<LeaveController>();
   final TransactionController _transaction = Get.find<TransactionController>();
   int transactionId = 0;
-  bool isLoading = true;
+  bool isLoading = false;
 
   String? startDate,
       endDate,
@@ -66,6 +67,7 @@ class _LeaveFormState extends State<LeaveForm> {
                         null ||
                     _leaveController.selectedLeave.value.employeeCredits != 0;
                 return SelectedItemTabs(
+                  status: extraData?['status'] ?? '',
                   pageCount: extraData != null ? 3 : 1,
                   transactionLogs:
                       _leaveController.selectedTransactionLogs.value,
@@ -150,7 +152,7 @@ class _LeaveFormState extends State<LeaveForm> {
                         const SizedBox(height: 10),
                         formField2(extraData),
                         ReasonInput(
-                          readOnly: false,
+                          readOnly: extraData?['status'] != 'pending',
                           controller: _reason,
                           number: 4,
                           error: reasonError,
@@ -160,63 +162,65 @@ class _LeaveFormState extends State<LeaveForm> {
                             });
                           },
                         ),
-                        Visibility(
-                          visible: extraData == null ||
-                              extraData['status'] == 'pending',
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Visibility(
-                                visible: extraData != null,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 15.0),
-                                  child: RoundedCustomButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            CancelRequestDialog(
-                                          isLoading: isLoading,
-                                          title: "Cancel Leave Request",
-                                          onPressed: () {
-                                            if (_leaveController
-                                                .isLoading.isFalse) {
-                                              setState(() {
-                                                isLoading = false;
-                                              });
-                                              _leaveController.cancelRequest(
-                                                transactionId,
-                                                context,
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    label: "Cancel",
-                                    radius: 8,
-                                    size: Size(size.width * .4, 40),
-                                    bgColor: gray,
-                                  ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                              visible: extraData?['status'] == 'pending' ||
+                                  extraData?['status'] == 'approved',
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 15.0),
+                                child: RoundedCustomButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => CancelRequestDialog(
+                                        isLoading: isLoading,
+                                        title: "Cancel Leave Request",
+                                        onPressed: () {
+                                          if (_leaveController
+                                              .isLoading.isFalse) {
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+                                            _leaveController.cancelRequest(
+                                              transactionId,
+                                              context,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  label: "Cancel",
+                                  radius: 8,
+                                  size: Size(size.width * .4, 40),
+                                  bgColor: gray,
                                 ),
                               ),
-                              RoundedCustomButton(
+                            ),
+                            Visibility(
+                              visible: extraData == null ||
+                                  extraData['status'] == 'pending',
+                              child: RoundedCustomButton(
                                 onPressed: () {
                                   if (extraData != null) {
-                                    // TODO : update function goes here
+                                    updateForm();
                                   } else {
                                     submitForm();
                                   }
                                 },
                                 disabled: !hasCredits,
-                                label: "Submit",
+                                label: extraData?['status'] == 'pending'
+                                    ? "Update"
+                                    : "Submit",
                                 size: Size(size.width * .4, 40),
                                 radius: 8,
                                 isLoading: _leaveController.isSubmitting.isTrue,
                                 bgColor: bgPrimaryBlue, //primaryBlue
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 50),
                       ]
@@ -373,5 +377,45 @@ class _LeaveFormState extends State<LeaveForm> {
       "reason": _reason.text,
     };
     _leaveController.submitRequest(data);
+  }
+
+  updateForm() {
+    bool hasError = false;
+    EmployeeLeave employeeLeave = _leaveController.selectedLeave.value;
+    setState(() {
+      if (_reason.text == "") {
+        reasonError = 'This field is required.';
+        hasError = true;
+      }
+      if (startDate == null) {
+        dateError = 'This field is required.';
+        hasError = true;
+      }
+      if (_leaveCount.text == '') {
+        leaveCountError = 'This field is required.';
+        hasError = true;
+      }
+
+      if (_leaveController.selectedLeave.value.id == 0) {
+        leaveError = 'This field is required.';
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      return;
+    }
+
+    var data = {
+      "id": transactionId,
+      "company_id": _auth.company.value.id,
+      "employee_id": _auth.employee?.value.id,
+      "leave_count": _leaveCount.text,
+      "start_date": startDate,
+      "end_date": endDate,
+      "leave_id": employeeLeave.leaveId,
+      "reason": _reason.text,
+    };
+    _leaveController.updateRequestForm(data);
   }
 }

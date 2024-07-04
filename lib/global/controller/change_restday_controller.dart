@@ -115,4 +115,6 @@ class ChangeRestdayController extends GetxController {
       });
     }
   }
+
+  Future updateRequestForm() async {}
 }

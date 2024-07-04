@@ -84,6 +84,8 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
                     );
                     _messaging.fetchChatHistory(
                         item.id.toString(), "change-schedule-request-chat");
+                    print(item.toMap());
+                    _changeSchedule.transactionData = item.toMap().obs;
                     context.push('/change_schedule_form', extra: item.toMap());
                   },
                   approvedList: formatList(_changeSchedule.approvedList),

@@ -30,17 +30,23 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
       Get.find<ChangeScheduleController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   int transactionId = 0;
-  bool isLoading = true;
+  bool isLoading = false;
 
   String? dateStart, dateEnd, dateError, scheduleError, reasonError;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_scheduleController.transactionData['id'] != 0) {
+      fillInValues(_scheduleController.transactionData['data']);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
-
-    fillInValues(extraData?['data']);
 
     return Container(
       decoration: const BoxDecoration(
@@ -90,7 +96,8 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         formField2(),
                         const SizedBox(height: 15),
                         ReasonInput(
-                          readOnly: false,
+                          readOnly: extraData == null ||
+                              extraData['status'] != 'pending',
                           controller: _reason,
                           error: reasonError,
                           onChanged: (value) {
@@ -200,7 +207,6 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         buttonIndex++) {
                       if (buttonIndex == index) {
                         isSelected[buttonIndex] = true;
-
                         _scheduleController.getScheduleByType(
                           index == 0 ? "Fixed Schedule" : "Flexi Schedule",
                           null,
@@ -280,10 +286,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   }
 
   void fillInValues(Map<String, dynamic>? data) {
+    print(data);
     if (data != null) {
       transactionId = data['id'];
 
-      _reason.text = data["reason"];
       dateStart = _dateTimeUtils.formatDate(
         dateTime: DateTime.tryParse(
           data['start_date'],
@@ -294,7 +300,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
           data['end_date'],
         ),
       );
-
+      _reason.text = data["reason"];
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scheduleController.getScheduleByType(
           "Fixed Schedule",

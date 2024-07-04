@@ -165,4 +165,26 @@ class LeaveController extends GetxController {
       });
     }
   }
+
+  Future updateRequestForm(Map<String, dynamic> data) async {
+    isLoading.value = true;
+    _apiCall
+        .postRequest(
+      apiUrl: "/leave-request/update",
+      data: data,
+      catchError: () {},
+    )
+        .then((result) {
+      navigatorKey.currentContext!.push(
+        "/transaction_result",
+        extra: {
+          "result": result["success"] ?? false,
+          "message": result["message"],
+          "path": "/leave",
+        },
+      );
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
+  }
 }
