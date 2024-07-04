@@ -173,7 +173,7 @@ class ChangeScheduleController extends GetxController {
   }
 
   Future updateRequestForm(Map<String, dynamic> data) async {
-    isLoading.value = true;
+    isSubmitting.value = true;
     _apiCall
         .postRequest(
       apiUrl: "/change-schedule/update",
@@ -191,7 +191,7 @@ class ChangeScheduleController extends GetxController {
         },
       );
     }).whenComplete(() {
-      isLoading.value = false;
+      isSubmitting.value = false;
     });
   }
 }

@@ -327,6 +327,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
       return;
     }
     var data = {
+      "id": isUpdate ? transactionId : null,
       "start_date": dateStart,
       "end_date": dateEnd,
       "current_schedule_id": null,
