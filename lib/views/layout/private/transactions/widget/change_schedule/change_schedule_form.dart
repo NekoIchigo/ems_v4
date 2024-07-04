@@ -36,10 +36,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
 
   @override
   void initState() {
-    super.initState();
     if (_scheduleController.transactionData['id'] != 0) {
       fillInValues(_scheduleController.transactionData['data']);
     }
+    super.initState();
   }
 
   @override
@@ -47,7 +47,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
-
+    print(extraData);
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -96,8 +96,8 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         formField2(),
                         const SizedBox(height: 15),
                         ReasonInput(
-                          readOnly: extraData == null ||
-                              extraData['status'] != 'pending',
+                          readOnly: extraData?['status'] != 'pending' &&
+                              extraData != null,
                           controller: _reason,
                           error: reasonError,
                           onChanged: (value) {
@@ -329,8 +329,8 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     var data = {
       "start_date": dateStart,
       "end_date": dateEnd,
-      "current_schedule_id": 1,
-      "new_schedule": _scheduleController.selectedSchedule.value.id,
+      "current_schedule_id": null,
+      "new_schedule_id": _scheduleController.selectedSchedule.value.id,
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,

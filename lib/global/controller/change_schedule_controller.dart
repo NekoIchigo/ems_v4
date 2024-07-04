@@ -33,6 +33,7 @@ class ChangeScheduleController extends GetxController {
             apiUrl: "/save-change-schedule", data: data, catchError: () {})
         .then((result) {
       if (result.containsKey('success') && result['success']) {
+        getAllChangeSchedule(30, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push("/transaction_result", extra: {
           "result": result["success"],
           "message": result["message"],
@@ -180,6 +181,7 @@ class ChangeScheduleController extends GetxController {
       catchError: () {},
     )
         .then((result) {
+      getAllChangeSchedule(30, DateTime.now(), DateTime.now());
       navigatorKey.currentContext!.push(
         "/transaction_result",
         extra: {
