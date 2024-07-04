@@ -39,13 +39,20 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
       Get.find<DTRCorrectionController>();
 
   @override
+  void initState() {
+    if (_dtrCorrection.transactionData['id'] != 0) {
+      fillInValues(_dtrCorrection.transactionData['data']);
+    }
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     bool isLoading = false;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
-
-    fillInValues(extraData?['data']);
 
     return Container(
       decoration: const BoxDecoration(
@@ -162,11 +169,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                               ),
                               RoundedCustomButton(
                                 onPressed: () {
-                                  if (extraData != null) {
-                                    // TODO : update function goes here
-                                  } else {
-                                    submitForm();
-                                  }
+                                  submitForm(extraData != null);
                                 },
                                 isLoading: _dtrCorrection.isSubmitting.value,
                                 label: extraData != null ? "Update" : "Submit",
@@ -292,7 +295,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
       _clockin = _dateTimeUtils.formatTime(
         dateTime: DateTime.tryParse(data["clock_in_at"]),
       );
-
+      attendanceDate = fromDate ?? "";
       _clockout = _dateTimeUtils.formatTime(
         dateTime: DateTime.tryParse(data["clock_out_at"]),
       );
@@ -303,7 +306,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
     }
   }
 
-  void submitForm() {
+  void submitForm(bool isUpdate) {
     bool hasError = false;
 
     setState(() {
@@ -326,6 +329,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
     }
 
     var data = {
+      "id": isUpdate ? transactionId : null,
       "reason": _reason.text,
       "company_id": _auth.company.value.id,
       "date_of_correction": attendanceDate,
@@ -341,6 +345,11 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         }
       ],
     };
-    _dtrCorrection.submitRequest(data);
+
+    if (isUpdate) {
+      _dtrCorrection.updateRequestForm(data);
+    } else {
+      _dtrCorrection.submitRequest(data);
+    }
   }
 }

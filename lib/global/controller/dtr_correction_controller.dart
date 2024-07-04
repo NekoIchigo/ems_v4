@@ -3,7 +3,6 @@ import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,7 +11,9 @@ class DTRCorrectionController extends GetxController {
       isSubmitting = false.obs,
       isLogsLoading = false.obs;
   Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
-  RxMap<String, dynamic> errors = {"errors": 0}.obs;
+  RxMap<String, dynamic> errors = {"errors": 0}.obs,
+      transactionData = {"id": "0"}.obs;
+
   final ApiCall _apiCall = ApiCall();
 
   RxList approvedList = [].obs,
@@ -126,5 +127,26 @@ class DTRCorrectionController extends GetxController {
     }
   }
 
-  Future updateRequestForm() async {}
+  Future updateRequestForm(Map<String, dynamic> data) async {
+    isSubmitting.value = true;
+    _apiCall
+        .postRequest(
+      apiUrl: "/dtr-request/update",
+      data: data,
+      catchError: () {},
+    )
+        .then((result) {
+      getAllDTR(30, DateTime.now(), DateTime.now());
+      navigatorKey.currentContext!.push(
+        "/transaction_result",
+        extra: {
+          "result": result["success"] ?? false,
+          "message": result["message"],
+          "path": "/dtr_correction",
+        },
+      );
+    }).whenComplete(() {
+      isSubmitting.value = false;
+    });
+  }
 }

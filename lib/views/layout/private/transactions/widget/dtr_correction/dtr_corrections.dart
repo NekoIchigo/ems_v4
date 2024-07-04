@@ -84,6 +84,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
                     );
                     _messaging.fetchChatHistory(
                         item.id.toString(), "dtr-request-chat");
+                    _correctionController.transactionData = item.toMap().obs;
                     context.push("/dtr_correction_form", extra: item.toMap());
                   },
                   approvedList: formatList(_correctionController.approvedList),

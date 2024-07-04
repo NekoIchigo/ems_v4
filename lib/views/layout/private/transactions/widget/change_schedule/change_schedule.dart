@@ -79,6 +79,10 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
                     _changeSchedule.getLogs(item!.id);
+                    _changeSchedule.getScheduleByType(
+                      "Fixed Schedule",
+                      null,
+                    );
                     _messaging.subscribeInChannel(
                       channelName: "change-schedule-request-chat-${item.id}",
                     );
