@@ -46,16 +46,24 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
   int transactionId = 0;
 
   String? dateError, restdayError, reasonError;
-  bool isLoading = true;
+  bool isLoading = false;
   String? startDate, endDate;
   late Size size;
+
+  @override
+  void initState() {
+    if (_changeRestday.transactionData['id'] != 0) {
+      fillInValues(_changeRestday.transactionData['data']);
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
 
-    fillInValues(extraData?['data']);
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -163,11 +171,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                         ),
                         RoundedCustomButton(
                           onPressed: () {
-                            if (extraData != null) {
-                              // TODO : update function goes here
-                            } else {
-                              submitForm();
-                            }
+                            submitForm(extraData != null);
                           },
                           isLoading: _changeRestday.isSubmitting.value,
                           label: extraData != null ? "Update" : "Submit",
@@ -220,6 +224,9 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
       endDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['end_date']));
 
+      _transactionController.getDTROnDateRange(startDate, endDate);
+      _scheduleController.fetchScheduleList(
+          [DateTime.tryParse(startDate!), DateTime.tryParse(endDate!)]);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _multiSelectController.setOptions([
           const ValueItem(label: "Sunday", value: "Sunday"),
@@ -240,7 +247,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
     }
   }
 
-  void submitForm() {
+  void submitForm(bool isUpdate) {
     bool hasError = false;
     setState(() {
       if (_reason.text == "") {
@@ -265,15 +272,22 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
         .toList();
 
     var data = {
+      "id": isUpdate ? transactionId : null,
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "start_date": startDate,
       "end_date": endDate,
       "new_rest_days": newRestDays,
-      "current_rest_days": _transactionController.schedules.first["rest_days"],
-      "schedule_id": 1,
+      "current_rest_days":
+          _transactionController.schedules.firstOrNull["rest_days"] ?? "Sunday",
+      "schedule_id": null,
       "reason": _reason.text,
     };
-    _changeRestday.sendRequest(data);
+
+    if (isUpdate) {
+      _changeRestday.updateRequestForm(data);
+    } else {
+      _changeRestday.sendRequest(data);
+    }
   }
 }

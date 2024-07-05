@@ -11,7 +11,9 @@ class ChangeRestdayController extends GetxController {
       isSubmitting = false.obs,
       isLogsLoading = false.obs;
   final ApiCall _apiCall = ApiCall();
-  RxMap<String, dynamic> errors = {"errors": 0}.obs;
+  RxMap<String, dynamic> errors = {"errors": 0}.obs,
+      transactionData = {"id": "0"}.obs;
+
   Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
   RxList approvedList = [].obs,
       pendingList = [].obs,
@@ -95,7 +97,7 @@ class ChangeRestdayController extends GetxController {
       isLoading.value = true;
       _apiCall
           .postRequest(
-        apiUrl: '/overtime-request/cancel',
+        apiUrl: '/restday-request/cancel',
         data: {"id": id},
         catchError: () {},
       )
@@ -107,7 +109,7 @@ class ChangeRestdayController extends GetxController {
           extra: {
             "result": response["success"] ?? false,
             "message": response["message"],
-            "path": "/overtime",
+            "path": "/change_restday",
           },
         );
       }).whenComplete(() {
@@ -116,5 +118,26 @@ class ChangeRestdayController extends GetxController {
     }
   }
 
-  Future updateRequestForm() async {}
+  Future updateRequestForm(Map<String, dynamic> data) async {
+    isSubmitting.value = true;
+    _apiCall
+        .postRequest(
+      apiUrl: "/restday-request/update",
+      data: data,
+      catchError: () {},
+    )
+        .then((result) {
+      getAllChangeRestday(30, DateTime.now(), DateTime.now());
+      navigatorKey.currentContext!.push(
+        "/transaction_result",
+        extra: {
+          "result": result["success"] ?? false,
+          "message": result["message"],
+          "path": "/change_restday",
+        },
+      );
+    }).whenComplete(() {
+      isSubmitting.value = false;
+    });
+  }
 }
