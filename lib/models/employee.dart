@@ -6,6 +6,7 @@ class Employee {
   final int companyId;
   final int userId;
   final int accountStatusId;
+  final int allowedOutsideVicinity;
   final String firstName;
   final String? middleName;
   final String lastName;
@@ -32,6 +33,7 @@ class Employee {
     required this.profileBase64,
     required this.employeeDetails,
     required this.employeeContact,
+    required this.allowedOutsideVicinity,
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class Employee {
       companyId: json['company_id'] as int,
       userId: json['user_id'] as int,
       accountStatusId: json['account_status_id'] as int,
+      allowedOutsideVicinity: json['allow_outside_vicinity'] as int,
       firstName: json['first_name'] as String,
       middleName: json['middle_name'] as String?,
       lastName: json['last_name'] as String,

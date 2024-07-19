@@ -15,7 +15,7 @@ class HomeInfoPage extends StatefulWidget {
 }
 
 class _HomeInfoPageState extends State<HomeInfoPage> {
-  final AuthController _authViewService = Get.find<AuthController>();
+  final AuthController _auth = Get.find<AuthController>();
   final HomeController _homeController = Get.find<HomeController>();
   final MapLauncher _mapLuncher = MapLauncher();
   final GlobalKey _homeInfoKey = GlobalKey();
@@ -42,7 +42,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    bool cannotClock = _auth.employee?.value.allowedOutsideVicinity == 0 &&
+        !_homeController.isInsideVicinity.value;
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -58,8 +59,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
               children: [
                 const SizedBox(height: 10),
                 Text(
-                  _authViewService
-                      .employee!.value.employeeDetails.location.name,
+                  _auth.employee!.value.employeeDetails.location.name,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: primaryBlue,
@@ -100,79 +100,115 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 ),
                 const SizedBox(height: 8),
                 Visibility(
-                  visible: _homeController.isInsideVicinity.isFalse,
-                  child: DropdownMenu<String>(
-                    width: size.width * .710,
-                    hintText: "Select your reason/purpose here",
-                    errorText: reasonError,
-                    textStyle:
-                        const TextStyle(color: primaryBlue, fontSize: 13),
-                    inputDecorationTheme: const InputDecorationTheme(
-                      hintStyle: TextStyle(color: primaryBlue, fontSize: 13),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                  visible: cannotClock,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: size.width * .7,
+                        child: Text(
+                          "You must be ${_auth.employee?.value.employeeDetails.location.radius} meter radius of the shift location to proceed.",
+                          style: const TextStyle(color: gray, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    onSelected: (String? value) {
-                      reason = value;
-                      if (_homeController.isClockOut.isFalse) {
-                        _homeController
-                            .attendance.value.clockedInLocationSetting = value!;
-                      } else {
-                        _homeController.attendance.value
-                            .clockedOutLocationSetting = value!;
-                      }
-                      reasonError = null;
-                      setState(() {});
-                    },
-                    menuStyle: const MenuStyle(
-                      surfaceTintColor: MaterialStatePropertyAll(Colors.white),
-                      backgroundColor: MaterialStatePropertyAll(Colors.white),
-                    ),
-                    dropdownMenuEntries:
-                        _list.map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                        value: value,
-                        label: value,
-                        labelWidget: Text(
-                          value,
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                        style: const ButtonStyle(
-                          foregroundColor:
-                              MaterialStatePropertyAll(primaryBlue),
-                        ),
-                      );
-                    }).toList(),
+                      const SizedBox(height: 50),
+                      RoundedCustomButton(
+                        onPressed: () {
+                          _homeInfoKey.currentContext?.pop();
+                        },
+                        label: 'Close',
+                        radius: 8,
+                        bgColor: gray,
+                        size: Size(size.width * .4, 40),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 10),
-                howAreYouFeeling(),
-                const SizedBox(height: 20),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 15.0),
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'By clicking ',
+                Visibility(
+                  visible: _auth.employee?.value.allowedOutsideVicinity == 1 ||
+                      !cannotClock,
+                  child: Column(
+                    children: [
+                      Visibility(
+                        visible: _homeController.isInsideVicinity.isFalse,
+                        child: DropdownMenu<String>(
+                          width: size.width * .710,
+                          hintText: "Select your reason/purpose here",
+                          errorText: reasonError,
+                          textStyle:
+                              const TextStyle(color: primaryBlue, fontSize: 13),
+                          inputDecorationTheme: const InputDecorationTheme(
+                            hintStyle:
+                                TextStyle(color: primaryBlue, fontSize: 13),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                          onSelected: (String? value) {
+                            reason = value;
+                            if (_homeController.isClockOut.isFalse) {
+                              _homeController.attendance.value
+                                  .clockedInLocationSetting = value!;
+                            } else {
+                              _homeController.attendance.value
+                                  .clockedOutLocationSetting = value!;
+                            }
+                            reasonError = null;
+                            setState(() {});
+                          },
+                          menuStyle: const MenuStyle(
+                            surfaceTintColor:
+                                MaterialStatePropertyAll(Colors.white),
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.white),
+                          ),
+                          dropdownMenuEntries: _list
+                              .map<DropdownMenuEntry<String>>((String value) {
+                            return DropdownMenuEntry<String>(
+                              value: value,
+                              label: value,
+                              labelWidget: Text(
+                                value,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              style: const ButtonStyle(
+                                foregroundColor:
+                                    MaterialStatePropertyAll(primaryBlue),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        TextSpan(
-                            text: _homeController.isClockOut.isFalse
-                                ? 'Clock In'
-                                : 'Clock Out'),
-                        TextSpan(
-                            text: _homeController.isClockOut.isFalse
-                                ? ', you confirm your location and affirm your health condition.'
-                                : ', you confirm your location.'),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: gray, fontSize: 13),
+                      ),
+                      const SizedBox(height: 10),
+                      howAreYouFeeling(),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 15.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'By clicking ',
+                              ),
+                              TextSpan(
+                                  text: _homeController.isClockOut.isFalse
+                                      ? 'Clock In'
+                                      : 'Clock Out'),
+                              TextSpan(
+                                  text: _homeController.isClockOut.isFalse
+                                      ? ', you confirm your location and affirm your health condition.'
+                                      : ', you confirm your location.'),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: gray, fontSize: 13),
+                        ),
+                      ),
+                      bottomButtons(size),
+                    ],
                   ),
                 ),
-                bottomButtons(size),
               ],
             ),
           ),

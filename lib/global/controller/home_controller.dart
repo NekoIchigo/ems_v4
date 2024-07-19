@@ -22,6 +22,7 @@ class HomeController extends GetxController {
 
   RxString currentLocation = ''.obs;
   RxBool isInsideVicinity = false.obs,
+      hasClockOutsideVicinity = false.obs,
       isLoading = false.obs,
       isClockOut = false.obs,
       isClockInOutComplete = false.obs,
