@@ -28,6 +28,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   String _clockin = "--:-- --", _clockout = "--:-- --", attendanceDate = "";
   String? fromDate, dateError, timeChangeError, reasonError;
   int transactionId = 0;
+  List attachments = [];
 
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
@@ -124,6 +125,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                             setState(() {
                               reasonError = "";
                             });
+                          },
+                          onSelectFile: (files) {
+                            attachments = files;
                           },
                         ),
                         Visibility(
@@ -344,6 +348,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
           "reason": _reason.text,
         }
       ],
+      "attachments": attachments,
     };
 
     if (isUpdate) {

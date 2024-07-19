@@ -48,6 +48,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
   String? dateError, restdayError, reasonError;
   bool isLoading = false;
   String? startDate, endDate;
+  List attachments = [];
   late Size size;
 
   @override
@@ -129,6 +130,9 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                       setState(() {
                         reasonError = null;
                       });
+                    },
+                    onSelectFile: (files) {
+                      attachments = files;
                     },
                   ),
                   Visibility(
@@ -282,6 +286,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
           _transactionController.schedules.firstOrNull["rest_days"] ?? "Sunday",
       "schedule_id": null,
       "reason": _reason.text,
+      "attachments": attachments,
     };
 
     if (isUpdate) {

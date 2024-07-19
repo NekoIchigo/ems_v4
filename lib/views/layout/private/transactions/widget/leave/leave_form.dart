@@ -32,6 +32,7 @@ class _LeaveFormState extends State<LeaveForm> {
   final TransactionController _transaction = Get.find<TransactionController>();
   int transactionId = 0;
   bool isLoading = false;
+  List attachments = [];
 
   String? startDate,
       endDate,
@@ -167,6 +168,9 @@ class _LeaveFormState extends State<LeaveForm> {
                             setState(() {
                               reasonError = null;
                             });
+                          },
+                          onSelectFile: (files) {
+                            attachments = files;
                           },
                         ),
                         Row(
@@ -379,6 +383,7 @@ class _LeaveFormState extends State<LeaveForm> {
       "end_date": endDate,
       "leave_id": employeeLeave.leaveId,
       "reason": _reason.text,
+      "attachments": attachments,
     };
     if (isUpdate) {
       _leaveController.updateRequestForm(data);

@@ -31,6 +31,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   int transactionId = 0;
   bool isLoading = false;
+  List attachments = [];
 
   String? dateStart, dateEnd, dateError, scheduleError, reasonError;
 
@@ -47,7 +48,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
         GoRouterState.of(context).extra as Map<String, dynamic>?;
-    print(extraData);
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -104,6 +105,9 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                             setState(() {
                               reasonError = null;
                             });
+                          },
+                          onSelectFile: (files) {
+                            attachments = files;
                           },
                         ),
                         Visibility(
@@ -335,6 +339,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,
+      "attachments": attachments,
     };
 
     if (isUpdate) {

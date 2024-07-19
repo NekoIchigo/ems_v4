@@ -37,6 +37,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
   final OvertimeController _overtime = Get.find<OvertimeController>();
   String attendanceDate = "", timeStart = "--:-- --";
   bool isLoading = false;
+  List attachments = [];
   String? fromDate, dateError, startTimeError, totalHoursError, reasonError;
 
   @override
@@ -111,6 +112,9 @@ class _OvertimeFormState extends State<OvertimeForm> {
                               setState(() {
                                 reasonError = "";
                               });
+                            },
+                            onSelectFile: (files) {
+                              attachments = files;
                             },
                           ),
                           Visibility(
@@ -330,6 +334,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,
+      "attachments": attachments,
     };
 
     if (isUpdate) {
