@@ -113,6 +113,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                 reasonError = "";
                               });
                             },
+                            attachments: attachments,
                             onSelectFile: (files) {
                               attachments = files;
                             },
@@ -281,7 +282,6 @@ class _OvertimeFormState extends State<OvertimeForm> {
   void fillInValues(Map<String, dynamic>? data) {
     _transactionController.scheduleName.value = "Schedule name";
     _transactionController.dtrRange.value = "00:00 to 00:00";
-    print(data);
     if (data != null) {
       transactionId = data['id'];
 
@@ -297,6 +297,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
         data['attendance_date'],
       );
       attendanceDate = fromDate ?? "";
+      attachments = data['attachments'] ?? [];
     }
   }
 

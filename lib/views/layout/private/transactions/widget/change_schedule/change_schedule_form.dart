@@ -106,6 +106,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                               reasonError = null;
                             });
                           },
+                          attachments: attachments,
                           onSelectFile: (files) {
                             attachments = files;
                           },

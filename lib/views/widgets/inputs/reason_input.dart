@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ReasonInput extends StatefulWidget {
   const ReasonInput({
@@ -16,6 +18,7 @@ class ReasonInput extends StatefulWidget {
     this.error,
     this.onChanged,
     required this.onSelectFile,
+    required this.attachments,
   });
 
   final String? error;
@@ -25,6 +28,7 @@ class ReasonInput extends StatefulWidget {
   final ValueChanged? onChanged;
   final int number;
   final Function(dynamic) onSelectFile;
+  final List attachments;
 
   @override
   State<ReasonInput> createState() => _ReasonInputState();
@@ -39,6 +43,7 @@ class _ReasonInputState extends State<ReasonInput> {
     size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Visibility(
           visible: widget.showNumberLabel,
@@ -77,6 +82,19 @@ class _ReasonInputState extends State<ReasonInput> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
             child: Text(widget.error ?? "", style: errorStyle),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+          child: LimitedBox(
+            maxHeight: 50,
+            child: ListView.builder(
+              itemCount: widget.attachments.length,
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, index) {
+                return Text(widget.attachments[index]);
+              },
+            ),
           ),
         ),
         Container(
@@ -124,29 +142,35 @@ class _ReasonInputState extends State<ReasonInput> {
                 }
               }
             },
-            child: Row(
-              children: [
-                Icon(
-                  widget.readOnly
-                      ? Icons.attach_file
-                      : Icons.add_circle_outline,
-                  size: 20,
-                  color: primaryBlue,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  widget.readOnly ? 'View File' : 'Add attachment',
-                  style: const TextStyle(color: primaryBlue),
-                ),
-              ],
+            child: Visibility(
+              visible: !widget.readOnly && widget.attachments.isEmpty,
+              child: Row(
+                children: [
+                  Icon(
+                    widget.readOnly
+                        ? Icons.attach_file
+                        : Icons.add_circle_outline,
+                    size: 20,
+                    color: primaryBlue,
+                  ),
+                  const SizedBox(width: 5),
+                  const Text(
+                    'Add attachment',
+                    style: TextStyle(color: primaryBlue),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(25, 0, 0, 15),
-          child: Text(
-            "Upload up to 2 files (png, jpg, jpeg, pdf | 3 mb maximum size)",
-            style: TextStyle(fontSize: 12, color: gray),
+        Visibility(
+          visible: !widget.readOnly && widget.attachments.isEmpty,
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(25, 0, 0, 15),
+            child: Text(
+              "Upload up to 2 files (png, jpg, jpeg, pdf | 3 mb maximum size)",
+              style: TextStyle(fontSize: 12, color: gray),
+            ),
           ),
         ),
       ],

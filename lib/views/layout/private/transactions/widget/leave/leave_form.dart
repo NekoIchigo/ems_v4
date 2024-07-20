@@ -169,6 +169,7 @@ class _LeaveFormState extends State<LeaveForm> {
                               reasonError = null;
                             });
                           },
+                          attachments: attachments,
                           onSelectFile: (files) {
                             attachments = files;
                           },

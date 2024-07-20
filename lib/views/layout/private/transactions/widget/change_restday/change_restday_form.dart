@@ -131,6 +131,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                         reasonError = null;
                       });
                     },
+                    attachments: attachments,
                     onSelectFile: (files) {
                       attachments = files;
                     },

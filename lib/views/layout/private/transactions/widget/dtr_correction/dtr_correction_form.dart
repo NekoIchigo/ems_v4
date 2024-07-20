@@ -126,6 +126,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                               reasonError = "";
                             });
                           },
+                          attachments: attachments,
                           onSelectFile: (files) {
                             attachments = files;
                           },

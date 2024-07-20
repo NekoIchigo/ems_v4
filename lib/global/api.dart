@@ -23,7 +23,7 @@ class ApiCall {
     Map<String, dynamic>? data,
     required String apiUrl,
     List<File>? files,
-    required Function catchError,
+    Function? catchError,
     bool showErrorDialog = true,
     String? path,
   }) async {
@@ -96,7 +96,7 @@ class ApiCall {
           },
         );
       }
-      catchError(error);
+      if (catchError != null) catchError(error);
     } finally {
       client.close();
     }
@@ -105,7 +105,7 @@ class ApiCall {
   Future getRequest({
     required String apiUrl,
     Map<String, dynamic>? parameters,
-    required Function catchError,
+    Function? catchError,
     bool showErrorDialog = true,
     String? path,
   }) async {
@@ -159,7 +159,7 @@ class ApiCall {
           },
         );
       }
-      catchError(error);
+      if (catchError != null) catchError(error);
     } finally {
       client.close();
     }
