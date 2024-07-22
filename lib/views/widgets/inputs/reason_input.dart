@@ -120,13 +120,14 @@ class _ReasonInputState extends State<ReasonInput> {
                                   parameters: {
                                     "path": widget.attachments[index]
                                   }).then((response) {
-                                setState(() {
-                                  loadings[index] = false;
-                                });
                                 OpenFile.open(
                                   response['path'],
                                   type: response['type'],
                                 );
+                              }).whenComplete(() {
+                                setState(() {
+                                  loadings[index] = false;
+                                });
                               });
                             } else {
                               OpenFile.open(
