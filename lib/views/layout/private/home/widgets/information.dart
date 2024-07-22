@@ -1,5 +1,7 @@
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/map_launcher.dart';
@@ -28,8 +30,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
     'Work from home'
   ];
 
-  String? reason;
-  String? reasonError;
+  String? reason, reasonError;
 
   @override
   void initState() {
@@ -41,6 +42,13 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+    String locationMeters =
+        _auth.employee!.value.employeeDetails.location.radius % 1 == 0
+            ? _auth.employee!.value.employeeDetails.location.radius
+                .toInt()
+                .toString()
+            : _auth.employee!.value.employeeDetails.location.radius
+                .toStringAsFixed(2);
     Size size = MediaQuery.of(context).size;
     bool cannotClock = _auth.employee?.value.allowedOutsideVicinity == 0 &&
         !_homeController.isInsideVicinity.value;
@@ -74,31 +82,48 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       _homeController.isInsideVicinity.value
                           ? "assets/images/current_location-pana.png"
                           : "assets/images/current_location-rafiki.png",
-                      width: size.width * .65,
+                      width: size.width * .75,
                     ),
                   ),
                 ),
                 const SizedBox(height: 8),
-                InkWell(
-                  onTap: () {
-                    _mapLuncher.launchMap();
-                  },
-                  child: const Text(
-                    'View Map',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: gray,
-                      fontSize: 13,
+                Visibility(
+                  visible: cannotClock,
+                  child: SizedBox(
+                    width: size.width * .7,
+                    child: Text(
+                      "${_homeController.isClockOut.isFalse ? 'Clock-in' : 'Clock-out'} is not allowed!",
+                      style: const TextStyle(color: colorError, fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: !cannotClock,
+                  child: InkWell(
+                    onTap: () {
+                      _mapLuncher.launchMap();
+                    },
+                    child: const Text(
+                      'View Map',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: gray,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  _homeController.currentLocation.value,
-                  style: const TextStyle(color: gray, fontSize: 14),
-                  textAlign: TextAlign.center,
+                Visibility(
+                  visible: !cannotClock,
+                  child: Text(
+                    _homeController.currentLocation.value,
+                    style: const TextStyle(color: gray, fontSize: 14),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 30),
                 Visibility(
                   visible: cannotClock,
                   child: Column(
@@ -106,12 +131,47 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       SizedBox(
                         width: size.width * .7,
                         child: Text(
-                          "You must be ${_auth.employee?.value.employeeDetails.location.radius} meter radius of the shift location to proceed.",
+                          "You exceeded the required $locationMeters-meter radius.",
                           style: const TextStyle(color: gray, fontSize: 14),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 10),
+                      Visibility(
+                        visible: cannotClock,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "To view the details, click on ",
+                              style: TextStyle(color: gray),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _mapLuncher.launchMap();
+                              },
+                              child: const Text(
+                                "View Map",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: primaryBlue,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: size.width * .8,
+                        child: const Text(
+                          "for attendance concerns, contact the HR Department.",
+                          style: TextStyle(color: gray, fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       RoundedCustomButton(
                         onPressed: () {
                           _homeInfoKey.currentContext?.pop();
