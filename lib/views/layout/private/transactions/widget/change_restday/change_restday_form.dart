@@ -60,6 +60,12 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
   }
 
   @override
+  void dispose() {
+    _changeRestday.transactionData.value = {"id": "0"};
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
@@ -133,7 +139,9 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                     },
                     attachments: attachments,
                     onSelectFile: (files) {
-                      attachments = files;
+                      setState(() {
+                        attachments = files;
+                      });
                     },
                   ),
                   Visibility(
@@ -228,6 +236,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
           dateTime: DateTime.tryParse(data['start_date']));
       endDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['end_date']));
+      attachments = data['attachments'] ?? [];
 
       _transactionController.getDTROnDateRange(startDate, endDate);
       _scheduleController.fetchScheduleList(

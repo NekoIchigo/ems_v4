@@ -49,6 +49,12 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   }
 
   @override
+  void dispose() {
+    _dtrCorrection.transactionData.value = {"id": "0"};
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     bool isLoading = false;
@@ -128,7 +134,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           },
                           attachments: attachments,
                           onSelectFile: (files) {
-                            attachments = files;
+                            setState(() {
+                              attachments = files;
+                            });
                           },
                         ),
                         Visibility(
@@ -308,6 +316,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
       _transactionController.getDTROnDate(
         data['attendance_date'],
       );
+      attachments = data['attachments'] ?? [];
     }
   }
 

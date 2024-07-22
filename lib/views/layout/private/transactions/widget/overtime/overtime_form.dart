@@ -49,6 +49,12 @@ class _OvertimeFormState extends State<OvertimeForm> {
   }
 
   @override
+  void dispose() {
+    _overtime.transactionData.value = {"id": "0"};
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
@@ -115,7 +121,9 @@ class _OvertimeFormState extends State<OvertimeForm> {
                             },
                             attachments: attachments,
                             onSelectFile: (files) {
-                              attachments = files;
+                              setState(() {
+                                attachments = files;
+                              });
                             },
                           ),
                           Visibility(

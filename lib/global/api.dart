@@ -6,6 +6,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
@@ -18,6 +19,7 @@ class ApiCall {
   final String _baseUrl = "${globalBaseUrl}api";
   // final Duration _timeOutDuration = const Duration(seconds: 30);
   final client = RetryClient(http.Client());
+  final cacheManager = DefaultCacheManager();
 
   Future postRequest({
     Map<String, dynamic>? data,
@@ -107,6 +109,7 @@ class ApiCall {
     Map<String, dynamic>? parameters,
     Function? catchError,
     bool showErrorDialog = true,
+    bool isBlob = false,
     String? path,
   }) async {
     var fullUrl = _baseUrl + apiUrl;
@@ -114,22 +117,30 @@ class ApiCall {
     try {
       final response = await http.get(Uri.parse(_buildUrl(fullUrl, parameters)),
           headers: _setHeaders(token));
-      //     .timeout(
-      //   _timeOutDuration,
-      //   onTimeout: () {
-      //     log('request time out');
-      //     return http.Response('Request Timeout', 408);
-      //   },
-      // )
-      var body = jsonDecode(response.body);
-      if (body.containsKey('message') &&
-          body['message']
-              .toString()
-              .toLowerCase()
-              .contains('unauthenticated')) {
-        navigatorKey.currentContext!.go('/');
+      if (isBlob) {
+        String fileType = response.headers['content-type'] ?? "";
+        String fileName = parameters?['path'];
+
+        File file = await cacheManager.putFile(
+          fileName,
+          response.bodyBytes,
+          fileExtension: fileType.split("/").last,
+        );
+        // File file = await cacheManager.getSingleFile(fileName);
+
+        return {"path": file.path, "type": fileType};
+      } else {
+        var body = jsonDecode(response.body);
+
+        if (body.containsKey('message') &&
+            body['message']
+                .toString()
+                .toLowerCase()
+                .contains('unauthenticated')) {
+          navigatorKey.currentContext!.go('/');
+        }
+        return body;
       }
-      return body;
     } catch (error) {
       if (error is http.ClientException) {
         String currentPath = path ??

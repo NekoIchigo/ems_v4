@@ -44,6 +44,12 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   }
 
   @override
+  void dispose() {
+    _scheduleController.transactionData.value = {"id": "0"};
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
@@ -108,7 +114,9 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                           },
                           attachments: attachments,
                           onSelectFile: (files) {
-                            attachments = files;
+                            setState(() {
+                              attachments = files;
+                            });
                           },
                         ),
                         Visibility(
@@ -301,6 +309,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
         ),
       );
       _reason.text = data["reason"];
+      attachments = data['attachments'] ?? [];
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scheduleController.getScheduleByType(
           "Fixed Schedule",

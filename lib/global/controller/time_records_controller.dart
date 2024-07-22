@@ -19,7 +19,6 @@ class TimeRecordsController extends GetxController {
             },
             catchError: () {})
         .then((response) {
-      print("response: $response");
       if (response.containsKey('success') && response['success']) {
         cutoffPeriods.value = response['data'];
       }
@@ -39,7 +38,6 @@ class TimeRecordsController extends GetxController {
             },
             catchError: () {})
         .then((response) {
-      print(response);
       if (response.containsKey('success') && response['success']) {
         attendanceMasters.value = response['data'];
       }

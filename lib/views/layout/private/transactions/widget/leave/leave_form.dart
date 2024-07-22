@@ -52,6 +52,12 @@ class _LeaveFormState extends State<LeaveForm> {
   }
 
   @override
+  void dispose() {
+    _leaveController.transactionData.value = {"id": "0"};
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     final Map<String, dynamic>? extraData =
@@ -171,7 +177,9 @@ class _LeaveFormState extends State<LeaveForm> {
                           },
                           attachments: attachments,
                           onSelectFile: (files) {
-                            attachments = files;
+                            setState(() {
+                              attachments = files;
+                            });
                           },
                         ),
                         Row(
@@ -341,6 +349,7 @@ class _LeaveFormState extends State<LeaveForm> {
       endDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['end_date']));
       _leaveCount.text = data['leave_count'].toString();
+      attachments = data['attachments'] ?? [];
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _leaveController.getAvailableLeave(data['leave_id']);
