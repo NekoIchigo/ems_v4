@@ -50,7 +50,6 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
             : _auth.employee!.value.employeeDetails.location.radius
                 .toStringAsFixed(2);
     Size size = MediaQuery.of(context).size;
-    print(_auth.employee?.value.allowedOutsideVicinity);
     bool cannotClock = _auth.employee?.value.allowedOutsideVicinity == 0 &&
         !_homeController.isInsideVicinity.value;
     return Container(
@@ -87,7 +86,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 Visibility(
                   visible: cannotClock,
                   child: SizedBox(
@@ -103,7 +102,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   visible: !cannotClock,
                   child: InkWell(
                     onTap: () {
-                      _mapLuncher.launchMap();
+                      _mapLuncher.launchMap(
+                          message: _homeController.currentLocation.value);
                     },
                     child: const Text(
                       'View Map',
@@ -115,16 +115,16 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
-                Visibility(
-                  visible: !cannotClock,
-                  child: Text(
-                    _homeController.currentLocation.value,
-                    style: const TextStyle(color: gray, fontSize: 14),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 30),
+                // const SizedBox(height: 8),
+                // Visibility(
+                //   visible: !cannotClock,
+                //   child: Text(
+                //     _homeController.currentLocation.value,
+                //     style: const TextStyle(color: gray, fontSize: 14),
+                //     textAlign: TextAlign.center,
+                //   ),
+                // ),
+                const SizedBox(height: 20),
                 Visibility(
                   visible: cannotClock,
                   child: Column(

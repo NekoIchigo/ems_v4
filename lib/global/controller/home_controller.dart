@@ -233,20 +233,22 @@ class HomeController extends GetxController {
 
   Future clockOut({required BuildContext context}) async {
     isLoading.value = true;
+    final data = {
+      'attendance_id': attendance.value.id,
+      'clocked_out_location': attendance.value.clockedOutLocation,
+      'clocked_out_latitude': attendance.value.clockedOutLatitude,
+      'clocked_out_longitude': attendance.value.clockedOutLongitude,
+      'clocked_out_location_type': attendance.value.clockedOutLocationType,
+      'clocked_out_location_setting':
+          attendance.value.clockedOutLocationSetting,
+    };
 
     var result = await apiCall.postRequest(
-      data: {
-        'attendance_id': attendance.value.id,
-        'clocked_out_location': attendance.value.clockedOutLocation,
-        'clocked_out_latitude': attendance.value.clockedOutLatitude,
-        'clocked_out_longitude': attendance.value.clockedOutLongitude,
-        'clocked_out_location_type': attendance.value.clockedOutLocationType,
-        'clocked_out_location_setting':
-            attendance.value.clockedOutLocationSetting,
-      },
+      data: data,
       apiUrl: '/mobile/clock-out',
       catchError: () {},
     );
+
     if (result.containsKey('success') && result['success']) {
       _timeEntriesController.getAttendanceList(days: 1);
       checkNewShift();

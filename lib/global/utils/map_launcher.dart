@@ -12,7 +12,9 @@ class MapLauncher {
   final AuthController _authService = Get.find<AuthController>();
 
   Future<void> launchMap(
-      {AttendanceRecord? attendanceRecord, bool isclockin = false}) async {
+      {AttendanceRecord? attendanceRecord,
+      bool isclockin = false,
+      String message = ""}) async {
     // const String baseUrl = 'http://10.10.10.221:8000/mobile-map-view';
     const String baseUrl = "${globalBaseUrl}mobile-map-view";
 
@@ -41,7 +43,7 @@ class MapLauncher {
 
     log("destinationLat=$destinationLat, destinationLong=$destinationLong, originlat=$originLat, originlong=$originLong");
     String latLong =
-        "?originLat=$originLat&originLong=$originLong&destinationLat=$destinationLat&destinationLong=$destinationLong";
+        "?originLat=$originLat&originLong=$originLong&destinationLat=$destinationLat&destinationLong=$destinationLong&message=$message";
 
     if (!await launchUrl(Uri.parse("$baseUrl$latLong"))) {
       throw Exception('Could not launch $baseUrl$latLong');
