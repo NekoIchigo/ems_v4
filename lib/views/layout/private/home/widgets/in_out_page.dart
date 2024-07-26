@@ -19,7 +19,7 @@ class InOutPage extends StatefulWidget {
 }
 
 class _InOutPageState extends State<InOutPage> {
-  final AuthController _authViewService = Get.find<AuthController>();
+  final AuthController _auth = Get.find<AuthController>();
   final SettingsController _settings = Get.find<SettingsController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
@@ -39,6 +39,7 @@ class _InOutPageState extends State<InOutPage> {
   }
 
   Future initFunctions() async {
+    await _auth.updateEmployeeInfo();
     await _timeEntriesController.getPreviousClockIn();
     await _settings.getServerTime();
     await _homeController.checkNewShift();
@@ -95,7 +96,7 @@ class _InOutPageState extends State<InOutPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            '${_authViewService.employee!.value.firstName}!',
+            '${_auth.employee!.value.firstName}!',
             style: const TextStyle(
               color: gray,
               fontWeight: FontWeight.bold,

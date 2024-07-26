@@ -282,6 +282,24 @@ class AuthController extends GetxController {
     }
   }
 
+  Future updateEmployeeInfo() async {
+    final result = await apiCall.getRequest(
+      apiUrl: '/mobile/employee/show-info',
+      catchError: (error) {
+        isLoading.value = false;
+      },
+    );
+    if (result.containsKey('success') && result['success']) {
+      var userData = result['data'];
+      _localStorage.setString('user', jsonEncode(userData));
+      var employeeData = userData['employee'];
+      var companyData = employeeData['company'];
+
+      employee = Employee.fromJson(employeeData).obs;
+      company = Company.fromJson(companyData).obs;
+    }
+  }
+
   Future logout() async {
     isLoading.value = true;
 

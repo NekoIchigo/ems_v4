@@ -50,6 +50,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
             : _auth.employee!.value.employeeDetails.location.radius
                 .toStringAsFixed(2);
     Size size = MediaQuery.of(context).size;
+    print(_auth.employee?.value.allowedOutsideVicinity);
     bool cannotClock = _auth.employee?.value.allowedOutsideVicinity == 0 &&
         !_homeController.isInsideVicinity.value;
     return Container(
@@ -166,7 +167,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       SizedBox(
                         width: size.width * .8,
                         child: const Text(
-                          "for attendance concerns, contact the HR Department.",
+                          "For attendance concerns, contact the HR Department.",
                           style: TextStyle(color: gray, fontSize: 12),
                           textAlign: TextAlign.center,
                         ),
