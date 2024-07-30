@@ -104,8 +104,7 @@ class HomeController extends GetxController {
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
       isInsideVicinity.value = data['is_inside_vicinity'];
-      currentLocation.value =
-          '${data['distance_in_km']} km away from designated office!';
+      currentLocation.value = '${data['distance_in_km']} km';
 
       attendance.value.clockedInLocation = currentLocation.value;
       attendance.value.clockedInLatitude = position.latitude.toString();

@@ -1,7 +1,5 @@
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/map_launcher.dart';
@@ -149,7 +147,9 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             ),
                             InkWell(
                               onTap: () {
-                                _mapLuncher.launchMap();
+                                _mapLuncher.launchMap(
+                                    message:
+                                        _homeController.currentLocation.value);
                               },
                               child: const Text(
                                 "View Map",
