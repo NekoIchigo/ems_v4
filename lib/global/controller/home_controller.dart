@@ -104,8 +104,8 @@ class HomeController extends GetxController {
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
       isInsideVicinity.value = data['is_inside_vicinity'];
-      currentLocation.value = '${data['distance_in_km']} km';
-
+      currentLocation.value =
+          "Your distance is ${data['distance_in_km']} km from your work location";
       attendance.value.clockedInLocation = currentLocation.value;
       attendance.value.clockedInLatitude = position.latitude.toString();
       attendance.value.clockedInLongitude = position.longitude.toString();
@@ -150,7 +150,7 @@ class HomeController extends GetxController {
       var data = result['data'];
       isInsideVicinity.value = data['is_inside_vicinity'];
       currentLocation.value =
-          '${data['distance_in_km']} km away from designated office!';
+          "Your distance is ${data['distance_in_km']} km from your work location";
       attendance.value.clockedOutLocation = currentLocation.value;
       attendance.value.clockedOutLatitude = position.latitude.toString();
       attendance.value.clockedOutLongitude = position.longitude.toString();
