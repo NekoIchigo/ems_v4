@@ -1,6 +1,7 @@
 import 'package:ems_v4/models/department.dart';
 import 'package:ems_v4/models/location.dart';
 import 'package:ems_v4/models/position.dart';
+import 'package:ems_v4/models/employment_type.dart';
 
 class EmployeeDetails {
   final int id;
@@ -26,6 +27,7 @@ class EmployeeDetails {
   final Position position;
   final Location location;
   final Department department;
+  final EmploymentType? employmentType;
 
   EmployeeDetails({
     required this.id,
@@ -51,6 +53,7 @@ class EmployeeDetails {
     required this.phicNumber,
     required this.hdmfNumber,
     required this.tinNumber,
+    this.employmentType,
   });
 
   factory EmployeeDetails.fromJson(Map<String, dynamic> json) {
@@ -75,6 +78,7 @@ class EmployeeDetails {
       phicNumber: json['phic_number'] as String?,
       hdmfNumber: json['hdmf_number'] as String?,
       tinNumber: json['tin_number'] as String?,
+      employmentType: EmploymentType.fromJson(json['employee_type']),
       location: Location.fromJson(json['location']),
       position: Position.fromJson(json['position']),
       department: Department.fromJson(json['department']),
@@ -105,6 +109,7 @@ class EmployeeDetails {
       'tin_number': tinNumber,
       'location': location.toMap(),
       'position': position.toMap(),
+      'employee_type': employmentType?.toMap(),
       'department': department.toMap(),
     };
   }

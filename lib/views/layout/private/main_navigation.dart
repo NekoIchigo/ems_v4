@@ -1,4 +1,5 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/getting_started.dart';
@@ -22,12 +23,24 @@ class MainNavigation extends StatefulWidget {
 }
 
 class _MainNavigationState extends State<MainNavigation> {
+  final AuthController _authController = Get.find<AuthController>();
   final MainNavigationController _mainNavigationController =
       Get.find<MainNavigationController>();
   bool isBack = false;
 
   Future<bool> exitDialog() async {
     return false;
+  }
+
+  @override
+  void initState() {
+    if (_authController.employee?.value.employeeDetails.employmentType
+            ?.transactionAccess ==
+        0) {
+      _mainNavigationController.navigation.removeAt(2);
+      _mainNavigationController.navigationPath.removeAt(2);
+    }
+    super.initState();
   }
 
   @override
@@ -51,18 +64,8 @@ class _MainNavigationState extends State<MainNavigation> {
         top: -15,
         style: TabStyle.reactCircle,
         onTap: (index) {
-          switch (index) {
-            case 0:
-              context.go('/in_out');
-            case 1:
-              context.go('/time_entries');
-            case 2:
-              context.go('/transaction');
-            case 3:
-              context.go('/notification');
-            case 4:
-              context.go('/profile');
-          }
+          final String path = _mainNavigationController.navigationPath[index];
+          context.go(path);
         },
       ),
     );

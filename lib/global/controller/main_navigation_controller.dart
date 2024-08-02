@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class MainNavigationController extends GetxController {
-  final List<TabItem> navigation = [
+  final RxList<TabItem> navigation = [
     TabItem(
       icon: ColorFiltered(
         colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
@@ -95,5 +95,13 @@ class MainNavigationController extends GetxController {
         ),
       ),
     ),
-  ];
+  ].obs;
+
+  final RxList navigationPath = [
+    "/in_out",
+    "/time_entries",
+    "/transaction",
+    "/notification",
+    "/profile"
+  ].obs;
 }
