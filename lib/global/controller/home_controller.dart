@@ -27,6 +27,7 @@ class HomeController extends GetxController {
       isClockOut = false.obs,
       isClockInOutComplete = false.obs,
       isUserSick = false.obs,
+      isMobileUser = false.obs,
       isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
@@ -57,6 +58,7 @@ class HomeController extends GetxController {
       isClockInOutComplete.value = data['is_shift_complete'];
       isClockOut.value = data['is_clockout'];
       workStart.value = data['work_start'];
+      isMobileUser.value = data['is_mobile_user'];
       workEnd.value = data['work_end'];
 
       if (data['current_attendance_record'] != null) {

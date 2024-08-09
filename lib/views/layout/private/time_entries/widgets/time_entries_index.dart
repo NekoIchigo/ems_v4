@@ -37,10 +37,10 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
   @override
   void initState() {
     super.initState();
-    dropdownValue = _list[0];
+    dropdownValue = _list[1];
     _scrollController.addListener(_scrollListener);
     _timeEntriesController.getAttendanceList(
-      days: 1,
+      days: 7,
     );
   }
 

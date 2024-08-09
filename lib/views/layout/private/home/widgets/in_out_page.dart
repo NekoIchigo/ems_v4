@@ -6,6 +6,7 @@ import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:flutter/material.dart';
+import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,8 @@ class InOutPage extends StatefulWidget {
 class _InOutPageState extends State<InOutPage> {
   final AuthController _auth = Get.find<AuthController>();
   final SettingsController _settings = Get.find<SettingsController>();
+  final MainNavigationController _mainNavigationController =
+      Get.find<MainNavigationController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
   final HomeController _homeController = Get.find<HomeController>();
@@ -65,7 +68,28 @@ class _InOutPageState extends State<InOutPage> {
             children: [
               greetingWidget(size),
               buttonSection(size),
-              detailsSection(size),
+
+              Visibility(
+                  visible: _homeController.isMobileUser.isTrue,
+                  child: detailsSection(size)),
+              Visibility(
+                  visible: _homeController.isMobileUser.isFalse,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextButton(
+                      onPressed: () {
+                        _mainNavigationController.tabController.animateTo(1);
+                        context.go("/time_entries");
+                      },
+                      child: const Text(
+                        "View Attendance Records Here",
+                        style: TextStyle(
+                          color: gray,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  )),
               additionalShift(size),
               // announcementSection(),
             ],

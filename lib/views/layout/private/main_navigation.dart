@@ -22,7 +22,8 @@ class MainNavigation extends StatefulWidget {
   State<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
+class _MainNavigationState extends State<MainNavigation>
+    with SingleTickerProviderStateMixin {
   final AuthController _authController = Get.find<AuthController>();
   final MainNavigationController _mainNavigationController =
       Get.find<MainNavigationController>();
@@ -34,6 +35,9 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   void initState() {
+    _mainNavigationController.tabController = TabController(
+        vsync: this, length: _mainNavigationController.navigation.length);
+
     if (_authController.employee?.value.employeeDetails.employmentType
             ?.transactionAccess ==
         0) {
@@ -41,6 +45,12 @@ class _MainNavigationState extends State<MainNavigation> {
       _mainNavigationController.navigationPath.removeAt(2);
     }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _mainNavigationController.tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -57,6 +67,7 @@ class _MainNavigationState extends State<MainNavigation> {
       ),
       extendBody: true,
       bottomNavigationBar: ConvexAppBar(
+        controller: _mainNavigationController.tabController,
         backgroundColor: bgPrimaryBlue,
         height: 55,
         items: _mainNavigationController.navigation,

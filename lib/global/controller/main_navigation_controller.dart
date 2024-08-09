@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class MainNavigationController extends GetxController {
+  late TabController tabController;
   final RxList<TabItem> navigation = [
     TabItem(
       icon: ColorFiltered(

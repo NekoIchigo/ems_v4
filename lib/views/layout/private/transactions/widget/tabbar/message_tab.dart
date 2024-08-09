@@ -52,7 +52,9 @@ class _MessageTabState extends State<MessageTab>
   Widget build(BuildContext context) {
     super.build(context);
     Size size = MediaQuery.of(context).size;
-    return Padding(
+    return const NoResult();
+    /*
+    Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: SingleChildScrollView(
         child: Column(
@@ -230,7 +232,7 @@ class _MessageTabState extends State<MessageTab>
           ],
         ),
       ),
-    );
+    );*/
   }
 
   List<Widget> chatRow(isSameUser, size, index, createdAt) {
