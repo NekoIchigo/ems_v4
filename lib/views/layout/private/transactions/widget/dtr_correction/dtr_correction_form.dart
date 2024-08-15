@@ -350,7 +350,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
       "employee_id": _auth.employee?.value.id,
       "time_of_record": [
         {
-          "schedule_id": _transactionController.schedules.first["id"],
+          "schedule_id": _transactionController.schedules.firstOrNull["id"],
           "attendance_date": attendanceDate,
           "attendance_record_id": null,
           "clock_in": _clockin,

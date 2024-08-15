@@ -153,6 +153,13 @@ class _InOutPageState extends State<InOutPage> {
               ),
             ],
           ),
+          SizedBox(
+            width: size.width * .5,
+            child: Text(
+              '${_homeController.workStart2.value} to ${_homeController.workEnd2.value}',
+              style: const TextStyle(color: gray),
+            ),
+          ),
         ],
       ),
     );
