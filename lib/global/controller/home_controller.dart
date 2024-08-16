@@ -65,8 +65,8 @@ class HomeController extends GetxController {
       workStart.value = data['work_start'];
       isMobileUser.value = data['is_mobile_user'];
       workEnd.value = data['work_end'];
-      workStart2.value = data['work_start2'];
-      workEnd2.value = data['work_end2'];
+      workStart2.value = data['work_start2'] ?? "";
+      workEnd2.value = data['work_end2'] ?? "";
 
       if (data['current_attendance_record'] != null) {
         attendance =

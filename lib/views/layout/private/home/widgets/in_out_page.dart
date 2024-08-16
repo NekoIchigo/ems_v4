@@ -7,6 +7,7 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -153,11 +154,14 @@ class _InOutPageState extends State<InOutPage> {
               ),
             ],
           ),
-          SizedBox(
-            width: size.width * .5,
-            child: Text(
-              '${_homeController.workStart2.value} to ${_homeController.workEnd2.value}',
-              style: const TextStyle(color: gray),
+          Visibility(
+            visible: _homeController.workStart2.value != "",
+            child: SizedBox(
+              width: size.width * .5,
+              child: Text(
+                '${_homeController.workStart2.value} to ${_homeController.workEnd2.value}',
+                style: const TextStyle(color: gray),
+              ),
             ),
           ),
         ],
