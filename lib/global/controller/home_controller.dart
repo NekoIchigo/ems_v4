@@ -18,9 +18,13 @@ class HomeController extends GetxController {
   final ApiCall apiCall = ApiCall();
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
   final SettingsController _settings = Get.find<SettingsController>();
+
+  int? scheduleId1, scheduleId2;
   Rx<String> workStart = "??:??".obs,
       workEnd = "??:??".obs,
       workStart2 = "??:??".obs,
+      restday = "".obs,
+      restday2 = "".obs,
       workEnd2 = "??:??".obs;
 
   RxString currentLocation = ''.obs;
@@ -31,6 +35,7 @@ class HomeController extends GetxController {
       isClockInOutComplete = false.obs,
       isUserSick = false.obs,
       isMobileUser = false.obs,
+      isSecondShift = false.obs,
       isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
@@ -47,6 +52,8 @@ class HomeController extends GetxController {
     workEnd.value = "??:??";
     workStart2.value = "??:??";
     workEnd2.value = "??:??";
+    restday.value = "";
+    restday2.value = "";
   }
 
   Future checkNewShift() async {
@@ -67,6 +74,10 @@ class HomeController extends GetxController {
       workEnd.value = data['work_end'];
       workStart2.value = data['work_start2'] ?? "";
       workEnd2.value = data['work_end2'] ?? "";
+      restday.value = data['restday'] ?? "";
+      restday2.value = data['restday2'] ?? "";
+      scheduleId1 = data['schedule_id'];
+      scheduleId2 = data['schedule_id2'];
 
       if (data['current_attendance_record'] != null) {
         attendance =
@@ -212,6 +223,7 @@ class HomeController extends GetxController {
         'clocked_in_location_type': attendance.value.clockedInLocationType,
         'clocked_in_location_setting':
             attendance.value.clockedInLocationSetting,
+        'schedule_id': isSecondShift.isTrue ? scheduleId2 : scheduleId1,
         'health_check': healthCheckStr,
         'health_temperature': temperature,
       },

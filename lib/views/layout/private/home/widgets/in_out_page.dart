@@ -5,6 +5,7 @@ import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
+import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:flutter/widgets.dart';
@@ -38,7 +39,7 @@ class _InOutPageState extends State<InOutPage> {
     initFunctions();
 
     currentTime = _settings.currentTime.value;
-    date = DateFormat("EEE, MMM dd y").format(currentTime);
+    date = DateFormat("EEEE, MMM dd y").format(currentTime);
     greetings = _dateTimeUtils.getGreeting(currentTime.hour);
   }
 
@@ -101,71 +102,112 @@ class _InOutPageState extends State<InOutPage> {
   }
 
   Widget greetingWidget(Size size) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-      ),
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            greetings,
-            style: const TextStyle(
-              color: gray,
-              fontWeight: FontWeight.w500,
-              fontSize: 18,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
           ),
-          const SizedBox(height: 8),
-          Text(
-            '${_auth.employee!.value.firstName}!',
-            style: const TextStyle(
-              color: gray,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            _homeController.isClockInOutComplete.isTrue
-                ? 'See you tomorrow'
-                : _homeController.isClockOut.isTrue
-                    ? 'Have a great day at work!'
-                    : 'Begin another day by clocking in.',
-            style: const TextStyle(color: gray, fontSize: 14),
-          ),
-          const SizedBox(height: 8),
-          Row(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Today\'s Schedule : ',
-                style: TextStyle(color: gray, fontWeight: FontWeight.bold),
+              const SizedBox(height: 20),
+              Text(
+                date,
+                style: const TextStyle(
+                  color: gray,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
               ),
-              SizedBox(
-                width: size.width * .5,
-                child: Text(
-                  '${_homeController.workStart.value} to ${_homeController.workEnd.value}',
-                  style: const TextStyle(color: gray),
+              Text(
+                '${greetings} ${_auth.employee!.value.firstName}!',
+                style: const TextStyle(
+                  color: gray,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
                 ),
               ),
             ],
           ),
-          Visibility(
-            visible: _homeController.workStart2.value != "",
-            child: SizedBox(
-              width: size.width * .5,
-              child: Text(
-                '${_homeController.workStart2.value} to ${_homeController.workEnd2.value}',
-                style: const TextStyle(color: gray),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              Text(
+                _homeController.isClockInOutComplete.isTrue
+                    ? 'See you tomorrow'
+                    : _homeController.isClockOut.isTrue
+                        ? 'Have a great day at work!'
+                        : 'Begin another day by clocking in.',
+                style: const TextStyle(color: gray, fontSize: 14),
               ),
-            ),
+              const SizedBox(height: 8),
+              const Text(
+                'Choose Shift : ',
+                style: TextStyle(color: gray, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(size.width, 35),
+                        padding: EdgeInsets.zero,
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: const BorderSide(color: bgPrimaryBlue),
+                        ),
+                      ),
+                      child: Text(
+                          '${_homeController.workStart.value} to ${_homeController.workEnd.value}, Rest day ${_homeController.restday.value}'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(size.width, 35),
+                        backgroundColor: lightGray,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: const BorderSide(color: lightGray),
+                        ),
+                      ),
+                      child: Text(
+                        '${_homeController.workStart.value} to ${_homeController.workEnd.value}, Rest day ${_homeController.restday.value}',
+                        style: TextStyle(color: gray),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: _homeController.workStart2.value != "",
+                child: SizedBox(
+                  width: size.width * .5,
+                  child: Text(
+                    '${_homeController.workStart2.value} to ${_homeController.workEnd2.value}',
+                    style: const TextStyle(color: gray),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        )
+      ],
     );
   }
 
@@ -263,26 +305,13 @@ class _InOutPageState extends State<InOutPage> {
                 ),
           Positioned(
             bottom: 0,
-            child: Column(
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  DateFormat("hh:mm a").format(_settings.currentTime.value),
-                  style: const TextStyle(
-                    color: gray,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  date,
-                  style: const TextStyle(
-                    color: gray,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
+            child: Text(
+              DateFormat("hh:mm a").format(_settings.currentTime.value),
+              style: const TextStyle(
+                color: gray,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -301,7 +330,7 @@ class _InOutPageState extends State<InOutPage> {
         children: [
           Column(
             children: [
-              const Icon(Icons.access_time, color: primaryBlue),
+              // const Icon(Icons.access_time, color: primaryBlue),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
@@ -330,7 +359,7 @@ class _InOutPageState extends State<InOutPage> {
           const SizedBox(width: 50),
           Column(
             children: [
-              const Icon(Icons.access_time_filled, color: primaryBlue),
+              // const Icon(Icons.access_time_filled, color: primaryBlue),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
