@@ -19,7 +19,7 @@ class HomeController extends GetxController {
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
   final SettingsController _settings = Get.find<SettingsController>();
 
-  int? scheduleId1, scheduleId2;
+  RxInt scheduleId1 = 0.obs, scheduleId2 = 0.obs;
   Rx<String> workStart = "??:??".obs,
       workEnd = "??:??".obs,
       workStart2 = "??:??".obs,
@@ -28,6 +28,7 @@ class HomeController extends GetxController {
       workEnd2 = "??:??".obs;
 
   RxString currentLocation = ''.obs;
+  RxList<String> scheduleList = ["-- Select --"].obs;
   RxBool isInsideVicinity = false.obs,
       hasClockOutsideVicinity = false.obs,
       isLoading = false.obs,
@@ -36,6 +37,7 @@ class HomeController extends GetxController {
       isUserSick = false.obs,
       isMobileUser = false.obs,
       isSecondShift = false.obs,
+      hasSecondShift = false.obs,
       isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
@@ -76,8 +78,19 @@ class HomeController extends GetxController {
       workEnd2.value = data['work_end2'] ?? "";
       restday.value = data['restday'] ?? "";
       restday2.value = data['restday2'] ?? "";
-      scheduleId1 = data['schedule_id'];
-      scheduleId2 = data['schedule_id2'];
+      scheduleId1.value = data['schedule_id'];
+      scheduleId2.value = data['schedule_id2'] ?? 0;
+      print(data['schedule_id2']);
+      print(data['schedule_id']);
+
+      hasSecondShift.value = scheduleId2.value != 0;
+      scheduleList[0] =
+          '${workStart.value} to ${workEnd.value}, Restday ${restday.value}';
+      scheduleList.add(
+          '${workStart2.value} to ${workEnd2.value}, Restday ${restday2.value}');
+      print("scheduleList  $scheduleList");
+      print("scheduleList  ${hasSecondShift.value}");
+      print("scheduleList  ${scheduleId2}");
 
       if (data['current_attendance_record'] != null) {
         attendance =
@@ -223,7 +236,8 @@ class HomeController extends GetxController {
         'clocked_in_location_type': attendance.value.clockedInLocationType,
         'clocked_in_location_setting':
             attendance.value.clockedInLocationSetting,
-        'schedule_id': isSecondShift.isTrue ? scheduleId2 : scheduleId1,
+        'schedule_id':
+            isSecondShift.isTrue ? scheduleId2.value : scheduleId1.value,
         'health_check': healthCheckStr,
         'health_temperature': temperature,
       },
