@@ -18,6 +18,7 @@ class AttendanceRecord {
   String? healthCheck;
   String? scheduleId;
   String? healthTemperature;
+  String? source;
 
   AttendanceRecord({
     this.id,
@@ -38,6 +39,7 @@ class AttendanceRecord {
     this.clockedOutLocationSetting,
     this.healthCheck,
     this.scheduleId,
+    this.source,
     this.healthTemperature,
   });
 
@@ -66,6 +68,7 @@ class AttendanceRecord {
           json['clocked_out_location_setting'] as String?,
       healthCheck: json['health_check'] as String?,
       scheduleId: json['schedule_id'] as String?,
+      source: json['source'] as String?,
       healthTemperature: json['health_temperature'] as String?,
     );
   }
@@ -91,6 +94,7 @@ class AttendanceRecord {
       'health_check': healthCheck,
       'health_temperature': healthTemperature,
       'schedule_id': scheduleId,
+      'source': source,
     };
   }
 }

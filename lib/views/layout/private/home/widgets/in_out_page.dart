@@ -7,6 +7,7 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -78,24 +79,7 @@ class _InOutPageState extends State<InOutPage> {
             children: [
               greetingWidget(size),
               buttonSection(size),
-              Visibility(
-                  visible: _homeController.isMobileUser.isFalse,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextButton(
-                      onPressed: () {
-                        _mainNavigationController.tabController.animateTo(1);
-                        context.go("/time_entries");
-                      },
-                      child: const Text(
-                        "View Attendance Records Here",
-                        style: TextStyle(
-                          color: gray,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  )),
+
               additionalShift(size),
               // announcementSection(),
             ],
@@ -306,7 +290,7 @@ class _InOutPageState extends State<InOutPage> {
                                   strokeCap: StrokeCap.round,
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -330,6 +314,27 @@ class _InOutPageState extends State<InOutPage> {
               visible: _homeController.isMobileUser.isTrue,
               child: detailsSection(size),
             ),
+          ),
+          Positioned(
+            bottom: 40,
+            child: Visibility(
+                visible: _homeController.isMobileUser.isFalse,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextButton(
+                    onPressed: () {
+                      _mainNavigationController.tabController.animateTo(1);
+                      context.go("/time_entries");
+                    },
+                    child: const Text(
+                      "View Attendance Records Here",
+                      style: TextStyle(
+                        color: gray,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                )),
           ),
         ],
       ),
