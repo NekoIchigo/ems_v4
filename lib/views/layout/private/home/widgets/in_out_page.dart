@@ -30,7 +30,7 @@ class _InOutPageState extends State<InOutPage> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   late DateTime currentTime;
   late String date, greetings;
-  String? reasonError, shiftId = "";
+  String? reasonError, shiftId = "", initialDropdownString;
 
   @override
   void initState() {
@@ -47,6 +47,15 @@ class _InOutPageState extends State<InOutPage> {
     await _timeEntriesController.getPreviousClockIn();
     await _settings.getServerTime();
     await _homeController.checkNewShift();
+
+    if (_homeController.isDropdownEnable.isFalse) {
+      initialDropdownString = _homeController.scheduleList.first;
+      if (_homeController.attendance.value.scheduleId != null &&
+          int.parse(_homeController.attendance.value.scheduleId!) ==
+              _homeController.scheduleId2.value) {
+        initialDropdownString = _homeController.scheduleList[1];
+      }
+    }
   }
 
   @override
@@ -140,8 +149,9 @@ class _InOutPageState extends State<InOutPage> {
                   width: size.width * .9,
                   hintText: "-Select-",
                   errorText: reasonError,
-                  enabled: _homeController.hasSecondShift.isTrue,
+                  enabled: _homeController.isDropdownEnable.isTrue,
                   textStyle: const TextStyle(color: primaryBlue, fontSize: 13),
+                  initialSelection: initialDropdownString,
                   inputDecorationTheme: InputDecorationTheme(
                     isDense: true,
                     constraints:
@@ -304,7 +314,7 @@ class _InOutPageState extends State<InOutPage> {
                   ),
                 ),
           Positioned(
-            top: 20,
+            top: 7,
             child: Text(
               DateFormat("hh:mm a").format(_settings.currentTime.value),
               style: const TextStyle(
@@ -369,7 +379,8 @@ class _InOutPageState extends State<InOutPage> {
                   visible: _timeEntriesController.hasPrevAttendance.isTrue,
                   child: Text(
                     _dateTimeUtils.formatTime(
-                        dateTime: _homeController.attendance.value.clockInAt),
+                        dateTime: _timeEntriesController
+                            .prevAttendance.value.clockInAt),
                     style: const TextStyle(
                       color: gray,
                       fontSize: 14,
@@ -412,7 +423,8 @@ class _InOutPageState extends State<InOutPage> {
                   visible: _timeEntriesController.hasPrevAttendance.isTrue,
                   child: Text(
                     _dateTimeUtils.formatTime(
-                        dateTime: _homeController.attendance.value.clockOutAt),
+                        dateTime: _timeEntriesController
+                            .prevAttendance.value.clockOutAt),
                     style: const TextStyle(
                         color: gray, fontSize: 14, fontWeight: FontWeight.w500),
                   ),
@@ -427,7 +439,8 @@ class _InOutPageState extends State<InOutPage> {
 
   Widget additionalShift(Size size) {
     return Visibility(
-      visible: _homeController.isClockInOutComplete.isTrue,
+      visible: _homeController.isClockInOutComplete.isTrue &&
+          _homeController.isMobileUser.isTrue,
       child: TextButton(
         onPressed: () {
           _homeController.isNewShift.value = true;

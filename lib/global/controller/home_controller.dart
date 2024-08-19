@@ -19,7 +19,7 @@ class HomeController extends GetxController {
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
   final SettingsController _settings = Get.find<SettingsController>();
 
-  RxInt scheduleId1 = 0.obs, scheduleId2 = 0.obs;
+  RxInt scheduleId1 = 0.obs, scheduleId2 = 0.obs, currentScheduleId = 0.obs;
   Rx<String> workStart = "??:??".obs,
       workEnd = "??:??".obs,
       workStart2 = "??:??".obs,
@@ -28,7 +28,7 @@ class HomeController extends GetxController {
       workEnd2 = "??:??".obs;
 
   RxString currentLocation = ''.obs;
-  RxList<String> scheduleList = ["-- Select --"].obs;
+  RxList<String> scheduleList = ["-- Select --", ""].obs;
   RxBool isInsideVicinity = false.obs,
       hasClockOutsideVicinity = false.obs,
       isLoading = false.obs,
@@ -38,6 +38,7 @@ class HomeController extends GetxController {
       isMobileUser = false.obs,
       isSecondShift = false.obs,
       hasSecondShift = false.obs,
+      isDropdownEnable = false.obs,
       isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
@@ -80,19 +81,19 @@ class HomeController extends GetxController {
       restday2.value = data['restday2'] ?? "";
       scheduleId1.value = data['schedule_id'];
       scheduleId2.value = data['schedule_id2'] ?? 0;
-      print(data['schedule_id2']);
-      print(data['schedule_id']);
 
       hasSecondShift.value = scheduleId2.value != 0;
+      isDropdownEnable.value = hasSecondShift.isTrue && isClockOut.isFalse;
+
       scheduleList[0] =
           '${workStart.value} to ${workEnd.value}, Restday ${restday.value}';
-      scheduleList.add(
-          '${workStart2.value} to ${workEnd2.value}, Restday ${restday2.value}');
-      print("scheduleList  $scheduleList");
-      print("scheduleList  ${hasSecondShift.value}");
-      print("scheduleList  ${scheduleId2}");
+      if (scheduleId2.value != 0) {
+        scheduleList[1] =
+            '${workStart2.value} to ${workEnd2.value}, Restday ${restday2.value}';
+      }
 
       if (data['current_attendance_record'] != null) {
+        print(data['current_attendance_record']);
         attendance =
             AttendanceRecord.fromJson(data['current_attendance_record']).obs;
       } else {
