@@ -5,6 +5,7 @@ import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:flutter/widgets.dart';
@@ -121,61 +122,99 @@ class _InOutPageState extends State<InOutPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Choose shift',
-                  style: TextStyle(
+                Text(
+                  _homeController.isDropdownEnable.isTrue
+                      ? 'Choose shift'
+                      : "Today's shift",
+                  style: const TextStyle(
                     color: gray,
                     fontSize: 14,
                   ),
                 ),
                 const SizedBox(height: 10),
-                DropdownMenu<String>(
-                  width: size.width * .9,
-                  hintText: "-Select-",
-                  errorText: reasonError,
-                  enabled: _homeController.isDropdownEnable.isTrue,
-                  textStyle: const TextStyle(color: primaryBlue, fontSize: 13),
-                  initialSelection: initialDropdownString,
-                  inputDecorationTheme: InputDecorationTheme(
-                    isDense: true,
-                    constraints:
-                        BoxConstraints.tight(const Size.fromHeight(40)),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 10,
+                Visibility(
+                  visible: _homeController.isMobileUser.isFalse,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: gray),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    hintStyle: const TextStyle(color: gray, fontSize: 13),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: gray),
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: gray),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _homeController.scheduleList.first,
+                          style:
+                              const TextStyle(color: primaryBlue, fontSize: 13),
+                        ),
+                        const SizedBox(height: 5),
+                        Visibility(
+                          visible: _homeController.hasSecondShift.isTrue,
+                          child: Text(
+                            _homeController.scheduleList.last,
+                            style: const TextStyle(
+                                color: primaryBlue, fontSize: 13),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  onSelected: (String? value) {
-                    shiftId = value;
-                    _homeController.isSecondShift.value =
-                        _homeController.scheduleList.indexOf(value) != 0;
-                    setState(() {});
-                  },
-                  menuStyle: const MenuStyle(
-                    surfaceTintColor: MaterialStatePropertyAll(Colors.white),
-                    backgroundColor: MaterialStatePropertyAll(Colors.white),
+                ),
+                Visibility(
+                  visible: _homeController.isMobileUser.isTrue,
+                  child: DropdownMenu<String>(
+                    width: size.width * .9,
+                    hintText: "-Select-",
+                    errorText: reasonError,
+                    enabled: _homeController.isDropdownEnable.isTrue,
+                    textStyle:
+                        const TextStyle(color: primaryBlue, fontSize: 13),
+                    initialSelection: initialDropdownString,
+                    inputDecorationTheme: InputDecorationTheme(
+                      isDense: true,
+                      constraints:
+                          BoxConstraints.tight(const Size.fromHeight(40)),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 10,
+                      ),
+                      hintStyle: const TextStyle(color: gray, fontSize: 13),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: gray),
+                      ),
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: gray),
+                      ),
+                    ),
+                    onSelected: (String? value) {
+                      shiftId = value;
+                      _homeController.isSecondShift.value =
+                          _homeController.scheduleList.indexOf(value) != 0;
+                      setState(() {});
+                    },
+                    menuStyle: const MenuStyle(
+                      surfaceTintColor: MaterialStatePropertyAll(Colors.white),
+                      backgroundColor: MaterialStatePropertyAll(Colors.white),
+                    ),
+                    dropdownMenuEntries: _homeController.scheduleList
+                        .map<DropdownMenuEntry<String>>((String value) {
+                      return DropdownMenuEntry<String>(
+                        value: value,
+                        label: value,
+                        labelWidget: Text(
+                          value,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                        style: const ButtonStyle(
+                          foregroundColor:
+                              MaterialStatePropertyAll(primaryBlue),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                  dropdownMenuEntries: _homeController.scheduleList
-                      .map<DropdownMenuEntry<String>>((String value) {
-                    return DropdownMenuEntry<String>(
-                      value: value,
-                      label: value,
-                      labelWidget: Text(
-                        value,
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                      style: const ButtonStyle(
-                        foregroundColor: MaterialStatePropertyAll(primaryBlue),
-                      ),
-                    );
-                  }).toList(),
                 ),
               ],
             ),
