@@ -5,10 +5,8 @@ import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -216,6 +214,20 @@ class _InOutPageState extends State<InOutPage> {
                     }).toList(),
                   ),
                 ),
+                Visibility(
+                  visible: _homeController.hasSecondShift.isTrue &&
+                      _homeController.isClockOut.isTrue,
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      "To see your other shift, you must clock out this shift.",
+                      style: TextStyle(
+                        color: gray,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -225,11 +237,7 @@ class _InOutPageState extends State<InOutPage> {
               children: [
                 const SizedBox(height: 8),
                 Text(
-                  _homeController.isClockInOutComplete.isTrue
-                      ? 'See you tomorrow'
-                      : _homeController.isClockOut.isTrue
-                          ? 'Have a great day at work!'
-                          : 'Begin another day by clocking in.',
+                  _homeController.greetings.value,
                   style: const TextStyle(color: gray, fontSize: 16),
                 ),
               ],

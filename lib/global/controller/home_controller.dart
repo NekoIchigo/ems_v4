@@ -20,11 +20,13 @@ class HomeController extends GetxController {
   final SettingsController _settings = Get.find<SettingsController>();
 
   RxInt scheduleId1 = 0.obs, scheduleId2 = 0.obs, currentScheduleId = 0.obs;
+
   Rx<String> workStart = "??:??".obs,
       workEnd = "??:??".obs,
       workStart2 = "??:??".obs,
       restday = "".obs,
       restday2 = "".obs,
+      greetings = "Begin another day by clocking in.".obs,
       workEnd2 = "??:??".obs;
 
   RxString currentLocation = ''.obs;
@@ -57,6 +59,14 @@ class HomeController extends GetxController {
     workEnd2.value = "??:??";
     restday.value = "";
     restday2.value = "";
+  }
+
+  void decideGreetingsValue() {
+    greetings.value = isClockInOutComplete.isTrue
+        ? 'See you tomorrow'
+        : isClockOut.isTrue
+            ? 'Have a great day at work!'
+            : 'Begin another day by clocking in.';
   }
 
   Future checkNewShift() async {
@@ -99,6 +109,7 @@ class HomeController extends GetxController {
       } else {
         attendance = AttendanceRecord().obs;
       }
+      decideGreetingsValue();
     } else {
       showDialog(
         context: navigatorKey.currentContext!,
@@ -117,6 +128,13 @@ class HomeController extends GetxController {
     }
 
     isLoading.value = false;
+  }
+
+  Future checkCurrentAttendanceRecordBySchedule() async {
+    isLoading.value = true;
+    apiCall.getRequest(apiUrl: 'apiUrl').then((value) {}).whenComplete(() {
+      isLoading.value = false;
+    });
   }
 
   Future setClockInLocation() async {
