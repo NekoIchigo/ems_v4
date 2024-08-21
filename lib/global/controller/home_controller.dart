@@ -103,7 +103,6 @@ class HomeController extends GetxController {
       }
 
       if (data['current_attendance_record'] != null) {
-        print(data['current_attendance_record']);
         attendance =
             AttendanceRecord.fromJson(data['current_attendance_record']).obs;
       } else {
