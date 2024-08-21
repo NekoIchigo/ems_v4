@@ -7,6 +7,7 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -231,17 +232,22 @@ class _InOutPageState extends State<InOutPage> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  _homeController.greetings.value,
-                  style: const TextStyle(color: gray, fontSize: 16),
+          Column(
+            children: [
+              const SizedBox(height: 8),
+              Visibility(
+                visible: _homeController.isFirstShiftComplete.isTrue,
+                child: const Text(
+                  "Select you next shift to submit your new clock-in.",
+                  style: TextStyle(color: gray, fontSize: 16),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _homeController.greetings.value,
+                style: const TextStyle(color: gray, fontSize: 16),
+              ),
+            ],
           )
         ],
       ),
