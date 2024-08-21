@@ -41,6 +41,7 @@ class HomeController extends GetxController {
       isSecondShift = false.obs,
       hasSecondShift = false.obs,
       isDropdownEnable = false.obs,
+      isFirstShiftComplete = false.obs,
       isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
