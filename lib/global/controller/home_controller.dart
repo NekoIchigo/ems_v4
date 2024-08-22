@@ -132,7 +132,17 @@ class HomeController extends GetxController {
 
   Future checkCurrentAttendanceRecordBySchedule() async {
     isLoading.value = true;
-    apiCall.getRequest(apiUrl: 'apiUrl').then((value) {}).whenComplete(() {
+    apiCall.getRequest(apiUrl: 'check-attendance-shift', parameters: {
+      'schedule_id':
+          isSecondShift.isTrue ? scheduleId2.value : scheduleId1.value,
+    }).then((response) {
+      if (response.containsKey('success') && response['success']) {
+        var data = response['data'];
+
+        isFirstShiftComplete.value = data['is_shift_complete'];
+        isClockOut.value = data['is_clockout'];
+      }
+    }).whenComplete(() {
       isLoading.value = false;
     });
   }

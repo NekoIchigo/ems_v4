@@ -7,7 +7,6 @@ import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -174,8 +173,10 @@ class _InOutPageState extends State<InOutPage> {
                     initialSelection: initialDropdownString,
                     inputDecorationTheme: InputDecorationTheme(
                       isDense: true,
-                      constraints:
-                          BoxConstraints.tight(const Size.fromHeight(40)),
+                      errorMaxLines: 1,
+                      constraints: BoxConstraints.tight(
+                        Size.fromHeight(reasonError != null ? 63 : 40),
+                      ),
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 10,
@@ -187,9 +188,15 @@ class _InOutPageState extends State<InOutPage> {
                       border: const OutlineInputBorder(
                         borderSide: BorderSide(color: gray),
                       ),
+                      errorBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: colorError),
+                      ),
                     ),
                     onSelected: (String? value) {
                       shiftId = value;
+                      _homeController.checkCurrentAttendanceRecordBySchedule();
+                      reasonError = null;
+                      initialDropdownString = value;
                       _homeController.isSecondShift.value =
                           _homeController.scheduleList.indexOf(value) != 0;
                       setState(() {});
@@ -293,18 +300,25 @@ class _InOutPageState extends State<InOutPage> {
                                         : colorSuccess,
                               ),
                               onPressed: () {
-                                if (_homeController.isClockOut.isFalse) {
-                                  _homeController
-                                      .setClockInLocation()
-                                      .then((value) {
-                                    context.push('/info');
-                                  });
+                                if (_homeController.isDropdownEnable.isTrue) {
+                                  if (initialDropdownString == null) {
+                                    reasonError = "Please select a shift.";
+                                    setState(() {});
+                                  }
                                 } else {
-                                  _homeController
-                                      .setClockOutLocation()
-                                      .then((value) {
-                                    context.push('/info');
-                                  });
+                                  if (_homeController.isClockOut.isFalse) {
+                                    _homeController
+                                        .setClockInLocation()
+                                        .then((value) {
+                                      context.push('/info');
+                                    });
+                                  } else {
+                                    _homeController
+                                        .setClockOutLocation()
+                                        .then((value) {
+                                      context.push('/info');
+                                    });
+                                  }
                                 }
                               },
                               child: Column(
