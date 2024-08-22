@@ -63,6 +63,15 @@ class HomeController extends GetxController {
   }
 
   void decideGreetingsValue() {
+    if (isMobileUser.isFalse) {
+      greetings.value = "";
+      return;
+    }
+    if (isFirstShiftComplete.isTrue || isSecondShift.isTrue) {
+      greetings.value =
+          "Otherwise, select your first shift to clock in or out again.";
+      return;
+    }
     greetings.value = isClockInOutComplete.isTrue
         ? 'See you tomorrow'
         : isClockOut.isTrue
