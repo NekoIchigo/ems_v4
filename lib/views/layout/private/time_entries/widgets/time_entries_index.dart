@@ -200,6 +200,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       'Within Vicinity',
                                   "IN",
                                   size,
+                                  attendance.source,
                                 ),
                                 const SizedBox(height: 10),
                                 listItem(
@@ -211,6 +212,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                                       'Within Vicinity',
                                   "OUT",
                                   size,
+                                  attendance.source,
                                 ),
                               ],
                             ),
@@ -241,7 +243,8 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
     );
   }
 
-  Widget listItem(String dateTime, bool inOut, String clockType, Size size) {
+  Widget listItem(String dateTime, bool inOut, String clockType, Size size,
+      String? source) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -274,16 +277,26 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
         ),
         Visibility(
           visible: dateTime != "No Record",
-          child: ColorFiltered(
-            colorFilter: ColorFilter.mode(
-                inOut ? colorSuccess : colorError, BlendMode.srcIn),
-            child: SvgPicture.asset(
-              inOut
-                  ? "assets/svg/within_vicinity.svg"
-                  : "assets/svg/outside_vicinity.svg",
-              height: 25,
-            ),
-          ),
+          child: source == "mobile"
+              ? ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                      inOut ? colorSuccess : colorError, BlendMode.srcIn),
+                  child: SvgPicture.asset(
+                    inOut
+                        ? "assets/svg/within_vicinity.svg"
+                        : "assets/svg/outside_vicinity.svg",
+                    height: 25,
+                  ),
+                )
+              : source == "time-sheet"
+                  ? const Icon(
+                      Icons.list_alt_rounded,
+                      color: colorSuccess,
+                    )
+                  : const Icon(
+                      Icons.fingerprint,
+                      color: colorSuccess,
+                    ),
         ),
       ],
     );

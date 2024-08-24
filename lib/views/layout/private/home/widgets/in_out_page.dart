@@ -197,6 +197,7 @@ class _InOutPageState extends State<InOutPage> {
                       _homeController.checkCurrentAttendanceRecordBySchedule();
                       reasonError = null;
                       initialDropdownString = value;
+                      print(initialDropdownString);
                       _homeController.isSecondShift.value =
                           _homeController.scheduleList.indexOf(value) != 0;
                       setState(() {});
@@ -300,11 +301,10 @@ class _InOutPageState extends State<InOutPage> {
                                         : colorSuccess,
                               ),
                               onPressed: () {
-                                if (_homeController.isDropdownEnable.isTrue) {
-                                  if (initialDropdownString == null) {
-                                    reasonError = "Please select a shift.";
-                                    setState(() {});
-                                  }
+                                if (_homeController.isDropdownEnable.isTrue &&
+                                    initialDropdownString == null) {
+                                  reasonError = "Please select a shift.";
+                                  setState(() {});
                                 } else {
                                   if (_homeController.isClockOut.isFalse) {
                                     _homeController
