@@ -47,6 +47,11 @@ class CustomDateBottomsheet extends StatelessWidget {
             height: size.height * .4,
             child: CalendarDatePicker2(
               config: CalendarDatePicker2Config(
+                rangeBidirectional: false,
+                allowSameValueSelection: true,
+                selectableDayPredicate: (day) {
+                  return false;
+                },
                 calendarType: type == "range"
                     ? CalendarDatePicker2Type.range
                     : CalendarDatePicker2Type.single,

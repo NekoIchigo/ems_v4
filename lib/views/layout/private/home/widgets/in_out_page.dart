@@ -197,7 +197,6 @@ class _InOutPageState extends State<InOutPage> {
                       _homeController.checkCurrentAttendanceRecordBySchedule();
                       reasonError = null;
                       initialDropdownString = value;
-                      print(initialDropdownString);
                       _homeController.isSecondShift.value =
                           _homeController.scheduleList.indexOf(value) != 0;
                       setState(() {});
