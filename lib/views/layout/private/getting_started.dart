@@ -28,7 +28,7 @@ class _GettingStartedState extends State<GettingStarted> {
   }
 
   Future loadFunction() async {
-    _homeController.isLoading.value = true;
+    _homeController.isGettingStarted.value = true;
     await _auth.updateEmployeeInfo();
     await _timeEntriesController.getAttendanceList(days: 1);
     await _timeEntriesController.getPreviousClockIn();
@@ -51,7 +51,7 @@ class _GettingStartedState extends State<GettingStarted> {
   Widget build(BuildContext context) {
     return Obx(
       () => Visibility(
-        visible: _homeController.isLoading.value,
+        visible: _homeController.isGettingStarted.value,
         child: Container(
           color: Colors.black.withOpacity(0.7),
           child: Center(

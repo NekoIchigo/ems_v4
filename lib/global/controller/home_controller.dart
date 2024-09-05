@@ -28,6 +28,7 @@ class HomeController extends GetxController {
       workStart2 = "??:??".obs,
       restday = "".obs,
       restday2 = "".obs,
+      initialDropdownString = "".obs,
       greetings = "Begin another day by clocking in.".obs,
       workEnd2 = "??:??".obs;
 
@@ -45,6 +46,7 @@ class HomeController extends GetxController {
       hasSecondShift = false.obs,
       isDropdownEnable = false.obs,
       isFirstShiftComplete = false.obs,
+      isGettingStarted = false.obs,
       isNewShift = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
@@ -83,11 +85,11 @@ class HomeController extends GetxController {
   }
 
   Future checkNewShift() async {
-    isLoading.value = true;
+    isGettingStarted.value = true;
 
     var result = await apiCall.getRequest(
       apiUrl: '/mobile/check-shift/1',
-      catchError: (error) => isLoading.value = false,
+      catchError: (error) => isGettingStarted.value = false,
     );
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
@@ -139,7 +141,7 @@ class HomeController extends GetxController {
       );
     }
 
-    isLoading.value = false;
+    isGettingStarted.value = false;
   }
 
   Future checkCurrentAttendanceRecordBySchedule() async {

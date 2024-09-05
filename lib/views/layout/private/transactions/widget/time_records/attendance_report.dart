@@ -20,11 +20,11 @@ class _AttendanceReportState extends State<AttendanceReport> {
 
   TextStyle labelStyle = const TextStyle(
     color: gray,
-    fontSize: 12,
+    fontSize: 11,
   );
   TextStyle valueStyle = const TextStyle(
     color: primaryBlue,
-    fontSize: 12,
+    fontSize: 11,
   );
 
   @override
@@ -113,18 +113,16 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                       ],
                                     ),
                                     const Divider(),
+                                    rowItem('Schedule', scheduleName),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
+                                          mainAxisSize: MainAxisSize.max,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            rowItem(
-                                              'Schedule',
-                                              scheduleName,
-                                            ),
                                             rowItem(
                                               'Clock In',
                                               attendanceMaster['clock_in_at'] ??
@@ -148,6 +146,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                           ],
                                         ),
                                         Column(
+                                          mainAxisSize: MainAxisSize.max,
                                           children: [
                                             rowItem(
                                               'OT',
@@ -192,6 +191,8 @@ class _AttendanceReportState extends State<AttendanceReport> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
             width: size.width * .23,
