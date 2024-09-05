@@ -30,27 +30,15 @@ class _InOutPageState extends State<InOutPage> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   late DateTime currentTime;
   late String date, greetings;
-  String? reasonError, shiftId = "", initialDropdownString;
+  String? reasonError, shiftId = "";
 
   @override
   void initState() {
     super.initState();
-    initFunctions();
 
     currentTime = _settings.currentTime.value;
     date = DateFormat("EEEE, MMM dd y").format(currentTime);
     greetings = _dateTimeUtils.getGreeting(currentTime.hour);
-  }
-
-  Future initFunctions() async {
-    if (_homeController.isDropdownEnable.isFalse) {
-      initialDropdownString = _homeController.scheduleList.first;
-      if (_homeController.attendance.value.scheduleId != null &&
-          int.parse(_homeController.attendance.value.scheduleId!) ==
-              _homeController.scheduleId2.value) {
-        initialDropdownString = _homeController.scheduleList[1];
-      }
-    }
   }
 
   @override
@@ -168,7 +156,10 @@ class _InOutPageState extends State<InOutPage> {
                     enabled: _homeController.isDropdownEnable.isTrue,
                     textStyle:
                         const TextStyle(color: primaryBlue, fontSize: 13),
-                    initialSelection: initialDropdownString,
+                    initialSelection:
+                        _homeController.initialDropdownString.value != ""
+                            ? _homeController.initialDropdownString.value
+                            : null,
                     inputDecorationTheme: InputDecorationTheme(
                       isDense: true,
                       errorMaxLines: 1,
@@ -194,7 +185,7 @@ class _InOutPageState extends State<InOutPage> {
                       shiftId = value;
                       _homeController.checkCurrentAttendanceRecordBySchedule();
                       reasonError = null;
-                      initialDropdownString = value;
+                      _homeController.initialDropdownString.value = value ?? "";
                       _homeController.isSecondShift.value =
                           _homeController.scheduleList.indexOf(value) != 0;
                       setState(() {});
@@ -299,7 +290,9 @@ class _InOutPageState extends State<InOutPage> {
                               ),
                               onPressed: () {
                                 if (_homeController.isDropdownEnable.isTrue &&
-                                    initialDropdownString == null) {
+                                    _homeController
+                                            .initialDropdownString.value ==
+                                        "") {
                                   reasonError = "Please select a shift.";
                                   setState(() {});
                                 } else {
