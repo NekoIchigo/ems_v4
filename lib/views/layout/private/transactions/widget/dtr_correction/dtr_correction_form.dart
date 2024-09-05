@@ -48,11 +48,11 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _dtrCorrection.transactionData.value = {"id": "0"};
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _dtrCorrection.transactionData.value = {"id": "0"};
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

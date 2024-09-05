@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
@@ -38,6 +40,7 @@ class HomeController extends GetxController {
       isClockInOutComplete = false.obs,
       isUserSick = false.obs,
       isMobileUser = false.obs,
+      isShowDropDown = false.obs,
       isSecondShift = false.obs,
       hasSecondShift = false.obs,
       isDropdownEnable = false.obs,
@@ -88,7 +91,7 @@ class HomeController extends GetxController {
     );
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
-
+      log(data.toString());
       isNewShift.value = data['is_new_shift'];
       isClockInOutComplete.value = data['is_shift_complete'];
       isClockOut.value = data['is_clockout'];
@@ -104,7 +107,7 @@ class HomeController extends GetxController {
 
       hasSecondShift.value = scheduleId2.value != 0;
       isDropdownEnable.value = hasSecondShift.isTrue && isClockOut.isFalse;
-
+      isShowDropDown.value = hasSecondShift.isTrue && isMobileUser.isTrue;
       scheduleList[0] =
           '${workStart.value} to ${workEnd.value}, Restday ${restday.value}';
       if (scheduleId2.value != 0) {

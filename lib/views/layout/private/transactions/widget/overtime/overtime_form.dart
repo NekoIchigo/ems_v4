@@ -48,11 +48,11 @@ class _OvertimeFormState extends State<OvertimeForm> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _overtime.transactionData.value = {"id": "0"};
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _overtime.transactionData.value = {"id": "0"};
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

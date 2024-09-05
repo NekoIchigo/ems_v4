@@ -1,3 +1,7 @@
+import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/home_controller.dart';
+import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,10 +15,11 @@ class GettingStarted extends StatefulWidget {
 }
 
 class _GettingStartedState extends State<GettingStarted> {
-  // final HomeController _homeController = Get.find<HomeController>();
+  final AuthController _auth = Get.find<AuthController>();
+  final HomeController _homeController = Get.find<HomeController>();
+  final SettingsController _settings = Get.find<SettingsController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
-  bool isLoading = true;
 
   @override
   void initState() {
@@ -23,37 +28,26 @@ class _GettingStartedState extends State<GettingStarted> {
   }
 
   Future loadFunction() async {
-    // await _homeController.checkNewShift();
+    _homeController.isLoading.value = true;
+    await _auth.updateEmployeeInfo();
     await _timeEntriesController.getAttendanceList(days: 1);
     await _timeEntriesController.getPreviousClockIn();
-    setState(() {
-      isLoading = false;
-    });
+    await _settings.getServerTime();
+    await _homeController.checkNewShift();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isLoading,
-      child: Container(
-        color: Colors.black.withOpacity(0.7),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                'Getting things started',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              LoadingAnimationWidget.prograssiveDots(
-                color: Colors.white,
-                size: 40,
-              )
-            ],
+    return Obx(
+      () => Visibility(
+        visible: _homeController.isLoading.value,
+        child: Container(
+          color: Colors.black.withOpacity(0.7),
+          child: Center(
+            child: LoadingAnimationWidget.inkDrop(
+              color: primaryBlue,
+              size: 40,
+            ),
           ),
         ),
       ),

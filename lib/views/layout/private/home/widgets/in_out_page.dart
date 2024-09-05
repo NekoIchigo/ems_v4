@@ -43,11 +43,6 @@ class _InOutPageState extends State<InOutPage> {
   }
 
   Future initFunctions() async {
-    await _auth.updateEmployeeInfo();
-    await _timeEntriesController.getPreviousClockIn();
-    await _settings.getServerTime();
-    await _homeController.checkNewShift();
-
     if (_homeController.isDropdownEnable.isFalse) {
       initialDropdownString = _homeController.scheduleList.first;
       if (_homeController.attendance.value.scheduleId != null &&
@@ -131,10 +126,10 @@ class _InOutPageState extends State<InOutPage> {
                 ),
                 const SizedBox(height: 10),
                 Visibility(
-                  visible: _homeController.isMobileUser.isFalse,
+                  visible: _homeController.isShowDropDown.isFalse,
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     width: size.width,
                     decoration: BoxDecoration(
                       border: Border.all(color: gray),
@@ -142,19 +137,22 @@ class _InOutPageState extends State<InOutPage> {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           _homeController.scheduleList.first,
                           style:
                               const TextStyle(color: primaryBlue, fontSize: 13),
                         ),
-                        const SizedBox(height: 5),
                         Visibility(
                           visible: _homeController.hasSecondShift.isTrue,
-                          child: Text(
-                            _homeController.scheduleList.last,
-                            style: const TextStyle(
-                                color: primaryBlue, fontSize: 13),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Text(
+                              _homeController.scheduleList.last,
+                              style: const TextStyle(
+                                  color: primaryBlue, fontSize: 13),
+                            ),
                           ),
                         ),
                       ],
@@ -162,7 +160,7 @@ class _InOutPageState extends State<InOutPage> {
                   ),
                 ),
                 Visibility(
-                  visible: _homeController.isMobileUser.isTrue,
+                  visible: _homeController.isShowDropDown.isTrue,
                   child: DropdownMenu<String>(
                     width: size.width * .9,
                     hintText: "-Select-",
