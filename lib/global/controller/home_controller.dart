@@ -162,10 +162,9 @@ class HomeController extends GetxController {
   }
 
   Future setClockInLocation() async {
-    isLoading.value = true;
     await _settings.checkLocationService('/in_out');
     await _settings.checkLocationPermission('/in_out');
-
+    isLoading.value = true;
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
     var result = await apiCall.postRequest(
@@ -208,10 +207,9 @@ class HomeController extends GetxController {
   }
 
   Future setClockOutLocation() async {
-    isLoading.value = true;
     await _settings.checkLocationService('/in_out');
     await _settings.checkLocationPermission('/in_out');
-
+    isLoading.value = true;
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
     var result = await apiCall.postRequest(
