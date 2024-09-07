@@ -11,6 +11,7 @@ import 'package:ems_v4/views/widgets/dialog/cancel_request_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
+import 'package:ems_v4/views/widgets/inputs/week_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -96,23 +97,24 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                   const SizedBox(height: 15),
                   const NumberLabel(label: "Select the date", number: 1),
                   const SizedBox(height: 15),
-                  CustomDateInput(
-                    type: "range",
-                    fromDate: startDate,
-                    toDate: endDate,
-                    onDateTimeChanged: (value) {
-                      startDate = value[0].toString().split(" ").first;
-                      endDate = value[1].toString().split(" ").first;
-                      _transactionController.getDTROnDateRange(
-                          startDate, endDate);
-                      _scheduleController.fetchScheduleList(value);
-                      setState(() {
-                        dateError = null;
-                      });
-                    },
-                    error: dateError,
-                    child: Container(),
-                  ),
+                  WeekInput(),
+                  // CustomDateInput(
+                  //   type: "range",
+                  //   fromDate: startDate,
+                  //   toDate: endDate,
+                  //   onDateTimeChanged: (value) {
+                  //     startDate = value[0].toString().split(" ").first;
+                  //     endDate = value[1].toString().split(" ").first;
+                  //     _transactionController.getDTROnDateRange(
+                  //         startDate, endDate);
+                  //     _scheduleController.fetchScheduleList(value);
+                  //     setState(() {
+                  //       dateError = null;
+                  //     });
+                  //   },
+                  //   error: dateError,
+                  //   child: Container(),
+                  // ),
                   const SizedBox(height: 15),
                   const NumberLabel(label: "Select new restday", number: 2),
                   const SizedBox(height: 15),
