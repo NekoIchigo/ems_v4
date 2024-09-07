@@ -17,6 +17,7 @@ class MessageController extends GetxController {
   late Rx<WebSocketChannel> channel;
   String? currentChannel;
   RxBool isLoading = false.obs, isListening = false.obs;
+  RxString messagingType = "".obs;
   RxMap channelData = {"message": null}.obs;
   RxList chatHistory = [].obs;
 
@@ -119,7 +120,8 @@ class MessageController extends GetxController {
       };
       final payload = jsonEncode({
         'action': 'message',
-        'channel': currentChannel,
+        'channel': 'ems-chat',
+        // currentChannel,
         'message': payloadMessage,
       });
       channel.value.sink.add(payload);

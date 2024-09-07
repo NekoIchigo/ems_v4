@@ -2,6 +2,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
@@ -33,6 +34,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
   final TextEditingController _reason = TextEditingController();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final MultiSelectController _multiSelectController = MultiSelectController();
+  final MessageController _messaging = Get.find<MessageController>();
   List<ValueItem> restdayList = [
     const ValueItem(label: "Sunday", value: "Sunday"),
     const ValueItem(label: "Monday", value: "Monday"),
@@ -53,6 +55,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
 
   @override
   void initState() {
+    _messaging.messagingType.value = "restday-request-chat";
     if (_changeRestday.transactionData['id'] != 0) {
       fillInValues(_changeRestday.transactionData['data']);
     }

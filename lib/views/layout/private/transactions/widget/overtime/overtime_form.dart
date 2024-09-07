@@ -1,5 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
@@ -35,6 +36,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
   final TextEditingController _totalHours = TextEditingController();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final OvertimeController _overtime = Get.find<OvertimeController>();
+  final MessageController _messaging = Get.find<MessageController>();
   String attendanceDate = "", timeStart = "--:-- --";
   bool isLoading = false;
   List attachments = [];
@@ -42,6 +44,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
 
   @override
   void initState() {
+    _messaging.messagingType.value = "overtime-request-chat";
+
     if (_overtime.transactionData['id'] != 0) {
       fillInValues(_overtime.transactionData['data']);
     }

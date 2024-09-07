@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
+import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/employee_leave.dart';
@@ -30,6 +31,7 @@ class _LeaveFormState extends State<LeaveForm> {
   final AuthController _auth = Get.find<AuthController>();
   final LeaveController _leaveController = Get.find<LeaveController>();
   final TransactionController _transaction = Get.find<TransactionController>();
+  final MessageController _messaging = Get.find<MessageController>();
   int transactionId = 0;
   bool isLoading = false;
   List attachments = [];
@@ -45,6 +47,7 @@ class _LeaveFormState extends State<LeaveForm> {
 
   @override
   void initState() {
+    _messaging.messagingType.value = "leave-request-chat";
     if (_leaveController.transactionData['id'] != 0) {
       fillInValues(_leaveController.transactionData['data']);
     }

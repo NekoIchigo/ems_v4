@@ -119,17 +119,21 @@ class ChangeScheduleController extends GetxController {
   }
 
   Future fetchScheduleList(List<DateTime?> dates) async {
-    await _apiCall.getRequest(
-      apiUrl: "/fetch-employee-schedule-list",
-      parameters: {
-        "company_id": _authController.company.value.id,
-        "employee_id": _authController.employee?.value.id,
-        "from": dates[0],
-        "to": dates[1],
-      },
-      catchError: () {},
-    );
-    isLoading.value = false;
+    _apiCall
+        .getRequest(
+          apiUrl: "/fetch-employee-schedule-list",
+          parameters: {
+            "company_id": _authController.company.value.id,
+            "employee_id": _authController.employee?.value.id,
+            "from": dates[0],
+            "to": dates[1],
+          },
+          catchError: () {},
+        )
+        .then((value) {})
+        .whenComplete(() {
+      isLoading.value = false;
+    });
   }
 
   Future getLogs(int id) async {

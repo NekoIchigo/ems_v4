@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,9 +52,10 @@ class _MessageTabState extends State<MessageTab>
   Widget build(BuildContext context) {
     super.build(context);
     Size size = MediaQuery.of(context).size;
-    return const NoResult();
-    /*
-    Padding(
+    return
+        // const NoResult();
+
+        Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: SingleChildScrollView(
         child: Column(
@@ -207,7 +211,7 @@ class _MessageTabState extends State<MessageTab>
                         parentId: _messaging
                             .chatHistory.firstOrNull["parent_id"]
                             .toString(),
-                        type: "overtime-request-chat",
+                        type: _messaging.messagingType.value,
                       );
                     },
                     label: "Send",
@@ -229,7 +233,7 @@ class _MessageTabState extends State<MessageTab>
           ],
         ),
       ),
-    );*/
+    );
   }
 
   List<Widget> chatRow(isSameUser, size, index, createdAt) {
