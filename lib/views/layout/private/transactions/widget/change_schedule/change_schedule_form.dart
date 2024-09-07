@@ -347,7 +347,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
       "id": isUpdate ? transactionId : null,
       "start_date": dateStart,
       "end_date": dateEnd,
-      "current_schedule_id": null,
+      "current_schedule_id": _scheduleController.currentScheduleId.value,
       "new_schedule_id": _scheduleController.selectedSchedule.value.id,
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,

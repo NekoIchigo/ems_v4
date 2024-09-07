@@ -42,9 +42,11 @@ class _MessageTabState extends State<MessageTab>
 
   void _handleFocusChange() {
     if (_focusNode.hasFocus) {
-      _messaging.sendTypingStatusInChannel(true);
+      _messaging.sendTypingStatusInChannel(
+          true, _messaging.chatHistory.firstOrNull["parent_id"].toString());
     } else {
-      _messaging.sendTypingStatusInChannel(false);
+      _messaging.sendTypingStatusInChannel(
+          false, _messaging.chatHistory.firstOrNull["parent_id"].toString());
     }
   }
 

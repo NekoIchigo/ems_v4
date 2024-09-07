@@ -17,6 +17,7 @@ class ChangeScheduleController extends GetxController {
 
   RxList<Schedule> schedules = [Schedule(id: 0, name: "No Schedule")].obs;
   Rx<Schedule> selectedSchedule = Schedule(id: 0, name: "No Schedule").obs;
+  RxInt currentScheduleId = 0.obs;
   final ApiCall _apiCall = ApiCall();
   RxMap<String, dynamic> errors = {"errors": 0}.obs,
       transactionData = {"id": "0"}.obs;
@@ -121,17 +122,19 @@ class ChangeScheduleController extends GetxController {
   Future fetchScheduleList(List<DateTime?> dates) async {
     _apiCall
         .getRequest(
-          apiUrl: "/fetch-employee-schedule-list",
-          parameters: {
-            "company_id": _authController.company.value.id,
-            "employee_id": _authController.employee?.value.id,
-            "from": dates[0],
-            "to": dates[1],
-          },
-          catchError: () {},
-        )
-        .then((value) {})
-        .whenComplete(() {
+      apiUrl: "/fetch-employee-schedule-list",
+      parameters: {
+        "company_id": _authController.company.value.id,
+        "employee_id": _authController.employee?.value.id,
+        "from": dates[0],
+        "to": dates[1],
+      },
+      catchError: () {},
+    )
+        .then((response) {
+      final data = response["data"];
+      currentScheduleId.value = data['current_sched'];
+    }).whenComplete(() {
       isLoading.value = false;
     });
   }

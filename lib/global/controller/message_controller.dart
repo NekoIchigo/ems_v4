@@ -129,16 +129,16 @@ class MessageController extends GetxController {
     }
   }
 
-  void sendTypingStatusInChannel(bool isTyping) {
+  void sendTypingStatusInChannel(bool isTyping, String parentId) {
     final payloadMessage = {
-      "channel": "leave-request-chat-1",
-      "message": {
-        "type": "leave-request-chat",
-        "parent_id": 1,
-        "user_id": _auth.employee?.value.userId,
-        "user_fullname": _auth.employee?.value.fullName(),
-        "isTyping": isTyping,
-      }
+      // "channel": "${messagingType.value}-$parentId",
+      // "message": {
+      "type": "leave-request-chat",
+      "parent_id": 1,
+      "user_id": _auth.employee?.value.userId,
+      "user_fullname": _auth.employee?.value.fullName(),
+      "isTyping": isTyping,
+      // }
     };
     final payload = jsonEncode({
       'action': 'message',
