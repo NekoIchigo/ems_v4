@@ -91,7 +91,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                           onDateTimeChanged: (value) {
                             dateStart = value[0].toString().split(" ")[0];
                             dateEnd = value[1].toString().split(" ")[0];
-                            _scheduleController.fetchScheduleList(value);
+                            _scheduleController.fetchScheduleList(
+                              DateTimeRange(
+                                  start: DateTime.parse(dateStart!),
+                                  end: DateTime.parse(dateEnd!)),
+                            );
                             setState(() {
                               dateError = null;
                             });

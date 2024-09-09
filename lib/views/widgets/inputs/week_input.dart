@@ -5,11 +5,14 @@ import 'package:ems_v4/router/router.dart';
 import 'package:flutter/material.dart';
 
 class WeekInput extends StatefulWidget {
+  final bool readOnly;
+  final ValueChanged<DateTimeRange?> onDateTimeChanged;
+
   const WeekInput({
     super.key,
     this.readOnly = false,
+    required this.onDateTimeChanged,
   });
-  final bool readOnly;
 
   @override
   State<WeekInput> createState() => _WeekInputState();
@@ -28,6 +31,7 @@ class _WeekInputState extends State<WeekInput> {
     setState(() {
       _selectedWeekRange =
           DateTimeRange(start: firstDayOfWeek, end: lastDayOfWeek);
+      widget.onDateTimeChanged(_selectedWeekRange);
     });
   }
 

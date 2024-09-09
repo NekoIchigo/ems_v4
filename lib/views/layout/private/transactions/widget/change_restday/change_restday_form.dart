@@ -63,11 +63,11 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _changeRestday.transactionData.value = {"id": "0"};
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _changeRestday.transactionData.value = {"id": "0"};
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,18 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                   const SizedBox(height: 15),
                   const NumberLabel(label: "Select the date", number: 1),
                   const SizedBox(height: 15),
-                  WeekInput(),
+                  WeekInput(
+                    onDateTimeChanged: (value) {
+                      startDate = value?.start.toString().split(" ").first;
+                      endDate = value?.end.toString().split(" ").first;
+                      _transactionController.getDTROnDateRange(
+                          startDate, endDate);
+                      _scheduleController.fetchScheduleList(value);
+                      setState(() {
+                        dateError = null;
+                      });
+                    },
+                  ),
                   // CustomDateInput(
                   //   type: "range",
                   //   fromDate: startDate,
@@ -245,7 +256,10 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
 
       _transactionController.getDTROnDateRange(startDate, endDate);
       _scheduleController.fetchScheduleList(
-          [DateTime.tryParse(startDate!), DateTime.tryParse(endDate!)]);
+        DateTimeRange(
+            start: DateTime.tryParse(startDate!)!,
+            end: DateTime.tryParse(endDate!)!),
+      );
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _multiSelectController.setOptions([
           const ValueItem(label: "Sunday", value: "Sunday"),
