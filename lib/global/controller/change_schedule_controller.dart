@@ -34,7 +34,7 @@ class ChangeScheduleController extends GetxController {
             apiUrl: "/save-change-schedule", data: data, catchError: () {})
         .then((result) {
       if (result.containsKey('success') && result['success']) {
-        getAllChangeSchedule(30, DateTime.now(), DateTime.now());
+        getAllChangeSchedule(7, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push("/transaction_result", extra: {
           "result": result["success"],
           "message": result["message"],
@@ -74,7 +74,7 @@ class ChangeScheduleController extends GetxController {
     )
         .then((result) {
       if (result.containsKey('success') && result['success']) {
-        getAllChangeSchedule(30, DateTime.now(), DateTime.now());
+        getAllChangeSchedule(7, DateTime.now(), DateTime.now());
         schedules.value = result["data"]
             .map<Schedule>((schedule) =>
                 Schedule(id: schedule['id'], name: schedule['name']))
@@ -167,7 +167,7 @@ class ChangeScheduleController extends GetxController {
       )
           .then((result) {
         Navigator.of(context).pop();
-        getAllChangeSchedule(30, DateTime.now(), DateTime.now());
+        getAllChangeSchedule(7, DateTime.now(), DateTime.now());
         navigatorKey.currentContext!.push("/transaction_result", extra: {
           "result": result["success"],
           "message": result["message"],
@@ -188,7 +188,7 @@ class ChangeScheduleController extends GetxController {
       catchError: () {},
     )
         .then((result) {
-      getAllChangeSchedule(30, DateTime.now(), DateTime.now());
+      getAllChangeSchedule(7, DateTime.now(), DateTime.now());
       navigatorKey.currentContext!.push(
         "/transaction_result",
         extra: {

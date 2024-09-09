@@ -60,6 +60,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               ),
               const SizedBox(height: 20),
               MonthFilterDropdown(
+                hasToday: false,
                 onChanged: (value) {
                   DateTime startDate = DateTime.now();
                   DateTime endDate = DateTime.now();

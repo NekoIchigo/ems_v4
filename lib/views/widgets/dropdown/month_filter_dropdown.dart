@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 
 class MonthFilterDropdown extends StatefulWidget {
   final Function(dynamic) onChanged;
-  const MonthFilterDropdown({super.key, required this.onChanged});
+  final bool hasToday;
+  const MonthFilterDropdown({
+    super.key,
+    required this.onChanged,
+    this.hasToday = true,
+  });
 
   @override
   State<MonthFilterDropdown> createState() => _MonthFilterDropdownState();
@@ -27,6 +32,7 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
   void initState() {
     super.initState();
     dropdownValue = _list[2];
+    if (!widget.hasToday) _list.removeAt(0);
   }
 
   @override
