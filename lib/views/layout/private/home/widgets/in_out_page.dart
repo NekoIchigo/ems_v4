@@ -61,7 +61,6 @@ class _InOutPageState extends State<InOutPage> {
             children: [
               greetingWidget(size),
               buttonSection(size),
-
               additionalShift(size),
               // announcementSection(),
             ],
@@ -288,7 +287,10 @@ class _InOutPageState extends State<InOutPage> {
                                         ? colorError
                                         : colorSuccess,
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                await _settings.checkLocationService('/in_out');
+                                await _settings
+                                    .checkLocationPermission('/in_out');
                                 if (_homeController.isDropdownEnable.isTrue &&
                                     _homeController
                                             .initialDropdownString.value ==

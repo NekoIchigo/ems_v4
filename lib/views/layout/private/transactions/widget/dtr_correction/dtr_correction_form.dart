@@ -294,7 +294,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
             Row(
               children: [
                 const SizedBox(
-                  width: 70,
+                  width: 35,
                   child: Text("DTR", style: defaultStyle),
                 ),
                 Expanded(

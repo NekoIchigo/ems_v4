@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:ems_v4/global/controller/auth_controller.dart';
-import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
@@ -19,7 +18,7 @@ class HomeController extends GetxController {
 
   final ApiCall apiCall = ApiCall();
   final DateTimeUtils dateTimeUtils = DateTimeUtils();
-  final SettingsController _settings = Get.find<SettingsController>();
+  // final SettingsController _settings = Get.find<SettingsController>();
 
   RxInt scheduleId1 = 0.obs, scheduleId2 = 0.obs, currentScheduleId = 0.obs;
 
@@ -162,8 +161,6 @@ class HomeController extends GetxController {
   }
 
   Future setClockInLocation() async {
-    await _settings.checkLocationService('/in_out');
-    await _settings.checkLocationPermission('/in_out');
     isLoading.value = true;
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
@@ -175,6 +172,7 @@ class HomeController extends GetxController {
       apiUrl: '/mobile/calculate-location/${_authService.employee!.value.id}',
       catchError: (error) => isLoading.value = false,
     );
+    isLoading.value = false;
 
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
@@ -202,13 +200,9 @@ class HomeController extends GetxController {
         },
       );
     }
-
-    isLoading.value = false;
   }
 
   Future setClockOutLocation() async {
-    await _settings.checkLocationService('/in_out');
-    await _settings.checkLocationPermission('/in_out');
     isLoading.value = true;
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
@@ -220,6 +214,7 @@ class HomeController extends GetxController {
       apiUrl: '/mobile/calculate-location/${_authService.employee!.value.id}',
       catchError: (error) => isLoading.value = false,
     );
+    isLoading.value = false;
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
       isInsideVicinity.value = data['is_inside_vicinity'];
@@ -246,8 +241,6 @@ class HomeController extends GetxController {
         },
       );
     }
-
-    isLoading.value = false;
   }
 
   Future clockIn({

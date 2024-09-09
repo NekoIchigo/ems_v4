@@ -10,6 +10,7 @@ const bgSecondaryBlue = Color(0xFF2465C7);
 const bgSky = Color(0xFFF3F8FF);
 const bgLightGray = Color(0xFFECECEC);
 const lightGray = Color(0xFFD3D3D3);
+const borderGray = Color(0xFFEAEAEA);
 const darkGray = Color(0xFF404040);
 const gray = Color(0xFF888888);
 const orange = Color(0xFFF9A425);
