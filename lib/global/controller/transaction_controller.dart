@@ -46,9 +46,10 @@ class TransactionController extends GetxController {
     )
         .then((result) {
       if (result.containsKey("success") && result["success"] == true) {
-        dtrRange.value = transactionData["dtr"];
-        clockInAt.value = transactionData["clock_in"];
-        clockOutAt.value = transactionData["clock_out"];
+        final data = result['data'];
+        dtrRange.value = data["dtr"];
+        clockInAt.value = data["clock_in"];
+        clockOutAt.value = data["clock_out"];
       }
     }).whenComplete(() => isLoading.value = false);
   }
