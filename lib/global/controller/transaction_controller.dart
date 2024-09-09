@@ -7,7 +7,10 @@ class TransactionController extends GetxController {
   ApiCall apiCall = ApiCall();
   RxList schedules = [].obs;
   RxMap transactionData = {}.obs;
-  RxString dtrRange = "00:00 to 00:00".obs, scheduleName = "Schedule name".obs;
+  RxString dtrRange = "00:00 to 00:00".obs,
+      scheduleName = "Schedule name".obs,
+      clockInAt = "00:00".obs,
+      clockOutAt = "00:00".obs;
   final int routerKey = 3;
 
   Future getDTROnDate(String? date) async {
@@ -24,8 +27,29 @@ class TransactionController extends GetxController {
       if (result.containsKey("success") && result["success"] == true) {
         schedules.value = result["data"]["schedules"];
         transactionData.value = result["data"];
-        dtrRange.value = transactionData["dtr"];
+        // dtrRange.value = transactionData["dtr"];
         scheduleName.value = transactionData["schedules"][0]["name"];
+      }
+    }).whenComplete(() => isLoading.value = false);
+  }
+
+  Future getDTRBySchedule(int scheduleId, String? date) async {
+    isLoading.value = true;
+    apiCall
+        .postRequest(
+      apiUrl: "/mobile//dtr/get-by-schedule",
+      data: {
+        "schedule_id": scheduleId,
+        "attendance_date": date,
+      },
+      catchError: (error) {},
+    )
+        .then((result) {
+      if (result.containsKey("success") && result["success"] == true) {
+        transactionData.value = result["data"];
+        dtrRange.value = transactionData["dtr"];
+        clockInAt.value = transactionData["clock_in"];
+        clockOutAt.value = transactionData["clock_out"];
       }
     }).whenComplete(() => isLoading.value = false);
   }

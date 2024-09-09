@@ -25,7 +25,7 @@ class DTRCorrectionForm extends StatefulWidget {
 
 class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   late Size size;
-  String _clockin = "--:-- --", _clockout = "--:-- --", attendanceDate = "";
+  String attendanceDate = "";
   String? fromDate, dateError, timeChangeError, reasonError;
   int transactionId = 0;
   List attachments = [];
@@ -39,6 +39,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   final AuthController _auth = Get.find<AuthController>();
   final DTRCorrectionController _dtrCorrection =
       Get.find<DTRCorrectionController>();
+  int selectedScheduleId = 0;
 
   @override
   void initState() {
@@ -139,15 +140,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                               ),
                             ),
                             onSelected: (value) {
-                              // _dtrCorrection
-                              //     .checkCurrentAttendanceRecordBySchedule();
-                              // reasonError = null;
-                              // _dtrCorrection.initialDropdownString.value =
-                              //     value ?? "";
-                              // _dtrCorrection.isSecondShift.value =
-                              //     _dtrCorrection.scheduleList.indexOf(value) !=
-                              //         0;
-                              setState(() {});
+                              selectedScheduleId = value ?? 0;
+                              _transactionController.getDTRBySchedule(
+                                  selectedScheduleId, attendanceDate);
                             },
                             menuStyle: const MenuStyle(
                               surfaceTintColor:
@@ -336,9 +331,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                   child: _transactionController.isLoading.isTrue
                       ? const CustomLoader(height: 35)
                       : TimeInput(
-                          value: _clockin,
+                          value: _transactionController.clockInAt.value,
                           selectedTime: (value) async {
-                            _clockin = _dateTimeUtils.time12to24(value);
+                            _transactionController.clockInAt.value =
+                                _dateTimeUtils.time12to24(value);
                             setState(() {
                               timeChangeError = null;
                             });
@@ -370,9 +366,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                   child: _transactionController.isLoading.isTrue
                       ? const CustomLoader(height: 35)
                       : TimeInput(
-                          value: _clockout,
+                          value: _transactionController.clockOutAt.value,
                           selectedTime: (value) async {
-                            _clockout = _dateTimeUtils.time12to24(value);
+                            _transactionController.clockOutAt.value =
+                                _dateTimeUtils.time12to24(value);
                             setState(() {
                               timeChangeError = null;
                             });
@@ -396,11 +393,11 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
       _reason.text = data["reason"];
       fromDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['attendance_date']));
-      _clockin = _dateTimeUtils.formatTime(
+      _transactionController.clockInAt.value = _dateTimeUtils.formatTime(
         dateTime: DateTime.tryParse(data["clock_in_at"]),
       );
       attendanceDate = fromDate ?? "";
-      _clockout = _dateTimeUtils.formatTime(
+      _transactionController.clockOutAt.value = _dateTimeUtils.formatTime(
         dateTime: DateTime.tryParse(data["clock_out_at"]),
       );
 
@@ -423,7 +420,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         dateError = 'This field is required.';
         hasError = true;
       }
-      if (_clockin == "--:-- --" && _clockout == "--:-- --") {
+      if (_transactionController.clockInAt.value == "00:00" &&
+          _transactionController.clockOutAt.value == "00:00") {
         timeChangeError = 'There must be a changes in this field';
         hasError = true;
       }
@@ -444,8 +442,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
           "schedule_id": _transactionController.schedules.firstOrNull["id"],
           "attendance_date": attendanceDate,
           "attendance_record_id": null,
-          "clock_in": _clockin,
-          "clock_out": _clockout,
+          "clock_in": _transactionController.clockInAt.value,
+          "clock_out": _transactionController.clockOutAt.value,
           "reason": _reason.text,
         }
       ],
