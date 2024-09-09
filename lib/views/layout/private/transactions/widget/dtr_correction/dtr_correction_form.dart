@@ -114,14 +114,13 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           child: DropdownMenu(
                             width: size.width * .84,
                             hintText: "-Select-",
-                            errorText: reasonError,
                             textStyle: const TextStyle(
                                 color: primaryBlue, fontSize: 13),
                             inputDecorationTheme: InputDecorationTheme(
                               isDense: true,
                               errorMaxLines: 1,
                               constraints: BoxConstraints.tight(
-                                Size.fromHeight(reasonError != null ? 63 : 40),
+                                const Size.fromHeight(40),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10,

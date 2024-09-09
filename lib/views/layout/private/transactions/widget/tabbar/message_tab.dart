@@ -81,12 +81,15 @@ class _MessageTabState extends State<MessageTab>
                         var data = snapshot.data;
                         bool? isTyping = false;
                         String? userFullName = '';
+                        int? userId;
                         if (snapshot.data is String) {
                           data = jsonDecode(snapshot.data);
-                          isTyping = data['message']['isTyping'];
+                          userId = data['message']['user_id'];
+                          isTyping = userId != _auth.employee?.value.userId
+                              ? data['message']['isTyping']
+                              : false;
                           userFullName = data['message']['user_fullname'];
                         }
-                        //
                         return Obx(
                           () => Stack(
                             children: [
@@ -215,14 +218,14 @@ class _MessageTabState extends State<MessageTab>
                             .toString(),
                         type: _messaging.messagingType.value,
                       );
+                      _messaging.fetchChatHistory(
+                          _messaging.chatHistory.firstOrNull["parent_id"]
+                              .toString(),
+                          _messaging.messagingType.value);
                     },
                     label: "Send",
                     radius: 5,
                     isLoading: _messaging.isLoading.isTrue,
-                    icon: const Icon(
-                      Icons.send_rounded,
-                      color: Colors.white,
-                    ),
                     size: Size(size.width * .4, 20),
                   ),
                 )
