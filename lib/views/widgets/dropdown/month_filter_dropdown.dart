@@ -31,8 +31,8 @@ class _MonthFilterDropdownState extends State<MonthFilterDropdown> {
   @override
   void initState() {
     super.initState();
-    dropdownValue = _list[2];
     if (!widget.hasToday) _list.removeAt(0);
+    dropdownValue = _list[0];
   }
 
   @override
