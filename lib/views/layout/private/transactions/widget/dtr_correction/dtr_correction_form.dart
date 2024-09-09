@@ -143,6 +143,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                               selectedScheduleId = value ?? 0;
                               _transactionController.getDTRBySchedule(
                                   selectedScheduleId, attendanceDate);
+                              setState(() {});
                             },
                             menuStyle: const MenuStyle(
                               surfaceTintColor:
@@ -286,28 +287,30 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         ),
         child: Column(
           children: [
-            Row(
-              children: [
-                const SizedBox(
-                  width: 35,
-                  child: Text("DTR", style: defaultStyle),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: bgLightGray,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: Text(
-                      _transactionController.dtrRange.value,
-                      overflow: TextOverflow.ellipsis,
-                      style: defaultStyle,
-                    ),
+            _transactionController.isLoading.isTrue
+                ? const CustomLoader(height: 35)
+                : Row(
+                    children: [
+                      const SizedBox(
+                        width: 35,
+                        child: Text("DTR", style: defaultStyle),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: bgLightGray,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          child: Text(
+                            _transactionController.dtrRange.value,
+                            overflow: TextOverflow.ellipsis,
+                            style: defaultStyle,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
             const SizedBox(height: 8),
             Row(
               children: [
