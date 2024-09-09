@@ -51,7 +51,7 @@ class DateTimeUtils {
   String fromLaravelDateFormat(date) {
     DateTime dateTime = DateTime.parse(date);
 
-    return DateFormat("MMMM dd, yyyy").format(dateTime);
+    return DateFormat("MM/dd/yyyy").format(dateTime);
   }
 
   double timeToDecimal(String time) {

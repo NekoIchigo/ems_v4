@@ -10,7 +10,6 @@ import 'package:ems_v4/views/widgets/dialog/cancel_request_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
-import 'package:ems_v4/views/widgets/inputs/schedule_drt_.dart';
 import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +103,78 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           child: Container(),
                         ),
                         const SizedBox(height: 15),
-                        const NumberLabel(label: "Edit time record", number: 2),
+                        const NumberLabel(
+                          label: "Select a Schedule",
+                          number: 2,
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25.0),
+                          child: DropdownMenu(
+                            width: size.width * .84,
+                            hintText: "-Select-",
+                            errorText: reasonError,
+                            textStyle: const TextStyle(
+                                color: primaryBlue, fontSize: 13),
+                            inputDecorationTheme: InputDecorationTheme(
+                              isDense: true,
+                              errorMaxLines: 1,
+                              constraints: BoxConstraints.tight(
+                                Size.fromHeight(reasonError != null ? 63 : 40),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 10,
+                              ),
+                              hintStyle:
+                                  const TextStyle(color: gray, fontSize: 13),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: gray),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(color: gray),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: colorError),
+                              ),
+                            ),
+                            onSelected: (value) {
+                              // _dtrCorrection
+                              //     .checkCurrentAttendanceRecordBySchedule();
+                              // reasonError = null;
+                              // _dtrCorrection.initialDropdownString.value =
+                              //     value ?? "";
+                              // _dtrCorrection.isSecondShift.value =
+                              //     _dtrCorrection.scheduleList.indexOf(value) !=
+                              //         0;
+                              setState(() {});
+                            },
+                            menuStyle: const MenuStyle(
+                              surfaceTintColor:
+                                  MaterialStatePropertyAll(Colors.white),
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.white),
+                            ),
+                            dropdownMenuEntries: _transactionController
+                                .schedules
+                                .map<DropdownMenuEntry>((value) {
+                              return DropdownMenuEntry(
+                                value: value['id'],
+                                label: value['name'],
+                                labelWidget: Text(
+                                  value['name'],
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                                style: const ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStatePropertyAll(primaryBlue),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        const NumberLabel(label: "Edit time record", number: 3),
                         const SizedBox(height: 15),
                         formField2(),
                         Visibility(
@@ -127,6 +197,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         ),
                         const SizedBox(height: 15),
                         ReasonInput(
+                          number: 4,
                           readOnly: false,
                           controller: _reason,
                           error: reasonError,
@@ -220,10 +291,27 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         ),
         child: Column(
           children: [
-            ScheduleDTR(
-              isLoading: _transactionController.isLoading.value,
-              scheduleName: _transactionController.scheduleName.value,
-              dtrRange: _transactionController.dtrRange.value,
+            Row(
+              children: [
+                const SizedBox(
+                  width: 70,
+                  child: Text("DTR", style: defaultStyle),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: bgLightGray,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Text(
+                      _transactionController.dtrRange.value,
+                      overflow: TextOverflow.ellipsis,
+                      style: defaultStyle,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Row(

@@ -33,7 +33,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       "icon": const Icon(
         Icons.calendar_month,
         size: 50,
-        color: bgPrimaryBlue,
+        color: primaryBlue,
       ),
       "path": "/time_records",
     },
@@ -42,7 +42,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       "icon": const Icon(
         Icons.edit_calendar_rounded,
         size: 50,
-        color: bgPrimaryBlue,
+        color: primaryBlue,
       ),
       "path": "/dtr_correction",
     },
@@ -51,6 +51,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       "icon": SvgPicture.asset(
         "assets/svg/leave.svg",
         height: 45,
+        color: primaryBlue,
       ),
       "path": "/leave",
     },
@@ -59,7 +60,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       "icon": const Icon(
         Icons.more_time,
         size: 50,
-        color: bgPrimaryBlue,
+        color: primaryBlue,
       ),
       "path": "/overtime",
     },
@@ -68,6 +69,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       "icon": SvgPicture.asset(
         "assets/svg/change_schedule.svg",
         height: 50,
+        color: primaryBlue,
       ),
       "path": "/change_schedule",
     },
@@ -76,6 +78,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       "icon": SvgPicture.asset(
         "assets/svg/change_restday.svg",
         height: 50,
+        color: primaryBlue,
       ),
       "path": "/change_restday",
     },

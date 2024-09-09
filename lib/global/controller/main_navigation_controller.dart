@@ -18,7 +18,7 @@ class MainNavigationController extends GetxController {
       activeIcon: Padding(
         padding: const EdgeInsets.all(15.0),
         child: ColorFiltered(
-          colorFilter: const ColorFilter.mode(darkGray, BlendMode.srcIn),
+          colorFilter: const ColorFilter.mode(bgPrimaryBlue, BlendMode.srcIn),
           child: Lottie.asset(
             "assets/lottie/Home.json",
             repeat: false,
@@ -38,7 +38,7 @@ class MainNavigationController extends GetxController {
       activeIcon: Padding(
         padding: const EdgeInsets.all(15.0),
         child: ColorFiltered(
-          colorFilter: const ColorFilter.mode(darkGray, BlendMode.srcIn),
+          colorFilter: const ColorFilter.mode(bgPrimaryBlue, BlendMode.srcIn),
           child: Lottie.asset(
             "assets/lottie/Calendar.json",
             repeat: false,
@@ -51,7 +51,7 @@ class MainNavigationController extends GetxController {
       icon: Icons.edit_document,
       activeIcon: Icon(
         Icons.edit_document,
-        color: darkGray,
+        color: bgPrimaryBlue,
       ),
     ),
     TabItem(
@@ -66,7 +66,7 @@ class MainNavigationController extends GetxController {
       activeIcon: Padding(
         padding: const EdgeInsets.all(15.0),
         child: ColorFiltered(
-          colorFilter: const ColorFilter.mode(darkGray, BlendMode.srcIn),
+          colorFilter: const ColorFilter.mode(bgPrimaryBlue, BlendMode.srcIn),
           child: Lottie.asset(
             "assets/lottie/Bell.json",
             repeat: false,
@@ -87,7 +87,7 @@ class MainNavigationController extends GetxController {
       activeIcon: Padding(
         padding: const EdgeInsets.all(15.0),
         child: ColorFiltered(
-          colorFilter: const ColorFilter.mode(darkGray, BlendMode.srcIn),
+          colorFilter: const ColorFilter.mode(bgPrimaryBlue, BlendMode.srcIn),
           child: Lottie.asset(
             "assets/lottie/Account.json",
             repeat: false,
