@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/message_controller.dart';
+import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/transaction_item.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/transactions_tabs.dart';
@@ -19,6 +20,8 @@ class DTRCorrection extends StatefulWidget {
 class _DTRCorrectionState extends State<DTRCorrection> {
   final DTRCorrectionController _correctionController =
       Get.find<DTRCorrectionController>();
+  final TransactionController _transactionController =
+      Get.find<TransactionController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   final MessageController _messaging = Get.find<MessageController>();
 
@@ -84,7 +87,9 @@ class _DTRCorrectionState extends State<DTRCorrection> {
                       channelName: "dtr-request-chat-${item.id}",
                     );
                     _messaging.fetchChatHistory(
-                        item.id.toString(), "dtr-request-chat");
+                      item.id.toString(),
+                      "dtr-request-chat",
+                    );
                     _correctionController.transactionData = item.toMap().obs;
                     context.push("/dtr_correction_form", extra: item.toMap());
                   },
@@ -105,6 +110,9 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
+                _correctionController.transactionData.value = {"id": "0"};
+                _transactionController.clockOutAt.value = "00:00";
+                _transactionController.clockInAt.value = "00:00";
                 context.push("/dtr_correction_form");
               },
               child: const Icon(
