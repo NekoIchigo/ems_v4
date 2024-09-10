@@ -108,6 +108,11 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
+                _changeSchedule.getScheduleByType(
+                  "Fixed Schedule",
+                  null,
+                );
+                _changeSchedule.transactionData.value = {"id": "0"};
                 context.push('/change_schedule_form');
               },
               child: const Icon(
