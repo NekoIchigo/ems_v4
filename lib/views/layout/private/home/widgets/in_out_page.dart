@@ -35,7 +35,7 @@ class _InOutPageState extends State<InOutPage> {
   @override
   void initState() {
     super.initState();
-
+    _homeController.isLoading.value = false;
     currentTime = _settings.currentTime.value;
     date = DateFormat("EEEE, MMM dd y").format(currentTime);
     greetings = _dateTimeUtils.getGreeting(currentTime.hour);
@@ -291,6 +291,7 @@ class _InOutPageState extends State<InOutPage> {
                                 await _settings.checkLocationService('/in_out');
                                 await _settings
                                     .checkLocationPermission('/in_out');
+
                                 if (_homeController.isDropdownEnable.isTrue &&
                                     _homeController
                                             .initialDropdownString.value ==

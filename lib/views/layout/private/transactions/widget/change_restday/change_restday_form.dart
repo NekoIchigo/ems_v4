@@ -94,7 +94,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
               child: Column(
                 children: [
                   const SizedBox(height: 15),
-                  const NumberLabel(label: "Select the date", number: 1),
+                  const NumberLabel(label: "Select a week", number: 1),
                   const SizedBox(height: 15),
                   WeekInput(
                     startDate: startDate,
