@@ -199,7 +199,9 @@ class _LeaveFormState extends State<LeaveForm> {
                                       context: context,
                                       builder: (context) => CancelRequestDialog(
                                         isLoading: isLoading,
-                                        title: "Cancel Leave Request",
+                                        title: "Cancel Leave",
+                                        subTitle:
+                                            "Are you sure you want to cancel your leave request?\n This action cannot be undone.",
                                         onPressed: () {
                                           if (_leaveController
                                               .isLoading.isFalse) {

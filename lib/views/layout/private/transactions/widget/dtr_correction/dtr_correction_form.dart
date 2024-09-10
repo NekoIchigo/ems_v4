@@ -225,8 +225,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                                         builder: (context) =>
                                             CancelRequestDialog(
                                           isLoading: isLoading,
-                                          title:
-                                              "Cancel DTR Correction Request",
+                                          title: "Cancel DTR Correction",
+                                          subTitle:
+                                              "Are you sure you want to cancel your DTR Correction request?\n This action cannot be undone.",
                                           onPressed: () {
                                             if (_dtrCorrection
                                                 .isLoading.isFalse) {

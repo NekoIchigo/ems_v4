@@ -77,14 +77,31 @@ class CancelRequestDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            RoundedCustomButton(
-              onPressed: () {
-                onPressed();
-              },
-              isLoading: isLoading,
-              label: "Cancel Request",
-              bgColor: bgPrimaryBlue,
-              size: Size(size.width * .7, 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RoundedCustomButton(
+                  onPressed: () {
+                    onPressed();
+                  },
+                  isLoading: isLoading,
+                  label: "No, Keep Request",
+                  bgColor: gray,
+                  fontSize: 13,
+                  size: Size(size.width * .38, 40),
+                ),
+                const SizedBox(width: 10),
+                RoundedCustomButton(
+                  onPressed: () {
+                    onPressed();
+                  },
+                  isLoading: isLoading,
+                  label: "Yes, Cancel Request",
+                  bgColor: bgPrimaryBlue,
+                  fontSize: 13,
+                  size: Size(size.width * .4, 40),
+                ),
+              ],
             ),
           ],
         ),
