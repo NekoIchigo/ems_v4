@@ -7,11 +7,15 @@ import 'package:flutter/material.dart';
 class WeekInput extends StatefulWidget {
   final bool readOnly;
   final ValueChanged<DateTimeRange?> onDateTimeChanged;
+  final String? startDate;
+  final String? endDate;
 
   const WeekInput({
     super.key,
     this.readOnly = false,
     required this.onDateTimeChanged,
+    this.startDate,
+    this.endDate,
   });
 
   @override
@@ -21,7 +25,16 @@ class WeekInput extends StatefulWidget {
 class _WeekInputState extends State<WeekInput> {
   DateTime? _selectedDay;
   DateTimeRange? _selectedWeekRange;
+  String? initialWeek;
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+
+  @override
+  void initState() {
+    if (widget.startDate != null && widget.endDate != null) {
+      initialWeek = "${widget.startDate} - ${widget.endDate}";
+    }
+    super.initState();
+  }
 
   void _selectWeek(DateTime selectedDay) {
     final firstDayOfWeek = selectedDay.weekday == DateTime.sunday
@@ -114,7 +127,7 @@ class _WeekInputState extends State<WeekInput> {
             Text(
               _selectedDay != null
                   ? "${_dateTimeUtils.formatDate(dateTime: _selectedWeekRange?.start)} - ${_dateTimeUtils.formatDate(dateTime: _selectedWeekRange?.end)}"
-                  : "mm/dd/yyyy - mm/dd/yyyy",
+                  : initialWeek ?? "mm/dd/yyyy - mm/dd/yyyy",
               style: defaultStyle,
             ),
             const Icon(

@@ -97,6 +97,8 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                   const NumberLabel(label: "Select the date", number: 1),
                   const SizedBox(height: 15),
                   WeekInput(
+                    startDate: startDate,
+                    endDate: endDate,
                     onDateTimeChanged: (value) {
                       startDate = value?.start.toString().split(" ").first;
                       endDate = value?.end.toString().split(" ").first;
@@ -256,8 +258,8 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
       _transactionController.getDTROnDateRange(startDate, endDate);
       _scheduleController.fetchScheduleList(
         DateTimeRange(
-            start: DateTime.tryParse(startDate!)!,
-            end: DateTime.tryParse(endDate!)!),
+            start: DateTime.tryParse(data['start_date'])!,
+            end: DateTime.tryParse(data['end_date'])!),
       );
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _multiSelectController.setOptions([
