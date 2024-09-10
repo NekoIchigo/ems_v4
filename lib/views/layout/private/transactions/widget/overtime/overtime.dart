@@ -99,6 +99,7 @@ class _OvertimeState extends State<Overtime> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
+                _overtimeController.transactionData.value = {"id": "0"};
                 context.push('/overtime_form');
               },
               child: const Icon(
