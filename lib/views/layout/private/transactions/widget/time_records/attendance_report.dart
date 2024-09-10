@@ -81,7 +81,8 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                     .format(attendanceDate);
                             String scheduleName =
                                 attendanceMaster['schedule_name']
-                                    ['schedule_name'];
+                                        ?['schedule_name'] ??
+                                    "Default Schedule";
                             String dayType = attendanceMaster['day_type'];
 
                             return Container(
