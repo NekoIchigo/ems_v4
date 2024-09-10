@@ -106,6 +106,7 @@ class _LeavePageState extends State<LeavePage> {
               onPressed: () {
                 _leave.getAvailableLeave(null);
                 _leave.selectedLeave.value = EmployeeLeave(id: 0);
+                _leave.transactionData.value = {"id": "0"};
                 context.push('/leave_form');
               },
               child: const Icon(
