@@ -50,16 +50,6 @@ class _PinInputState extends State<PinInput> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(color: gray300),
-        boxShadow: [
-          widget.hasShadow ?? false
-              ? const BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 3),
-                  blurRadius: 2,
-                  spreadRadius: 0,
-                )
-              : const BoxShadow(),
-        ],
       ),
     );
 

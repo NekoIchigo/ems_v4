@@ -46,7 +46,7 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                   child: Text(
                     "Employment Details",
                     style: TextStyle(
-                      color: gray,
+                      color: bgSecondaryBlue,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -55,48 +55,48 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                 const SizedBox(height: 40),
                 const Text(
                   "Company",
-                  style: TextStyle(color: primaryBlue),
+                  style: TextStyle(color: bgSecondaryBlue),
                 ),
                 Text(
                   _authService.company.value.name,
-                  style: const TextStyle(color: gray),
+                  style: defaultStyle,
                 ),
                 const SizedBox(height: 30),
                 const Text(
                   "Department",
-                  style: TextStyle(color: primaryBlue),
+                  style: TextStyle(color: bgSecondaryBlue),
                 ),
                 Text(
                   _authService.employee!.value.employeeDetails.department.name,
-                  style: const TextStyle(color: gray),
+                  style: defaultStyle,
                 ),
                 const SizedBox(height: 30),
                 const Text(
                   "Position",
-                  style: TextStyle(color: primaryBlue),
+                  style: TextStyle(color: bgSecondaryBlue),
                 ),
                 Text(
                   _authService.employee!.value.employeeDetails.position.name,
-                  style: const TextStyle(color: gray),
+                  style: defaultStyle,
                 ),
                 const SizedBox(height: 30),
                 const Text(
                   "Date Hired",
-                  style: TextStyle(color: primaryBlue),
+                  style: TextStyle(color: bgSecondaryBlue),
                 ),
                 Text(
                   _authService.employee?.value.employeeDetails.dateHired ??
                       "??/??/????",
-                  style: const TextStyle(color: gray),
+                  style: defaultStyle,
                 ),
                 const SizedBox(height: 30),
                 const Text(
                   "Employee ID",
-                  style: TextStyle(color: primaryBlue),
+                  style: TextStyle(color: bgSecondaryBlue),
                 ),
                 Text(
                   _authService.employee!.value.employeeDetails.employeeNumber,
-                  style: const TextStyle(color: gray),
+                  style: defaultStyle,
                 ),
               ],
             ),

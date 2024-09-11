@@ -49,7 +49,7 @@ class _ProfilePageContainerState extends State<ProfilePageContainer> {
                       child: Text(
                         widget.title,
                         style: const TextStyle(
-                          color: gray,
+                          color: bgSecondaryBlue,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),

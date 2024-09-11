@@ -37,16 +37,13 @@ class _ProfileListButtonState extends State<ProfileListButton> {
             width: size.width * .7,
             child: Text(
               widget.label,
-              style: const TextStyle(
-                color: gray,
-                fontSize: 14,
-              ),
+              style: defaultStyle,
             ),
           ),
           widget.leading ??
               const Icon(
                 Icons.navigate_next_outlined,
-                color: gray,
+                color: gray300,
               )
         ],
       ),

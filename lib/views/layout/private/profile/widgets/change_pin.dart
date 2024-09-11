@@ -39,7 +39,7 @@ class _ChangePinState extends State<ChangePin> {
                 const Text(
                   "Current PIN",
                   style: TextStyle(
-                    color: primaryBlue,
+                    color: bgSecondaryBlue,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -58,7 +58,7 @@ class _ChangePinState extends State<ChangePin> {
                 const Text(
                   "New PIN",
                   style: TextStyle(
-                    color: primaryBlue,
+                    color: bgSecondaryBlue,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -74,7 +74,7 @@ class _ChangePinState extends State<ChangePin> {
                 const Text(
                   "Re-enter PIN",
                   style: TextStyle(
-                    color: primaryBlue,
+                    color: bgSecondaryBlue,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

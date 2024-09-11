@@ -37,7 +37,7 @@ const congressBlue900 = Color(0xFF1f4583);
 const congressBlue950 = Color(0xFF182d53);
 
 //shade of gray
-const gray100 = Color(0xFFEBE9EB);
+const gray100 = Color(0xFFE8E9EB);
 const gray200 = Color(0xFFD3D3D3);
 const gray300 = Color(0xFFBEBEBE);
 const gray400 = Color(0xFFA9A9A9);

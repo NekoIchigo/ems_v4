@@ -72,9 +72,7 @@ class _InputState extends State<Input> {
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: gray300),
             ),
-            fillColor: widget.disabled ?? false
-                ? gray300.withOpacity(0.5)
-                : Colors.white,
+            fillColor: widget.disabled ?? false ? gray100 : Colors.white,
             error: hasError(),
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: gray300)),

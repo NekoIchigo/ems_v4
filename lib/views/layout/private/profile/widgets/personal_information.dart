@@ -103,7 +103,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                         child: Text(
                           "Upload Photo",
                           style: TextStyle(
-                            color: gray,
+                            color: gray700,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -115,7 +115,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 const Text(
                   "Name",
                   style: TextStyle(
-                    color: primaryBlue,
+                    color: bgSecondaryBlue,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -127,7 +127,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     isPassword: false,
                     disabled: true,
                     textController: _name,
-                    labelColor: primaryBlue,
+                    labelColor: bgSecondaryBlue,
                     icon: Icons.person,
                   ),
                 ),
@@ -135,7 +135,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 const Text(
                   "Contact Number",
                   style: TextStyle(
-                    color: primaryBlue,
+                    color: bgSecondaryBlue,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -147,7 +147,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     isPassword: false,
                     disabled: true,
                     textController: _contactNumber,
-                    labelColor: primaryBlue,
+                    labelColor: bgSecondaryBlue,
                     icon: Icons.phone_android_rounded,
                   ),
                 ),
@@ -155,7 +155,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                 const Text(
                   "Email",
                   style: TextStyle(
-                    color: primaryBlue,
+                    color: bgSecondaryBlue,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -165,7 +165,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   isPassword: false,
                   disabled: true,
                   textController: _email,
-                  labelColor: primaryBlue,
+                  labelColor: bgSecondaryBlue,
                   icon: Icons.email_rounded,
                 ),
                 const SizedBox(height: 30),
