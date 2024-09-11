@@ -74,14 +74,17 @@ class _OvertimeState extends State<Overtime> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    _messaging.subscribeInChannel(
-                      channelName: "overtime-request-chat-${item!.id}",
-                    );
-                    _overtimeController.getLogs(item.id);
-                    _messaging.fetchChatHistory(
-                        item.id.toString(), "overtime-request-chat");
-                    _overtimeController.transactionData = item.toMap().obs;
-                    context.push('/overtime_form', extra: item.toMap());
+                    if (item != null) {
+                      _messaging.subscribeInChannel(
+                        // channelName: "overtime-request-chat-${item!.id}",
+                        channelName: "ems-chat",
+                      );
+                      _overtimeController.getLogs(item.id);
+                      _messaging.fetchChatHistory(
+                          item.id.toString(), "overtime-request-chat");
+                      _overtimeController.transactionData = item.toMap().obs;
+                      context.push('/overtime_form', extra: item.toMap());
+                    }
                   },
                   approvedList: formatList(_overtimeController.approvedList),
                   cancelledList: formatList(_overtimeController.cancelledList),

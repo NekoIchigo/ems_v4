@@ -36,25 +36,39 @@ const congressBlue800 = Color(0xFF2153ac);
 const congressBlue900 = Color(0xFF1f4583);
 const congressBlue950 = Color(0xFF182d53);
 
+//shade of gray
+const gray100 = Color(0xFFEBE9EB);
+const gray200 = Color(0xFFD3D3D3);
+const gray300 = Color(0xFFBEBEBE);
+const gray400 = Color(0xFFA9A9A9);
+const gray500 = Color(0xFF928E85);
+const gray600 = Color(0xFF708090);
+const gray700 = Color(0xFF36454F);
+
 const TextStyle titleStyle = TextStyle(
-  color: gray,
+  color: gray700,
   fontSize: 18,
   fontWeight: FontWeight.bold,
 );
 
 const TextStyle defaultStyle = TextStyle(
-  color: gray,
+  color: gray700,
   fontSize: 14,
 );
 
 const TextStyle smallStyle = TextStyle(
-  color: gray,
+  color: gray700,
   fontSize: 13,
 );
 
 const TextStyle mediumStyle = TextStyle(
-  color: gray,
+  color: gray700,
   fontSize: 16,
+);
+
+const TextStyle largeStyle = TextStyle(
+  color: gray700,
+  fontSize: 20,
 );
 
 const TextStyle hintStyle = TextStyle(

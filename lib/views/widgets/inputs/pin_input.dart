@@ -49,7 +49,7 @@ class _PinInputState extends State<PinInput> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: lightGray),
+        border: Border.all(color: gray300),
         boxShadow: [
           widget.hasShadow ?? false
               ? const BoxShadow(

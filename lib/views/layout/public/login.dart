@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
                         const SizedBox(height: 50),
                         const Text(
                           "Code",
-                          style: TextStyle(color: gray, fontSize: 13),
+                          style: defaultStyle,
                         ),
                         const SizedBox(height: 10),
                         FloatingInput(
@@ -81,7 +81,7 @@ class _LoginState extends State<Login> {
                           isPassword: false,
                           errorText: _codeError,
                           textController: _codeController,
-                          iconColor: lightGray,
+                          iconColor: gray300,
                           icon: Icons.business_rounded,
                           onChanged: (p0) {
                             setState(() {
@@ -100,7 +100,7 @@ class _LoginState extends State<Login> {
                         const SizedBox(height: 10),
                         const Text(
                           "Username",
-                          style: TextStyle(color: gray, fontSize: 13),
+                          style: defaultStyle,
                         ),
                         const SizedBox(height: 10),
                         Obx(
@@ -112,7 +112,7 @@ class _LoginState extends State<Login> {
                             icon: _authService.isBioEnabled.isTrue
                                 ? Icons.fingerprint
                                 : Icons.person,
-                            iconColor: lightGray,
+                            iconColor: gray300,
                             onIconPressed: () {
                               _authService.localAuthenticate();
                             },
@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                         ),
                         const Text(
                           'Password',
-                          style: TextStyle(color: gray, fontSize: 13),
+                          style: defaultStyle,
                         ),
                         const SizedBox(height: 10),
                         FloatingInput(
@@ -141,7 +141,7 @@ class _LoginState extends State<Login> {
                           isPassword: true,
                           errorText: _passwordError,
                           textController: _passwordController,
-                          iconColor: lightGray,
+                          iconColor: gray300,
                           icon: Icons.visibility,
                           onChanged: (p0) {
                             setState(() {
@@ -166,7 +166,7 @@ class _LoginState extends State<Login> {
                               },
                               child: const Text(
                                 'Forgot Password?',
-                                style: TextStyle(color: gray, fontSize: 13),
+                                style: defaultStyle,
                               ),
                             ),
                           ],

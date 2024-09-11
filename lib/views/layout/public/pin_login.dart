@@ -65,11 +65,7 @@ class _PINLoginState extends State<PINLogin> {
                     Center(
                       child: Text(
                         'Hello, ${_authService.employee != null ? _authService.employee?.value.firstName : ''}!',
-                        style: const TextStyle(
-                          color: gray,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: titleStyle,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -96,7 +92,7 @@ class _PINLoginState extends State<PINLogin> {
                     const Center(
                       child: Text(
                         'Enter your 6-digit PIN',
-                        style: TextStyle(color: gray, fontSize: 13),
+                        style: defaultStyle,
                       ),
                     ),
                     Center(
@@ -113,10 +109,7 @@ class _PINLoginState extends State<PINLogin> {
                       children: [
                         const Text(
                           "Not your account? ",
-                          style: TextStyle(
-                            color: gray,
-                            fontSize: 13,
-                          ),
+                          style: defaultStyle,
                         ),
                         TextButton(
                           onPressed: () async {
@@ -132,7 +125,7 @@ class _PINLoginState extends State<PINLogin> {
                           child: const Text(
                             'Switch now',
                             style: TextStyle(
-                              color: primaryBlue,
+                              color: bgSecondaryBlue,
                               fontSize: 13,
                             ),
                           ),
@@ -141,11 +134,7 @@ class _PINLoginState extends State<PINLogin> {
                           padding: EdgeInsets.symmetric(horizontal: 5.0),
                           child: Text(
                             "|",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: gray,
-                              fontSize: 13,
-                            ),
+                            style: defaultStyle,
                           ),
                         ),
                         TextButton(
@@ -157,7 +146,7 @@ class _PINLoginState extends State<PINLogin> {
                           },
                           child: const Text(
                             'Forgot PIN?',
-                            style: TextStyle(color: gray, fontSize: 13),
+                            style: defaultStyle,
                           ),
                         ),
                       ],

@@ -60,18 +60,18 @@ class _FloatingInputState extends State<FloatingInput> {
       child: TextFormField(
         obscureText: widget.isPassword ? _isObscure : false,
         controller: widget.textController,
-        style: const TextStyle(color: gray, fontSize: 15),
+        style: const TextStyle(color: gray700, fontSize: 15),
         onChanged: widget.onChanged,
         decoration: InputDecoration(
           // labelText: widget.label,
           // labelStyle: const TextStyle(color: gray),
           hintText: widget.hintText, // Set hintText directly here
-          hintStyle: const TextStyle(color: lightGray, fontSize: 13),
+          hintStyle: const TextStyle(color: gray300, fontSize: 13),
           error: hasError(),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: lightGray),
+            borderSide: const BorderSide(color: gray300),
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 5),
           ),
           border: const OutlineInputBorder(),
@@ -83,13 +83,13 @@ class _FloatingInputState extends State<FloatingInput> {
                   onTap: widget.onIconPressed,
                   child: Icon(
                     widget.icon,
-                    color: widget.iconColor ?? gray,
+                    color: widget.iconColor ?? gray300,
                   ))
               : InkWell(
                   onTap: _togglePasswordView,
                   child: Icon(
                     _isObscure ? Icons.visibility : Icons.visibility_off,
-                    color: widget.iconColor ?? gray,
+                    color: widget.iconColor ?? gray300,
                   ),
                 ),
           floatingLabelStyle:

@@ -54,189 +54,179 @@ class _MessageTabState extends State<MessageTab>
   Widget build(BuildContext context) {
     super.build(context);
     Size size = MediaQuery.of(context).size;
-    return
-        // const NoResult();
-
-        Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Container(
-              height: size.height * .35,
-              width: size.width,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                border: Border.all(color: gray),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Stack(
-                children: [
-                  StreamBuilder(
-                    initialData: _messaging.chatHistory,
-                    stream: _messaging.channel.value.stream,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        var data = snapshot.data;
-                        bool? isTyping = false;
-                        String? userFullName = '';
-                        int? userId;
-                        if (snapshot.data is String) {
-                          data = jsonDecode(snapshot.data);
-                          userId = data['message']['user_id'];
-                          isTyping = userId != _auth.employee?.value.userId
-                              ? data['message']['isTyping']
-                              : false;
-                          userFullName = data['message']['user_fullname'];
-                        }
-                        return Obx(
-                          () => Stack(
-                            children: [
-                              Visibility(
-                                visible: _messaging.chatHistory.isNotEmpty,
-                                child: ListView.builder(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  itemCount: _messaging.chatHistory.length,
-                                  itemBuilder: (context, index) {
-                                    bool isSameUser = false;
-                                    bool isCurrentUser = _messaging
-                                            .chatHistory[index]['user_id'] ==
-                                        _auth.employee!.value.userId;
-                                    DateTime createdAt = DateTime.parse(
-                                        _messaging.chatHistory[index]
-                                                ['created_at']
-                                            .toString());
-                                    if (index != 0) {
-                                      isSameUser = _messaging.chatHistory[index]
-                                              ['user_id'] ==
-                                          _messaging.chatHistory[index - 1]
-                                              ['user_id'];
-                                    }
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: isCurrentUser
-                                                ? chatRow(isSameUser, size,
-                                                        index, createdAt)
-                                                    .reversed
-                                                    .toList()
-                                                : chatRow(isSameUser, size,
-                                                    index, createdAt),
-                                          ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          Container(
+            height: size.height * .35,
+            width: size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              border: Border.all(color: gray),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Stack(
+              children: [
+                StreamBuilder(
+                  initialData: _messaging.chatHistory,
+                  stream: _messaging.channel.value.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var data = snapshot.data;
+                      bool? isTyping = false;
+                      String? userFullName = '';
+                      int? userId;
+                      if (snapshot.data is String) {
+                        data = jsonDecode(snapshot.data);
+                        print(data);
+                        userId = data['message']['user_id'];
+                        isTyping = userId != _auth.employee?.value.userId
+                            ? data['message']['isTyping']
+                            : false;
+                        userFullName = data['message']['user_fullname'];
+                      }
+                      return Obx(
+                        () => Stack(
+                          children: [
+                            Visibility(
+                              visible: _messaging.chatHistory.isNotEmpty,
+                              child: ListView.builder(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                itemCount: _messaging.chatHistory.length,
+                                itemBuilder: (context, index) {
+                                  bool isSameUser = false;
+                                  bool isCurrentUser = _messaging
+                                          .chatHistory[index]['user_id'] ==
+                                      _auth.employee!.value.userId;
+                                  DateTime createdAt = DateTime.parse(_messaging
+                                      .chatHistory[index]['created_at']
+                                      .toString());
+                                  if (index != 0) {
+                                    isSameUser = _messaging.chatHistory[index]
+                                            ['user_id'] ==
+                                        _messaging.chatHistory[index - 1]
+                                            ['user_id'];
+                                  }
+                                  return Column(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10.0),
+                                        child: Row(
+                                          children: isCurrentUser
+                                              ? chatRow(isSameUser, size, index,
+                                                      createdAt)
+                                                  .reversed
+                                                  .toList()
+                                              : chatRow(isSameUser, size, index,
+                                                  createdAt),
                                         ),
-                                      ],
-                                    );
-                                  },
-                                ),
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
-                              Visibility(
-                                visible: _messaging.chatHistory.isEmpty,
-                                child: const NoResult(),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                width: size.width,
-                                child: Visibility(
-                                  visible: (snapshot.connectionState ==
-                                          ConnectionState.active &&
-                                      (isTyping ?? false)),
-                                  child: Container(
-                                    color: Colors.white,
-                                    child: Text(
-                                      "$userFullName is typing...",
-                                    ),
+                            ),
+                            Visibility(
+                              visible: _messaging.chatHistory.isEmpty,
+                              child: const NoResult(),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              width: size.width,
+                              child: Visibility(
+                                visible: (snapshot.connectionState ==
+                                        ConnectionState.active &&
+                                    (isTyping ?? false)),
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Text(
+                                    "$userFullName is typing...",
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text("Message"),
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              maxLines: 3,
-              focusNode: _focusNode,
-              controller: _messageController,
-              decoration: const InputDecoration(
-                hintText: "Enter your message here...",
-                hintStyle: TextStyle(color: lightGray),
-                isDense: true,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: gray,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: gray,
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: const Row(
-                    children: [
-                      Icon(Icons.add_circle_outline_sharp),
-                      SizedBox(width: 10),
-                      Text("Add attachment"),
-                    ],
-                  ),
-                ),
-                Obx(
-                  () => RoundedCustomButton(
-                    onPressed: () {
-                      _messaging.sendMessageInChannel(
-                        message: _messageController.text,
-                        parentId: _messaging
-                            .chatHistory.firstOrNull["parent_id"]
-                            .toString(),
-                        type: _messaging.messagingType.value,
+                            ),
+                          ],
+                        ),
                       );
-                      _messaging.fetchChatHistory(
-                          _messaging.chatHistory.firstOrNull["parent_id"]
-                              .toString(),
-                          _messaging.messagingType.value);
-                    },
-                    label: "Send",
-                    radius: 5,
-                    isLoading: _messaging.isLoading.isTrue,
-                    size: Size(size.width * .4, 20),
-                  ),
-                )
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
               ],
             ),
-            const SizedBox(height: 10),
-            Container(
-              height: MediaQuery.of(context).viewInsets.bottom + 100,
+          ),
+          const SizedBox(height: 20),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Message"),
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            maxLines: 3,
+            focusNode: _focusNode,
+            controller: _messageController,
+            decoration: const InputDecoration(
+              hintText: "Enter your message here...",
+              hintStyle: TextStyle(color: lightGray),
+              isDense: true,
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: gray,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: gray,
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: const Row(
+                  children: [
+                    Icon(Icons.add_circle_outline_sharp),
+                    SizedBox(width: 10),
+                    Text("Add attachment"),
+                  ],
+                ),
+              ),
+              Obx(
+                () => RoundedCustomButton(
+                  onPressed: () {
+                    _messaging.sendMessageInChannel(
+                      message: _messageController.text,
+                      parentId: _messaging.chatHistory.firstOrNull["parent_id"]
+                          .toString(),
+                      type: _messaging.messagingType.value,
+                    );
+                    _messaging.fetchChatHistory(
+                        _messaging.chatHistory.firstOrNull["parent_id"]
+                            .toString(),
+                        _messaging.messagingType.value);
+                    setState(() {});
+                  },
+                  label: "Send",
+                  radius: 5,
+                  isLoading: _messaging.isLoading.isTrue,
+                  size: Size(size.width * .4, 20),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: MediaQuery.of(context).viewInsets.bottom + 100,
+          ),
+        ],
       ),
     );
   }
@@ -253,7 +243,6 @@ class _MessageTabState extends State<MessageTab>
       ),
       const SizedBox(width: 15),
       Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
             constraints: BoxConstraints(
