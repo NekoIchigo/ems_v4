@@ -66,37 +66,37 @@ class _InputState extends State<Input> {
           readOnly: widget.disabled ?? false,
           onChanged: widget.onChanged,
           keyboardType: widget.textInputType,
-          style: const TextStyle(color: gray, fontSize: 14),
+          style: const TextStyle(color: gray700, fontSize: 14),
           decoration: InputDecoration(
             filled: true,
             focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: lightGray),
+              borderSide: BorderSide(color: gray300),
             ),
             fillColor: widget.disabled ?? false
-                ? lightGray.withOpacity(0.5)
+                ? gray300.withOpacity(0.5)
                 : Colors.white,
             error: hasError(),
             enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: lightGray)),
+                borderSide: BorderSide(color: gray300)),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
             labelText: widget.hintText,
-            labelStyle: const TextStyle(color: gray, fontSize: 14),
+            labelStyle: const TextStyle(color: gray700, fontSize: 14),
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? InkWell(
                     onTap: _togglePasswordView,
                     child: Icon(
                       _isObscure ? Icons.visibility : Icons.visibility_off,
-                      color: gray,
+                      color: gray300,
                     ),
                   )
                 : Icon(
                     widget.icon,
-                    color: gray,
+                    color: gray300,
                   ),
           ),
           validator: (value) {

@@ -80,13 +80,9 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 children: [
                   Flexible(
                     child: Text(
-                      "Are you currently experiencing or have experienced any of these symptoms in the last 24 hours?",
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        color: gray,
-                      ),
-                    ),
+                        "Are you currently experiencing or have experienced any of these symptoms in the last 24 hours?",
+                        textAlign: TextAlign.justify,
+                        style: smallStyle),
                   ),
                 ],
               ),
@@ -99,7 +95,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: lightGray,
+                            color: gray300,
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -116,7 +112,8 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                                 ),
                                 child: CheckboxListTile(
                                   activeColor: primaryBlue,
-                                  side: const BorderSide(color: gray, width: 1),
+                                  side: const BorderSide(
+                                      color: gray300, width: 1),
                                   contentPadding: const EdgeInsets.all(0),
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
@@ -138,20 +135,13 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                                               Text(
                                                 _symptoms[index]
                                                     ["descriptionEnglish"],
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: gray,
-                                                ),
+                                                style: mediumStyle,
                                               ),
                                               const SizedBox(height: 2.5),
                                               Text(
                                                 _symptoms[index]
                                                     ["descriptionTagalog"],
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: gray,
-                                                ),
+                                                style: defaultStyle,
                                                 textWidthBasis:
                                                     TextWidthBasis.longestLine,
                                               ),
@@ -209,7 +199,7 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                 ],
                 decoration: const InputDecoration(
                   labelText: 'Enter temperature in °C',
-                  labelStyle: TextStyle(color: lightGray, fontSize: 14),
+                  labelStyle: TextStyle(color: gray300, fontSize: 14),
                   hintText: "--.--",
                   prefixIcon: Icon(
                     Icons.thermostat_sharp,
@@ -218,11 +208,11 @@ class _HealthDeclarationState extends State<HealthDeclaration> {
                   hintStyle: TextStyle(color: gray),
                   contentPadding: EdgeInsets.all(0),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: lightGray),
+                    borderSide: BorderSide(color: gray300),
                   ),
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: primaryBlue),
+                    borderSide: BorderSide(color: bgSecondaryBlue),
                   ),
                 ),
               ),
