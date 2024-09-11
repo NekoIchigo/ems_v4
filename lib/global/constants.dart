@@ -68,7 +68,7 @@ const TextStyle mediumStyle = TextStyle(
 
 const TextStyle largeStyle = TextStyle(
   color: gray700,
-  fontSize: 20,
+  fontSize: 18,
 );
 
 const TextStyle hintStyle = TextStyle(

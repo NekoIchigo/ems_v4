@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
                                 const Text(
                                   "By logging in, you agree to our ",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: gray, fontSize: 13),
+                                  style: defaultStyle,
                                 ),
                                 InkWell(
                                   onTap: () {
@@ -192,7 +192,7 @@ class _LoginState extends State<Login> {
                                     "Privacy Policy ",
                                     style: TextStyle(
                                       color: gray700,
-                                      fontSize: 13,
+                                      fontSize: 14,
                                       decoration: TextDecoration.underline,
                                     ),
                                   ),
@@ -201,7 +201,7 @@ class _LoginState extends State<Login> {
                                   "and ",
                                   textAlign: TextAlign.center,
                                   style:
-                                      TextStyle(color: gray700, fontSize: 13),
+                                      TextStyle(color: gray700, fontSize: 14),
                                 ),
                                 InkWell(
                                   onTap: () {
@@ -212,7 +212,7 @@ class _LoginState extends State<Login> {
                                     "Terms of Use.",
                                     style: TextStyle(
                                       color: gray700,
-                                      fontSize: 13,
+                                      fontSize: 14,
                                       decoration: TextDecoration.underline,
                                     ),
                                   ),
