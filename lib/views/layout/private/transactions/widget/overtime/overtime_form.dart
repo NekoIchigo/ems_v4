@@ -148,6 +148,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
                                               CancelRequestDialog(
                                             isLoading: isLoading,
                                             title: "Cancel Overtime Request",
+                                            subTitle:
+                                                "Are you sure you want to cancel your overtime request?\n This action cannot be undone.",
                                             onPressed: () {
                                               if (_overtime.isLoading.isFalse) {
                                                 setState(() {

@@ -143,8 +143,9 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                                         builder: (context) =>
                                             CancelRequestDialog(
                                           isLoading: isLoading,
-                                          title:
-                                              "Cancel DTR Correction Request",
+                                          title: "Cancel Change Schedule",
+                                          subTitle:
+                                              "Are you sure you want to cancel your change schedule request?\n This action cannot be undone.",
                                           onPressed: () {
                                             if (_scheduleController
                                                 .isLoading.isFalse) {
