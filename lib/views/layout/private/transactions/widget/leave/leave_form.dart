@@ -54,11 +54,11 @@ class _LeaveFormState extends State<LeaveForm> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _leaveController.transactionData.value = {"id": "0"};
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _leaveController.transactionData.value = {"id": "0"};
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

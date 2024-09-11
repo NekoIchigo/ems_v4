@@ -46,11 +46,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _scheduleController.transactionData.value = {"id": "0"};
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _scheduleController.transactionData.value = {"id": "0"};
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
