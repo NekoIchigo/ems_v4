@@ -67,14 +67,14 @@ class _HomeResultPageState extends State<HomeResultPage> {
             "Successful ${_homeController.isClockOut.isFalse ? 'clock-out' : 'clock-in'}",
             style: const TextStyle(
               fontSize: 14,
-              color: gray,
+              color: gray700,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             DateFormat('MMM d, yyyy, hh:mm a').format(DateTime.now()),
             style: const TextStyle(
-                fontSize: 14, fontWeight: FontWeight.bold, color: gray),
+                fontSize: 14, fontWeight: FontWeight.bold, color: gray700),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),

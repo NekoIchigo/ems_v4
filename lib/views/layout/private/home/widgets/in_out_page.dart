@@ -164,10 +164,10 @@ class _InOutPageState extends State<InOutPage> {
                       ),
                       hintStyle: const TextStyle(color: gray, fontSize: 13),
                       enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: gray),
+                        borderSide: BorderSide(color: gray300),
                       ),
                       border: const OutlineInputBorder(
-                        borderSide: BorderSide(color: gray),
+                        borderSide: BorderSide(color: gray300),
                       ),
                       errorBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: colorError),

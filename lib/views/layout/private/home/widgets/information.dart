@@ -69,7 +69,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: primaryBlue,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -107,8 +107,8 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                       'View Map',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
-                        color: gray,
-                        fontSize: 13,
+                        color: gray700,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -118,7 +118,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 //   visible: !cannotClock,
                 //   child: Text(
                 //     _homeController.currentLocation.value,
-                //     style: const TextStyle(color: gray, fontSize: 14),
+                //     style: defaultStyle,
                 //     textAlign: TextAlign.center,
                 //   ),
                 // ),
@@ -131,7 +131,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                         width: size.width * .7,
                         child: Text(
                           "You exceeded the required $locationMeters-meter radius.",
-                          style: const TextStyle(color: gray, fontSize: 14),
+                          style: defaultStyle,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -143,7 +143,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                           children: [
                             const Text(
                               "To view the details, click on ",
-                              style: TextStyle(color: gray),
+                              style: defaultStyle,
                             ),
                             InkWell(
                               onTap: () {
@@ -156,7 +156,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,
                                   color: primaryBlue,
-                                  fontSize: 13,
+                                  fontSize: 14,
                                 ),
                               ),
                             ),
@@ -168,7 +168,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                         width: size.width * .8,
                         child: const Text(
                           "For attendance concerns, contact the HR Department.",
-                          style: TextStyle(color: gray, fontSize: 12),
+                          style: smallStyle,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -263,7 +263,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             ],
                           ),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: gray, fontSize: 13),
+                          style: defaultStyle,
                         ),
                       ),
                       bottomButtons(size),
@@ -293,11 +293,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 children: [
                   Text(
                     'How are you feeling today?',
-                    style: TextStyle(
-                      color: gray,
-                      fontSize: 14,
-                      // fontWeight: FontWeight.w600,
-                    ),
+                    style: defaultStyle,
                   ),
                 ],
               ),
@@ -308,7 +304,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                 ToggleButtons(
                   borderRadius: BorderRadius.circular(10),
                   fillColor: Colors.white,
-                  borderColor: lightGray,
+                  borderColor: gray300,
                   selectedBorderColor: primaryBlue,
                   onPressed: (int index) {
                     setState(() {
@@ -333,10 +329,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
                               "Healthy",
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: gray,
-                              ),
+                              style: smallStyle,
                             ),
                           ),
                         ],
@@ -360,7 +353,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                   },
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    side: const BorderSide(color: lightGray),
+                    side: const BorderSide(color: gray300),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                   ),
@@ -378,10 +371,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
                           child: Text(
                             "Sick",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: gray,
-                            ),
+                            style: smallStyle,
                           ),
                         ),
                       ),
