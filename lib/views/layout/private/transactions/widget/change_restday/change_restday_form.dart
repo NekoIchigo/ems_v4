@@ -177,9 +177,9 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                                   context: context,
                                   builder: (context) => CancelRequestDialog(
                                     isLoading: isLoading,
-                                    title: "Cancel Change Restday",
+                                    title: "Cancel Change Rest day",
                                     subTitle:
-                                        "Are you sure you want to cancel your change restday request?\n This action cannot be undone.",
+                                        "Are you sure you want to cancel your change rest day request?\n This action cannot be undone.",
                                     onPressed: () {
                                       if (_changeRestday.isLoading.isFalse) {
                                         setState(() {
