@@ -73,7 +73,7 @@ class _PinInputState extends State<PinInput> {
           children: [
             Text(
               widget.label,
-              style: const TextStyle(color: gray),
+              style: defaultStyle,
             ),
             const SizedBox(height: 5),
             Directionality(

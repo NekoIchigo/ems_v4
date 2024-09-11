@@ -191,7 +191,7 @@ class _LoginState extends State<Login> {
                                   child: const Text(
                                     "Privacy Policy ",
                                     style: TextStyle(
-                                      color: gray,
+                                      color: gray700,
                                       fontSize: 13,
                                       decoration: TextDecoration.underline,
                                     ),
@@ -200,7 +200,8 @@ class _LoginState extends State<Login> {
                                 const Text(
                                   "and ",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: gray, fontSize: 13),
+                                  style:
+                                      TextStyle(color: gray700, fontSize: 13),
                                 ),
                                 InkWell(
                                   onTap: () {
@@ -210,7 +211,7 @@ class _LoginState extends State<Login> {
                                   child: const Text(
                                     "Terms of Use.",
                                     style: TextStyle(
-                                      color: gray,
+                                      color: gray700,
                                       fontSize: 13,
                                       decoration: TextDecoration.underline,
                                     ),
@@ -275,10 +276,7 @@ class _LoginState extends State<Login> {
                                 },
                                 child: const Text(
                                   'Use PIN',
-                                  style: TextStyle(
-                                    color: gray,
-                                    fontSize: 13,
-                                  ),
+                                  style: defaultStyle,
                                 ),
                               ),
                             ),

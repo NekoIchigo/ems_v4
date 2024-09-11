@@ -54,7 +54,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
             Obx(
               () => Text(
                 _passwordController.titles[_passwordController.pageIndex.value],
-                style: const TextStyle(color: primaryBlue, fontSize: 24),
+                style: const TextStyle(color: bgSecondaryBlue, fontSize: 24),
               ),
             ),
             const SizedBox(height: 5),
@@ -65,7 +65,7 @@ class _CreatePasswordContainerState extends State<CreatePasswordContainer> {
                   _passwordController
                       .subtitles[_passwordController.pageIndex.value],
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: gray, fontSize: 13),
+                  style: smallStyle,
                 ),
               ),
             ),

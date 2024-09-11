@@ -31,7 +31,7 @@ class _PasswordValidationState extends State<PasswordValidation> {
         children: [
           const Text(
             "Password must contain at least",
-            style: TextStyle(color: gray),
+            style: defaultStyle,
           ),
           const SizedBox(height: 10),
           Obx(
@@ -118,7 +118,7 @@ class ValidationText extends StatelessWidget {
         //     width: 25,
         //   ),
         const SizedBox(width: 5),
-        Text(label, style: const TextStyle(color: gray)),
+        Text(label, style: defaultStyle),
       ],
     );
   }

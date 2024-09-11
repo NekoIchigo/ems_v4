@@ -178,10 +178,7 @@ class _PINLoginState extends State<PINLogin> {
                         },
                         child: const Text(
                           'Use password',
-                          style: TextStyle(
-                            color: gray,
-                            fontSize: 13,
-                          ),
+                          style: defaultStyle,
                         ),
                       ),
                     ),
