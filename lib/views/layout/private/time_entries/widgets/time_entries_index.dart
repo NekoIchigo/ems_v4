@@ -101,7 +101,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: lightGray),
+          border: Border.all(color: gray300),
           borderRadius: BorderRadius.circular(10),
         ),
         child: DropdownButtonHideUnderline(
@@ -111,7 +111,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
             dropdownColor: Colors.white,
             elevation: 16,
             isExpanded: true,
-            style: const TextStyle(color: gray),
+            style: const TextStyle(color: gray700),
             onChanged: (value) async {
               paginateDays = value["day"];
               if (value["day"] == 0) {
@@ -141,7 +141,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                 value: value,
                 child: Row(
                   children: [
-                    const Icon(Icons.date_range_rounded, color: gray),
+                    const Icon(Icons.date_range_rounded, color: gray300),
                     const SizedBox(width: 10),
                     Text(value['label']),
                   ],
@@ -256,21 +256,14 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
                 width: 50,
                 child: Text(
                   clockType,
-                  style: const TextStyle(
-                    color: gray,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
+                  style: defaultStyle,
                 ),
               ),
               const SizedBox(width: 50),
               Text(
                 dateTime,
                 textAlign: TextAlign.left,
-                style: const TextStyle(
-                  color: gray,
-                  fontSize: 14,
-                ),
+                style: defaultStyle,
               )
             ],
           ),

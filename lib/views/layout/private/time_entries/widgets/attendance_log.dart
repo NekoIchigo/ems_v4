@@ -83,11 +83,11 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         children: [
                           Icon(
                             Icons.access_time,
-                            color: primaryBlue,
+                            color: bgSecondaryBlue,
                           ),
                           Text(
                             ' Clock in:',
-                            style: TextStyle(color: primaryBlue),
+                            style: blueDefaultStyle,
                           )
                         ],
                       ),
@@ -106,11 +106,11 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           children: [
                             Icon(
                               Icons.access_time_filled,
-                              color: primaryBlue,
+                              color: bgSecondaryBlue,
                             ),
                             Text(
                               ' Clock out:',
-                              style: TextStyle(color: primaryBlue),
+                              style: blueDefaultStyle,
                             )
                           ],
                         ),
@@ -144,7 +144,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
             Text(
               selectedRecord.formattedClockIn ?? "??/??/??/ | ??:??",
               style: const TextStyle(
-                color: primaryBlue,
+                color: bgSecondaryBlue,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
@@ -158,20 +158,14 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     width: size.width * .30,
                     child: const Text(
                       'Reports at:',
-                      style: TextStyle(
-                        color: gray,
-                        fontSize: 14,
-                      ),
+                      style: defaultStyle,
                     ),
                   ),
                   Flexible(
                     child: Text(
                       _authService
                           .employee!.value.employeeDetails.location.name,
-                      style: const TextStyle(
-                        color: primaryBlue,
-                        fontSize: 14,
-                      ),
+                      style: defaultStyle,
                     ),
                   )
                 ],
@@ -188,10 +182,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       width: size.width * .30,
                       child: Text(
                         selectedRecord.clockedInLocationType ?? "",
-                        style: const TextStyle(
-                          color: gray,
-                          fontSize: 14,
-                        ),
+                        style: defaultStyle,
                       ),
                     ),
                     Column(
@@ -209,7 +200,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                           child: const Text(
                             "View Map",
                             style: TextStyle(
-                              color: primaryBlue,
+                              color: gray700,
                               decoration: TextDecoration.underline,
                               fontSize: 14,
                             ),
@@ -218,7 +209,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         Text(
                           selectedRecord.clockedInLocationSetting ?? "",
                           style: const TextStyle(
-                            color: primaryBlue,
+                            color: gray700,
                             fontSize: 14,
                           ),
                         ),
@@ -239,19 +230,13 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       width: size.width * .30,
                       child: const Text(
                         'GPS Location:',
-                        style: TextStyle(
-                          color: gray,
-                          fontSize: 14,
-                        ),
+                        style: defaultStyle,
                       ),
                     ),
                     Expanded(
                       child: Text(
                         selectedRecord.clockedInLocation ?? "",
-                        style: const TextStyle(
-                          color: primaryBlue,
-                          fontSize: 14,
-                        ),
+                        style: defaultStyle,
                       ),
                     )
                   ],
@@ -269,10 +254,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       width: size.width * .30,
                       child: const Text(
                         'Health Check:',
-                        style: TextStyle(
-                          color: gray,
-                          fontSize: 14,
-                        ),
+                        style: defaultStyle,
                       ),
                     ),
                     InkWell(
@@ -283,7 +265,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       child: const Text(
                         'View Symptoms',
                         style: TextStyle(
-                          color: primaryBlue,
+                          color: gray700,
                           decoration: TextDecoration.underline,
                           fontSize: 14,
                         ),
@@ -321,7 +303,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
               Text(
                 selectedRecord.formattedClockOut ?? "??/??/??/ | ??:??",
                 style: const TextStyle(
-                  color: primaryBlue,
+                  color: bgSecondaryBlue,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
@@ -335,20 +317,14 @@ class _AttendanceLogState extends State<AttendanceLog> {
                       width: size.width * .30,
                       child: const Text(
                         'Reports at:',
-                        style: TextStyle(
-                          color: gray,
-                          fontSize: 14,
-                        ),
+                        style: defaultStyle,
                       ),
                     ),
                     Flexible(
                       child: Text(
                         _authService
                             .employee!.value.employeeDetails.location.name,
-                        style: const TextStyle(
-                          color: primaryBlue,
-                          fontSize: 14,
-                        ),
+                        style: defaultStyle,
                       ),
                     )
                   ],
@@ -365,10 +341,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         width: size.width * .30,
                         child: Text(
                           selectedRecord.clockedOutLocationType ?? "",
-                          style: const TextStyle(
-                            color: gray,
-                            fontSize: 14,
-                          ),
+                          style: defaultStyle,
                         ),
                       ),
                       Column(
@@ -386,7 +359,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                             child: const Text(
                               "View Map",
                               style: TextStyle(
-                                color: primaryBlue,
+                                color: gray700,
                                 decoration: TextDecoration.underline,
                                 fontSize: 14,
                               ),
@@ -398,7 +371,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                             child: Text(
                               selectedRecord.clockedOutLocationSetting ?? "",
                               style: const TextStyle(
-                                color: primaryBlue,
+                                color: gray700,
                                 decoration: TextDecoration.underline,
                                 fontSize: 14,
                               ),
@@ -421,19 +394,13 @@ class _AttendanceLogState extends State<AttendanceLog> {
                         width: size.width * .30,
                         child: const Text(
                           'GPS Location:',
-                          style: TextStyle(
-                            color: gray,
-                            fontSize: 14,
-                          ),
+                          style: defaultStyle,
                         ),
                       ),
                       Expanded(
                         child: Text(
                           selectedRecord.clockedOutLocation ?? "",
-                          style: const TextStyle(
-                            color: primaryBlue,
-                            fontSize: 14,
-                          ),
+                          style: defaultStyle,
                         ),
                       )
                     ],

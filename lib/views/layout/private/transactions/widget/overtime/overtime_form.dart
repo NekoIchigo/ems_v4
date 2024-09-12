@@ -207,7 +207,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
           margin: const EdgeInsets.fromLTRB(25, 0, 0, 15),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            border: Border.all(color: gray),
+            border: Border.all(color: gray300),
             borderRadius: BorderRadius.circular(5),
           ),
           child: Column(
