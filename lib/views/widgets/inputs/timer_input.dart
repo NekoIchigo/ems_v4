@@ -34,12 +34,12 @@ class TimeTextField extends StatelessWidget {
         isDense: true,
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: gray,
+            color: gray300,
           ),
         ),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: gray,
+            color: gray700,
           ),
         ),
       ),

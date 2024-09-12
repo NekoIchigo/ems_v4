@@ -266,10 +266,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                 constraints: BoxConstraints(maxHeight: 45),
                 contentPadding: EdgeInsetsDirectional.all(5),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: gray),
+                  borderSide: BorderSide(color: gray300),
                 ),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: gray),
+                  borderSide: BorderSide(color: gray300),
                 ),
               ),
               onSelected: (value) {

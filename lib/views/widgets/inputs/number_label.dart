@@ -25,7 +25,7 @@ class NumberLabel extends StatelessWidget {
         const SizedBox(width: 5),
         Text(
           label,
-          style: defaultStyle,
+          style: blueDefaultStyle,
         ),
       ],
     );

@@ -62,6 +62,11 @@ const TextStyle defaultStyle = TextStyle(
   fontSize: 14,
 );
 
+const TextStyle blueDefaultStyle = TextStyle(
+  color: bgSecondaryBlue,
+  fontSize: 14,
+);
+
 const TextStyle xSmallStyle = TextStyle(
   color: gray700,
   fontSize: 13,
@@ -83,7 +88,7 @@ const TextStyle largeStyle = TextStyle(
 );
 
 const TextStyle hintStyle = TextStyle(
-  color: lightGray,
+  color: gray300,
   fontSize: 14,
 );
 

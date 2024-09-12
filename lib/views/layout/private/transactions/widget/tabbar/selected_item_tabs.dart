@@ -42,7 +42,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
         child: Text(
           'Message',
           style: TextStyle(
-            color: widget.pageCount == 1 ? gray : darkGray,
+            color: widget.pageCount == 1 ? gray300 : darkGray,
           ),
         ),
       ),
@@ -50,7 +50,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
         child: Text(
           'Logs',
           style: TextStyle(
-            color: widget.pageCount == 1 ? gray : darkGray,
+            color: widget.pageCount == 1 ? gray300 : darkGray,
           ),
         ),
       ),
@@ -89,7 +89,10 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
             onPressed: () {
               context.pop();
             },
-            icon: const Icon(Icons.close),
+            icon: const Icon(
+              Icons.close,
+              color: gray700,
+            ),
           ),
         ),
         Column(

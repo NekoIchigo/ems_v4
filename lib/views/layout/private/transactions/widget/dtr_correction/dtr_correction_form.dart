@@ -126,13 +126,12 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                                 vertical: 10,
                                 horizontal: 10,
                               ),
-                              hintStyle:
-                                  const TextStyle(color: gray, fontSize: 13),
+                              hintStyle: hintStyle,
                               enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: gray),
+                                borderSide: BorderSide(color: gray300),
                               ),
                               border: const OutlineInputBorder(
-                                borderSide: BorderSide(color: gray),
+                                borderSide: BorderSide(color: gray300),
                               ),
                               errorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: colorError),
@@ -282,7 +281,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         margin: const EdgeInsets.only(left: 25),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          border: Border.all(color: gray),
+          border: Border.all(color: gray300),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Column(
@@ -299,7 +298,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         child: Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: bgLightGray,
+                            color: gray100,
                             borderRadius: BorderRadius.circular(3),
                           ),
                           child: Text(
@@ -319,7 +318,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration: BoxDecoration(
-                      border: Border.all(color: gray),
+                      border: Border.all(color: gray300),
                       borderRadius: BorderRadius.circular(3),
                     ),
                     child: const Text(
@@ -354,7 +353,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration: BoxDecoration(
-                      border: Border.all(color: gray),
+                      border: Border.all(color: gray300),
                       borderRadius: BorderRadius.circular(3),
                     ),
                     child: const Text(

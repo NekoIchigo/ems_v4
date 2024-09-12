@@ -118,7 +118,7 @@ class _WeekInputState extends State<WeekInput> {
         margin: const EdgeInsets.only(left: 25),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          border: Border.all(color: gray),
+          border: Border.all(color: gray300),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Row(
@@ -128,11 +128,13 @@ class _WeekInputState extends State<WeekInput> {
               _selectedDay != null
                   ? "${_dateTimeUtils.formatDate(dateTime: _selectedWeekRange?.start)} - ${_dateTimeUtils.formatDate(dateTime: _selectedWeekRange?.end)}"
                   : initialWeek ?? "mm/dd/yyyy - mm/dd/yyyy",
-              style: defaultStyle,
+              style: initialWeek != null || _selectedDay != null
+                  ? defaultStyle
+                  : hintStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,
-              color: gray,
+              color: gray300,
               size: 20,
             ),
           ],

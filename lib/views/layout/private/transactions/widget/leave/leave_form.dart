@@ -133,16 +133,16 @@ class _LeaveFormState extends State<LeaveForm> {
                             decoration: const InputDecoration(
                               isDense: true,
                               hintText: "Enter leave count",
-                              hintStyle: defaultStyle,
+                              hintStyle: hintStyle,
                               contentPadding: EdgeInsets.symmetric(
                                 vertical: 10,
                                 horizontal: 10,
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: gray),
+                                borderSide: BorderSide(color: gray300),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: gray),
+                                borderSide: BorderSide(color: gray700),
                               ),
                             ),
                           ),
@@ -273,7 +273,7 @@ class _LeaveFormState extends State<LeaveForm> {
               child: DropdownMenu<EmployeeLeave>(
                 width: size.width * .84,
                 textStyle: defaultStyle,
-                hintText: "Select leave",
+                hintText: "-- Select leave --",
                 trailingIcon: const Icon(
                   Icons.arrow_drop_down_rounded,
                   size: 25,
@@ -282,10 +282,11 @@ class _LeaveFormState extends State<LeaveForm> {
                     ? null
                     : _leaveController.selectedLeave.value,
                 inputDecorationTheme: const InputDecorationTheme(
+                  hintStyle: hintStyle,
                   constraints: BoxConstraints(maxHeight: 43),
                   contentPadding: EdgeInsetsDirectional.all(5),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: gray),
+                    borderSide: BorderSide(color: gray300),
                   ),
                 ),
                 onSelected: (value) {

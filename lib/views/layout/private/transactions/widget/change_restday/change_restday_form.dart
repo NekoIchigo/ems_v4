@@ -236,7 +236,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
             restdayError = null;
           });
         },
-        borderColor: gray,
+        borderColor: gray300,
         borderWidth: 1,
         hintColor: gray,
         borderRadius: 3,

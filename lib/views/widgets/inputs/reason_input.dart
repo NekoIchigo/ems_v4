@@ -64,16 +64,16 @@ class _ReasonInputState extends State<ReasonInput> {
             onChanged: widget.onChanged,
             decoration: const InputDecoration(
               hintText: "Enter here",
-              hintStyle: defaultStyle,
+              hintStyle: hintStyle,
               contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: gray,
+                  color: gray300,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: gray,
+                  color: gray300,
                 ),
               ),
             ),

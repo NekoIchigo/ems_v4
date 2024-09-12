@@ -40,7 +40,7 @@ class _TimeInputState extends State<TimeInput> {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
           border: Border.all(
-            color: gray,
+            color: gray300,
           ),
           borderRadius: BorderRadius.circular(3),
         ),
