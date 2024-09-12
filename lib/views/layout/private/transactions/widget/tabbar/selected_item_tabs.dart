@@ -99,11 +99,7 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
             Center(
               child: Text(
                 widget.title,
-                style: const TextStyle(
-                  color: primaryBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+                style: blueTitleStyle,
               ),
             ),
             TabBar(

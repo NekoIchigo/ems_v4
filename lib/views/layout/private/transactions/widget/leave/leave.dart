@@ -51,11 +51,7 @@ class _LeavePageState extends State<LeavePage> {
               const Center(
                 child: Text(
                   "Leave",
-                  style: TextStyle(
-                    color: primaryBlue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: blueTitleStyle,
                 ),
               ),
               const SizedBox(height: 20),
@@ -106,7 +102,7 @@ class _LeavePageState extends State<LeavePage> {
               onPressed: () {
                 _leave.getAvailableLeave(null);
                 _leave.selectedLeave.value = EmployeeLeave(id: 0);
-                _leave.transactionData.value = {"id": "0"};
+                _leave.transactionData = {"id": "0"}.obs;
                 context.push('/leave_form');
               },
               child: const Icon(

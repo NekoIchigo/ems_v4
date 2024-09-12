@@ -51,11 +51,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               const Center(
                 child: Text(
                   "Change Restday",
-                  style: TextStyle(
-                    color: primaryBlue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: blueTitleStyle,
                 ),
               ),
               const SizedBox(height: 20),
@@ -104,7 +100,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _changeRestday.transactionData.value = {"id": "0"};
+                _changeRestday.transactionData = {"id": "0"}.obs;
                 context.push('/change_restday_form');
               },
               child: const Icon(

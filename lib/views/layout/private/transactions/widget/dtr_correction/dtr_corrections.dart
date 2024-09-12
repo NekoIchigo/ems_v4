@@ -54,11 +54,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               const Center(
                 child: Text(
                   "DTR Correction",
-                  style: TextStyle(
-                    color: primaryBlue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: blueTitleStyle,
                 ),
               ),
               const SizedBox(height: 20),
@@ -110,7 +106,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _correctionController.transactionData.value = {"id": "0"};
+                _correctionController.transactionData = {"id": "0"}.obs;
                 _transactionController.clockOutAt.value = "00:00";
                 _transactionController.clockInAt.value = "00:00";
                 context.push("/dtr_correction_form");

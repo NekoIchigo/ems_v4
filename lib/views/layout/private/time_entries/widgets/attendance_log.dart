@@ -47,7 +47,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
                     child: Text(
                       'Time Entries',
                       style: TextStyle(
-                        color: primaryBlue,
+                        color: bgSecondaryBlue,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),

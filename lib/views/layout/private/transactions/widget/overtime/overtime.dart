@@ -50,7 +50,7 @@ class _OvertimeState extends State<Overtime> {
               const Center(
                 child: Text(
                   "Overtime",
-                  style: titleStyle,
+                  style: blueTitleStyle,
                 ),
               ),
               const SizedBox(height: 20),
@@ -102,7 +102,7 @@ class _OvertimeState extends State<Overtime> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _overtimeController.transactionData.value = {"id": "0"};
+                _overtimeController.transactionData = {"id": "0"}.obs;
                 context.push('/overtime_form');
               },
               child: const Icon(

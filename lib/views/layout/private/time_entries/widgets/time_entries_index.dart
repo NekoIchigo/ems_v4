@@ -77,7 +77,7 @@ class _TimeEntriesIndexState extends State<TimeEntriesIndex> {
               child: Text(
                 'Time Entries',
                 style: TextStyle(
-                  color: primaryBlue,
+                  color: bgSecondaryBlue,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),

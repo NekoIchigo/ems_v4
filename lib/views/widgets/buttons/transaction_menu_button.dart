@@ -40,9 +40,7 @@ class _TransactionMenuButtonState extends State<TransactionMenuButton> {
         const SizedBox(height: 5),
         Text(
           widget.title,
-          style: const TextStyle(
-            color: primaryBlue,
-          ),
+          style: defaultStyle,
         ),
       ],
     );

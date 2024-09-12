@@ -52,7 +52,7 @@ class _TimeRecordsState extends State<TimeRecords> {
               const Text(
                 "Time Records",
                 style: TextStyle(
-                  color: primaryBlue,
+                  color: bgSecondaryBlue,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -96,7 +96,7 @@ class _TimeRecordsState extends State<TimeRecords> {
                                           child: ListTile(
                                             leading: const Icon(
                                               Icons.calendar_month_rounded,
-                                              color: bgPrimaryBlue,
+                                              color: bgSecondaryBlue,
                                               size: 30,
                                             ),
                                             trailing: const Icon(
@@ -106,15 +106,14 @@ class _TimeRecordsState extends State<TimeRecords> {
                                             title: Text(
                                               "${cutoff['start_day']} - ${cutoff['end_day']}, ${date.year}",
                                               style: const TextStyle(
-                                                color: bgPrimaryBlue,
+                                                color: bgSecondaryBlue,
                                               ),
                                             ),
                                             subtitle: Text(
                                               item['status'] == 0
                                                   ? "Not posted"
                                                   : "Posted",
-                                              style: const TextStyle(
-                                                  color: gray, fontSize: 12),
+                                              style: xSmallStyle,
                                             ),
                                             onTap: () {
                                               _recordsController

@@ -51,9 +51,20 @@ const TextStyle titleStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const TextStyle blueTitleStyle = TextStyle(
+  color: bgSecondaryBlue,
+  fontSize: 18,
+  fontWeight: FontWeight.bold,
+);
+
 const TextStyle defaultStyle = TextStyle(
   color: gray700,
   fontSize: 14,
+);
+
+const TextStyle xSmallStyle = TextStyle(
+  color: gray700,
+  fontSize: 13,
 );
 
 const TextStyle smallStyle = TextStyle(

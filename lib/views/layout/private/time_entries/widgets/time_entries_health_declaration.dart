@@ -80,7 +80,7 @@ class _TimeEntriesHealthDeclarationState
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
-                          color: primaryBlue,
+                          color: bgSecondaryBlue,
                         )),
                   ),
                   Align(

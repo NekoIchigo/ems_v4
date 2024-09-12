@@ -51,11 +51,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
               const Center(
                 child: Text(
                   "Change Schedule",
-                  style: TextStyle(
-                    color: primaryBlue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: blueTitleStyle,
                 ),
               ),
               const SizedBox(height: 20),
@@ -112,7 +108,7 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
                   "Fixed Schedule",
                   null,
                 );
-                _changeSchedule.transactionData.value = {"id": "0"};
+                _changeSchedule.transactionData = {"id": "0"}.obs;
                 context.push('/change_schedule_form');
               },
               child: const Icon(
