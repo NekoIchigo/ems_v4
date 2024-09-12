@@ -20,7 +20,7 @@ class TransactionResult extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 50),
             child: Lottie.asset(
               extraData["result"] ?? false
-                  ? "assets/lottie/success-icon-5.json"
+                  ? "assets/lottie/success-icon-6.json"
                   : "assets/lottie/error-icon-2.json",
               repeat: false,
               width: 100,

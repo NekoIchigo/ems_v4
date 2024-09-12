@@ -51,7 +51,7 @@ class CancelRequestDialog extends StatelessWidget {
                   ),
                 )),
             Lottie.asset(
-              "assets/lottie/question-icon-2.json",
+              "assets/lottie/question-icon-3.json",
               width: 50,
               height: 50,
               fit: BoxFit.fill,

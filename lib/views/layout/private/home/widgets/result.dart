@@ -29,7 +29,7 @@ class _HomeResultPageState extends State<HomeResultPage> {
             child: Lottie.asset(
               _homeController.isUserSick.isTrue
                   ? "assets/lottie/error-icon-2.json"
-                  : "assets/lottie/success-icon-5.json",
+                  : "assets/lottie/success-icon-6.json",
               repeat: false,
               width: 100,
             ),

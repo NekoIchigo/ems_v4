@@ -91,11 +91,11 @@ class GemsDialog extends StatelessWidget {
                     visible: hasLottie ?? true,
                     child: Lottie.asset(
                       type == "question"
-                          ? 'assets/lottie/question-icon-2.json'
+                          ? 'assets/lottie/question-icon-3.json'
                           : type == "error"
                               ? 'assets/lottie/error-icon-2.json'
                               : type == "success"
-                                  ? 'assets/lottie/success-icon-4.json'
+                                  ? 'assets/lottie/success-icon-6.json'
                                   : "assets/lottie/info.json",
                       repeat: true,
                       width: 50,
