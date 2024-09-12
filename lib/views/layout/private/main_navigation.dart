@@ -43,6 +43,8 @@ class _MainNavigationState extends State<MainNavigation>
         0) {
       _mainNavigationController.navigation.removeAt(2);
       _mainNavigationController.navigationPath.removeAt(2);
+      _mainNavigationController.navigation.removeAt(3);
+      _mainNavigationController.navigationPath.removeAt(3);
     }
     super.initState();
   }
