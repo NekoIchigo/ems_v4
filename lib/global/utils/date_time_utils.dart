@@ -15,6 +15,13 @@ class DateTimeUtils {
     }
   }
 
+  String formatDateTimeISO(String isoDate) {
+    DateTime parsedDate = DateTime.parse(isoDate);
+    String formattedDate =
+        DateFormat('MM/dd/yyyy hh:mm a').format(parsedDate.toLocal());
+    return formattedDate;
+  }
+
   String formatTime({DateTime? dateTime}) {
     if (dateTime != null) {
       return DateFormat("hh:mm a").format(dateTime);
