@@ -154,9 +154,9 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                                 .map<DropdownMenuEntry>((value) {
                               return DropdownMenuEntry(
                                 value: value['id'],
-                                label: value['name'],
+                                label: value['name'] ?? value['sub_name'],
                                 labelWidget: Text(
-                                  value['name'],
+                                  value['name'] ?? value['sub_name'],
                                   style: const TextStyle(fontSize: 14),
                                 ),
                                 style: const ButtonStyle(

@@ -485,8 +485,8 @@ class _InOutPageState extends State<InOutPage> {
           'Clock-in/ Clock out again',
           style: TextStyle(
             decoration: TextDecoration.underline,
-            decorationColor: gray,
-            color: gray,
+            decorationColor: gray700,
+            color: gray700,
           ),
         ),
       ),

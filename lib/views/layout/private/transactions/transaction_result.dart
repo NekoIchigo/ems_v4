@@ -17,14 +17,20 @@ class TransactionResult extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 50),
-            child: Lottie.asset(
-              extraData["result"] ?? false
-                  ? "assets/lottie/success-icon-6.json"
-                  : "assets/lottie/error-icon-2.json",
-              repeat: false,
-              width: 100,
+            padding: const EdgeInsets.only(top: 50),
+            child: Icon(
+              extraData["result"] ?? false ? Icons.check_circle : Icons.error,
+              color:
+                  extraData["result"] ?? false ? bgSecondaryBlue : colorError,
+              size: 100,
             ),
+            // Lottie.asset(
+            //   extraData["result"] ?? false
+            //       ? "assets/lottie/success-icon-6.json"
+            //       : "assets/lottie/error-icon-2.json",
+            //   repeat: false,
+            //   width: 100,
+            // ),
           ),
           const SizedBox(height: 50),
           Text(

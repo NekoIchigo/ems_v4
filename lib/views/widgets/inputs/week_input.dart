@@ -128,9 +128,7 @@ class _WeekInputState extends State<WeekInput> {
               _selectedDay != null
                   ? "${_dateTimeUtils.formatDate(dateTime: _selectedWeekRange?.start)} - ${_dateTimeUtils.formatDate(dateTime: _selectedWeekRange?.end)}"
                   : initialWeek ?? "mm/dd/yyyy - mm/dd/yyyy",
-              style: initialWeek != null || _selectedDay != null
-                  ? defaultStyle
-                  : hintStyle,
+              style: defaultStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,

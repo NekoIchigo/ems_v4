@@ -72,7 +72,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? widget.fromDate ?? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
-              style: widget.fromDate != null ? defaultStyle : hintStyle,
+              style: defaultStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,

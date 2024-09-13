@@ -25,16 +25,29 @@ class _HomeResultPageState extends State<HomeResultPage> {
       () => Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 50),
-            child: Lottie.asset(
-              _homeController.isUserSick.isTrue
-                  ? "assets/lottie/error-icon-2.json"
-                  : "assets/lottie/success-icon-6.json",
-              repeat: false,
-              width: 100,
-            ),
-            // child: Lottie.asset(widget.passed ? "assets/lottie/success-icon-5.json" : "assets/lottie/error-icon-2.json", repeat: false, width: 100),
-          ),
+              padding: const EdgeInsets.only(top: 50),
+              child: Icon(
+                _homeController.isUserSick.isTrue
+                    ? Icons.error
+                    : Icons.check_circle,
+                color: _homeController.isUserSick.isTrue
+                    ? colorError
+                    : bgSecondaryBlue,
+                size: 100,
+              )
+              // ColorFiltered(
+              //   colorFilter:
+              //       const ColorFilter.mode(bgSecondaryBlue, BlendMode.difference),
+              //   child: Lottie.asset(
+              //     _homeController.isUserSick.isTrue
+              //         ? "assets/lottie/error-icon-2.json"
+              //         : "assets/lottie/success-icon-4.json",
+              //     repeat: false,
+              //     width: 100,
+              //   ),
+              // ),
+              // child: Lottie.asset(widget.passed ? "assets/lottie/success-icon-5.json" : "assets/lottie/error-icon-2.json", repeat: false, width: 100),
+              ),
           Visibility(
             visible: _homeController.isUserSick.isTrue,
             child: SizedBox(

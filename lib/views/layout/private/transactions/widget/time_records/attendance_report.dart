@@ -88,17 +88,175 @@ class _AttendanceReportState extends State<AttendanceReport> {
                             return Container(
                               margin: const EdgeInsets.only(bottom: 15),
                               padding: const EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 20,
+                                vertical: 15,
                               ),
                               decoration: BoxDecoration(
-                                border: Border.all(color: gray),
-                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: gray300),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.calendar_today,
+                                          size: 18,
+                                          color: bgPrimaryBlue,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          formattedDate,
+                                          style:
+                                              const TextStyle(color: darkGray),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  rowItem('Schedule', scheduleName, 2),
+                                  rowItem(
+                                      'Clock In',
+                                      attendanceMaster['clock_in_at'] ??
+                                          "00:00",
+                                      1),
+                                  rowItem(
+                                      'Clock Out',
+                                      attendanceMaster['clock_out_at'] ??
+                                          "00:00",
+                                      2),
+                                  rowItem(
+                                      'Day Type', dayType.capitalize ?? "", 1),
+                                  rowItem('Worked Hours',
+                                      attendanceMaster['rwh'] ?? "00:00", 2),
+                                  rowItem('OT',
+                                      attendanceMaster['ot'] ?? "00:00", 1),
+                                  rowItem('Late',
+                                      attendanceMaster['late'] ?? "00:00", 2),
+                                  rowItem('Undertime',
+                                      attendanceMaster['ut'] ?? "00:00", 1),
+                                  rowItem('Night diff.',
+                                      attendanceMaster['nd'] ?? "00:00", 2),
+                                  rowItem('Night diff. OT',
+                                      attendanceMaster['nd_ot'] ?? "00:00", 1),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget rowItem(String label, String value, int index) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20),
+      color: index % 2 == 0 ? bgLightBlue : Colors.white,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: size.width * .25,
+            child: Text(
+              "$label :",
+              style: smallStyle,
+            ),
+          ),
+          Text(
+            value,
+            style: smallStyle,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget loader() {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 20,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: gray),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Shimmer.fromColors(
+            baseColor: const Color(0xFFc9c9c9),
+            highlightColor: const Color(0xFFe6e6e6),
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  width: size.width,
+                  height: 18,
+                  decoration: BoxDecoration(
+                    color: primaryBlue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                const Divider(),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  width: size.width,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: primaryBlue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  width: size.width,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: primaryBlue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  width: size.width,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: primaryBlue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  width: size.width,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: primaryBlue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /*
+    Row(
                                       children: [
                                         const Icon(
                                           Icons.calendar_today,
@@ -175,114 +333,5 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                         )
                                       ],
                                     ),
-                                  ]),
-                            );
-                          },
-                        ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget rowItem(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: size.width * .23,
-            child: Text(
-              "$label :",
-              style: labelStyle,
-            ),
-          ),
-          Text(
-            value,
-            style: valueStyle,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget loader() {
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 20,
-          ),
-          decoration: BoxDecoration(
-            border: Border.all(color: gray),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Shimmer.fromColors(
-            baseColor: const Color(0xFFc9c9c9),
-            highlightColor: const Color(0xFFe6e6e6),
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                  width: size.width,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: primaryBlue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                const Divider(),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                  width: size.width,
-                  height: 15,
-                  decoration: BoxDecoration(
-                    color: primaryBlue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                  width: size.width,
-                  height: 15,
-                  decoration: BoxDecoration(
-                    color: primaryBlue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                  width: size.width,
-                  height: 15,
-                  decoration: BoxDecoration(
-                    color: primaryBlue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                  width: size.width,
-                  height: 15,
-                  decoration: BoxDecoration(
-                    color: primaryBlue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+   */
 }

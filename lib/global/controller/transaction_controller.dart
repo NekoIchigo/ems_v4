@@ -27,8 +27,9 @@ class TransactionController extends GetxController {
       if (result.containsKey("success") && result["success"] == true) {
         schedules.value = result["data"]["schedules"];
         transactionData.value = result["data"];
-        // dtrRange.value = transactionData["dtr"];
-        scheduleName.value = transactionData["schedules"][0]["name"];
+        dtrRange.value = transactionData["dtr"];
+        scheduleName.value = transactionData["schedules"][0]["name"] ??
+            transactionData["schedules"][0]["sub_name"];
       }
     }).whenComplete(() => isLoading.value = false);
   }
