@@ -48,61 +48,67 @@ class _NotificationPageState extends State<NotificationPage> {
               ),
             ),
           ),
-          SizedBox(
-            height: size.height * .75,
-            child: _notificationController.isLoading.isTrue
-                ? const ListShimmer(
-                    listLength: 10,
-                    withLeading: false,
-                  )
-                : _notificationController.notificationList.isEmpty
-                    ? const NoResult()
-                    : ListView.builder(
-                        itemCount:
-                            _notificationController.notificationList.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
-                            color: index % 2 == 0 ? bgLightBlue : Colors.white,
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 15.0),
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.edit_note_rounded,
-                                        color: bgSecondaryBlue,
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: Text(
+          Obx(
+            () => SizedBox(
+              height: size.height * .75,
+              child: _notificationController.isLoading.isTrue
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: ListShimmer(
+                        listLength: 10,
+                        withLeading: true,
+                      ),
+                    )
+                  : _notificationController.notificationList.isEmpty
+                      ? const NoResult()
+                      : ListView.builder(
+                          itemCount:
+                              _notificationController.notificationList.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 15),
+                              color:
+                                  index % 2 == 0 ? bgLightBlue : Colors.white,
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.edit_note_rounded,
+                                          color: bgSecondaryBlue,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: Text(
+                                            _notificationController
+                                                    .notificationList[index]
+                                                ['message'],
+                                            style: defaultStyle,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    child: Text(
+                                      _dateUtils.formatDateTimeISO(
                                           _notificationController
                                                   .notificationList[index]
-                                              ['message'],
-                                          style: defaultStyle,
-                                        ),
-                                      )
-                                    ],
+                                              ['updated_at']),
+                                      style: const TextStyle(
+                                          color: gray600, fontSize: 11),
+                                    ),
                                   ),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  child: Text(
-                                    _dateUtils.formatDateTimeISO(
-                                        _notificationController
-                                                .notificationList[index]
-                                            ['updated_at']),
-                                    style: const TextStyle(
-                                        color: gray600, fontSize: 11),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+            ),
           )
         ],
       ),
