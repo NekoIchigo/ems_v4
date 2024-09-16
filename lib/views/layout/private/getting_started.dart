@@ -36,7 +36,8 @@ class _GettingStartedState extends State<GettingStarted> {
     await _homeController.checkNewShift();
     _homeController.isGettingStarted.value = false;
 
-    if (_homeController.isDropdownEnable.isFalse) {
+    if (_homeController.isDropdownEnable.isFalse ||
+        _homeController.isFirstShiftComplete.value) {
       _homeController.initialDropdownString.value =
           _homeController.scheduleList.first;
       if (_homeController.attendance.value.scheduleId != null &&

@@ -173,13 +173,27 @@ class _InOutPageState extends State<InOutPage> {
                         borderSide: BorderSide(color: colorError),
                       ),
                     ),
-                    onSelected: (String? value) {
+                    onSelected: (String? value) async {
                       shiftId = value;
+                      final selectedIndex =
+                          _homeController.scheduleList.indexOf(value!);
                       _homeController.checkCurrentAttendanceRecordBySchedule();
                       reasonError = null;
-                      _homeController.initialDropdownString.value = value ?? "";
+                      _homeController.initialDropdownString.value = value;
+
                       _homeController.isSecondShift.value =
                           _homeController.scheduleList.indexOf(value) != 0;
+
+                      _homeController.checkNewShift().then((value) {
+                        if (selectedIndex == 1 &&
+                            _homeController.isSecondShiftComplete.isFalse) {
+                          _homeController.isClockInOutComplete.value = false;
+                          _homeController.isNewShift.value = true;
+                          _homeController.isFirstShiftComplete.value = false;
+                          print(_homeController.isFirstShiftComplete.value);
+                        }
+                      });
+
                       setState(() {});
                     },
                     menuStyle: const MenuStyle(

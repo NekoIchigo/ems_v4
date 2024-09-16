@@ -45,6 +45,7 @@ class HomeController extends GetxController {
       hasSecondShift = false.obs,
       isDropdownEnable = false.obs,
       isFirstShiftComplete = false.obs,
+      isSecondShiftComplete = false.obs,
       isGettingStarted = false.obs,
       isNewShift = false.obs;
 
@@ -92,7 +93,6 @@ class HomeController extends GetxController {
     );
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
-      log(data.toString());
       isNewShift.value = data['is_new_shift'];
       isClockInOutComplete.value = data['is_shift_complete'];
       isClockOut.value = data['is_clockout'];
@@ -109,6 +109,7 @@ class HomeController extends GetxController {
       hasSecondShift.value = scheduleId2.value != 0;
       isDropdownEnable.value = hasSecondShift.isTrue && isClockOut.isFalse;
       isShowDropDown.value = hasSecondShift.isTrue && isMobileUser.isTrue;
+
       scheduleList[0] =
           '${workStart.value} to ${workEnd.value}, Restday ${restday.value}';
       if (scheduleId2.value != 0) {
@@ -119,6 +120,10 @@ class HomeController extends GetxController {
       if (data['current_attendance_record'] != null) {
         attendance =
             AttendanceRecord.fromJson(data['current_attendance_record']).obs;
+        isFirstShiftComplete.value = isClockInOutComplete.isTrue &&
+            int.parse(attendance.value.scheduleId ?? "0") == scheduleId1.value;
+        isSecondShiftComplete.value = isClockInOutComplete.isTrue &&
+            int.parse(attendance.value.scheduleId ?? "0") == scheduleId2.value;
       } else {
         attendance = AttendanceRecord().obs;
       }
