@@ -103,11 +103,22 @@ class _LeaveFormState extends State<LeaveForm> {
                           onDateTimeChanged: (value) {
                             startDate = value[0].toString().split(" ").first;
                             endDate = value[1].toString().split(" ").first;
+                            int sundays = 0;
+
                             final difference =
                                 value[1]!.difference(value[0]!).inDays + 1;
+
+                            for (int i = 0; i < difference; i++) {
+                              DateTime currentDate =
+                                  value[0]!.add(Duration(days: i));
+                              if (currentDate.weekday == DateTime.sunday) {
+                                sundays++;
+                              }
+                            }
                             _transaction.getDTROnDateRange(startDate, endDate);
                             setState(() {
-                              _leaveCount.text = difference.toString();
+                              _leaveCount.text =
+                                  (difference - sundays).toString();
                               dateError = null;
                             });
                           },
