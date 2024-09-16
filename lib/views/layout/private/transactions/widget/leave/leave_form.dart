@@ -360,7 +360,7 @@ class _LeaveFormState extends State<LeaveForm> {
   Future<void> fillInValues(Map<String, dynamic>? data) async {
     if (data != null) {
       transactionId = data['id'];
-      _reason.text = data["reason"];
+      _reason.text = data["reason"] ?? "";
       startDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['start_date']));
       endDate = _dateTimeUtils.formatDate(

@@ -250,7 +250,7 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
       transactionId = data['id'];
       List newRestDays = data['new_rest_days'];
 
-      _reason.text = data["reason"];
+      _reason.text = data["reason"] ?? "";
       startDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['start_date']));
       endDate = _dateTimeUtils.formatDate(

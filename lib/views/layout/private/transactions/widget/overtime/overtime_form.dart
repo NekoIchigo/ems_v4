@@ -299,7 +299,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
     if (data != null) {
       transactionId = data['id'];
 
-      _reason.text = data["reason"];
+      _reason.text = data["reason"] ?? "";
       fromDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['attendance_date']));
       timeStart = _dateTimeUtils.formatTime(

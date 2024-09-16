@@ -392,7 +392,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
 
     if (data != null) {
       transactionId = data['id'];
-      _reason.text = data["reason"];
+      _reason.text = data["reason"] ?? "";
       fromDate = _dateTimeUtils.formatDate(
           dateTime: DateTime.tryParse(data['attendance_date']));
       _transactionController.clockInAt.value = _dateTimeUtils.formatTime(

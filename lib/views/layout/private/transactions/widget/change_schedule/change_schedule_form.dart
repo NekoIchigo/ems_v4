@@ -316,7 +316,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
           data['end_date'],
         ),
       );
-      _reason.text = data["reason"];
+      _reason.text = data["reason"] ?? "";
       attachments = data['attachments'] ?? [];
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scheduleController.getScheduleByType(
