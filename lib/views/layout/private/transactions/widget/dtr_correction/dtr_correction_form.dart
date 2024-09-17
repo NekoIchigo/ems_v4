@@ -322,7 +322,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     ),
                     child: const Text(
                       "Clock In",
-                      style: hintStyle,
+                      style: defaultStyle,
                     ),
                   ),
                 ),
@@ -357,7 +357,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     ),
                     child: const Text(
                       "Clock Out",
-                      style: hintStyle,
+                      style: defaultStyle,
                     ),
                   ),
                 ),

@@ -30,6 +30,7 @@ class _MessageTabState extends State<MessageTab>
   @override
   void initState() {
     super.initState();
+    _messaging.subscribeInChannel();
     _focusNode.addListener(_handleFocusChange);
   }
 
@@ -42,11 +43,9 @@ class _MessageTabState extends State<MessageTab>
 
   void _handleFocusChange() {
     if (_focusNode.hasFocus) {
-      _messaging.sendTypingStatusInChannel(
-          true, _messaging.chatHistory.firstOrNull["parent_id"].toString());
+      _messaging.sendTypingStatusInChannel(true, _messaging.parentId.value);
     } else {
-      _messaging.sendTypingStatusInChannel(
-          false, _messaging.chatHistory.firstOrNull["parent_id"].toString());
+      _messaging.sendTypingStatusInChannel(false, _messaging.parentId.value);
     }
   }
 
@@ -68,94 +67,39 @@ class _MessageTabState extends State<MessageTab>
             ),
             child: Stack(
               children: [
-                StreamBuilder(
-                  initialData: _messaging.chatHistory,
-                  stream: _messaging.channel.value.stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      var data = snapshot.data;
-                      bool? isTyping = false;
-                      String? userFullName = '';
-                      int? userId;
-                      if (snapshot.data is String) {
-                        data = jsonDecode(snapshot.data);
-                        print(data);
-                        userId = data['message']['user_id'];
-                        isTyping = userId != _auth.employee?.value.userId
-                            ? data['message']['isTyping']
-                            : false;
-                        userFullName = data['message']['user_fullname'];
+                Visibility(
+                  visible: _messaging.chatHistory.isNotEmpty,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    itemCount: _messaging.chatHistory.length,
+                    itemBuilder: (context, index) {
+                      bool isSameUser = false;
+                      bool isCurrentUser = _messaging.chatHistory[index]
+                              ['user_id'] ==
+                          _auth.employee!.value.userId;
+                      DateTime createdAt = DateTime.parse(_messaging
+                          .chatHistory[index]['created_at']
+                          .toString());
+                      if (index != 0) {
+                        isSameUser = _messaging.chatHistory[index]['user_id'] ==
+                            _messaging.chatHistory[index - 1]['user_id'];
                       }
-                      return Obx(
-                        () => Stack(
-                          children: [
-                            Visibility(
-                              visible: _messaging.chatHistory.isNotEmpty,
-                              child: ListView.builder(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                itemCount: _messaging.chatHistory.length,
-                                itemBuilder: (context, index) {
-                                  bool isSameUser = false;
-                                  bool isCurrentUser = _messaging
-                                          .chatHistory[index]['user_id'] ==
-                                      _auth.employee!.value.userId;
-                                  DateTime createdAt = DateTime.parse(_messaging
-                                      .chatHistory[index]['created_at']
-                                      .toString());
-                                  if (index != 0) {
-                                    isSameUser = _messaging.chatHistory[index]
-                                            ['user_id'] ==
-                                        _messaging.chatHistory[index - 1]
-                                            ['user_id'];
-                                  }
-                                  return Column(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10.0),
-                                        child: Row(
-                                          children: isCurrentUser
-                                              ? chatRow(isSameUser, size, index,
-                                                      createdAt)
-                                                  .reversed
-                                                  .toList()
-                                              : chatRow(isSameUser, size, index,
-                                                  createdAt),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: _messaging.chatHistory.isEmpty,
-                              child: const NoResult(),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              width: size.width,
-                              child: Visibility(
-                                visible: (snapshot.connectionState ==
-                                        ConnectionState.active &&
-                                    (isTyping ?? false)),
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Text(
-                                    "$userFullName is typing...",
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: Row(children: [
+                              Container(child: const Text("data")),
+                            ]),
+                          ),
+                        ],
                       );
-                    } else {
-                      return const CircularProgressIndicator();
-                    }
-                  },
+                    },
+                  ),
+                ),
+                Visibility(
+                  visible: _messaging.chatHistory.isEmpty,
+                  child: const NoResult(),
                 ),
               ],
             ),
@@ -204,14 +148,9 @@ class _MessageTabState extends State<MessageTab>
                   onPressed: () {
                     _messaging.sendMessageInChannel(
                       message: _messageController.text,
-                      parentId: _messaging.chatHistory.firstOrNull["parent_id"]
-                          .toString(),
+                      parentId: _messaging.parentId.value,
                       type: _messaging.messagingType.value,
                     );
-                    _messaging.fetchChatHistory(
-                        _messaging.chatHistory.firstOrNull["parent_id"]
-                            .toString(),
-                        _messaging.messagingType.value);
                     setState(() {});
                   },
                   label: "Send",
@@ -231,15 +170,13 @@ class _MessageTabState extends State<MessageTab>
     );
   }
 
-  List<Widget> chatRow(isSameUser, size, index, createdAt) {
+  List<Widget> chatRow(isCurrentUser, size, index, createdAt) {
     return [
       CircleAvatar(
         radius: 16,
-        backgroundImage: NetworkImage(
-          isSameUser
-              ? "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80"
-              : "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-        ),
+        backgroundImage: isCurrentUser
+            ? const AssetImage('assetName')
+            : const AssetImage('assetName'),
       ),
       const SizedBox(width: 15),
       Row(

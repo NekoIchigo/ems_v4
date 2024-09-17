@@ -82,6 +82,7 @@ class _ChangeRestdayState extends State<ChangeRestday> {
                     _messaging.fetchChatHistory(
                         item.id.toString(), "restday-request-chat");
                     _changeRestday.transactionData = item.toMap().obs;
+                    _messaging.parentId.value = item.id.toString();
                     context.push('/change_restday_form', extra: item.toMap());
                   },
                   approvedList: formatList(_changeRestday.approvedList),

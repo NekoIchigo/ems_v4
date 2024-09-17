@@ -82,6 +82,7 @@ class _OvertimeState extends State<Overtime> {
                       _overtimeController.getLogs(item.id);
                       _messaging.fetchChatHistory(
                           item.id.toString(), "overtime-request-chat");
+                      _messaging.parentId.value = item.id.toString();
                       _overtimeController.transactionData = item.toMap().obs;
                       context.push('/overtime_form', extra: item.toMap());
                     }

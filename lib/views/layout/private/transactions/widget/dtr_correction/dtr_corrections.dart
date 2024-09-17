@@ -86,6 +86,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
                       item.id.toString(),
                       "dtr-request-chat",
                     );
+                    _messaging.parentId.value = item.id.toString();
                     _correctionController.transactionData = item.toMap().obs;
                     context.push("/dtr_correction_form", extra: item.toMap());
                   },

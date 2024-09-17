@@ -17,7 +17,7 @@ class MessageController extends GetxController {
   late Rx<WebSocketChannel> channel;
   String? currentChannel;
   RxBool isLoading = false.obs, isListening = false.obs;
-  RxString messagingType = "".obs;
+  RxString messagingType = "".obs, parentId = "".obs;
   RxMap channelData = {"message": null}.obs;
   RxList chatHistory = [].obs;
 
@@ -125,6 +125,7 @@ class MessageController extends GetxController {
         'message': payloadMessage,
       });
       channel.value.sink.add(payload);
+      await fetchChatHistory(parentId, type);
       isLoading.value = false;
     }
   }
