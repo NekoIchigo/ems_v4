@@ -1,7 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
-import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
@@ -34,7 +33,6 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
 
   final TransactionController _transactionController =
       Get.find<TransactionController>();
-  final MessageController _messaging = Get.find<MessageController>();
   final TextEditingController _reason = TextEditingController();
   final AuthController _auth = Get.find<AuthController>();
   final DTRCorrectionController _dtrCorrection =
@@ -43,7 +41,6 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
 
   @override
   void initState() {
-    _messaging.messagingType.value = "dtr-request-chat";
     if (_dtrCorrection.transactionData['id'] != 0) {
       fillInValues(_dtrCorrection.transactionData['data']);
     }

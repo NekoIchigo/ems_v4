@@ -80,12 +80,13 @@ class _ChangeScheduleState extends State<ChangeSchedule> {
                       "Fixed Schedule",
                       null,
                     );
-                    _messaging.subscribeInChannel(
-                      channelName: "change-schedule-request-chat-${item.id}",
-                    );
+                    // _messaging.subscribeInChannel(
+                    //   channelName: "change-schedule-request-chat-${item.id}",
+                    // );
                     _messaging.fetchChatHistory(
                         item.id.toString(), "change-schedule-request-chat");
                     _messaging.parentId.value = item.id.toString();
+                    _messaging.messagingType.value = "schedule-request-chat";
                     _changeSchedule.transactionData = item.toMap().obs;
                     context.push('/change_schedule_form', extra: item.toMap());
                   },

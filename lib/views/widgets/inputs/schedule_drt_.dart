@@ -57,7 +57,7 @@ class ScheduleDTR extends StatelessWidget {
                   : Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        color: gray100,
+                        color: bgLightGray,
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: Text(

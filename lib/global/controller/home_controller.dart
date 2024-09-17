@@ -70,7 +70,7 @@ class HomeController extends GetxController {
       greetings.value = "";
       return;
     }
-    if (isFirstShiftComplete.isTrue) {
+    if (isFirstShiftComplete.isTrue && hasSecondShift.isTrue) {
       greetings.value = "Select your next shift to submit your new clock-in.";
       return;
     }

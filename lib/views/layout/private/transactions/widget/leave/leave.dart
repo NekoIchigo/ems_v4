@@ -75,13 +75,14 @@ class _LeavePageState extends State<LeavePage> {
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    _messaging.subscribeInChannel(
-                      channelName: "leave-request-chat-${item!.id}",
-                    );
+                    // _messaging.subscribeInChannel(
+                    //   channelName: "leave-request-chat-${item!.id}",
+                    // );
                     _messaging.fetchChatHistory(
-                        item.id.toString(), "leave-request-chat");
+                        item!.id.toString(), "leave-request-chat");
                     _leave.getLogs(item.id);
                     _messaging.parentId.value = item.id.toString();
+                    _messaging.messagingType.value = "leave-request-chat";
                     _leave.transactionData = item.toMap().obs;
                     context.push('/leave_form', extra: item.toMap());
                   },

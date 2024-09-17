@@ -1,7 +1,6 @@
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
-import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/schedule.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
@@ -30,7 +29,6 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
   final ChangeScheduleController _scheduleController =
       Get.find<ChangeScheduleController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
-  final MessageController _messaging = Get.find<MessageController>();
   int transactionId = 0;
   bool isLoading = false;
   List attachments = [];
@@ -39,7 +37,6 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
 
   @override
   void initState() {
-    _messaging.messagingType.value = "schedule-request-chat";
     if (_scheduleController.transactionData['id'] != 0) {
       fillInValues(_scheduleController.transactionData['data']);
     }

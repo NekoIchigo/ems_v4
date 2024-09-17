@@ -75,14 +75,15 @@ class _OvertimeState extends State<Overtime> {
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
                     if (item != null) {
-                      _messaging.subscribeInChannel(
-                        // channelName: "overtime-request-chat-${item!.id}",
-                        channelName: "ems-chat",
-                      );
+                      // _messaging.subscribeInChannel(
+                      //   // channelName: "overtime-request-chat-${item!.id}",
+                      //   channelName: "ems-chat",
+                      // );
                       _overtimeController.getLogs(item.id);
                       _messaging.fetchChatHistory(
                           item.id.toString(), "overtime-request-chat");
                       _messaging.parentId.value = item.id.toString();
+                      _messaging.messagingType.value = "overtime-request-chat";
                       _overtimeController.transactionData = item.toMap().obs;
                       context.push('/overtime_form', extra: item.toMap());
                     }
