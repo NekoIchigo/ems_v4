@@ -114,8 +114,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           child: DropdownMenu(
                             width: size.width * .84,
                             hintText: "-Select-",
-                            textStyle: const TextStyle(
-                                color: primaryBlue, fontSize: 13),
+                            textStyle: defaultStyle,
                             inputDecorationTheme: InputDecorationTheme(
                               isDense: true,
                               errorMaxLines: 1,
@@ -323,7 +322,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     ),
                     child: const Text(
                       "Clock In",
-                      style: defaultStyle,
+                      style: hintStyle,
                     ),
                   ),
                 ),
@@ -358,7 +357,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                     ),
                     child: const Text(
                       "Clock Out",
-                      style: defaultStyle,
+                      style: hintStyle,
                     ),
                   ),
                 ),

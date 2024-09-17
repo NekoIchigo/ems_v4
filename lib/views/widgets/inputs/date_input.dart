@@ -31,6 +31,16 @@ class CustomDateInput extends StatefulWidget {
 class _CustomDateInputState extends State<CustomDateInput> {
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   List<DateTime?> _dates = [];
+  bool hasDateSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.fromDate != null) {
+      hasDateSelected = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +54,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
             builder: (context) => CustomDateBottomsheet(type: widget.type),
           );
           widget.onDateTimeChanged(_dates);
+          hasDateSelected = _dates.isNotEmpty;
           setState(() {});
         }
       },
@@ -72,7 +83,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? widget.fromDate ?? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
-              style: defaultStyle,
+              style: hasDateSelected ? defaultStyle : hintStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,
@@ -110,7 +121,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? widget.fromDate ?? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[0]),
-              style: widget.fromDate != null ? defaultStyle : hintStyle,
+              style: hasDateSelected ? defaultStyle : hintStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,
@@ -136,7 +147,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
               _dates.isEmpty
                   ? widget.toDate ?? "mm/dd/yyyy"
                   : _dateTimeUtils.formatDate(dateTime: _dates[1]),
-              style: widget.fromDate != null ? defaultStyle : hintStyle,
+              style: hasDateSelected ? defaultStyle : hintStyle,
             ),
             const Icon(
               Icons.calendar_today_outlined,

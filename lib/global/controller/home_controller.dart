@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/api.dart';
@@ -72,9 +70,8 @@ class HomeController extends GetxController {
       greetings.value = "";
       return;
     }
-    if (isFirstShiftComplete.isTrue || isSecondShift.isTrue) {
-      greetings.value =
-          "Otherwise, select your first shift to clock in or out again.";
+    if (isFirstShiftComplete.isTrue) {
+      greetings.value = "Select your next shift to submit your new clock-in.";
       return;
     }
     greetings.value = isClockInOutComplete.isTrue

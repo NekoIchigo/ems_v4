@@ -190,7 +190,8 @@ class _InOutPageState extends State<InOutPage> {
                           _homeController.isClockInOutComplete.value = false;
                           _homeController.isNewShift.value = true;
                           _homeController.isFirstShiftComplete.value = false;
-                          print(_homeController.isFirstShiftComplete.value);
+                          _homeController.greetings.value =
+                              "To begin your next shift, clock in again";
                         }
                       });
 
@@ -233,15 +234,7 @@ class _InOutPageState extends State<InOutPage> {
           ),
           Column(
             children: [
-              const SizedBox(height: 8),
-              Visibility(
-                visible: _homeController.isFirstShiftComplete.isTrue,
-                child: const Text(
-                  "Select you next shift to submit your new clock-in.",
-                  style: defaultStyle,
-                ),
-              ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 15),
               Text(
                 _homeController.greetings.value,
                 style: defaultStyle,
