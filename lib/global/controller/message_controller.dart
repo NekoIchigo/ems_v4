@@ -16,7 +16,7 @@ class MessageController extends GetxController {
   final ApiCall _apiCall = ApiCall();
   late Rx<WebSocketChannel> channel;
   String? currentChannel;
-  RxBool isLoading = false.obs, isListening = false.obs;
+  RxBool isLoading = false.obs, isListening = false.obs, isSending = false.obs;
   RxString messagingType = "".obs, parentId = "".obs;
   RxMap channelData = {"message": null}.obs;
   RxList chatHistory = [].obs;
@@ -35,6 +35,10 @@ class MessageController extends GetxController {
           "channel": channelName,
         }),
       );
+      channel.value.stream.listen((message) {
+        fetchChatHistory(parentId.value, messagingType.value);
+        print(message);
+      });
       currentChannel = channelName;
     } catch (error) {
       showDialog(
@@ -90,10 +94,11 @@ class MessageController extends GetxController {
 
   Future<void> sendMessageInChannel({
     String? message,
+    required List attachment,
     required String type,
     required String parentId,
   }) async {
-    isLoading.value = true;
+    isSending.value = true;
     var response = await _apiCall.postRequest(
         apiUrl: '/send-chat',
         data: {
@@ -102,7 +107,7 @@ class MessageController extends GetxController {
           "type": type,
           "employee_id": _auth.employee?.value.id,
           "message": message,
-          "attachments": [],
+          "attachments": attachment,
         },
         catchError: () {});
     if (response['success']) {
@@ -113,7 +118,7 @@ class MessageController extends GetxController {
         'company_id': _auth.company.value.id,
         'parent_id': parentId,
         'message': message,
-        'attachments': [],
+        'attachments': attachment,
         'employee_name': _auth.employee?.value.fullName(),
         'status': 'Delivered',
         'created_at': 'none',
@@ -126,7 +131,7 @@ class MessageController extends GetxController {
       });
       channel.value.sink.add(payload);
       await fetchChatHistory(parentId, type);
-      isLoading.value = false;
+      isSending.value = false;
     }
   }
 
