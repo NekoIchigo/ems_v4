@@ -40,7 +40,7 @@ class _WeekInputState extends State<WeekInput> {
     final firstDayOfWeek = selectedDay.weekday == DateTime.sunday
         ? selectedDay
         : selectedDay.subtract(Duration(days: selectedDay.weekday));
-    final lastDayOfWeek = firstDayOfWeek.add(Duration(days: 6));
+    final lastDayOfWeek = firstDayOfWeek.add(const Duration(days: 6));
     setState(() {
       _selectedWeekRange =
           DateTimeRange(start: firstDayOfWeek, end: lastDayOfWeek);

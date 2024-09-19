@@ -37,7 +37,6 @@ class MessageController extends GetxController {
       );
       channel.value.stream.listen((message) {
         fetchChatHistory(parentId.value, messagingType.value);
-        print(message);
       });
       currentChannel = channelName;
     } catch (error) {

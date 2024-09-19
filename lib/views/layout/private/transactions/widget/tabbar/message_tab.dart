@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/constants.dart';
@@ -12,7 +11,6 @@ import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';
 
@@ -83,10 +81,8 @@ class _MessageTabState extends State<MessageTab>
                 itemBuilder: (context, index) {
                   bool isReceiver = false;
                   final message = _messaging.chatHistory[index];
-                  print(message);
 
                   final List attachments = message["attachments"];
-                  print("attachments: $attachments");
                   if (_messaging.chatHistory.isNotEmpty) {
                     isReceiver =
                         _auth.employee!.value.userId == message['user_id'];
