@@ -74,6 +74,7 @@ class _InputState extends State<Input> {
             ),
             fillColor: widget.disabled ?? false ? gray100 : Colors.white,
             error: hasError(),
+            hintStyle: hintStyle,
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: gray300)),
             contentPadding:
@@ -82,7 +83,7 @@ class _InputState extends State<Input> {
               borderRadius: BorderRadius.circular(5),
             ),
             labelText: widget.hintText,
-            labelStyle: const TextStyle(color: gray700, fontSize: 14),
+            labelStyle: hintStyle,
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? InkWell(

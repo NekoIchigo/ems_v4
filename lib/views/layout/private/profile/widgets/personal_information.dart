@@ -4,7 +4,6 @@ import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/profile_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/views/layout/private/profile/widgets/profile_page_container.dart';
-import 'package:ems_v4/views/widgets/inputs/input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
@@ -38,6 +37,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return ProfilePageContainer(
       title: "Personal Information",
       child: Column(
@@ -119,19 +119,21 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 3),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Input(
-                    validator: (p0) {},
-                    isPassword: false,
-                    disabled: true,
-                    textController: _name,
-                    labelColor: bgSecondaryBlue,
-                    icon: Icons.person,
+                const SizedBox(height: 10),
+                Container(
+                  width: size.width * .8,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: gray300),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    "${authService.employee!.value.firstName} ${authService.employee!.value.lastName}",
+                    style: defaultStyle,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 const Text(
                   "Contact Number",
                   style: TextStyle(
@@ -139,19 +141,23 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 3),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Input(
-                    validator: (p0) {},
-                    isPassword: false,
-                    disabled: true,
-                    textController: _contactNumber,
-                    labelColor: bgSecondaryBlue,
-                    icon: Icons.phone_android_rounded,
+                const SizedBox(height: 10),
+                Container(
+                  width: size.width * .8,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: gray300),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    authService.employee!.value.employeeContact
+                            .workContactNumber ??
+                        '',
+                    style: defaultStyle,
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 const Text(
                   "Email",
                   style: TextStyle(
@@ -159,16 +165,21 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 5),
-                Input(
-                  validator: (p0) {},
-                  isPassword: false,
-                  disabled: true,
-                  textController: _email,
-                  labelColor: bgSecondaryBlue,
-                  icon: Icons.email_rounded,
+                const SizedBox(height: 10),
+                Container(
+                  width: size.width * .8,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: gray300),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    authService.employee!.value.employeeContact.email ?? '',
+                    style: defaultStyle,
+                  ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
               ],
             ),
           ),
