@@ -75,7 +75,7 @@ class HomeController extends GetxController {
       return;
     }
     greetings.value = isClockInOutComplete.isTrue
-        ? 'See you tomorrow'
+        ? ''
         : isClockOut.isTrue
             ? 'Have a great day at work!'
             : 'Begin another day by clocking in.';
