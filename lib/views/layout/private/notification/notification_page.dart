@@ -65,6 +65,10 @@ class _NotificationPageState extends State<NotificationPage> {
                           itemCount:
                               _notificationController.notificationList.length,
                           itemBuilder: (context, index) {
+                            final notificationItem =
+                                _notificationController.notificationList[index];
+                            final bool isChat =
+                                notificationItem["notification_type"] == "chat";
                             return Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 15),
@@ -76,18 +80,23 @@ class _NotificationPageState extends State<NotificationPage> {
                                     padding: const EdgeInsets.only(top: 15.0),
                                     child: Row(
                                       children: [
-                                        const Icon(
-                                          Icons.edit_note_rounded,
+                                        Icon(
+                                          isChat
+                                              ? Icons.message
+                                              : Icons.edit_note_rounded,
                                           color: bgSecondaryBlue,
                                         ),
                                         const SizedBox(width: 10),
                                         Expanded(
-                                          child: Text(
-                                            _notificationController
-                                                    .notificationList[index]
-                                                ['message'],
-                                            style: defaultStyle,
-                                          ),
+                                          child: isChat
+                                              ? Text(
+                                                  "${notificationItem["user"]["name"]} left a message on your ${chatType(notificationItem['type'])}",
+                                                  style: defaultStyle,
+                                                )
+                                              : Text(
+                                                  notificationItem['message'],
+                                                  style: defaultStyle,
+                                                ),
                                         )
                                       ],
                                     ),
@@ -96,9 +105,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                     right: 0,
                                     child: Text(
                                       _dateUtils.formatDateTimeISO(
-                                          _notificationController
-                                                  .notificationList[index]
-                                              ['updated_at']),
+                                        notificationItem['updated_at'],
+                                      ),
                                       style: const TextStyle(
                                           color: gray600, fontSize: 11),
                                     ),
@@ -113,5 +121,14 @@ class _NotificationPageState extends State<NotificationPage> {
         ],
       ),
     );
+  }
+
+  String chatType(String chatType) {
+    if (chatType == "dtr-request-chat") return "DTR Request";
+    if (chatType == "schedule-request-chat") return "Change Schedule Request";
+    if (chatType == "overtime-request-chat") return "Overtime Request";
+    if (chatType == "leave-request-chat") return "Leave Request";
+    if (chatType == "restday-request-chat") return "Change Restday Request";
+    return "";
   }
 }
