@@ -112,6 +112,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                             width: size.width * .84,
                             hintText: "-Select-",
                             textStyle: defaultStyle,
+                            initialSelection:
+                                _transactionController.initialSchedule.value,
                             inputDecorationTheme: InputDecorationTheme(
                               isDense: true,
                               errorMaxLines: 1,

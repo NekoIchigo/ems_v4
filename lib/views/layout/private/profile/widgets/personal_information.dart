@@ -111,7 +111,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 const Text(
                   "Name",
                   style: TextStyle(
@@ -119,21 +119,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  width: size.width * .8,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: gray300),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    "${authService.employee!.value.firstName} ${authService.employee!.value.lastName}",
-                    style: defaultStyle,
-                  ),
+                Text(
+                  "${authService.employee!.value.firstName} ${authService.employee!.value.lastName}",
+                  style: defaultStyle,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 const Text(
                   "Contact Number",
                   style: TextStyle(
@@ -141,23 +131,13 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  width: size.width * .8,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: gray300),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    authService.employee!.value.employeeContact
-                            .workContactNumber ??
-                        '',
-                    style: defaultStyle,
-                  ),
+                Text(
+                  authService
+                          .employee!.value.employeeContact.workContactNumber ??
+                      '',
+                  style: defaultStyle,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 const Text(
                   "Email",
                   style: TextStyle(
@@ -165,19 +145,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  width: size.width * .8,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: gray300),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    authService.employee!.value.employeeContact.email ?? '',
-                    style: defaultStyle,
-                  ),
+                Text(
+                  authService.employee!.value.employeeContact.email ?? '',
+                  style: defaultStyle,
                 ),
                 const SizedBox(height: 20),
               ],

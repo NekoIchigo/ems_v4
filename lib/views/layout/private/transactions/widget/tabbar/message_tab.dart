@@ -188,71 +188,68 @@ class _MessageTabState extends State<MessageTab>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Visibility(
-          visible: attachments.isEmpty,
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-            width: size.width * .45,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () async {
-                  bool hasError = false;
+        Container(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
+          width: size.width * .45,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () async {
+                bool hasError = false;
 
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    allowMultiple: true,
-                    type: FileType.custom,
-                    allowedExtensions: ['jpg', 'pdf', 'jpeg', 'png'],
-                  );
+                FilePickerResult? result = await FilePicker.platform.pickFiles(
+                  allowMultiple: true,
+                  type: FileType.custom,
+                  allowedExtensions: ['jpg', 'pdf', 'jpeg', 'png'],
+                );
 
-                  if (result != null) {
-                    // files = result.paths.map((path) => File(path!)).toList();
+                if (result != null) {
+                  // files = result.paths.map((path) => File(path!)).toList();
 
-                    if (result.files.length > 2) {
-                      showMessage('You must select 2 files only.');
+                  if (result.files.length > 2) {
+                    showMessage('You must select 2 files only.');
+                    hasError = true;
+                  }
+                  for (PlatformFile file in result.files) {
+                    if (file.size > 3000000) {
+                      showMessage('File must not exceed 3MB');
                       hasError = true;
                     }
-                    for (PlatformFile file in result.files) {
-                      if (file.size > 3000000) {
-                        showMessage('File must not exceed 3MB');
-                        hasError = true;
-                      }
-                    }
-                    if (!hasError) {
-                      for (PlatformFile file in result.files) {
-                        if (file.path != null) {
-                          final actualFile = File(file.path!);
-                          List<int> bytes = await actualFile.readAsBytes();
-                          files.add({
-                            "index": files.length,
-                            "file_name": file.name,
-                            "file_path": file.path,
-                            "base_64": base64Encode(bytes),
-                          });
-                        }
-                      }
-                      // widget.onSelectFile(files);
-                    }
-                  } else {
-                    showMessage(
-                        'You did not select any file or something went bad.');
                   }
-                },
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.add_circle_outline,
-                      size: 20,
-                      color: primaryBlue,
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Add attachment',
-                      style: TextStyle(color: primaryBlue),
-                    ),
-                  ],
-                ),
+                  if (!hasError) {
+                    for (PlatformFile file in result.files) {
+                      if (file.path != null) {
+                        final actualFile = File(file.path!);
+                        List<int> bytes = await actualFile.readAsBytes();
+                        files.add({
+                          "index": files.length,
+                          "file_name": file.name,
+                          "file_path": file.path,
+                          "base_64": base64Encode(bytes),
+                        });
+                      }
+                    }
+                    // widget.onSelectFile(files);
+                  }
+                } else {
+                  showMessage(
+                      'You did not select any file or something went bad.');
+                }
+                setState(() {});
+              },
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.add_circle_outline,
+                    size: 20,
+                    color: primaryBlue,
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'Add attachment',
+                    style: TextStyle(color: primaryBlue),
+                  ),
+                ],
               ),
             ),
           ),
@@ -266,7 +263,78 @@ class _MessageTabState extends State<MessageTab>
               style: TextStyle(fontSize: 12, color: gray),
             ),
           ),
-        )
+        ),
+        Visibility(
+          visible: attachments.isNotEmpty,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: ColumnBuilder(
+              itemCount: attachments.length,
+              itemBuilder: (context, index) {
+                String fileName = attachments[index] is String
+                    ? attachments[index].substring(21)
+                    : attachments[index]['file_name'];
+
+                return Row(
+                  children: [
+                    const Icon(
+                      Icons.attach_file_rounded,
+                      size: 15,
+                      color: bgPrimaryBlue,
+                    ),
+                    Material(
+                      child: InkWell(
+                        onTap: () {
+                          if (attachments[index] is String) {
+                            setState(() {
+                              loadings[index] = true;
+                            });
+                            _apiCall.getRequest(
+                                apiUrl: "/download",
+                                isBlob: true,
+                                parameters: {
+                                  "path": attachments[index]
+                                }).then((response) {
+                              OpenFile.open(
+                                response['path'],
+                                type: response['type'],
+                              );
+                            }).whenComplete(() {
+                              setState(() {
+                                loadings[index] = false;
+                              });
+                            });
+                          } else {
+                            OpenFile.open(attachments[index]['file_path']);
+                          }
+                        },
+                        child: Text(
+                          fileName,
+                          style: const TextStyle(
+                              color: bgPrimaryBlue,
+                              decoration: TextDecoration.underline),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          attachments.removeAt(index);
+                        });
+                      },
+                      child: const Icon(
+                        Icons.close,
+                        size: 15,
+                        color: colorError,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
       ],
     );
   }

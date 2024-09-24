@@ -6,6 +6,7 @@ class TransactionController extends GetxController {
   RxBool isLoading = false.obs;
   ApiCall apiCall = ApiCall();
   RxList schedules = [].obs;
+  RxString initialSchedule = "".obs;
   RxMap transactionData = {}.obs;
   RxString dtrRange = "00:00 to 00:00".obs,
       scheduleName = "Schedule name".obs,
@@ -26,6 +27,11 @@ class TransactionController extends GetxController {
         .then((result) {
       if (result.containsKey("success") && result["success"] == true) {
         schedules.value = result["data"]["schedules"];
+
+        if (schedules.length == 1) {
+          initialSchedule.value = schedules.first["name"];
+        }
+
         transactionData.value = result["data"];
         dtrRange.value = transactionData["dtr"];
         scheduleName.value = transactionData["schedules"][0]["name"] ??
