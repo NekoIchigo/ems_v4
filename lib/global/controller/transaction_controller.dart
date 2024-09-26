@@ -47,10 +47,6 @@ class TransactionController extends GetxController {
       if (result.containsKey("success") && result["success"] == true) {
         schedules.value = result["data"]["schedules"];
 
-        if (schedules.length == 1) {
-          initialSchedule.value = schedules.first["name"];
-        }
-
         transactionData.value = result["data"];
         dtrRange.value = transactionData["dtr"];
         scheduleName.value = transactionData["schedules"][0]["name"] ??
@@ -61,6 +57,7 @@ class TransactionController extends GetxController {
 
   Future getDTRBySchedule(int scheduleId, String? date) async {
     isLoading.value = true;
+    print(scheduleId);
     apiCall
         .getRequest(
       apiUrl: "/mobile/dtr/get-by-schedule",
@@ -72,6 +69,7 @@ class TransactionController extends GetxController {
     )
         .then((result) {
       if (result.containsKey("success") && result["success"] == true) {
+        print(result);
         final data = result['data'];
         dtrRange.value = data["dtr"];
         clockInAt.value = data["clock_in"];

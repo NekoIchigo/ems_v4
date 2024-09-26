@@ -112,8 +112,6 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                             width: size.width * .84,
                             hintText: "-Select-",
                             textStyle: defaultStyle,
-                            initialSelection:
-                                _transactionController.initialSchedule.value,
                             inputDecorationTheme: InputDecorationTheme(
                               isDense: true,
                               errorMaxLines: 1,
@@ -137,8 +135,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                             ),
                             onSelected: (value) {
                               selectedScheduleId = value ?? 0;
-                              _transactionController.getDTRBySchedule(
-                                  selectedScheduleId, attendanceDate);
+                              if (_transactionController.schedules.length > 1) {
+                                _transactionController.getDTRBySchedule(
+                                    selectedScheduleId, attendanceDate);
+                              }
                               setState(() {});
                             },
                             menuStyle: const MenuStyle(
@@ -275,13 +275,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
 
   Widget formField2() {
     return Obx(
-      () => Container(
-        margin: const EdgeInsets.only(left: 25),
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          border: Border.all(color: gray300),
-          borderRadius: BorderRadius.circular(5),
-        ),
+      () => Padding(
+        padding: const EdgeInsets.only(left: 25),
         child: Column(
           children: [
             _transactionController.isLoading.isTrue
