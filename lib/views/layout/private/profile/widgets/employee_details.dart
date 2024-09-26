@@ -55,7 +55,10 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                 const SizedBox(height: 40),
                 const Text(
                   "Company",
-                  style: TextStyle(color: bgSecondaryBlue),
+                  style: TextStyle(
+                    color: bgSecondaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Text(
                   _authService.company.value.name,
@@ -64,7 +67,10 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                 const SizedBox(height: 30),
                 const Text(
                   "Department",
-                  style: TextStyle(color: bgSecondaryBlue),
+                  style: TextStyle(
+                    color: bgSecondaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Text(
                   _authService.employee!.value.employeeDetails.department.name,
@@ -73,7 +79,10 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                 const SizedBox(height: 30),
                 const Text(
                   "Position",
-                  style: TextStyle(color: bgSecondaryBlue),
+                  style: TextStyle(
+                    color: bgSecondaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Text(
                   _authService.employee!.value.employeeDetails.position.name,
@@ -82,7 +91,10 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                 const SizedBox(height: 30),
                 const Text(
                   "Date Hired",
-                  style: TextStyle(color: bgSecondaryBlue),
+                  style: TextStyle(
+                    color: bgSecondaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Text(
                   _authService.employee?.value.employeeDetails.dateHired ??
@@ -92,7 +104,10 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage>
                 const SizedBox(height: 30),
                 const Text(
                   "Employee ID",
-                  style: TextStyle(color: bgSecondaryBlue),
+                  style: TextStyle(
+                    color: bgSecondaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Text(
                   _authService.employee!.value.employeeDetails.employeeNumber,
