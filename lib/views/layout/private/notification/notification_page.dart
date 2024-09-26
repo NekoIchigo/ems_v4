@@ -22,6 +22,7 @@ class _NotificationPageState extends State<NotificationPage> {
   void initState() {
     super.initState();
     _notificationController.index();
+    _notificationController.showNotificationBadge.value = false;
   }
 
   @override
@@ -125,7 +126,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
   String chatType(String chatType) {
     if (chatType == "dtr-request-chat") return "DTR Request";
-    if (chatType == "schedule-request-chat") return "Change Schedule Request";
+    if (chatType == "change-schedule-chat") return "Change Schedule Request";
     if (chatType == "overtime-request-chat") return "Overtime Request";
     if (chatType == "leave-request-chat") return "Leave Request";
     if (chatType == "restday-request-chat") return "Change Restday Request";
