@@ -94,7 +94,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
                               attendanceDate =
                                   value[0].toString().split(" ")[0];
                               _transactionController
-                                  .getDTROnDate(attendanceDate);
+                                  .getSingleSchedule(attendanceDate);
                               setState(() {
                                 dateError = null;
                               });
@@ -303,7 +303,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
       );
       _totalHours.text =
           _dateTimeUtils.decimalToTime(double.parse(data['total_hours']));
-      _transactionController.getDTROnDate(
+      _transactionController.getSingleSchedule(
         data['attendance_date'],
       );
       attendanceDate = fromDate ?? "";
