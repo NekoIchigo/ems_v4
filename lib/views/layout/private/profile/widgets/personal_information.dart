@@ -37,7 +37,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return ProfilePageContainer(
       title: "Personal Information",
       child: Column(

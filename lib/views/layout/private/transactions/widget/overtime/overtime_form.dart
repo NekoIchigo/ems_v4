@@ -341,7 +341,9 @@ class _OvertimeFormState extends State<OvertimeForm> {
       "id": isUpdate ? transactionId : null,
       "attendance_date": attendanceDate,
       "start_time": timeStart,
-      "schedule_id": _transactionController.schedules.firstOrNull['id'] ?? 0,
+      "schedule_id": _transactionController.schedules.isEmpty
+          ? null
+          : _transactionController.schedules.first['id'],
       "total_hours": _dateTimeUtils.timeToDecimal(_totalHours.text),
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,

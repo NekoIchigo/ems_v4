@@ -51,13 +51,14 @@ class TransactionController extends GetxController {
         dtrRange.value = transactionData["dtr"];
         scheduleName.value = transactionData["schedules"][0]["name"] ??
             transactionData["schedules"][0]["sub_name"];
+        clockInAt.value = result["data"]["clock_in"];
+        clockOutAt.value = result["data"]["clock_out"];
       }
     }).whenComplete(() => isLoading.value = false);
   }
 
   Future getDTRBySchedule(int scheduleId, String? date) async {
     isLoading.value = true;
-    print(scheduleId);
     apiCall
         .getRequest(
       apiUrl: "/mobile/dtr/get-by-schedule",
@@ -69,7 +70,6 @@ class TransactionController extends GetxController {
     )
         .then((result) {
       if (result.containsKey("success") && result["success"] == true) {
-        print(result);
         final data = result['data'];
         dtrRange.value = data["dtr"];
         clockInAt.value = data["clock_in"];

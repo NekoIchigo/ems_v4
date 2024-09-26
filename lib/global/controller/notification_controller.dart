@@ -22,8 +22,6 @@ class NotificationController extends GetxController {
             .where((item) => !item['message'].contains("You"))
             .toList();
         showNotificationBadge.value = notificationList.isNotEmpty;
-
-        print(showNotificationBadge.value);
       }
     }).whenComplete(() {
       isLoading.value = false;
