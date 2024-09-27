@@ -89,7 +89,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         CustomDateInput(
                           type: "single",
                           fromDate: fromDate,
-                          readOnly: fromDate != null,
+                          readOnly: extraData?['status'] != 'pending' &&
+                              extraData != null,
                           onDateTimeChanged: (value) {
                             attendanceDate = value[0].toString().split(" ")[0];
                             _transactionController.getDTROnDate(attendanceDate);
@@ -112,9 +113,16 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                             width: size.width * .84,
                             hintText: "-Select-",
                             textStyle: defaultStyle,
+                            enabled: extraData?['status'] == 'pending' &&
+                                extraData == null,
                             inputDecorationTheme: InputDecorationTheme(
                               isDense: true,
                               errorMaxLines: 1,
+                              filled: true,
+                              fillColor: extraData?['status'] != 'pending' &&
+                                      extraData != null
+                                  ? gray100
+                                  : Colors.white,
                               constraints: BoxConstraints.tight(
                                 const Size.fromHeight(40),
                               ),
@@ -168,7 +176,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         const SizedBox(height: 15),
                         const NumberLabel(label: "Edit time record", number: 3),
                         const SizedBox(height: 15),
-                        formField2(),
+                        formField2(extraData),
                         Visibility(
                           visible: timeChangeError != null,
                           child: Align(
@@ -183,14 +191,10 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                           ),
                         ),
                         const SizedBox(height: 15),
-                        Visibility(
-                          visible: false,
-                          child: formField2(),
-                        ),
-                        const SizedBox(height: 15),
                         ReasonInput(
                           number: 4,
-                          readOnly: false,
+                          readOnly: extraData?['status'] != 'pending' &&
+                              extraData != null,
                           controller: _reason,
                           error: reasonError,
                           onChanged: (value) {
@@ -273,7 +277,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
     );
   }
 
-  Widget formField2() {
+  Widget formField2(extraData) {
     return Obx(
       () => Padding(
         padding: const EdgeInsets.only(left: 25),
@@ -326,6 +330,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                   child: _transactionController.isLoading.isTrue
                       ? const CustomLoader(height: 35)
                       : TimeInput(
+                          readOnly: extraData?['status'] != 'pending' &&
+                              extraData != null,
                           value: _transactionController.clockInAt.value,
                           selectedTime: (value) async {
                             _transactionController.clockInAt.value =
@@ -361,6 +367,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                   child: _transactionController.isLoading.isTrue
                       ? const CustomLoader(height: 35)
                       : TimeInput(
+                          readOnly: extraData?['status'] != 'pending' &&
+                              extraData != null,
                           value: _transactionController.clockOutAt.value,
                           selectedTime: (value) async {
                             _transactionController.clockOutAt.value =
