@@ -94,6 +94,8 @@ class _LeaveFormState extends State<LeaveForm> {
                         const SizedBox(height: 10),
                         CustomDateInput(
                           type: "range",
+                          readOnly: extraData?['status'] != 'pending' &&
+                              extraData != null,
                           fromDate: startDate,
                           toDate: endDate,
                           error: dateError,
@@ -138,18 +140,25 @@ class _LeaveFormState extends State<LeaveForm> {
                                 leaveCountError = null;
                               });
                             },
-                            decoration: const InputDecoration(
+                            readOnly: extraData?['status'] != 'pending' &&
+                                extraData != null,
+                            decoration: InputDecoration(
                               isDense: true,
+                              filled: true,
+                              fillColor: extraData?['status'] != 'pending' &&
+                                      extraData != null
+                                  ? gray100
+                                  : Colors.white,
                               hintText: "Enter leave count",
                               hintStyle: hintStyle,
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10,
                                 horizontal: 10,
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: gray300),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: gray700),
                               ),
                             ),
@@ -280,6 +289,7 @@ class _LeaveFormState extends State<LeaveForm> {
               visible: _leaveController.isLoading.isFalse,
               child: DropdownMenu<EmployeeLeave>(
                 width: size.width * .84,
+                enabled: extraData?['status'] == 'pending' && extraData == null,
                 textStyle: defaultStyle,
                 hintText: "-- Select leave --",
                 trailingIcon: const Icon(
@@ -289,11 +299,21 @@ class _LeaveFormState extends State<LeaveForm> {
                 initialSelection: extraData == null
                     ? null
                     : _leaveController.selectedLeave.value,
-                inputDecorationTheme: const InputDecorationTheme(
+                inputDecorationTheme: InputDecorationTheme(
                   hintStyle: hintStyle,
-                  constraints: BoxConstraints(maxHeight: 43),
-                  contentPadding: EdgeInsetsDirectional.all(5),
-                  enabledBorder: OutlineInputBorder(
+                  filled: true,
+                  fillColor:
+                      extraData?['status'] != 'pending' && extraData != null
+                          ? gray100
+                          : Colors.white,
+                  constraints: const BoxConstraints(maxHeight: 43),
+                  contentPadding: const EdgeInsetsDirectional.all(5),
+                  disabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: gray300,
+                    ),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: gray300),
                   ),
                 ),
