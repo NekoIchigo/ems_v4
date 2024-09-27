@@ -180,8 +180,8 @@ class _NotificationPageState extends State<NotificationPage> {
       context.push("/notification_chat");
     } else {
       if (notificationItem["particular"] == "overtime-request") {
-        await _notificationController
-            .showOvertime(notificationItem["parent_id"]);
+        await _notificationController.showOvertime(
+            notificationItem["parent_id"], context);
       } else if (notificationItem["particular"] == "change-schedule") {
         await _notificationController.showChangeSchedule(
             notificationItem["parent_id"], context);
