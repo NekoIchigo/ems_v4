@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
+import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
 import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/models/transaction_item.dart';
@@ -16,6 +18,10 @@ class NotificationController extends GetxController {
   final ChangeScheduleController _changeSchedule =
       Get.find<ChangeScheduleController>();
   final OvertimeController _overtime = Get.find<OvertimeController>();
+  final DTRCorrectionController _dtrCorrection =
+      Get.find<DTRCorrectionController>();
+  final ChangeRestdayController _changeRestday =
+      Get.find<ChangeRestdayController>();
   final ApiCall _apiCall = ApiCall();
   RxBool isLoading = false.obs,
       isTransactionLoading = false.obs,
@@ -106,6 +112,52 @@ class NotificationController extends GetxController {
         await _leaveController.getLogs(parentId);
         _leaveController.transactionData = transactionItem.toMap().obs;
         context.push('/leave_form', extra: transactionItem.toMap());
+      }
+    }).whenComplete(() => isTransactionLoading.value = false);
+  }
+
+  Future showDTRRequest(int parentId, BuildContext context) async {
+    isTransactionLoading.value = true;
+    _apiCall
+        .getRequest(apiUrl: "/mobile/dtr-correction/$parentId")
+        .then((response) async {
+      if (response.containsKey("success") && response["success"]) {
+        final data = response["data"];
+        final transactionItem = TransactionItem(
+          id: data['id'],
+          title: "",
+          dateCreated: "",
+          subtitle: "",
+          status: data['status'],
+          type: "",
+          data: data,
+        );
+        await _dtrCorrection.getLogs(parentId);
+        _dtrCorrection.transactionData = transactionItem.toMap().obs;
+        context.push('/dtr_correction_form', extra: transactionItem.toMap());
+      }
+    }).whenComplete(() => isTransactionLoading.value = false);
+  }
+
+  Future showChangeRestday(int parentId, BuildContext context) async {
+    isTransactionLoading.value = true;
+    _apiCall
+        .getRequest(apiUrl: "/mobile/change-restday/$parentId")
+        .then((response) async {
+      if (response.containsKey("success") && response["success"]) {
+        final data = response["data"];
+        final transactionItem = TransactionItem(
+          id: data['id'],
+          title: "",
+          dateCreated: "",
+          subtitle: "",
+          status: data['status'],
+          type: "",
+          data: data,
+        );
+        await _changeRestday.getLogs(parentId);
+        _changeRestday.transactionData = transactionItem.toMap().obs;
+        context.push('/change_restday_form', extra: transactionItem.toMap());
       }
     }).whenComplete(() => isTransactionLoading.value = false);
   }
