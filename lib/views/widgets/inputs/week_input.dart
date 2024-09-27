@@ -118,6 +118,7 @@ class _WeekInputState extends State<WeekInput> {
         margin: const EdgeInsets.only(left: 25),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
+          color: widget.readOnly ? gray100 : Colors.white,
           border: Border.all(color: gray300),
           borderRadius: BorderRadius.circular(5),
         ),
