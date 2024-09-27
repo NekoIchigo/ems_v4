@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 class TimeInput extends StatefulWidget {
   final ValueChanged<String?> selectedTime;
   final String value;
+  final bool readOnly;
+
   const TimeInput({
     super.key,
     required this.selectedTime,
     this.value = '00:00 AM',
+    this.readOnly = false,
   });
 
   @override
@@ -21,20 +24,22 @@ class _TimeInputState extends State<TimeInput> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        final TimeOfDay time = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.now(),
-              initialEntryMode: TimePickerEntryMode.dial,
-            ) ??
-            TimeOfDay.now();
+        if (widget.readOnly) {
+          final TimeOfDay time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+                initialEntryMode: TimePickerEntryMode.dial,
+              ) ??
+              TimeOfDay.now();
 
-        String period = time.period == DayPeriod.am ? 'AM' : 'PM';
+          String period = time.period == DayPeriod.am ? 'AM' : 'PM';
 
-        setState(() {
-          _selectedTime =
-              "${time.hourOfPeriod}:${time.minute.toString().padLeft(2, '0')} $period";
-          widget.selectedTime(_selectedTime);
-        });
+          setState(() {
+            _selectedTime =
+                "${time.hourOfPeriod}:${time.minute.toString().padLeft(2, '0')} $period";
+            widget.selectedTime(_selectedTime);
+          });
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
