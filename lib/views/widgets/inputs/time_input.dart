@@ -24,7 +24,7 @@ class _TimeInputState extends State<TimeInput> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        if (widget.readOnly) {
+        if (!widget.readOnly) {
           final TimeOfDay time = await showTimePicker(
                 context: context,
                 initialTime: TimeOfDay.now(),
