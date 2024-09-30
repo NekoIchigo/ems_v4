@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/notification_controller.dart';
@@ -168,8 +170,6 @@ class _NotificationPageState extends State<NotificationPage> {
 
   Future onNotificationTap(
       notificationItem, isChat, BuildContext context) async {
-    print(notificationItem);
-
     if (isChat) {
       await _messaging.fetchChatHistory(
         notificationItem["parent_id"].toString(),

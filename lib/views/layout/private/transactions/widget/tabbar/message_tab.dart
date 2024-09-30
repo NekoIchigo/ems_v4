@@ -158,13 +158,15 @@ class _MessageTabState extends State<MessageTab>
           attachment(files),
           Obx(
             () => RoundedCustomButton(
-              onPressed: () {
-                _messaging.sendMessageInChannel(
+              onPressed: () async {
+                await _messaging.sendMessageInChannel(
                   message: _messageController.text,
                   parentId: _messaging.parentId.value,
                   type: _messaging.messagingType.value,
                   attachment: files,
                 );
+                files = [];
+
                 setState(() {
                   _messageController.text = "";
                 });
