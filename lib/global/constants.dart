@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const globalBaseUrl = "https://gems-stg.globalland.com.ph/"; // stg
-// const globalBaseUrl = "https://preprod-gems.globalland.com.ph/"; // pre-prod1
+// const globalBaseUrl = "https://gems-stg.globalland.com.ph/"; // stg
+const globalBaseUrl = "https://preprod-gems.globalland.com.ph/"; // pre-prod
 // const globalBaseUrl = "https://gems.globalland.com.ph/"; // prod
 // const globalBaseUrl = "http://10.10.10.79:8000/"; // local
 const primaryBlue = Color(0xFF2465C7);

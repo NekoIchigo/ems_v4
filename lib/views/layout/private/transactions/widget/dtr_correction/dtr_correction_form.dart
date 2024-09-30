@@ -113,8 +113,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                             width: size.width * .84,
                             hintText: "-Select-",
                             textStyle: defaultStyle,
-                            enabled: extraData?['status'] == 'pending' &&
-                                extraData == null,
+                            enabled: !(extraData?['status'] != 'pending' &&
+                                extraData != null),
                             inputDecorationTheme: InputDecorationTheme(
                               isDense: true,
                               errorMaxLines: 1,
