@@ -289,7 +289,8 @@ class _LeaveFormState extends State<LeaveForm> {
               visible: _leaveController.isLoading.isFalse,
               child: DropdownMenu<EmployeeLeave>(
                 width: size.width * .84,
-                enabled: extraData?['status'] == 'pending' && extraData == null,
+                enabled:
+                    !(extraData?['status'] != 'pending' && extraData != null),
                 textStyle: defaultStyle,
                 hintText: "-- Select leave --",
                 trailingIcon: const Icon(
