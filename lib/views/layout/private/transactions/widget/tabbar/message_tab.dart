@@ -50,11 +50,11 @@ class _MessageTabState extends State<MessageTab>
   }
 
   void _handleFocusChange() {
-    if (_focusNode.hasFocus) {
-      _messaging.sendTypingStatusInChannel(true, _messaging.parentId.value);
-    } else {
-      _messaging.sendTypingStatusInChannel(false, _messaging.parentId.value);
-    }
+    // if (_focusNode.hasFocus) {
+    //   _messaging.sendTypingStatusInChannel(true, _messaging.parentId.value);
+    // } else {
+    //   _messaging.sendTypingStatusInChannel(false, _messaging.parentId.value);
+    // }
   }
 
   @override
@@ -75,21 +75,22 @@ class _MessageTabState extends State<MessageTab>
               borderRadius: BorderRadius.circular(5),
             ),
             child: Obx(
-              () => ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: _messaging.chatHistory.length,
-                itemBuilder: (context, index) {
-                  bool isReceiver = false;
-                  final message = _messaging.chatHistory[index];
+              () => _messaging.chatHistory.isEmpty
+                  ? const NoResult()
+                  : ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: _messaging.chatHistory.length,
+                      itemBuilder: (context, index) {
+                        bool isReceiver = false;
+                        final message = _messaging.chatHistory[index];
 
-                  final List attachments = message["attachments"];
-                  if (_messaging.chatHistory.isNotEmpty) {
-                    isReceiver =
-                        _auth.employee!.value.userId == message['user_id'];
-                  }
+                        final List attachments = message["attachments"];
+                        if (_messaging.chatHistory.isNotEmpty) {
+                          isReceiver = _auth.employee!.value.userId ==
+                              message['user_id'];
+                        }
 
-                  return _messaging.chatHistory.isNotEmpty
-                      ? Container(
+                        return Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           width: size.width,
                           child: Row(
@@ -123,10 +124,9 @@ class _MessageTabState extends State<MessageTab>
                               ),
                             ],
                           ),
-                        )
-                      : const NoResult();
-                },
-              ),
+                        );
+                      },
+                    ),
             ),
           ),
           const SizedBox(height: 20),
@@ -173,7 +173,7 @@ class _MessageTabState extends State<MessageTab>
               },
               label: "Send",
               radius: 5,
-              isLoading: _messaging.isLoading.isTrue,
+              isLoading: _messaging.isSending.isTrue,
               size: Size(size.width * .4, 20),
             ),
           ),

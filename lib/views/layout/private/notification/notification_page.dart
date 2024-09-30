@@ -4,6 +4,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/notification_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/views/widgets/loader/item_shimmer.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +24,27 @@ class _NotificationPageState extends State<NotificationPage> {
       Get.find<NotificationController>();
   final DateTimeUtils _dateUtils = DateTimeUtils();
   final MessageController _messaging = Get.find<MessageController>();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_scrollListener);
     _notificationController.index();
     _notificationController.showNotificationBadge.value = false;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _notificationController.nextPageNotification();
+    }
   }
 
   @override
@@ -71,68 +87,92 @@ class _NotificationPageState extends State<NotificationPage> {
                       : _notificationController.notificationList.isEmpty
                           ? const NoResult()
                           : ListView.builder(
+                              controller: _scrollController,
                               itemCount: _notificationController
-                                  .notificationList.length,
+                                      .notificationList.length +
+                                  1,
                               itemBuilder: (context, index) {
-                                final notificationItem = _notificationController
-                                    .notificationList[index];
-                                final bool isChat =
-                                    notificationItem["notification_type"] ==
-                                        "chat";
-                                return InkWell(
-                                  onTap: () async {
-                                    await onNotificationTap(
-                                        notificationItem, isChat, context);
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 15),
-                                    color: index % 2 == 0
-                                        ? bgLightBlue
-                                        : Colors.white,
-                                    child: Stack(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 15.0),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                isChat
-                                                    ? Icons.message
-                                                    : Icons.edit_note_rounded,
-                                                color: bgSecondaryBlue,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: isChat
-                                                    ? Text(
-                                                        "${notificationItem["user"]["name"]} left a message on your ${chatType(notificationItem['type'])}",
-                                                        style: defaultStyle,
-                                                      )
-                                                    : Text(
-                                                        notificationItem[
-                                                            'message'],
-                                                        style: defaultStyle,
-                                                      ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 0,
-                                          child: Text(
-                                            _dateUtils.formatDateTimeISO(
-                                              notificationItem['updated_at'],
+                                if (index <
+                                    _notificationController
+                                        .notificationList.length) {
+                                  final notificationItem =
+                                      _notificationController
+                                          .notificationList[index];
+                                  final bool isChat =
+                                      notificationItem["notification_type"] ==
+                                          "chat";
+                                  return InkWell(
+                                    onTap: () async {
+                                      await onNotificationTap(
+                                          notificationItem, isChat, context);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 15),
+                                      color: index % 2 == 0
+                                          ? bgLightBlue
+                                          : Colors.white,
+                                      child: Stack(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 15.0),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  isChat
+                                                      ? Icons.message
+                                                      : Icons.edit_note_rounded,
+                                                  color: bgSecondaryBlue,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: isChat
+                                                      ? Text(
+                                                          "${notificationItem["user"]["name"]} left a message on your ${chatType(notificationItem['type'])}",
+                                                          style: defaultStyle,
+                                                        )
+                                                      : Text(
+                                                          notificationItem[
+                                                              'message'],
+                                                          style: defaultStyle,
+                                                        ),
+                                                )
+                                              ],
                                             ),
-                                            style: const TextStyle(
-                                                color: gray600, fontSize: 11),
                                           ),
-                                        ),
-                                      ],
+                                          Positioned(
+                                            right: 0,
+                                            child: Text(
+                                              _dateUtils.formatDateTimeISO(
+                                                notificationItem['updated_at'],
+                                              ),
+                                              style: const TextStyle(
+                                                  color: gray600, fontSize: 11),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                } else {
+                                  return _notificationController
+                                          .isPaginateLoading.isTrue
+                                      ? const ItemShimmer(withLeading: true)
+                                      : const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 20.0),
+                                            child: Text(
+                                              "-- End of Records --",
+                                              style: TextStyle(
+                                                color: gray,
+                                                fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                }
                               },
                             ),
                 ),

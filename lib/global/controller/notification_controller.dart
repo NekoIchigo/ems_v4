@@ -28,6 +28,7 @@ class NotificationController extends GetxController {
       isPaginateLoading = false.obs,
       showNotificationBadge = false.obs;
   RxList notificationList = [].obs;
+  RxInt currentPage = 1.obs, paginateLength = 1.obs;
 
   Future<void> index() async {
     isLoading.value = true;
@@ -40,10 +41,40 @@ class NotificationController extends GetxController {
         notificationList.value = notificationList
             .where((item) => !item['message'].contains("You"))
             .toList();
+        paginateLength.value = response['data']['last_page'];
+        currentPage.value = response['data']['current_page'];
         showNotificationBadge.value = notificationList.isNotEmpty;
       }
     }).whenComplete(() {
       isLoading.value = false;
+    });
+  }
+
+  Future<void> nextPageNotification() async {
+    if (currentPage.value < paginateLength.value) {
+      currentPage.value += 1;
+    } else {
+      return;
+    }
+    isPaginateLoading.value = true;
+    _apiCall.getRequest(apiUrl: "/fetch-notifications-chat", parameters: {
+      "company_id": _authController.employee?.value.companyId,
+      "employee_id": _authController.employee?.value.id,
+      "page": currentPage.value,
+    }).then((response) {
+      if (response.containsKey('success') && response['success']) {
+        List newNotifications = response['data']['data'];
+        newNotifications = newNotifications
+            .where((item) => !item['message'].contains("You"))
+            .toList();
+
+        notificationList += newNotifications;
+        paginateLength.value = response['data']['last_page'];
+        currentPage.value = response['data']['current_page'];
+        showNotificationBadge.value = notificationList.isNotEmpty;
+      }
+    }).whenComplete(() {
+      isPaginateLoading.value = false;
     });
   }
 
@@ -161,6 +192,4 @@ class NotificationController extends GetxController {
       }
     }).whenComplete(() => isTransactionLoading.value = false);
   }
-
-  Future nextPageList() async {}
 }
