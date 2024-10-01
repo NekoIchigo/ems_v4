@@ -105,18 +105,20 @@ class MessageController extends GetxController {
           "parent_id": parentId,
           "type": type,
           "employee_id": _auth.employee?.value.id,
-          "message": message,
+          "message": message ?? " ",
           "attachments": attachment,
         },
-        catchError: () {});
-    if (response['success']) {
+        catchError: () {
+          isSending.value = false;
+        });
+    if (response.containsKey('success') && response['success']) {
       final payloadMessage = {
         'type': 'chat',
         'user_id': _auth.employee?.value.userId,
         'employee_id': _auth.employee?.value.id,
         'company_id': _auth.company.value.id,
         'parent_id': parentId,
-        'message': message,
+        'message': message ?? "",
         'attachments': attachment,
         'employee_name': _auth.employee?.value.fullName(),
         'status': 'Delivered',
@@ -130,8 +132,8 @@ class MessageController extends GetxController {
       });
       channel.value.sink.add(payload);
       await fetchChatHistory(parentId, type);
-      isSending.value = false;
     }
+    isSending.value = false;
   }
 
   void sendTypingStatusInChannel(bool isTyping, String parentId) {
