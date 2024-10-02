@@ -73,6 +73,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
       Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
+          color: widget.readOnly ? gray100 : Colors.white,
           border: Border.all(color: gray300),
           borderRadius: BorderRadius.circular(5),
         ),
@@ -111,6 +112,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
       Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
+          color: widget.readOnly ? gray100 : Colors.white,
           border: Border.all(color: gray300),
           borderRadius: BorderRadius.circular(5),
         ),
@@ -137,6 +139,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
       Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
+          color: widget.readOnly ? gray100 : Colors.white,
           border: Border.all(color: gray300),
           borderRadius: BorderRadius.circular(5),
         ),

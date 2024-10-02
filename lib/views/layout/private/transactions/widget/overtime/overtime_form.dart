@@ -90,11 +90,13 @@ class _OvertimeFormState extends State<OvertimeForm> {
                           CustomDateInput(
                             type: "single",
                             fromDate: fromDate,
+                            readOnly: extraData?['status'] != 'pending' &&
+                                extraData != null,
                             onDateTimeChanged: (value) {
                               attendanceDate =
                                   value[0].toString().split(" ")[0];
                               _transactionController
-                                  .getDTROnDate(attendanceDate);
+                                  .getSingleSchedule(attendanceDate);
                               setState(() {
                                 dateError = null;
                               });
@@ -107,7 +109,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
                           const NumberLabel(
                               label: "Edit time record", number: 2),
                           const SizedBox(height: 15),
-                          formField2(),
+                          formField2(extraData),
                           const SizedBox(height: 15),
                           ReasonInput(
                             readOnly: extraData?['status'] != 'pending' &&
@@ -195,7 +197,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
     );
   }
 
-  Widget formField2() {
+  Widget formField2(extraData) {
     return ColumnBuilder(
       itemCount: 1,
       itemBuilder: (context, index) {
@@ -229,6 +231,8 @@ class _OvertimeFormState extends State<OvertimeForm> {
                   Expanded(
                     child: TimeInput(
                       value: timeStart,
+                      readOnly: extraData?['status'] != 'pending' &&
+                          extraData != null,
                       selectedTime: (value) {
                         timeStart = _dateTimeUtils.time12to24(value);
                         setState(() {
@@ -303,7 +307,7 @@ class _OvertimeFormState extends State<OvertimeForm> {
       );
       _totalHours.text =
           _dateTimeUtils.decimalToTime(double.parse(data['total_hours']));
-      _transactionController.getDTROnDate(
+      _transactionController.getSingleSchedule(
         data['attendance_date'],
       );
       attendanceDate = fromDate ?? "";
@@ -341,7 +345,9 @@ class _OvertimeFormState extends State<OvertimeForm> {
       "id": isUpdate ? transactionId : null,
       "attendance_date": attendanceDate,
       "start_time": timeStart,
-      "schedule_id": _transactionController.schedules.firstOrNull['id'] ?? 0,
+      "schedule_id": _transactionController.schedules.isEmpty
+          ? null
+          : _transactionController.schedules.first['id'],
       "total_hours": _dateTimeUtils.timeToDecimal(_totalHours.text),
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,

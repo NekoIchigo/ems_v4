@@ -1,7 +1,9 @@
 import 'package:ems_v4/global/api.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:get/get.dart';
 
 class TransactionController extends GetxController {
+  final AuthController _auth = Get.find<AuthController>();
   RxInt pageIndex = 0.obs;
   RxBool isLoading = false.obs;
   ApiCall apiCall = ApiCall();
@@ -13,6 +15,23 @@ class TransactionController extends GetxController {
       clockInAt = "00:00".obs,
       clockOutAt = "00:00".obs;
   final int routerKey = 3;
+
+  Future getSingleSchedule(String? date) async {
+    isLoading.value = true;
+    apiCall.getRequest(apiUrl: "/fetch-employee-single-sched", parameters: {
+      "employee_id": _auth.employee?.value.id,
+      "selected_date": date,
+      "company_id": _auth.employee?.value.companyId,
+    }).then((result) {
+      if (result.containsKey("success") && result["success"] == true) {
+        final data = result["data"][0];
+        scheduleName.value = data["schedule_description"];
+        dtrRange.value = data["dtr_description"];
+      }
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
+  }
 
   Future getDTROnDate(String? date) async {
     isLoading.value = true;
@@ -28,14 +47,12 @@ class TransactionController extends GetxController {
       if (result.containsKey("success") && result["success"] == true) {
         schedules.value = result["data"]["schedules"];
 
-        if (schedules.length == 1) {
-          initialSchedule.value = schedules.first["name"];
-        }
-
         transactionData.value = result["data"];
         dtrRange.value = transactionData["dtr"];
         scheduleName.value = transactionData["schedules"][0]["name"] ??
             transactionData["schedules"][0]["sub_name"];
+        clockInAt.value = result["data"]["clock_in"];
+        clockOutAt.value = result["data"]["clock_out"];
       }
     }).whenComplete(() => isLoading.value = false);
   }

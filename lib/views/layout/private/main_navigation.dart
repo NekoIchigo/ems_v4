@@ -2,6 +2,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/notification_controller.dart';
 import 'package:ems_v4/views/layout/private/getting_started.dart';
 import 'package:ems_v4/views/widgets/builder/ems_container.dart';
 
@@ -28,6 +29,8 @@ class _MainNavigationState extends State<MainNavigation>
   final MainNavigationController _mainNavigationController =
       Get.find<MainNavigationController>();
   bool isBack = false;
+  final NotificationController _notificationController =
+      NotificationController();
 
   Future<bool> exitDialog() async {
     return false;
@@ -46,6 +49,8 @@ class _MainNavigationState extends State<MainNavigation>
       _mainNavigationController.navigation.removeAt(2);
       _mainNavigationController.navigationPath.removeAt(2);
     }
+    _notificationController.index();
+
     super.initState();
   }
 
@@ -68,7 +73,20 @@ class _MainNavigationState extends State<MainNavigation>
         ],
       ),
       extendBody: true,
-      bottomNavigationBar: ConvexAppBar(
+      bottomNavigationBar: ConvexAppBar.badge(
+        {
+          3: Obx(() => Visibility(
+                visible: _notificationController.showNotificationBadge.isTrue,
+                child: Container(
+                  height: 8,
+                  width: 8,
+                  decoration: const BoxDecoration(
+                    color: Colors.redAccent,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ))
+        },
         controller: _mainNavigationController.tabController,
         backgroundColor: bgPrimaryBlue,
         height: 55,
@@ -78,6 +96,9 @@ class _MainNavigationState extends State<MainNavigation>
         style: TabStyle.reactCircle,
         onTap: (index) {
           final String path = _mainNavigationController.navigationPath[index];
+          if (index == 3) {
+            _notificationController.showNotificationBadge.value = false;
+          }
           context.go(path);
         },
       ),

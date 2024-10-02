@@ -29,6 +29,7 @@ class _MessageTabState extends State<MessageTab>
   final TextEditingController _messageController = TextEditingController();
   final _focusNode = FocusNode();
   late Size size;
+  String? messageError;
   List<Map> files = [];
   List<bool> loadings = [false, false];
 
@@ -50,11 +51,11 @@ class _MessageTabState extends State<MessageTab>
   }
 
   void _handleFocusChange() {
-    if (_focusNode.hasFocus) {
-      _messaging.sendTypingStatusInChannel(true, _messaging.parentId.value);
-    } else {
-      _messaging.sendTypingStatusInChannel(false, _messaging.parentId.value);
-    }
+    // if (_focusNode.hasFocus) {
+    //   _messaging.sendTypingStatusInChannel(true, _messaging.parentId.value);
+    // } else {
+    //   _messaging.sendTypingStatusInChannel(false, _messaging.parentId.value);
+    // }
   }
 
   @override
@@ -75,21 +76,22 @@ class _MessageTabState extends State<MessageTab>
               borderRadius: BorderRadius.circular(5),
             ),
             child: Obx(
-              () => ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: _messaging.chatHistory.length,
-                itemBuilder: (context, index) {
-                  bool isReceiver = false;
-                  final message = _messaging.chatHistory[index];
+              () => _messaging.chatHistory.isEmpty
+                  ? const NoResult()
+                  : ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: _messaging.chatHistory.length,
+                      itemBuilder: (context, index) {
+                        bool isReceiver = false;
+                        final message = _messaging.chatHistory[index];
 
-                  final List attachments = message["attachments"];
-                  if (_messaging.chatHistory.isNotEmpty) {
-                    isReceiver =
-                        _auth.employee!.value.userId == message['user_id'];
-                  }
+                        final List attachments = message["attachments"];
+                        if (_messaging.chatHistory.isNotEmpty) {
+                          isReceiver = _auth.employee!.value.userId ==
+                              message['user_id'];
+                        }
 
-                  return _messaging.chatHistory.isNotEmpty
-                      ? Container(
+                        return Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           width: size.width,
                           child: Row(
@@ -123,10 +125,9 @@ class _MessageTabState extends State<MessageTab>
                               ),
                             ],
                           ),
-                        )
-                      : const NoResult();
-                },
-              ),
+                        );
+                      },
+                    ),
             ),
           ),
           const SizedBox(height: 20),
@@ -139,16 +140,22 @@ class _MessageTabState extends State<MessageTab>
             maxLines: 3,
             focusNode: _focusNode,
             controller: _messageController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
+              errorText: messageError,
               hintText: "Enter your message here...",
-              hintStyle: TextStyle(color: lightGray),
+              hintStyle: const TextStyle(color: lightGray),
               isDense: true,
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: gray,
                 ),
               ),
-              focusedBorder: OutlineInputBorder(
+              errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: colorError,
+                ),
+              ),
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: gray,
                 ),
@@ -158,20 +165,25 @@ class _MessageTabState extends State<MessageTab>
           attachment(files),
           Obx(
             () => RoundedCustomButton(
-              onPressed: () {
-                _messaging.sendMessageInChannel(
-                  message: _messageController.text,
-                  parentId: _messaging.parentId.value,
-                  type: _messaging.messagingType.value,
-                  attachment: files,
-                );
+              onPressed: () async {
+                if (_messageController.text.isNotEmpty) {
+                  await _messaging.sendMessageInChannel(
+                    message: _messageController.text,
+                    parentId: _messaging.parentId.value,
+                    type: _messaging.messagingType.value,
+                    attachment: files,
+                  );
+                  files = [];
+                } else {
+                  messageError = "Message is required.";
+                }
                 setState(() {
                   _messageController.text = "";
                 });
               },
               label: "Send",
               radius: 5,
-              isLoading: _messaging.isLoading.isTrue,
+              isLoading: _messaging.isSending.isTrue,
               size: Size(size.width * .4, 20),
             ),
           ),
@@ -354,34 +366,60 @@ class _MessageTabState extends State<MessageTab>
   }
 
   Widget chatBox(bool isReceiver, message, List attachments) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      constraints: BoxConstraints(
-        maxWidth: size.width * .5,
-      ),
-      decoration: BoxDecoration(
-          color: isReceiver ? const Color(0xFFf8ffe8) : bgLightBlue,
-          borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        crossAxisAlignment:
-            isReceiver ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Text(
-            message['employee_name'],
-            style: const TextStyle(
-              color: gray300,
-              fontSize: 10,
+    return Column(
+      crossAxisAlignment:
+          isReceiver ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          constraints: BoxConstraints(
+            maxWidth: size.width * .5,
+          ),
+          decoration: BoxDecoration(
+              color: isReceiver ? const Color(0xFFf8ffe8) : bgLightBlue,
+              borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            crossAxisAlignment:
+                isReceiver ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              Text(
+                message['employee_name'],
+                style: const TextStyle(
+                  color: gray300,
+                  fontSize: 10,
+                ),
+              ),
+              Text(
+                message['message'],
+                style: defaultStyle,
+                softWrap: true,
+              ),
+              Text(
+                message['status'],
+                style: const TextStyle(
+                  color: gray300,
+                  fontSize: 10,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Visibility(
+          visible: attachments.isNotEmpty,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            constraints: BoxConstraints(
+              maxHeight: size.height * .1,
+              maxWidth: size.width * .5,
             ),
-          ),
-          Text(
-            message['message'],
-            style: defaultStyle,
-            softWrap: true,
-          ),
-          Visibility(
-            visible: attachments.isNotEmpty,
+            decoration: BoxDecoration(
+                color: isReceiver ? const Color(0xFFf8ffe8) : bgLightBlue,
+                borderRadius: BorderRadius.circular(10)),
             child: ColumnBuilder(
               itemCount: attachments.length,
+              mainAxisSize: MainAxisSize.min,
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
@@ -409,18 +447,28 @@ class _MessageTabState extends State<MessageTab>
                         ? MainAxisAlignment.end
                         : MainAxisAlignment.start,
                     children: [
-                      const Icon(
-                        Icons.attach_file,
-                        size: 10,
-                        color: bgSecondaryBlue,
-                      ),
+                      loadings[index]
+                          ? const SizedBox(
+                              width: 10,
+                              height: 10,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                strokeCap: StrokeCap.round,
+                              ),
+                            )
+                          : const Icon(
+                              Icons.attach_file,
+                              size: 15,
+                              color: bgSecondaryBlue,
+                            ),
+                      const SizedBox(width: 5),
                       Expanded(
                         child: Text(
                           attachments[index].toString().substring(17),
                           softWrap: true,
                           style: const TextStyle(
                             color: gray400,
-                            fontSize: 10,
+                            fontSize: 11,
                           ),
                         ),
                       ),
@@ -430,15 +478,8 @@ class _MessageTabState extends State<MessageTab>
               },
             ),
           ),
-          Text(
-            message['status'],
-            style: const TextStyle(
-              color: gray300,
-              fontSize: 10,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

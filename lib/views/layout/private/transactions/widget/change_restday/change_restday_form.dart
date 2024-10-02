@@ -96,6 +96,8 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                   WeekInput(
                     startDate: startDate,
                     endDate: endDate,
+                    readOnly:
+                        extraData?['status'] != 'pending' && extraData != null,
                     onDateTimeChanged: (value) {
                       startDate = value?.start.toString().split(" ").first;
                       endDate = value?.end.toString().split(" ").first;
@@ -107,27 +109,10 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                       });
                     },
                   ),
-                  // CustomDateInput(
-                  //   type: "range",
-                  //   fromDate: startDate,
-                  //   toDate: endDate,
-                  //   onDateTimeChanged: (value) {
-                  //     startDate = value[0].toString().split(" ").first;
-                  //     endDate = value[1].toString().split(" ").first;
-                  //     _transactionController.getDTROnDateRange(
-                  //         startDate, endDate);
-                  //     _scheduleController.fetchScheduleList(value);
-                  //     setState(() {
-                  //       dateError = null;
-                  //     });
-                  //   },
-                  //   error: dateError,
-                  //   child: Container(),
-                  // ),
                   const SizedBox(height: 15),
                   const NumberLabel(label: "Select new restday", number: 2),
                   const SizedBox(height: 15),
-                  formField2(),
+                  formField2(extraData),
                   Visibility(
                     visible: restdayError != null,
                     child: Align(
@@ -143,7 +128,8 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
                   ),
                   const SizedBox(height: 15),
                   ReasonInput(
-                    readOnly: false,
+                    readOnly:
+                        extraData?['status'] != 'pending' && extraData != null,
                     controller: _reason,
                     error: reasonError,
                     onChanged: (value) {
@@ -221,12 +207,13 @@ class _ChangeRestdayFormState extends State<ChangeRestdayForm> {
     );
   }
 
-  Widget formField2() {
+  Widget formField2(extraData) {
     return Container(
       padding: const EdgeInsets.only(left: 25),
       width: size.width * .90,
       height: 50,
       child: MultiSelectDropDown(
+        searchEnabled: extraData?['status'] != 'pending' && extraData != null,
         controller: _multiSelectController,
         onOptionSelected: (selectedOptions) {
           setState(() {

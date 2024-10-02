@@ -85,6 +85,8 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                           type: "range",
                           fromDate: dateStart,
                           toDate: dateEnd,
+                          readOnly: extraData?['status'] != 'pending' &&
+                              extraData != null,
                           onDateTimeChanged: (value) {
                             dateStart = value[0].toString().split(" ")[0];
                             dateEnd = value[1].toString().split(" ")[0];
@@ -104,7 +106,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         const NumberLabel(
                             label: "Change schedule details", number: 2),
                         const SizedBox(height: 15),
-                        formField2(),
+                        formField2(extraData),
                         const SizedBox(height: 15),
                         ReasonInput(
                           readOnly: extraData?['status'] != 'pending' &&
@@ -192,7 +194,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     );
   }
 
-  Widget formField2() {
+  Widget formField2(extraData) {
     return Container(
       padding: const EdgeInsets.only(left: 25),
       child: Column(
@@ -258,14 +260,20 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                       ),
                     )
                   : null,
-              enabled: _scheduleController.isLoading.isFalse,
-              inputDecorationTheme: const InputDecorationTheme(
-                constraints: BoxConstraints(maxHeight: 45),
-                contentPadding: EdgeInsetsDirectional.all(5),
-                enabledBorder: OutlineInputBorder(
+              enabled: _scheduleController.isLoading.isFalse ||
+                  (extraData?['status'] != 'pending' && extraData != null),
+              inputDecorationTheme: InputDecorationTheme(
+                constraints: const BoxConstraints(maxHeight: 45),
+                filled: true,
+                fillColor:
+                    extraData?['status'] != 'pending' && extraData != null
+                        ? gray100
+                        : Colors.white,
+                contentPadding: const EdgeInsetsDirectional.all(5),
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: gray300),
                 ),
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                   borderSide: BorderSide(color: gray300),
                 ),
               ),

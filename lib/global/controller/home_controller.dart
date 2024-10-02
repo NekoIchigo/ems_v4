@@ -8,6 +8,7 @@ import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeController extends GetxController {
   final AuthController _authService = Get.find<AuthController>();
@@ -286,6 +287,7 @@ class HomeController extends GetxController {
     } else {
       showDialog(
         context: navigatorKey.currentContext!,
+        barrierDismissible: false,
         builder: (context) {
           return GemsDialog(
             title: "Oops",
@@ -294,7 +296,11 @@ class HomeController extends GetxController {
             hasCustomWidget: false,
             message: "Error: $result",
             type: "error",
-            buttonNumber: 0,
+            buttonNumber: 1,
+            okText: "Close",
+            okPress: () {
+              navigatorKey.currentContext!.push("/in_out");
+            },
           );
         },
       );
@@ -325,15 +331,20 @@ class HomeController extends GetxController {
     } else {
       showDialog(
         context: navigatorKey.currentContext!,
+        barrierDismissible: false,
         builder: (context) {
           return GemsDialog(
             title: "Oops",
             hasMessage: true,
-            withCloseButton: true,
+            withCloseButton: false,
             hasCustomWidget: false,
             message: "Error clock out result: $result",
             type: "error",
-            buttonNumber: 0,
+            buttonNumber: 1,
+            okText: "Close",
+            okPress: () {
+              navigatorKey.currentContext!.push("/in_out");
+            },
           );
         },
       );

@@ -9,11 +9,13 @@ class TimeTextField extends StatelessWidget {
     this.hint = "00:00",
     required this.controller,
     this.onChanged,
+    this.readOnly = false,
   });
   final ValueChanged? onChanged;
   final TextEditingController controller;
   final String? label;
   final String hint;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,12 @@ class TimeTextField extends StatelessWidget {
       style: defaultStyle,
       controller: controller,
       onChanged: onChanged,
+      readOnly: readOnly,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
+        filled: true,
+        fillColor: readOnly ? gray100 : Colors.white,
         hintStyle: hintStyle,
         contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
         isDense: true,

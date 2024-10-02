@@ -62,16 +62,24 @@ class _ReasonInputState extends State<ReasonInput> {
             style: defaultStyle,
             readOnly: widget.readOnly,
             onChanged: widget.onChanged,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
+              filled: true,
               hintText: "Enter here",
               hintStyle: hintStyle,
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              enabledBorder: OutlineInputBorder(
+              fillColor: widget.readOnly ? gray100 : Colors.white,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              disabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: gray300,
                 ),
               ),
-              focusedBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: gray300,
+                ),
+              ),
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: gray300,
                 ),

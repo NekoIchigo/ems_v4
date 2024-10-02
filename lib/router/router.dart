@@ -5,6 +5,7 @@ import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
+import 'package:ems_v4/views/layout/private/notification/notification_chat.dart';
 import 'package:ems_v4/views/layout/private/notification/notification_page.dart';
 import 'package:ems_v4/views/layout/private/profile/profile.dart';
 import 'package:ems_v4/views/layout/private/profile/profile_container.dart';
@@ -364,9 +365,9 @@ final router = GoRouter(
               context: context, state: state, child: const NotificationPage()),
         ),
         GoRoute(
-          path: '/notification',
+          path: '/notification_chat',
           pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-              context: context, state: state, child: const NotificationPage()),
+              context: context, state: state, child: const NotificationChat()),
         ),
         ShellRoute(
           pageBuilder: (context, state, child) =>
