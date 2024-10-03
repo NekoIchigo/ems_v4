@@ -140,6 +140,11 @@ class _MessageTabState extends State<MessageTab>
             maxLines: 3,
             focusNode: _focusNode,
             controller: _messageController,
+            onChanged: (value) {
+              setState(() {
+                messageError = null;
+              });
+            },
             decoration: InputDecoration(
               errorText: messageError,
               hintText: "Enter your message here...",
