@@ -40,26 +40,26 @@ class MessageController extends GetxController {
       });
       currentChannel = channelName;
     } catch (error) {
-      showDialog(
-        context: navigatorKey.currentContext!,
-        builder: (context) {
-          return GemsDialog(
-            title: "",
-            hasMessage: true,
-            hasLottie: false,
-            withCloseButton: true,
-            hasCustomWidget: true,
-            customWidget: Column(
-              children: [
-                Image.asset('assets/images/no_data.png', width: 400),
-              ],
-            ),
-            message: "Channel subscription: $error",
-            type: "error",
-            buttonNumber: 0,
-          );
-        },
-      );
+      // showDialog(
+      //   context: navigatorKey.currentContext!,
+      //   builder: (context) {
+      //     return GemsDialog(
+      //       title: "",
+      //       hasMessage: true,
+      //       hasLottie: false,
+      //       withCloseButton: true,
+      //       hasCustomWidget: true,
+      //       customWidget: Column(
+      //         children: [
+      //           Image.asset('assets/images/no_data.png', width: 400),
+      //         ],
+      //       ),
+      //       message: "Channel subscription: $error",
+      //       type: "error",
+      //       buttonNumber: 0,
+      //     );
+      //   },
+      // );
     }
   }
 

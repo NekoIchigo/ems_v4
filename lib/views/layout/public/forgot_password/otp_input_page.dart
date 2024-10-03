@@ -22,44 +22,51 @@ class _OTPInputPageState extends State<OTPInputPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Verification via OTP",
-            style: TextStyle(color: primaryBlue, fontSize: 16),
-          ),
-          const Text(
-            "Enter the 6-digit code.",
-            style: TextStyle(color: gray),
-          ),
-          const SizedBox(height: 10),
-          PinInput(
-            pinController: _otpController,
-            label: '',
-            validation: (p0) {},
-            errorText: otpError,
-          ),
-          const SizedBox(height: 20),
-          Obx(
-            () => RoundedCustomButton(
-              onPressed: () async {
-                var error =
-                    await _passwordController.verifyOTP(_otpController.text);
-                // _passwordController.animateToThirdPage();
-                otpError = error['message'];
-                setState(() {});
-              },
-              isLoading: _passwordController.isLoading.value,
-              label:
-                  _passwordController.isLoading.isTrue ? "Verifying" : "Verify",
-              size: Size(size.width * .9, 30),
-              bgColor: bgPrimaryBlue,
+    return GestureDetector(
+      onTap: () {
+        // Unfocus any text field when tapping outside of them
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Verification via OTP",
+              style: TextStyle(color: primaryBlue, fontSize: 16),
             ),
-          ),
-        ],
+            const Text(
+              "Enter the 6-digit code.",
+              style: TextStyle(color: gray),
+            ),
+            const SizedBox(height: 10),
+            PinInput(
+              pinController: _otpController,
+              label: '',
+              validation: (p0) {},
+              errorText: otpError,
+            ),
+            const SizedBox(height: 20),
+            Obx(
+              () => RoundedCustomButton(
+                onPressed: () async {
+                  var error =
+                      await _passwordController.verifyOTP(_otpController.text);
+                  // _passwordController.animateToThirdPage();
+                  otpError = error['message'];
+                  setState(() {});
+                },
+                isLoading: _passwordController.isLoading.value,
+                label: _passwordController.isLoading.isTrue
+                    ? "Verifying"
+                    : "Verify",
+                size: Size(size.width * .9, 30),
+                bgColor: bgPrimaryBlue,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
