@@ -24,72 +24,78 @@ class _NewPINState extends State<NewPIN> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Set New Pin",
-              style: TextStyle(
-                color: primaryBlue,
-                fontSize: 15,
+    return GestureDetector(
+      onTap: () {
+        // Unfocus any text field when tapping outside of them
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Set New Pin",
+                style: TextStyle(
+                  color: primaryBlue,
+                  fontSize: 15,
+                ),
               ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "New PIN",
-                style: TextStyle(color: primaryBlue),
-              ),
-              PinInput(
-                pinController: _passwordController,
-                label: '',
-                errorText: errorText,
-                hasShadow: true,
-                validation: (p0) {},
-              ),
-              const SizedBox(height: 30),
-              const Text(
-                "Re-enter PIN",
-                style: TextStyle(color: primaryBlue),
-              ),
-              PinInput(
-                pinController: _confirmPasswordController,
-                label: '',
-                hasShadow: true,
-                validation: (value) {
-                  if (_passwordController.text != value) {
-                    return 'PIN not match';
-                  }
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 40),
-          Obx(
-            () => RoundedCustomButton(
-              isLoading: _createPasswordController.isLoading.value,
-              onPressed: () async {
-                _createPasswordController.isForgotPin.value = true;
-                var error = await _createPasswordController.changePIN(
-                  _passwordController.text,
-                  _confirmPasswordController.text,
-                );
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "New PIN",
+                  style: TextStyle(color: primaryBlue),
+                ),
+                PinInput(
+                  pinController: _passwordController,
+                  label: '',
+                  errorText: errorText,
+                  hasShadow: true,
+                  validation: (p0) {},
+                ),
+                const SizedBox(height: 30),
+                const Text(
+                  "Re-enter PIN",
+                  style: TextStyle(color: primaryBlue),
+                ),
+                PinInput(
+                  pinController: _confirmPasswordController,
+                  label: '',
+                  hasShadow: true,
+                  validation: (value) {
+                    if (_passwordController.text != value) {
+                      return 'PIN not match';
+                    }
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 40),
+            Obx(
+              () => RoundedCustomButton(
+                isLoading: _createPasswordController.isLoading.value,
+                onPressed: () async {
+                  _createPasswordController.isForgotPin.value = true;
+                  var error = await _createPasswordController.changePIN(
+                    _passwordController.text,
+                    _confirmPasswordController.text,
+                  );
 
-                errorText = error['message'];
-                setState(() {});
-              },
-              label: _createPasswordController.isLoading.isTrue
-                  ? "Submitting..."
-                  : "Submit",
-              size: Size(size.width * .9, 40),
-              bgColor: bgPrimaryBlue,
+                  errorText = error['message'];
+                  setState(() {});
+                },
+                label: _createPasswordController.isLoading.isTrue
+                    ? "Submitting..."
+                    : "Submit",
+                size: Size(size.width * .9, 40),
+                bgColor: bgPrimaryBlue,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

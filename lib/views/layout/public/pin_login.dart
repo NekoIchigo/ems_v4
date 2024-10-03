@@ -27,165 +27,171 @@ class _PINLoginState extends State<PINLogin> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: size.height,
-          width: size.width,
-          color: Colors.white,
-          child: Stack(
-            children: [
-              Positioned(
-                width: size.width,
-                left: 0,
-                bottom: 0,
-                child: Image.asset(
-                  'assets/images/login_bg_image.jpg',
-                  opacity: const AlwaysStoppedAnimation(0.6),
+    return GestureDetector(
+      onTap: () {
+        // Unfocus any text field when tapping outside of them
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            height: size.height,
+            width: size.width,
+            color: Colors.white,
+            child: Stack(
+              children: [
+                Positioned(
+                  width: size.width,
+                  left: 0,
+                  bottom: 0,
+                  child: Image.asset(
+                    'assets/images/login_bg_image.jpg',
+                    opacity: const AlwaysStoppedAnimation(0.6),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: size.height * .15),
-                    Center(
-                      child: SizedBox(
-                        height: size.height * 0.15,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 25.0),
-                          child: Image.asset(
-                            'assets/images/GEMS4blue.png',
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: size.height * .15),
+                      Center(
+                        child: SizedBox(
+                          height: size.height * 0.15,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: Image.asset(
+                              'assets/images/GEMS4blue.png',
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: Text(
-                        'Hello, ${_authService.employee != null ? _authService.employee?.value.firstName : ''}!',
-                        style: titleStyle,
+                      const SizedBox(height: 20),
+                      Center(
+                        child: Text(
+                          'Hello, ${_authService.employee != null ? _authService.employee?.value.firstName : ''}!',
+                          style: titleStyle,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    Center(
-                      child: Visibility(
-                        visible: _authService.isBioEnabled.isTrue,
-                        child: Column(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                _authService.localAuthenticate();
-                              },
-                              icon: const Icon(
-                                Icons.fingerprint_rounded,
-                                size: 40,
-                                color: gray,
+                      const SizedBox(height: 15),
+                      Center(
+                        child: Visibility(
+                          visible: _authService.isBioEnabled.isTrue,
+                          child: Column(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  _authService.localAuthenticate();
+                                },
+                                icon: const Icon(
+                                  Icons.fingerprint_rounded,
+                                  size: 40,
+                                  color: gray,
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Center(
+                        child: Text(
+                          'Enter your 6-digit PIN',
+                          style: defaultStyle,
+                        ),
+                      ),
+                      Center(
+                        child: PinInput(
+                          pinController: _passwordController,
+                          label: '',
+                          obscureText: true,
+                          errorText: errorText,
+                          validation: (p0) {},
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Text(
+                            "Not your account? ",
+                            style: defaultStyle,
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              _localStorage =
+                                  await SharedPreferences.getInstance();
+                              _localStorage.setBool('auth_biometrics', false);
+                              if (context.mounted) {
+                                context.push('/login');
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(0)),
+                            child: const Text(
+                              'Switch now',
+                              style: TextStyle(
+                                color: bgSecondaryBlue,
+                                fontSize: 13,
                               ),
                             ),
-                            const SizedBox(height: 15),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const Center(
-                      child: Text(
-                        'Enter your 6-digit PIN',
-                        style: defaultStyle,
-                      ),
-                    ),
-                    Center(
-                      child: PinInput(
-                        pinController: _passwordController,
-                        label: '',
-                        obscureText: true,
-                        errorText: errorText,
-                        validation: (p0) {},
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Text(
-                          "Not your account? ",
-                          style: defaultStyle,
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            _localStorage =
-                                await SharedPreferences.getInstance();
-                            _localStorage.setBool('auth_biometrics', false);
-                            if (context.mounted) {
-                              context.push('/login');
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(0)),
-                          child: const Text(
-                            'Switch now',
-                            style: TextStyle(
-                              color: bgSecondaryBlue,
-                              fontSize: 13,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Text(
+                              "|",
+                              style: defaultStyle,
                             ),
                           ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Text(
-                            "|",
-                            style: defaultStyle,
+                          TextButton(
+                            style: TextButton.styleFrom(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 1)),
+                            onPressed: () {
+                              context.push('/forgot_pin');
+                            },
+                            child: const Text(
+                              'Forgot PIN?',
+                              style: defaultStyle,
+                            ),
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      Obx(
+                        () => RoundedCustomButton(
+                          onPressed: () async {
+                            if (_authService.isLoading.isFalse) {
+                              errorText = await _authService.pinAuth(
+                                _passwordController.text,
+                              );
+                              setState(() {});
+                            }
+                          },
+                          isLoading: _authService.isLoading.value,
+                          label: _authService.isLoading.isFalse
+                              ? 'Log In'
+                              : 'Logging In...',
+                          radius: 50,
+                          size: Size(size.width, 20),
+                          bgColor: bgPrimaryBlue,
                         ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 1)),
+                      ),
+                      Center(
+                        child: TextButton(
                           onPressed: () {
-                            context.push('/forgot_pin');
+                            context.push('/login');
                           },
                           child: const Text(
-                            'Forgot PIN?',
+                            'Use password',
                             style: defaultStyle,
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Obx(
-                      () => RoundedCustomButton(
-                        onPressed: () async {
-                          if (_authService.isLoading.isFalse) {
-                            errorText = await _authService.pinAuth(
-                              _passwordController.text,
-                            );
-                            setState(() {});
-                          }
-                        },
-                        isLoading: _authService.isLoading.value,
-                        label: _authService.isLoading.isFalse
-                            ? 'Log In'
-                            : 'Logging In...',
-                        radius: 50,
-                        size: Size(size.width, 20),
-                        bgColor: bgPrimaryBlue,
                       ),
-                    ),
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          context.push('/login');
-                        },
-                        child: const Text(
-                          'Use password',
-                          style: defaultStyle,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

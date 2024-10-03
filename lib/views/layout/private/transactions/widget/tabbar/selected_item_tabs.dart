@@ -66,74 +66,79 @@ class _SelectedItemTabsState extends State<SelectedItemTabs>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
-          top: 5,
-          left: 0,
-          child: Text(
-            widget.status?.capitalize ?? '',
-            style: TextStyle(
-              color: widget.status == "pending"
-                  ? orange
-                  : widget.status == "approved"
-                      ? colorSuccess
-                      : colorError,
-            ),
-          ),
-        ),
-        Positioned(
-          top: -5,
-          right: 0,
-          child: IconButton(
-            onPressed: () {
-              context.pop();
-            },
-            icon: const Icon(
-              Icons.close,
-              color: gray700,
-            ),
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 35),
-            Center(
-              child: Text(
-                widget.title,
-                style: blueTitleStyle,
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Stack(
+        children: [
+          Positioned(
+            top: 5,
+            left: 0,
+            child: Text(
+              widget.status?.capitalize ?? '',
+              style: TextStyle(
+                color: widget.status == "pending"
+                    ? orange
+                    : widget.status == "approved"
+                        ? colorSuccess
+                        : colorError,
               ),
             ),
-            TabBar(
-              labelPadding: EdgeInsets.zero,
-              indicatorPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
-              tabs: _tabs,
-              controller: _tabController,
-              onTap: (value) {
-                if (widget.pageCount == 1) {
-                  _tabController.index = 0;
-                }
+          ),
+          Positioned(
+            top: -5,
+            right: 0,
+            child: IconButton(
+              onPressed: () {
+                context.pop();
               },
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  widget.detailPage,
-                  const MessageTab(),
-                  LogsTab(
-                    isLoading: widget.isLogsLoading,
-                    transactionLogs: widget.transactionLogs,
-                  ),
-                ],
+              icon: const Icon(
+                Icons.close,
+                color: gray700,
               ),
             ),
-          ],
-        )
-      ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 35),
+              Center(
+                child: Text(
+                  widget.title,
+                  style: blueTitleStyle,
+                ),
+              ),
+              TabBar(
+                labelPadding: EdgeInsets.zero,
+                indicatorPadding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+                tabs: _tabs,
+                controller: _tabController,
+                onTap: (value) {
+                  if (widget.pageCount == 1) {
+                    _tabController.index = 0;
+                  }
+                },
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    widget.detailPage,
+                    const MessageTab(),
+                    LogsTab(
+                      isLoading: widget.isLogsLoading,
+                      transactionLogs: widget.transactionLogs,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

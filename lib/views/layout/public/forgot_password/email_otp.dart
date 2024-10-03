@@ -21,57 +21,63 @@ class _EmailOTPState extends State<EmailOTP> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Enter Email",
-            style: TextStyle(color: primaryBlue, fontSize: 16),
-          ),
-          const Text(
-            "Provide your account email address.",
-            style: TextStyle(color: gray),
-          ),
-          const SizedBox(height: 10),
-          UnderlineInput(
-            label: 'Email',
-            isPassword: false,
-            icon: Icons.email_outlined,
-            textController: _emailController,
-            errorText: errorText,
-            hintText: 'example@email.com',
-            onChanged: (value) {
-              setState(() {
-                errorText = null;
-              });
-            },
-          ),
-          const SizedBox(height: 20),
-          Obx(
-            () => RoundedCustomButton(
-              onPressed: () async {
-                await _passwordController
-                    .sendForgotPasswordRequest(
-                  _emailController.text,
-                )
-                    .then((value) {
-                  setState(() {
-                    errorText = value;
-                  });
+    return GestureDetector(
+      onTap: () {
+        // Unfocus any text field when tapping outside of them
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Enter Email",
+              style: TextStyle(color: primaryBlue, fontSize: 16),
+            ),
+            const Text(
+              "Provide your account email address.",
+              style: TextStyle(color: gray),
+            ),
+            const SizedBox(height: 10),
+            UnderlineInput(
+              label: 'Email',
+              isPassword: false,
+              icon: Icons.email_outlined,
+              textController: _emailController,
+              errorText: errorText,
+              hintText: 'example@email.com',
+              onChanged: (value) {
+                setState(() {
+                  errorText = null;
                 });
               },
-              disabled: errorText != null,
-              isLoading: _passwordController.isLoading.value,
-              label: _passwordController.isLoading.isTrue
-                  ? "Sending OTP..."
-                  : "Send One-Time Pin",
-              size: Size(size.width * .9, 40),
-              bgColor: errorText != null ? lightGray : bgPrimaryBlue,
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Obx(
+              () => RoundedCustomButton(
+                onPressed: () async {
+                  await _passwordController
+                      .sendForgotPasswordRequest(
+                    _emailController.text,
+                  )
+                      .then((value) {
+                    setState(() {
+                      errorText = value;
+                    });
+                  });
+                },
+                disabled: errorText != null,
+                isLoading: _passwordController.isLoading.value,
+                label: _passwordController.isLoading.isTrue
+                    ? "Sending OTP..."
+                    : "Send One-Time Pin",
+                size: Size(size.width * .9, 40),
+                bgColor: errorText != null ? lightGray : bgPrimaryBlue,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
