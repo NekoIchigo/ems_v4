@@ -276,8 +276,7 @@ class _InOutPageState extends State<InOutPage> {
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                minimumSize:
-                                    Size(size.width * .38, size.width * .38),
+                                minimumSize: Size(150, 150),
                                 shape: const CircleBorder(),
                                 backgroundColor:
                                     _homeController.isClockOut.isTrue
