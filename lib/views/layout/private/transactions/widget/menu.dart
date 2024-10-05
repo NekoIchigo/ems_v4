@@ -107,7 +107,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 1.7,
+                childAspectRatio: 1.3,
               ),
               itemCount: transactionItems.length,
               itemBuilder: (context, index) {
