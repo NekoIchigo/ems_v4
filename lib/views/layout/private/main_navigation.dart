@@ -42,8 +42,9 @@ class _MainNavigationState extends State<MainNavigation>
         vsync: this, length: _mainNavigationController.navigation.length);
 
     if (_authController.employee?.value.employeeDetails.employmentType
-            ?.transactionAccess ==
-        0) {
+                ?.transactionAccess ==
+            0 &&
+        _mainNavigationController.navigation.length >= 4) {
       _mainNavigationController.navigation.removeAt(2);
       _mainNavigationController.navigationPath.removeAt(2);
       _mainNavigationController.navigation.removeAt(2);

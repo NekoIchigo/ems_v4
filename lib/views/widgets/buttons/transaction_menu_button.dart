@@ -22,7 +22,7 @@ class _TransactionMenuButtonState extends State<TransactionMenuButton> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height: 80,
+          height: 90,
           width: 90,
           alignment: Alignment.center,
           child: IconButton(
