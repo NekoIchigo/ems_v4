@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
@@ -38,13 +40,13 @@ class _MainNavigationState extends State<MainNavigation>
 
   @override
   void initState() {
+    final data = jsonDecode(_authController
+        .employee!.value.employeeDetails.employmentType!.transactionAccess!);
+
     _mainNavigationController.tabController = TabController(
         vsync: this, length: _mainNavigationController.navigation.length);
 
-    if (_authController.employee?.value.employeeDetails.employmentType
-                ?.transactionAccess ==
-            0 &&
-        _mainNavigationController.navigation.length >= 4) {
+    if (!data["value"] && _mainNavigationController.navigation.length >= 4) {
       _mainNavigationController.navigation.removeAt(2);
       _mainNavigationController.navigationPath.removeAt(2);
       _mainNavigationController.navigation.removeAt(2);

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
@@ -20,6 +23,7 @@ class TransactionMenu extends StatefulWidget {
 class _TransactionMenuState extends State<TransactionMenu> {
   final DTRCorrectionController _dtrCorrection =
       Get.find<DTRCorrectionController>();
+  final AuthController _authController = Get.find<AuthController>();
   final LeaveController _leave = Get.find<LeaveController>();
   final OvertimeController _overtimeController = Get.find<OvertimeController>();
   final ChangeScheduleController _changeSchedule =
@@ -85,6 +89,14 @@ class _TransactionMenuState extends State<TransactionMenu> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    final data = jsonDecode(_authController
+        .employee!.value.employeeDetails.employmentType!.transactionAccess!);
+    print(data); //trasaction access
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
@@ -107,6 +119,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
+                childAspectRatio: 1.1,
               ),
               itemCount: transactionItems.length,
               itemBuilder: (context, index) {
