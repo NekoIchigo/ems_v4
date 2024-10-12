@@ -14,6 +14,7 @@ class MainNavigationController extends GetxController {
     'dtr_correction': true,
     'change_schedule': false,
     'time_records': true,
+    'add_schedule': true,
   }.obs;
 
   final RxList<TabItem> navigation = [

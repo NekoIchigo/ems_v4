@@ -52,16 +52,22 @@ class _MainNavigationState extends State<MainNavigation>
     if (transactionAccess != null) {
       final data = jsonDecode(transactionAccess);
 
-      _mainNavigationController.transactionAccess['value'] = data['value'];
-      _mainNavigationController.transactionAccess['leave'] = data['leave'];
+      _mainNavigationController.transactionAccess['value'] =
+          data['value'] ?? false;
+      _mainNavigationController.transactionAccess['leave'] =
+          data['leave'] ?? false;
       _mainNavigationController.transactionAccess['overtime'] =
-          data['overtime'];
+          data['overtime'] ?? false;
       _mainNavigationController.transactionAccess['change_restday'] =
-          data['change_restday'];
+          data['change_restday'] ?? false;
       _mainNavigationController.transactionAccess['dtr_correction'] =
-          data['dtr_correction'];
+          data['dtr_correction'] ?? false;
       _mainNavigationController.transactionAccess['change_schedule'] =
-          data['change_schedule'];
+          data['change_schedule'] ?? false;
+      _mainNavigationController.transactionAccess['time_records'] =
+          data['time_records'] ?? false;
+      _mainNavigationController.transactionAccess['add_schedule'] =
+          data['add_schedule'] ?? false;
     }
 
     _mainNavigationController.tabController = TabController(
