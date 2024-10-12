@@ -40,13 +40,35 @@ class _MainNavigationState extends State<MainNavigation>
 
   @override
   void initState() {
-    final data = jsonDecode(_authController
-        .employee!.value.employeeDetails.employmentType!.transactionAccess!);
+    String? transactionAccess = _authController
+        .employee!.value.employeeDetails.employmentType!.transactionAccess;
+
+    if (transactionAccess == '0' || transactionAccess == '1') {
+      _mainNavigationController.transactionAccess["value"] =
+          transactionAccess == '0';
+      transactionAccess = null;
+    }
+
+    if (transactionAccess != null) {
+      final data = jsonDecode(transactionAccess);
+
+      _mainNavigationController.transactionAccess['value'] = data['value'];
+      _mainNavigationController.transactionAccess['leave'] = data['leave'];
+      _mainNavigationController.transactionAccess['overtime'] =
+          data['overtime'];
+      _mainNavigationController.transactionAccess['change_restday'] =
+          data['change_restday'];
+      _mainNavigationController.transactionAccess['dtr_correction'] =
+          data['dtr_correction'];
+      _mainNavigationController.transactionAccess['change_schedule'] =
+          data['change_schedule'];
+    }
 
     _mainNavigationController.tabController = TabController(
         vsync: this, length: _mainNavigationController.navigation.length);
 
-    if (!data["value"] && _mainNavigationController.navigation.length >= 4) {
+    if (!_mainNavigationController.transactionAccess["value"] &&
+        _mainNavigationController.navigation.length >= 4) {
       _mainNavigationController.navigation.removeAt(2);
       _mainNavigationController.navigationPath.removeAt(2);
       _mainNavigationController.navigation.removeAt(2);

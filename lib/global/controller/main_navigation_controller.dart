@@ -6,6 +6,16 @@ import 'package:lottie/lottie.dart';
 
 class MainNavigationController extends GetxController {
   late TabController tabController;
+  RxMap<String, dynamic> transactionAccess = {
+    'value': true,
+    'leave': true,
+    'overtime': true,
+    'change_restday': true,
+    'dtr_correction': true,
+    'change_schedule': false,
+    'time_records': true,
+  }.obs;
+
   final RxList<TabItem> navigation = [
     TabItem(
       icon: ColorFiltered(
