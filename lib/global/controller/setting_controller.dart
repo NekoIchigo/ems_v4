@@ -73,8 +73,7 @@ class SettingsController extends GetxController {
         );
 
         if (result.containsKey('success') && result['success']) {
-          isMaintenance.value =
-              result['data']['under_maintenance'] == 1 ? true : false;
+          isMaintenance.value = result['data']['under_maintenance'] == 1;
           if (isMaintenance.isTrue) {
             navigatorKey.currentContext!.go('/maintenance');
             // showDialog(

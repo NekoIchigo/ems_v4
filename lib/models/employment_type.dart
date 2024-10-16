@@ -1,7 +1,7 @@
 class EmploymentType {
   final int? id;
   final String? name;
-  final String? transactionAccess;
+  final int? transactionAccess;
 
   EmploymentType({
     this.id,
@@ -13,7 +13,7 @@ class EmploymentType {
     return EmploymentType(
       id: json?['id'] as int?,
       name: json?['name'] as String?,
-      transactionAccess: json?['transaction_access'] as String?,
+      transactionAccess: json?['transaction_access'] as int?,
     );
   }
 

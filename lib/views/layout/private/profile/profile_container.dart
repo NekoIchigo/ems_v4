@@ -114,7 +114,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
               label: 'Help Center',
               onPressed: () {
                 webViewLauncher(
-                    url: 'https://sites.google.com/view/gemshelpcenter/home');
+                    url: 'https://gemshelpcenter.globalland.com.ph/');
               },
             ),
             const SizedBox(height: 5),
