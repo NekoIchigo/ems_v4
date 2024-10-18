@@ -112,69 +112,76 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.only(left: 25.0),
-                          child: DropdownMenu(
-                            width: size.width * .84,
-                            hintText: "-Select-",
-                            textStyle: defaultStyle,
-                            enabled: !(extraData?['status'] != 'pending' &&
-                                extraData != null),
-                            inputDecorationTheme: InputDecorationTheme(
-                              isDense: true,
-                              errorMaxLines: 1,
-                              filled: true,
-                              fillColor: extraData?['status'] != 'pending' &&
-                                      extraData != null
-                                  ? gray100
-                                  : Colors.white,
-                              constraints: BoxConstraints.tight(
-                                const Size.fromHeight(40),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 10,
-                              ),
-                              hintStyle: hintStyle,
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: gray300),
-                              ),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide(color: gray300),
-                              ),
-                              errorBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: colorError),
-                              ),
-                            ),
-                            onSelected: (value) {
-                              selectedScheduleId = value ?? 0;
-                              if (_transactionController.schedules.length > 1) {
-                                _transactionController.getDTRBySchedule(
-                                    selectedScheduleId, attendanceDate);
-                              }
-                              setState(() {});
-                            },
-                            menuStyle: const MenuStyle(
-                              surfaceTintColor:
-                                  MaterialStatePropertyAll(Colors.white),
-                              backgroundColor:
-                                  MaterialStatePropertyAll(Colors.white),
-                            ),
-                            dropdownMenuEntries: _transactionController
-                                .schedules
-                                .map<DropdownMenuEntry>((value) {
-                              return DropdownMenuEntry(
-                                value: value['id'],
-                                label: value['name'] ?? value['sub_name'],
-                                labelWidget: Text(
-                                  value['name'] ?? value['sub_name'],
-                                  style: const TextStyle(fontSize: 14),
+                          child: _transactionController.isLoading.isTrue
+                              ? const CustomLoader(height: 35)
+                              : DropdownMenu(
+                                  width: size.width * .84,
+                                  hintText: "-Select-",
+                                  textStyle: defaultStyle,
+                                  enabled:
+                                      !(extraData?['status'] != 'pending' &&
+                                          extraData != null),
+                                  inputDecorationTheme: InputDecorationTheme(
+                                    isDense: true,
+                                    errorMaxLines: 1,
+                                    filled: true,
+                                    fillColor:
+                                        extraData?['status'] != 'pending' &&
+                                                extraData != null
+                                            ? gray100
+                                            : Colors.white,
+                                    constraints: BoxConstraints.tight(
+                                      const Size.fromHeight(40),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal: 10,
+                                    ),
+                                    hintStyle: hintStyle,
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: gray300),
+                                    ),
+                                    border: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: gray300),
+                                    ),
+                                    errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: colorError),
+                                    ),
+                                  ),
+                                  onSelected: (value) {
+                                    selectedScheduleId = value ?? 0;
+                                    if (_transactionController
+                                            .schedules.length >
+                                        1) {
+                                      _transactionController.getDTRBySchedule(
+                                          selectedScheduleId, attendanceDate);
+                                    }
+                                    setState(() {});
+                                  },
+                                  menuStyle: const MenuStyle(
+                                    surfaceTintColor:
+                                        MaterialStatePropertyAll(Colors.white),
+                                    backgroundColor:
+                                        MaterialStatePropertyAll(Colors.white),
+                                  ),
+                                  dropdownMenuEntries: _transactionController
+                                      .schedules
+                                      .map<DropdownMenuEntry>((value) {
+                                    return DropdownMenuEntry(
+                                      value: value['id'],
+                                      label: value['name'] ?? value['sub_name'],
+                                      labelWidget: Text(
+                                        value['name'] ?? value['sub_name'],
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                      style: const ButtonStyle(
+                                        foregroundColor:
+                                            MaterialStatePropertyAll(
+                                                primaryBlue),
+                                      ),
+                                    );
+                                  }).toList(),
                                 ),
-                                style: const ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStatePropertyAll(primaryBlue),
-                                ),
-                              );
-                            }).toList(),
-                          ),
                         ),
                         const SizedBox(height: 15),
                         const NumberLabel(label: "Edit time record", number: 3),
