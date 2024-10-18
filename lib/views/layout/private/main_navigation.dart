@@ -36,12 +36,12 @@ class _MainNavigationState extends State<MainNavigation>
 
   @override
   void initState() {
+    super.initState();
+    _mainNavigationController.checkTransactionAccess();
     _mainNavigationController.tabController = TabController(
         vsync: this, length: _mainNavigationController.navigation.length);
 
     _notificationController.index();
-
-    super.initState();
   }
 
   @override
