@@ -21,7 +21,7 @@ class MainNavigationController extends GetxController {
     'add_schedule': true,
   }.obs;
 
-  final RxList<TabItem> navigation = [
+  RxList<TabItem> navigation = [
     TabItem(
       icon: ColorFiltered(
         colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
@@ -113,7 +113,99 @@ class MainNavigationController extends GetxController {
     ),
   ].obs;
 
-  final RxList navigationPath = [
+  final List<TabItem> defaultNavigation = [
+    TabItem(
+      icon: ColorFiltered(
+        colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+        child: Lottie.asset(
+          "assets/lottie/Home.json",
+          animate: false,
+        ),
+      ),
+      activeIcon: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: ColorFiltered(
+          colorFilter: const ColorFilter.mode(bgPrimaryBlue, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Home.json",
+            repeat: false,
+          ),
+        ),
+      ),
+    ),
+    TabItem(
+      icon: ColorFiltered(
+        colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+        child: Lottie.asset(
+          "assets/lottie/Calendar.json",
+          fit: BoxFit.contain,
+          repeat: false,
+        ),
+      ),
+      activeIcon: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: ColorFiltered(
+          colorFilter: const ColorFilter.mode(bgPrimaryBlue, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Calendar.json",
+            repeat: false,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+    ),
+    const TabItem(
+      icon: Icons.edit_document,
+      activeIcon: Icon(
+        Icons.edit_document,
+        color: bgPrimaryBlue,
+      ),
+    ),
+    TabItem(
+      icon: ColorFiltered(
+        colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+        child: Lottie.asset(
+          "assets/lottie/Bell.json",
+          animate: false,
+          fit: BoxFit.contain,
+        ),
+      ),
+      activeIcon: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: ColorFiltered(
+          colorFilter: const ColorFilter.mode(bgPrimaryBlue, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Bell.json",
+            repeat: false,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+    ),
+    TabItem(
+      icon: ColorFiltered(
+        colorFilter: const ColorFilter.mode(Colors.white60, BlendMode.srcIn),
+        child: Lottie.asset(
+          "assets/lottie/Account.json",
+          animate: false,
+          fit: BoxFit.contain,
+        ),
+      ),
+      activeIcon: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: ColorFiltered(
+          colorFilter: const ColorFilter.mode(bgPrimaryBlue, BlendMode.srcIn),
+          child: Lottie.asset(
+            "assets/lottie/Account.json",
+            repeat: false,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+    ),
+  ];
+
+  RxList navigationPath = [
     "/in_out",
     "/time_entries",
     "/transaction",
@@ -121,17 +213,30 @@ class MainNavigationController extends GetxController {
     "/profile"
   ].obs;
 
+  final List defaultNavPath = [
+    "/in_out",
+    "/time_entries",
+    "/transaction",
+    "/notification",
+    "/profile"
+  ];
+
   void checkTransactionAccess() {
     String? transaction = _authController
         .employee!.value.employeeDetails.employmentType!.transactionAccess;
 
     if (transaction == '0' || transaction == '1') {
+      navigation = defaultNavigation.obs;
+      navigationPath = defaultNavPath.obs;
       transactionAccess["value"] = transaction == '0';
       transaction = null;
     }
 
     if (transaction != null) {
       final data = jsonDecode(transaction);
+
+      navigation = defaultNavigation.obs;
+      navigationPath = defaultNavPath.obs;
 
       transactionAccess['value'] = data['value'] ?? false;
       transactionAccess['leave'] = data['leave'] ?? false;
