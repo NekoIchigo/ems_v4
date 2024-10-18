@@ -49,8 +49,7 @@ class SettingsController extends GetxController {
   Future checkAppVersionMaintenance() async {
     _checker.checkUpdate().then((value) async {
       appVersion.value = value.currentVersion;
-      // TODO : remove !
-      if (!value.canUpdate) {
+      if (value.canUpdate) {
         isMaintenance.value = true;
         showDialog(
           context: navigatorKey.currentContext!,

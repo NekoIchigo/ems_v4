@@ -39,6 +39,7 @@ class _InOutPageState extends State<InOutPage> {
     currentTime = _settings.currentTime.value;
     date = DateFormat("EEEE, MMM dd y").format(currentTime);
     greetings = _dateTimeUtils.getGreeting(currentTime.hour);
+    _mainNavigationController.checkTransactionAccess();
   }
 
   @override
