@@ -8,6 +8,7 @@ import 'package:ems_v4/views/widgets/loader/item_shimmer.dart';
 import 'package:ems_v4/views/widgets/loader/list_shimmer.dart';
 import 'package:ems_v4/views/widgets/no_result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -109,9 +110,6 @@ class _NotificationPageState extends State<NotificationPage> {
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 15),
-                                      color: index % 2 == 0
-                                          ? bgLightBlue
-                                          : Colors.white,
                                       child: Stack(
                                         children: [
                                           Padding(

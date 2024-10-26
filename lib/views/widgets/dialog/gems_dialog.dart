@@ -97,7 +97,7 @@ class GemsDialog extends StatelessWidget {
                               : type == "success"
                                   ? 'assets/lottie/success-icon-5.json'
                                   : "assets/lottie/info.json",
-                      repeat: true,
+                      repeat: false,
                       width: 50,
                       height: 50,
                       fit: BoxFit.fill,

@@ -3,6 +3,7 @@ import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/dtr_correction/dtr_correction_dropdown.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
 import 'package:ems_v4/views/widgets/buttons/rounded_custom_button.dart';
 import 'package:ems_v4/views/widgets/dialog/cancel_request_dialog.dart';
@@ -12,6 +13,7 @@ import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
 import 'package:ems_v4/views/widgets/inputs/time_input.dart';
 import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,9 +27,10 @@ class DTRCorrectionForm extends StatefulWidget {
 class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
   late Size size;
   String attendanceDate = "";
-  String? fromDate, dateError, timeChangeError, reasonError;
+  String? fromDate, dateError, timeChangeError, reasonError, selectedClockType;
   int transactionId = 0;
   List attachments = [];
+  bool addClockType = false;
 
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
@@ -109,69 +112,76 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                         const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.only(left: 25.0),
-                          child: DropdownMenu(
-                            width: size.width * .84,
-                            hintText: "-Select-",
-                            textStyle: defaultStyle,
-                            enabled: !(extraData?['status'] != 'pending' &&
-                                extraData != null),
-                            inputDecorationTheme: InputDecorationTheme(
-                              isDense: true,
-                              errorMaxLines: 1,
-                              filled: true,
-                              fillColor: extraData?['status'] != 'pending' &&
-                                      extraData != null
-                                  ? gray100
-                                  : Colors.white,
-                              constraints: BoxConstraints.tight(
-                                const Size.fromHeight(40),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 10,
-                              ),
-                              hintStyle: hintStyle,
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: gray300),
-                              ),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide(color: gray300),
-                              ),
-                              errorBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: colorError),
-                              ),
-                            ),
-                            onSelected: (value) {
-                              selectedScheduleId = value ?? 0;
-                              if (_transactionController.schedules.length > 1) {
-                                _transactionController.getDTRBySchedule(
-                                    selectedScheduleId, attendanceDate);
-                              }
-                              setState(() {});
-                            },
-                            menuStyle: const MenuStyle(
-                              surfaceTintColor:
-                                  MaterialStatePropertyAll(Colors.white),
-                              backgroundColor:
-                                  MaterialStatePropertyAll(Colors.white),
-                            ),
-                            dropdownMenuEntries: _transactionController
-                                .schedules
-                                .map<DropdownMenuEntry>((value) {
-                              return DropdownMenuEntry(
-                                value: value['id'],
-                                label: value['name'] ?? value['sub_name'],
-                                labelWidget: Text(
-                                  value['name'] ?? value['sub_name'],
-                                  style: const TextStyle(fontSize: 14),
+                          child: _transactionController.isLoading.isTrue
+                              ? const CustomLoader(height: 35)
+                              : DropdownMenu(
+                                  width: size.width * .84,
+                                  hintText: "-Select-",
+                                  textStyle: defaultStyle,
+                                  enabled:
+                                      !(extraData?['status'] != 'pending' &&
+                                          extraData != null),
+                                  inputDecorationTheme: InputDecorationTheme(
+                                    isDense: true,
+                                    errorMaxLines: 1,
+                                    filled: true,
+                                    fillColor:
+                                        extraData?['status'] != 'pending' &&
+                                                extraData != null
+                                            ? gray100
+                                            : Colors.white,
+                                    constraints: BoxConstraints.tight(
+                                      const Size.fromHeight(40),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal: 10,
+                                    ),
+                                    hintStyle: hintStyle,
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: gray300),
+                                    ),
+                                    border: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: gray300),
+                                    ),
+                                    errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: colorError),
+                                    ),
+                                  ),
+                                  onSelected: (value) {
+                                    selectedScheduleId = value ?? 0;
+                                    if (_transactionController
+                                            .schedules.length >
+                                        1) {
+                                      _transactionController.getDTRBySchedule(
+                                          selectedScheduleId, attendanceDate);
+                                    }
+                                    setState(() {});
+                                  },
+                                  menuStyle: const MenuStyle(
+                                    surfaceTintColor:
+                                        MaterialStatePropertyAll(Colors.white),
+                                    backgroundColor:
+                                        MaterialStatePropertyAll(Colors.white),
+                                  ),
+                                  dropdownMenuEntries: _transactionController
+                                      .schedules
+                                      .map<DropdownMenuEntry>((value) {
+                                    return DropdownMenuEntry(
+                                      value: value['id'],
+                                      label: value['name'] ?? value['sub_name'],
+                                      labelWidget: Text(
+                                        value['name'] ?? value['sub_name'],
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                      style: const ButtonStyle(
+                                        foregroundColor:
+                                            MaterialStatePropertyAll(
+                                                primaryBlue),
+                                      ),
+                                    );
+                                  }).toList(),
                                 ),
-                                style: const ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStatePropertyAll(primaryBlue),
-                                ),
-                              );
-                            }).toList(),
-                          ),
                         ),
                         const SizedBox(height: 15),
                         const NumberLabel(label: "Edit time record", number: 3),
@@ -282,6 +292,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
       () => Padding(
         padding: const EdgeInsets.only(left: 25),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _transactionController.isLoading.isTrue
                 ? const CustomLoader(height: 35)
@@ -311,17 +322,12 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
             Row(
               children: [
                 Expanded(
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: gray300),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: const Text(
-                      "Clock In",
-                      style: defaultStyle,
-                    ),
+                  child: DTRCorrectionDropdown(
+                    onSelected: (value) {
+                      setState(() {
+                        selectedClockType = value;
+                      });
+                    },
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -334,8 +340,13 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                               extraData != null,
                           value: _transactionController.clockInAt.value,
                           selectedTime: (value) async {
-                            _transactionController.clockInAt.value =
-                                _dateTimeUtils.time12to24(value);
+                            if (selectedClockType == 'clock_in') {
+                              _transactionController.clockInAt.value =
+                                  _dateTimeUtils.time12to24(value);
+                            } else {
+                              _transactionController.clockOutAt.value =
+                                  _dateTimeUtils.time12to24(value);
+                            }
                             setState(() {
                               timeChangeError = null;
                             });
@@ -344,42 +355,97 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: gray300),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: const Text(
-                      "Clock Out",
-                      style: defaultStyle,
-                    ),
+            Visibility(
+              visible: !addClockType,
+              child: FittedBox(
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      addClockType = !addClockType;
+                    });
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.all(0),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline_rounded,
+                        size: 20,
+                      ),
+                      SizedBox(width: 5),
+                      Text("Add clock type"),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 10),
-                SizedBox(
-                  width: 100,
-                  child: _transactionController.isLoading.isTrue
-                      ? const CustomLoader(height: 35)
-                      : TimeInput(
-                          readOnly: extraData?['status'] != 'pending' &&
-                              extraData != null,
-                          value: _transactionController.clockOutAt.value,
-                          selectedTime: (value) async {
-                            _transactionController.clockOutAt.value =
-                                _dateTimeUtils.time12to24(value);
-                            setState(() {
-                              timeChangeError = null;
-                            });
-                          },
-                        ),
-                ),
-              ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Visibility(
+              visible: addClockType,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: gray300),
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            selectedClockType != 'clock_in'
+                                ? "Clock In"
+                                : "Clock Out",
+                            style: defaultStyle,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                addClockType = !addClockType;
+                              });
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 10.0),
+                              child: Icon(
+                                Icons.close_rounded,
+                                size: 15,
+                                color: colorError,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    width: 100,
+                    child: _transactionController.isLoading.isTrue
+                        ? const CustomLoader(height: 35)
+                        : TimeInput(
+                            readOnly: extraData?['status'] != 'pending' &&
+                                extraData != null,
+                            value: _transactionController.clockOutAt.value,
+                            selectedTime: (value) async {
+                              if (selectedClockType != 'clock_in') {
+                                _transactionController.clockInAt.value =
+                                    _dateTimeUtils.time12to24(value);
+                              } else {
+                                _transactionController.clockOutAt.value =
+                                    _dateTimeUtils.time12to24(value);
+                              }
+                              setState(() {
+                                timeChangeError = null;
+                              });
+                            },
+                          ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

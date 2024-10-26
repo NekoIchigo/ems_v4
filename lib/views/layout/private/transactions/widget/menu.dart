@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
 import 'package:ems_v4/global/controller/leave_controller.dart';
+import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:ems_v4/global/controller/overtime_controller.dart';
 import 'package:ems_v4/views/widgets/buttons/transaction_menu_button.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +23,8 @@ class TransactionMenu extends StatefulWidget {
 class _TransactionMenuState extends State<TransactionMenu> {
   final DTRCorrectionController _dtrCorrection =
       Get.find<DTRCorrectionController>();
+  final MainNavigationController _mainNavigationController =
+      Get.find<MainNavigationController>();
   final LeaveController _leave = Get.find<LeaveController>();
   final OvertimeController _overtimeController = Get.find<OvertimeController>();
   final ChangeScheduleController _changeSchedule =
@@ -30,6 +35,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
   final List transactionItems = [
     {
       "title": "Time Records",
+      "key": "time_records",
       "icon": const Icon(
         Icons.calendar_month,
         size: 50,
@@ -38,7 +44,8 @@ class _TransactionMenuState extends State<TransactionMenu> {
       "path": "/time_records",
     },
     {
-      "title": "DTR Corrections",
+      "title": "DTR Correction",
+      "key": "dtr_correction",
       "icon": const Icon(
         Icons.edit_calendar_rounded,
         size: 50,
@@ -48,6 +55,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
     },
     {
       "title": "Leave",
+      "key": "leave",
       "icon": SvgPicture.asset(
         "assets/svg/leave.svg",
         height: 45,
@@ -57,6 +65,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
     },
     {
       "title": "Overtime",
+      "key": "overtime",
       "icon": const Icon(
         Icons.more_time,
         size: 50,
@@ -66,6 +75,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
     },
     {
       "title": "Change Schedule",
+      "key": "change_schedule",
       "icon": SvgPicture.asset(
         "assets/svg/change_schedule.svg",
         height: 50,
@@ -75,6 +85,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
     },
     {
       "title": "Change Restday",
+      "key": "change_restday",
       "icon": SvgPicture.asset(
         "assets/svg/change_restday.svg",
         height: 50,
@@ -83,6 +94,20 @@ class _TransactionMenuState extends State<TransactionMenu> {
       "path": "/change_restday",
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    removeFalseValuesFromList();
+  }
+
+  void removeFalseValuesFromList() {
+    transactionItems.removeWhere((item) {
+      String key = item['key'];
+
+      return !_mainNavigationController.transactionAccess[key];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,50 +132,54 @@ class _TransactionMenuState extends State<TransactionMenu> {
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 1.4,
+                childAspectRatio: 1.1,
               ),
               itemCount: transactionItems.length,
               itemBuilder: (context, index) {
                 String path = transactionItems[index]["path"];
-                return TransactionMenuButton(
-                  onPressed: () {
-                    if (path == "/dtr_correction") {
-                      _dtrCorrection.getAllDTR(
-                        30,
-                        DateTime.now(),
-                        DateTime.now(),
-                      );
-                    } else if (path == "/leave") {
-                      _leave.getAllLeave(
-                        30,
-                        DateTime.now(),
-                        DateTime.now(),
-                      );
-                    } else if (path == "/overtime") {
-                      _overtimeController.getAllOvertime(
-                        30,
-                        DateTime.now(),
-                        DateTime.now(),
-                      );
-                    } else if (path == "/change_schedule") {
-                      _changeSchedule.getAllChangeSchedule(
-                        30,
-                        DateTime.now(),
-                        DateTime.now(),
-                      );
-                    } else if (path == "/change_restday") {
-                      _changeRestday.getAllChangeRestday(
-                        30,
-                        DateTime.now(),
-                        DateTime.now(),
-                      );
-                    }
+                return Visibility(
+                  visible: _mainNavigationController
+                      .transactionAccess[transactionItems[index]['key']],
+                  child: TransactionMenuButton(
+                    onPressed: () {
+                      if (path == "/dtr_correction") {
+                        _dtrCorrection.getAllDTR(
+                          30,
+                          DateTime.now(),
+                          DateTime.now(),
+                        );
+                      } else if (path == "/leave") {
+                        _leave.getAllLeave(
+                          30,
+                          DateTime.now(),
+                          DateTime.now(),
+                        );
+                      } else if (path == "/overtime") {
+                        _overtimeController.getAllOvertime(
+                          30,
+                          DateTime.now(),
+                          DateTime.now(),
+                        );
+                      } else if (path == "/change_schedule") {
+                        _changeSchedule.getAllChangeSchedule(
+                          30,
+                          DateTime.now(),
+                          DateTime.now(),
+                        );
+                      } else if (path == "/change_restday") {
+                        _changeRestday.getAllChangeRestday(
+                          30,
+                          DateTime.now(),
+                          DateTime.now(),
+                        );
+                      }
 
-                    context.push(path);
-                  },
-                  title: transactionItems[index]["title"],
-                  child: Center(
-                    child: transactionItems[index]["icon"],
+                      context.push(path);
+                    },
+                    title: transactionItems[index]["title"],
+                    child: Center(
+                      child: transactionItems[index]["icon"],
+                    ),
                   ),
                 );
               },

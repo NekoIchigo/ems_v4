@@ -122,6 +122,8 @@ class HomeController extends GetxController {
             int.parse(attendance.value.scheduleId ?? "0") == scheduleId1.value;
         isSecondShiftComplete.value = isClockInOutComplete.isTrue &&
             int.parse(attendance.value.scheduleId ?? "0") == scheduleId2.value;
+      } else if (data['attendance_record'] != null) {
+        attendance = AttendanceRecord.fromJson(data['attendance_record']).obs;
       } else {
         attendance = AttendanceRecord().obs;
       }
@@ -279,6 +281,7 @@ class HomeController extends GetxController {
         'health_temperature': temperature,
       },
       apiUrl: '/mobile/clock-in',
+      showErrorDialog: false,
       catchError: () {},
     );
     if (result.containsKey('success') && result['success']) {
@@ -322,6 +325,7 @@ class HomeController extends GetxController {
     var result = await apiCall.postRequest(
       data: data,
       apiUrl: '/mobile/clock-out',
+      showErrorDialog: false,
       catchError: () {},
     );
 

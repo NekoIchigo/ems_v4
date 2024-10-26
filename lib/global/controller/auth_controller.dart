@@ -273,6 +273,7 @@ class AuthController extends GetxController {
         if (localAuthenticated) {
           authenticated.value = localAuthenticated;
           setAuthStatus();
+          updateEmployeeInfo();
           navigatorKey.currentContext?.go('/in_out');
         }
       } on PlatformException catch (e) {
