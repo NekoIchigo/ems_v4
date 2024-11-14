@@ -4,6 +4,7 @@ import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
+import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
@@ -62,7 +63,7 @@ class _InOutPageState extends State<InOutPage> {
               greetingWidget(size),
               buttonSection(size),
               additionalShift(size),
-              // announcementSection(),
+              announcementSection(size),
             ],
           ),
         ),
@@ -500,10 +501,11 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget announcementSection() {
+  Widget announcementSection(Size size) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
+      padding: const EdgeInsets.fromLTRB(20, 15, 20, 40),
       color: Colors.white,
+      width: size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -512,20 +514,13 @@ class _InOutPageState extends State<InOutPage> {
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AnnouncementButton(
-                onPressed: () {},
-                date: DateTime.now(),
-                title: 'Trick or Treat',
-              ),
-              AnnouncementButton(
-                onPressed: () {},
-                date: DateTime.now(),
-                title: 'Trick or Treat',
-              ),
-            ],
+          ColumnBuilder(
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Container(
+                child: Text("Announcement $index"),
+              );
+            },
           ),
         ],
       ),
