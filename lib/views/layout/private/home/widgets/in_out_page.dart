@@ -62,7 +62,7 @@ class _InOutPageState extends State<InOutPage> {
               greetingWidget(size),
               buttonSection(size),
               additionalShift(size),
-              announcementSection(size),
+              // announcementSection(size),
             ],
           ),
         ),
