@@ -5,7 +5,6 @@ import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
-import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:get/get.dart';
@@ -510,16 +509,34 @@ class _InOutPageState extends State<InOutPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Announcement',
+            'Announcements',
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 15),
           ColumnBuilder(
-            itemCount: 5,
+            itemCount: 4,
             itemBuilder: (context, index) {
-              return Container(
-                child: Text("Announcement $index"),
-              );
+              if (index > 2) {
+                return const Column(
+                  children: [
+                    Text("View more"),
+                    Icon(Icons.keyboard_arrow_down_rounded)
+                  ],
+                );
+              } else {
+                return const ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  title: Text(
+                    "October 09, 2023",
+                    style: blueDefaultStyle,
+                  ),
+                  subtitle: Text(
+                    "Trick or Treat!",
+                    style: defaultStyle,
+                  ),
+                );
+              }
             },
           ),
         ],
