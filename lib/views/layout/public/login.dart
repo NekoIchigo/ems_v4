@@ -274,18 +274,16 @@ class _LoginState extends State<Login> {
                               bgColor: bgPrimaryBlue,
                             ),
                           ),
-                          Obx(
-                            () => Visibility(
-                              visible: _authService.hasUser.isTrue,
-                              child: Center(
-                                child: TextButton(
-                                  onPressed: () {
-                                    context.push('/pin_login');
-                                  },
-                                  child: const Text(
-                                    'Use PIN',
-                                    style: defaultStyle,
-                                  ),
+                          Visibility(
+                            visible: _authService.employee != null,
+                            child: Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  context.push('/pin_login');
+                                },
+                                child: const Text(
+                                  'Use PIN',
+                                  style: defaultStyle,
                                 ),
                               ),
                             ),
