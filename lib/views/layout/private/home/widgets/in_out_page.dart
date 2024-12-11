@@ -1,3 +1,4 @@
+import 'package:ems_v4/global/controller/announcement_controller.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
@@ -27,6 +28,8 @@ class _InOutPageState extends State<InOutPage> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
   final HomeController _homeController = Get.find<HomeController>();
+  final AnnouncementController _announcement =
+      Get.find<AnnouncementController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   late DateTime currentTime;
   late String date, greetings;
@@ -501,45 +504,51 @@ class _InOutPageState extends State<InOutPage> {
   }
 
   Widget announcementSection(Size size) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 15, 20, 40),
-      color: Colors.white,
-      width: size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Announcements',
-            style: TextStyle(fontWeight: FontWeight.w600),
+    return Obx(
+      () => Visibility(
+        visible: _announcement.announcements.isNotEmpty,
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(20, 15, 20, 40),
+          color: Colors.white,
+          width: size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Announcements',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 15),
+              ColumnBuilder(
+                itemCount: _announcement.announcements.length + 1,
+                itemBuilder: (context, index) {
+                  if (_announcement.announcements.length == index) {
+                    return const Column(
+                      children: [
+                        Text("View more"),
+                        Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
+                    );
+                  } else {
+                    final item = _announcement.announcements[index];
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 0),
+                      title: Text(
+                        item['start_date'],
+                        style: blueDefaultStyle,
+                      ),
+                      subtitle: Text(
+                        item['name'],
+                        style: defaultStyle,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
-          const SizedBox(height: 15),
-          ColumnBuilder(
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              if (index > 2) {
-                return const Column(
-                  children: [
-                    Text("View more"),
-                    Icon(Icons.keyboard_arrow_down_rounded)
-                  ],
-                );
-              } else {
-                return const ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                  title: Text(
-                    "October 09, 2023",
-                    style: blueDefaultStyle,
-                  ),
-                  subtitle: Text(
-                    "Trick or Treat!",
-                    style: defaultStyle,
-                  ),
-                );
-              }
-            },
-          ),
-        ],
+        ),
       ),
     );
   }

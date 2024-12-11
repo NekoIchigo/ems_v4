@@ -12,7 +12,7 @@ class AnnouncementController extends GetxController {
         .getRequest(apiUrl: "/mobile/announcements/index")
         .then((response) {
           final data = response["data"];
-          print(data);
+          announcements.value = data;
         })
         .catchError((error) {})
         .whenComplete(() {
