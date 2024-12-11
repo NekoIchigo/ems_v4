@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/announcement_controller.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
@@ -20,6 +21,8 @@ class _GettingStartedState extends State<GettingStarted> {
   final SettingsController _settings = Get.find<SettingsController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
+  final AnnouncementController _announcementController =
+      Get.find<AnnouncementController>();
 
   @override
   void initState() {
@@ -34,6 +37,7 @@ class _GettingStartedState extends State<GettingStarted> {
     await _timeEntriesController.getPreviousClockIn();
     await _settings.getServerTime();
     await _homeController.checkNewShift();
+    await _announcementController.index();
     _homeController.isGettingStarted.value = false;
 
     if (_homeController.isDropdownEnable.isFalse ||

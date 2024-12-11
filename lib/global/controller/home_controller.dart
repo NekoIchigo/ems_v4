@@ -208,7 +208,7 @@ class HomeController extends GetxController {
   Future setClockOutLocation() async {
     isLoading.value = true;
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
     var result = await apiCall.postRequest(
       data: {
         'latitude': position.latitude,
