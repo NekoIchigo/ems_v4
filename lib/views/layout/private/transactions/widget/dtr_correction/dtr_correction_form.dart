@@ -149,7 +149,7 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                                     ),
                                   ),
                                   initialSelection: _transactionController
-                                      .schedules.firstOrNull["id"],
+                                      .schedules.firstOrNull?["id"],
                                   onSelected: (value) {
                                     selectedScheduleId = value ?? 0;
                                     if (_transactionController
