@@ -37,7 +37,7 @@ class _GettingStartedState extends State<GettingStarted> {
     await _timeEntriesController.getPreviousClockIn();
     await _settings.getServerTime();
     await _homeController.checkNewShift();
-    // await _announcementController.index();
+    await _announcementController.index();
     _homeController.isGettingStarted.value = false;
 
     if (_homeController.isDropdownEnable.isFalse ||
