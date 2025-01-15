@@ -6,6 +6,7 @@ import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
+import 'package:ems_v4/views/widgets/dialog/announcement_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:get/get.dart';
@@ -523,11 +524,14 @@ class _InOutPageState extends State<InOutPage> {
                 itemCount: _announcement.announcements.length + 1,
                 itemBuilder: (context, index) {
                   if (_announcement.announcements.length == index) {
-                    return const Column(
-                      children: [
-                        Text("View more"),
-                        Icon(Icons.keyboard_arrow_down_rounded)
-                      ],
+                    return Visibility(
+                      visible: _announcement.announcements.length > 3,
+                      child: const Column(
+                        children: [
+                          Text("View more"),
+                          Icon(Icons.keyboard_arrow_down_rounded)
+                        ],
+                      ),
                     );
                   } else {
                     final item = _announcement.announcements[index];
@@ -542,6 +546,15 @@ class _InOutPageState extends State<InOutPage> {
                         item['name'],
                         style: defaultStyle,
                       ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AnnouncementDialog(
+                                items: [_announcement.announcements[index]]);
+                          },
+                        );
+                      },
                     );
                   }
                 },
