@@ -61,6 +61,7 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                               child: Text(item['banner_path'].toString()),
                             ),
                           ),
+                          const SizedBox(height: 15),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -72,7 +73,11 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                             item['name'],
                             style: titleStyle,
                           ),
-                          HtmlWidget(item['content']),
+                          SingleChildScrollView(
+                            child: HtmlWidget(
+                              item['content'],
+                            ),
+                          ),
                         ],
                       ),
                     );
@@ -87,7 +92,7 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: Icon(Icons.close_rounded),
+              icon: const Icon(Icons.close_rounded),
             ),
           )
         ],
