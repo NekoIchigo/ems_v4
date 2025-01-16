@@ -539,7 +539,8 @@ class _InOutPageState extends State<InOutPage> {
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 0),
                       title: Text(
-                        item['start_date'],
+                        _dateTimeUtils
+                            .fromLaravelDateFormat(item['start_date']),
                         style: blueDefaultStyle,
                       ),
                       subtitle: Text(
