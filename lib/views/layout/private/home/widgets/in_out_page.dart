@@ -6,6 +6,7 @@ import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
+import 'package:ems_v4/views/widgets/dialog/announcement_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:get/get.dart';
@@ -65,7 +66,7 @@ class _InOutPageState extends State<InOutPage> {
               greetingWidget(size),
               buttonSection(size),
               additionalShift(size),
-              // announcementSection(size),
+              announcementSection(size),
             ],
           ),
         ),
@@ -523,10 +524,37 @@ class _InOutPageState extends State<InOutPage> {
                 itemCount: _announcement.announcements.length + 1,
                 itemBuilder: (context, index) {
                   if (_announcement.announcements.length == index) {
-                    return const Column(
+                    return Column(
                       children: [
-                        Text("View more"),
-                        Icon(Icons.keyboard_arrow_down_rounded)
+                        Visibility(
+                          visible: _announcement.totalAnnouncement > 3 &&
+                              _announcement.isLoading.isFalse &&
+                              _announcement.currentPage.value <
+                                  _announcement.paginateLength.value,
+                          child: InkWell(
+                            onTap: () {
+                              if (_announcement.currentPage.value <
+                                  _announcement.paginateLength.value) {
+                                _announcement.currentPage.value++;
+                                _announcement.index(false);
+                              }
+                            },
+                            child: const Text(
+                              "View more",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: _announcement.isLoading.isTrue,
+                          child: const SizedBox(
+                            width: 15,
+                            height: 15,
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                        // Icon(Icons.keyboard_arrow_down_rounded)
                       ],
                     );
                   } else {
@@ -535,13 +563,23 @@ class _InOutPageState extends State<InOutPage> {
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 0),
                       title: Text(
-                        item['start_date'],
+                        _dateTimeUtils
+                            .fromLaravelDateFormat(item['start_date']),
                         style: blueDefaultStyle,
                       ),
                       subtitle: Text(
                         item['name'],
                         style: defaultStyle,
                       ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AnnouncementDialog(
+                                items: [_announcement.announcements[index]]);
+                          },
+                        );
+                      },
                     );
                   }
                 },
