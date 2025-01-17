@@ -33,11 +33,11 @@ class _GettingStartedState extends State<GettingStarted> {
   Future loadFunction() async {
     _homeController.isGettingStarted.value = true;
     await _auth.updateEmployeeInfo();
+    await _announcementController.index(true);
     await _timeEntriesController.getAttendanceList(days: 1);
     await _timeEntriesController.getPreviousClockIn();
     await _settings.getServerTime();
     await _homeController.checkNewShift();
-    await _announcementController.index();
     _homeController.isGettingStarted.value = false;
 
     if (_homeController.isDropdownEnable.isFalse ||

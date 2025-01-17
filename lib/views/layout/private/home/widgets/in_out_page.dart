@@ -524,14 +524,38 @@ class _InOutPageState extends State<InOutPage> {
                 itemCount: _announcement.announcements.length + 1,
                 itemBuilder: (context, index) {
                   if (_announcement.announcements.length == index) {
-                    return Visibility(
-                      visible: _announcement.announcements.length > 3,
-                      child: const Column(
-                        children: [
-                          Text("View more"),
-                          Icon(Icons.keyboard_arrow_down_rounded)
-                        ],
-                      ),
+                    return Column(
+                      children: [
+                        Visibility(
+                          visible: _announcement.totalAnnouncement > 3 &&
+                              _announcement.isLoading.isFalse &&
+                              _announcement.currentPage.value <
+                                  _announcement.paginateLength.value,
+                          child: InkWell(
+                            onTap: () {
+                              if (_announcement.currentPage.value <
+                                  _announcement.paginateLength.value) {
+                                _announcement.currentPage.value++;
+                                _announcement.index(false);
+                              }
+                            },
+                            child: const Text(
+                              "View more",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: _announcement.isLoading.isTrue,
+                          child: const SizedBox(
+                            width: 15,
+                            height: 15,
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                        // Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
                     );
                   } else {
                     final item = _announcement.announcements[index];
