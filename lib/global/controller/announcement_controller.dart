@@ -18,15 +18,18 @@ class AnnouncementController extends GetxController {
     today = DateTime(today.year, today.month, today.day);
     _apiCall
         .getRequest(apiUrl: "/mobile/announcements/index")
-        .then((response) {
+        .then((response) async {
           final data = response["data"];
-          print(data);
           announcements.value = data;
           for (var announcement in announcements) {
             DateTime startDate = DateTime.parse(announcement['start_date']);
             DateTime endDate = DateTime.parse(announcement['end_date']);
             if ((startDate.isBefore(today) || startDate == today) &&
                 (endDate.isAfter(today) || endDate == today)) {
+              if (announcement['banner_path'] != null) {
+                announcement['banner_path'] = await downloadAnnouncementImage(
+                    announcement['banner_path']);
+              }
               postedAnnouncements.add(announcement);
             }
           }
@@ -43,5 +46,19 @@ class AnnouncementController extends GetxController {
         .whenComplete(() {
           isLoading.value = false;
         });
+  }
+
+  Future downloadAnnouncementImage(path) async {
+    try {
+      final response = await _apiCall.getRequest(
+        apiUrl: '/download',
+        isBlob: true,
+        parameters: {'path': path, 'offset': 0},
+      );
+      return response['path'];
+    } catch (error) {
+      print("s3_image: $error");
+      return null;
+    }
   }
 }

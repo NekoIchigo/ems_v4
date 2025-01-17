@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:flutter/material.dart';
@@ -52,28 +53,39 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                       margin: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Column(
                         children: [
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 40),
                           Visibility(
                             visible: item['banner_path'] != null,
-                            child: Container(
-                              height: 300,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.blue,
+                            child: SizedBox(
+                              height: 250,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),
+                                child: item['banner_path'] != null
+                                    ? File(item['banner_path']).existsSync()
+                                        ? Image.file(File(item['banner_path']),
+                                            fit: BoxFit.fitWidth)
+                                        : Image.asset(
+                                            'assets/images/announcement.png',
+                                            fit: BoxFit.fitWidth,
+                                          )
+                                    : Image.asset(
+                                        'assets/images/announcement.png',
+                                        fit: BoxFit.fitWidth,
+                                      ),
                               ),
-                              child: Center(
-                                  child: Text(item['banner_path'].toString())),
                             ),
                           ),
                           Visibility(
                             visible: item['banner_path'] == null,
-                            child: Container(
-                              height: 300,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.blue,
+                            child: SizedBox(
+                              height: 250,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),
+                                child: Image.asset(
+                                  'assets/images/announcement.png',
+                                  fit: BoxFit.fitWidth,
+                                ),
                               ),
-                              // child: Text(item['banner_path'].toString()),
                             ),
                           ),
                           const SizedBox(height: 15),
