@@ -91,6 +91,16 @@ class _TransactionMenuState extends State<TransactionMenu> {
       ),
       "path": "/change_restday",
     },
+    {
+      "title": "Add New Schedule",
+      "key": "add_shift",
+      "icon": SvgPicture.asset(
+        "assets/svg/file_plus.svg",
+        height: 50,
+        color: primaryBlue,
+      ),
+      "path": "/add_shift",
+    },
   ];
 
   @override
@@ -125,7 +135,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
           ),
           const SizedBox(height: 20),
           SizedBox(
-            height: size.height * .6,
+            height: size.height * .7,
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
