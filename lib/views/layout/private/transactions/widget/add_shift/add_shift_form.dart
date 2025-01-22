@@ -13,14 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class ChangeScheduleForm extends StatefulWidget {
-  const ChangeScheduleForm({super.key});
+class AddShiftForm extends StatefulWidget {
+  const AddShiftForm({super.key});
 
   @override
-  State<ChangeScheduleForm> createState() => _ChangeScheduleFormState();
+  State<AddShiftForm> createState() => _AddShiftFormState();
 }
 
-class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
+class _AddShiftFormState extends State<AddShiftForm> {
   late Size size;
 
   List<bool> isSelected = [true, false];
@@ -73,7 +73,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                     _scheduleController.selectedTransactionLogs.value,
                 isLogsLoading: _scheduleController.isLogsLoading.value,
                 status: "",
-                title: "Change Schedule",
+                title: "Add New Schedule",
                 detailPage: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -83,14 +83,12 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         const NumberLabel(label: "Select the date", number: 1),
                         const SizedBox(height: 15),
                         CustomDateInput(
-                          type: "range",
+                          type: "single",
                           fromDate: dateStart,
-                          toDate: dateEnd,
                           readOnly: extraData?['status'] != 'pending' &&
                               extraData != null,
                           onDateTimeChanged: (value) {
                             dateStart = value[0].toString().split(" ")[0];
-                            dateEnd = value[1].toString().split(" ")[0];
                             _scheduleController.fetchScheduleList(
                               DateTimeRange(
                                   start: DateTime.parse(dateStart!),
@@ -245,8 +243,8 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
           Obx(
             () => DropdownMenu<Schedule>(
               width: size.width * .84,
-              textStyle: defaultStyle,
               menuHeight: size.height * .2,
+              textStyle: defaultStyle,
               hintText: "Select schedule",
               initialSelection:
                   _scheduleController.selectedSchedule.value.id == 0
@@ -315,20 +313,20 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
 
       dateStart = _dateTimeUtils.formatDate(
         dateTime: DateTime.tryParse(
-          data['start_date'],
+          data['attendance_date'],
         ),
       );
-      dateEnd = _dateTimeUtils.formatDate(
-        dateTime: DateTime.tryParse(
-          data['end_date'],
-        ),
-      );
+      // dateEnd = _dateTimeUtils.formatDate(
+      //   dateTime: DateTime.tryParse(
+      //     data['end_date'],
+      //   ),
+      // );
       _reason.text = data["reason"] ?? "";
       attachments = data['attachments'] ?? [];
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scheduleController.getScheduleByType(
           "Fixed Schedule",
-          data['new_schedule_id'],
+          data['schedule_id'],
         );
       });
     }
@@ -357,10 +355,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     }
     var data = {
       "id": isUpdate ? transactionId : null,
-      "start_date": dateStart,
-      "end_date": dateEnd,
-      "current_schedule_id": _scheduleController.currentScheduleId.value,
-      "new_schedule_id": _scheduleController.selectedSchedule.value.id,
+      "attendance_date": dateStart,
+      // "end_date": dateEnd,
+      // "current_schedule_id": _scheduleController.currentScheduleId.value,
+      "schedule_id": _scheduleController.selectedSchedule.value.id,
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,

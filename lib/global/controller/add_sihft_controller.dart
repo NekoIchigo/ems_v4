@@ -1,6 +1,6 @@
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
-import 'package:ems_v4/models/employee_leave.dart';
+import 'package:ems_v4/models/schedule.dart';
 import 'package:ems_v4/models/transaction_logs.dart';
 import 'package:ems_v4/router/router.dart';
 import 'package:ems_v4/views/widgets/dialog/gems_dialog.dart';
@@ -8,44 +8,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class LeaveController extends GetxController {
+class AddShiftController extends GetxController {
+  final AuthController _authController = Get.find<AuthController>();
   RxBool isLoading = false.obs,
       isSubmitting = false.obs,
       isLogsLoading = false.obs;
   Rx<TransactionLogs> selectedTransactionLogs = TransactionLogs().obs;
-  final AuthController _auth = Get.find<AuthController>();
+  final ApiCall _apiCall = ApiCall();
+
+  RxList<Schedule> schedules = [Schedule(id: 0, name: "No Schedule")].obs;
+  Rx<Schedule> selectedSchedule = Schedule(id: 0, name: "No Schedule").obs;
   RxMap<String, dynamic> errors = {"errors": 0}.obs,
       transactionData = {"id": "0"}.obs;
-  RxList<EmployeeLeave> leaves = [
-    EmployeeLeave(id: 0, name: "-- Select Leave --"),
-  ].obs;
-  final ApiCall _apiCall = ApiCall();
-  Rx<EmployeeLeave> selectedLeave = EmployeeLeave(id: 0).obs;
+  RxInt currentScheduleId = 0.obs;
 
   RxList approvedList = [].obs,
       pendingList = [].obs,
       rejectedList = [].obs,
       cancelledList = [].obs;
 
-  Future<void> submitRequest(Map<String, dynamic> data) async {
+  Future<void> sendRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
     _apiCall
-        .postRequest(
-      apiUrl: "/save-leave-request",
-      data: data,
-      catchError: () {},
-    )
+        .postRequest(apiUrl: "/save-add-shift", data: data, catchError: () {})
         .then((result) {
       if (result.containsKey('success') && result['success']) {
-        getAllLeave(30, DateTime.now(), DateTime.now());
-        navigatorKey.currentContext!.push(
-          "/transaction_result",
-          extra: {
-            "result": result["success"] ?? false,
-            "message": result["message"],
-            "path": "/leave",
-          },
-        );
+        getAllAddShift(7, DateTime.now(), DateTime.now());
+        navigatorKey.currentContext!.push("/transaction_result", extra: {
+          "result": result["success"],
+          "message": result["message"],
+          "path": "/change_schedule",
+        });
       } else {
         showDialog(
           context: navigatorKey.currentContext!,
@@ -67,11 +60,46 @@ class LeaveController extends GetxController {
     });
   }
 
-  Future<void> getAllLeave(int days, startDate, endDate) async {
+  Future<void> getScheduleByType(String type, int? newScheduleId) async {
     isLoading.value = true;
     _apiCall
         .getRequest(
-      apiUrl: "/mobile/leave",
+      apiUrl: "/schedules/schedule-by-type",
+      parameters: {
+        "schedule_type": type,
+        "company_id": _authController.company.value.id,
+      },
+      catchError: () {},
+    )
+        .then((result) {
+      if (result.containsKey('success') && result['success']) {
+        getAllAddShift(7, DateTime.now(), DateTime.now());
+        schedules.value = result["data"]
+            .map<Schedule>((schedule) =>
+                Schedule(id: schedule['id'], name: schedule['name']))
+            .toList();
+        if (newScheduleId != null) {
+          Schedule? item = schedules
+              .where((schedule) {
+                return schedule.id == newScheduleId;
+              })
+              .toList()
+              .firstOrNull;
+          if (item != null) selectedSchedule.value = item;
+        }
+      } else {
+        errors.value = result;
+      }
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
+  }
+
+  Future<void> getAllAddShift(int days, startDate, endDate) async {
+    isLoading.value = true;
+    _apiCall
+        .getRequest(
+      apiUrl: "/fetch-add-shift-mobile",
       parameters: {
         "days": days,
         "startDate": startDate,
@@ -90,44 +118,31 @@ class LeaveController extends GetxController {
     });
   }
 
-  Future<void> getAvailableLeave(int? leaveId) async {
-    isLoading.value = true;
-    leaves.value = [];
-    var result = await _apiCall.getRequest(
-      apiUrl: "/employee-leave/${_auth.employee?.value.id}",
+  Future fetchScheduleList(DateTimeRange? dates) async {
+    _apiCall
+        .getRequest(
+      apiUrl: "/fetch-employee-schedule-list",
+      parameters: {
+        "company_id": _authController.company.value.id,
+        "employee_id": _authController.employee?.value.id,
+        "from": dates?.start,
+        "to": dates?.end,
+      },
       catchError: () {},
-    );
-    List data = result['data'];
-
-    for (var empLeave in data) {
-      double credits = double.parse(empLeave['credits']);
-      leaves.add(
-        EmployeeLeave(
-          id: empLeave['id'],
-          employeeCredits: credits,
-          name: empLeave['leave']['name'],
-          leaveId: empLeave['leave']['id'],
-          employeeId: empLeave['employee_id'],
-        ),
-      );
-    }
-    if (leaves.length > 1 && leaveId != null) {
-      EmployeeLeave? item = leaves
-          .where((empLeave) {
-            return empLeave.leaveId == leaveId;
-          })
-          .toList()
-          .firstOrNull;
-      if (item != null) selectedLeave.value = item;
-    }
-    isLoading.value = false;
+    )
+        .then((response) {
+      final data = response["data"];
+      currentScheduleId.value = data['current_sched'][0]['id'];
+    }).whenComplete(() {
+      isLoading.value = false;
+    });
   }
 
   Future getLogs(int id) async {
     isLogsLoading.value = true;
     _apiCall
         .getRequest(
-      apiUrl: "/mobile/leave-request/$id/log",
+      apiUrl: "/get-add-shift-logs/$id",
       catchError: () {},
     )
         .then((response) {
@@ -145,21 +160,18 @@ class LeaveController extends GetxController {
       isLoading.value = true;
       _apiCall
           .postRequest(
-        apiUrl: '/leave-request/cancel',
+        apiUrl: '/cancel-add-shift',
         data: {"id": id},
         catchError: () {},
       )
           .then((result) {
         Navigator.of(context).pop();
-        getAllLeave(30, DateTime.now(), DateTime.now());
-        navigatorKey.currentContext!.push(
-          "/transaction_result",
-          extra: {
-            "result": result["success"] ?? false,
-            "message": result["message"],
-            "path": "/leave",
-          },
-        );
+        getAllAddShift(7, DateTime.now(), DateTime.now());
+        navigatorKey.currentContext!.push("/transaction_result", extra: {
+          "result": result["success"],
+          "message": result["message"],
+          "path": "/change_schedule",
+        });
       }).whenComplete(() {
         isLoading.value = false;
       });
@@ -170,18 +182,18 @@ class LeaveController extends GetxController {
     isSubmitting.value = true;
     _apiCall
         .postRequest(
-      apiUrl: "/leave-request/update",
+      apiUrl: "/update-add-shift",
       data: data,
       catchError: () {},
     )
         .then((result) {
-      getAllLeave(30, DateTime.now(), DateTime.now());
+      getAllAddShift(7, DateTime.now(), DateTime.now());
       navigatorKey.currentContext!.push(
         "/transaction_result",
         extra: {
           "result": result["success"] ?? false,
           "message": result["message"],
-          "path": "/leave",
+          "path": "/change_schedule",
         },
       );
     }).whenComplete(() {
