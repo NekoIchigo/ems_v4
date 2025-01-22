@@ -75,7 +75,7 @@ class LeaveController extends GetxController {
       parameters: {
         "days": days,
         "startDate": startDate,
-        "emdDate": endDate,
+        "endDate": endDate,
       },
       catchError: () {},
     )

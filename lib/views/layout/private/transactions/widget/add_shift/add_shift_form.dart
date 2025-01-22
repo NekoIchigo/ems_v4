@@ -37,6 +37,7 @@ class _AddShiftFormState extends State<AddShiftForm> {
 
   @override
   void initState() {
+    _scheduleController.getScheduleByType("Fixed Schedule", null);
     if (_scheduleController.transactionData['id'] != 0) {
       fillInValues(_scheduleController.transactionData['data']);
     }
@@ -242,6 +243,7 @@ class _AddShiftFormState extends State<AddShiftForm> {
           Obx(
             () => DropdownMenu<Schedule>(
               width: size.width * .84,
+              menuHeight: size.height * .2,
               textStyle: defaultStyle,
               hintText: "Select schedule",
               initialSelection:
@@ -311,20 +313,20 @@ class _AddShiftFormState extends State<AddShiftForm> {
 
       dateStart = _dateTimeUtils.formatDate(
         dateTime: DateTime.tryParse(
-          data['start_date'],
+          data['attendance_date'],
         ),
       );
-      dateEnd = _dateTimeUtils.formatDate(
-        dateTime: DateTime.tryParse(
-          data['end_date'],
-        ),
-      );
+      // dateEnd = _dateTimeUtils.formatDate(
+      //   dateTime: DateTime.tryParse(
+      //     data['end_date'],
+      //   ),
+      // );
       _reason.text = data["reason"] ?? "";
       attachments = data['attachments'] ?? [];
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scheduleController.getScheduleByType(
           "Fixed Schedule",
-          data['new_schedule_id'],
+          data['schedule_id'],
         );
       });
     }
@@ -353,10 +355,10 @@ class _AddShiftFormState extends State<AddShiftForm> {
     }
     var data = {
       "id": isUpdate ? transactionId : null,
-      "start_date": dateStart,
-      "end_date": dateEnd,
-      "current_schedule_id": _scheduleController.currentScheduleId.value,
-      "new_schedule_id": _scheduleController.selectedSchedule.value.id,
+      "attendance_date": dateStart,
+      // "end_date": dateEnd,
+      // "current_schedule_id": _scheduleController.currentScheduleId.value,
+      "schedule_id": _scheduleController.selectedSchedule.value.id,
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,

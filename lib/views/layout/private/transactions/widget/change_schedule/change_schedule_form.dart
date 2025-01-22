@@ -37,6 +37,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
 
   @override
   void initState() {
+    _scheduleController.getScheduleByType("Fixed Schedule", null);
     if (_scheduleController.transactionData['id'] != 0) {
       fillInValues(_scheduleController.transactionData['data']);
     }
@@ -245,6 +246,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
             () => DropdownMenu<Schedule>(
               width: size.width * .84,
               textStyle: defaultStyle,
+              menuHeight: size.height * .2,
               hintText: "Select schedule",
               initialSelection:
                   _scheduleController.selectedSchedule.value.id == 0

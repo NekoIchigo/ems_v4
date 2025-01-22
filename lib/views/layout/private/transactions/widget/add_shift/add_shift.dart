@@ -127,21 +127,12 @@ class _AddShiftState extends State<AddShift> {
 
   List<TransactionItem> formatList(List data) {
     return data.map((request) {
-      final formattedClockIn = request['clock_in_at'] == null
-          ? ""
-          : "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))}";
-      final formattedClockOut = request['clock_out_at'] == null
-          ? ""
-          : "| Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}";
-
-      final subtitle = "$formattedClockIn $formattedClockOut";
-
       return TransactionItem(
         id: request["id"],
         title: _dateTimeUtils.fromLaravelDateFormat(request["attendance_date"]),
         dateCreated:
             _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
-        subtitle: subtitle,
+        subtitle: request['schedule']['name'],
         status: request["status"],
         type: "",
         data: request,
