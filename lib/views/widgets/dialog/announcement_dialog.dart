@@ -92,9 +92,28 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(item['user']['name']),
-                            Text(_dateTimeUtils
-                                .fromLaravelDateFormat(item['start_date']))
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Posted by:",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(item['user']['name']),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Date Posted:",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                Text(_dateTimeUtils
+                                    .fromLaravelDateFormat(item['start_date']))
+                              ],
+                            )
                           ],
                         ),
                         const SizedBox(height: 15),
