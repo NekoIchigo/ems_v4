@@ -129,7 +129,7 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                             color: lightGray,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          height: size.height * .28,
+                          height: size.height * .26,
                           child: SingleChildScrollView(
                             child: HtmlWidget(
                               item['content'],
