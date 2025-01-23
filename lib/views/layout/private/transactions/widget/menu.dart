@@ -1,4 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/add_shift_controller.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
@@ -29,6 +30,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       Get.find<ChangeScheduleController>();
   final ChangeRestdayController _changeRestday =
       Get.find<ChangeRestdayController>();
+  final AddShiftController _addShiftController = Get.find<AddShiftController>();
 
   final List transactionItems = [
     {
@@ -176,6 +178,12 @@ class _TransactionMenuState extends State<TransactionMenu> {
                         );
                       } else if (path == "/change_restday") {
                         _changeRestday.getAllChangeRestday(
+                          30,
+                          DateTime.now(),
+                          DateTime.now(),
+                        );
+                      } else if (path == "/add_shift") {
+                        _addShiftController.getAllAddShift(
                           30,
                           DateTime.now(),
                           DateTime.now(),

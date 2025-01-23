@@ -1,5 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
+import 'package:ems_v4/global/controller/add_shift_controller.dart';
 import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
@@ -18,8 +18,7 @@ class AddShift extends StatefulWidget {
 }
 
 class _AddShiftState extends State<AddShift> {
-  final DTRCorrectionController _correctionController =
-      Get.find<DTRCorrectionController>();
+  final AddShiftController _addShiftController = Get.find<AddShiftController>();
   final TransactionController _transactionController =
       Get.find<TransactionController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
@@ -68,17 +67,15 @@ class _AddShiftState extends State<AddShift> {
                     startDate = value['dates'][0];
                     endDate = value['dates'][1];
                   }
-                  _correctionController.getAllDTR(
-                    value['day'],
-                    startDate,
-                    endDate,
-                  );
+
+                  _addShiftController.getAllAddShift(
+                      value['day'], startDate, endDate);
                 },
               ),
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    _correctionController.getLogs(item!.id);
+                    _addShiftController.getLogs(item!.id);
                     // _messaging.subscribeInChannel(
                     //   channelName: "dtr-request-chat-${item.id}",
                     // );
@@ -88,15 +85,14 @@ class _AddShiftState extends State<AddShift> {
                     );
                     _messaging.parentId.value = item.id.toString();
                     _messaging.messagingType.value = "add-shift-chat";
-                    _correctionController.transactionData = item.toMap().obs;
+                    _addShiftController.transactionData = item.toMap().obs;
                     context.push("/add_shift_form", extra: item.toMap());
                   },
-                  approvedList: formatList(_correctionController.approvedList),
-                  cancelledList:
-                      formatList(_correctionController.cancelledList),
-                  pendingList: formatList(_correctionController.pendingList),
-                  rejectedList: formatList(_correctionController.rejectedList),
-                  isLoading: _correctionController.isLoading.isTrue,
+                  approvedList: formatList(_addShiftController.approvedList),
+                  cancelledList: formatList(_addShiftController.cancelledList),
+                  pendingList: formatList(_addShiftController.pendingList),
+                  rejectedList: formatList(_addShiftController.rejectedList),
+                  isLoading: _addShiftController.isLoading.isTrue,
                 ),
               ),
             ],
@@ -108,7 +104,7 @@ class _AddShiftState extends State<AddShift> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _correctionController.transactionData = {"id": "0"}.obs;
+                _addShiftController.transactionData = {"id": "0"}.obs;
                 _transactionController.clockOutAt.value = "00:00";
                 _transactionController.clockInAt.value = "00:00";
                 context.push("/add_shift_form");
