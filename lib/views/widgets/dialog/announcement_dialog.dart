@@ -55,6 +55,7 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                         Visibility(
                           visible: item['banner_path'] != null,
                           child: SizedBox(
+                            height: 250,
                             width: size.width,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
@@ -76,6 +77,7 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                         Visibility(
                           visible: item['banner_path'] == null,
                           child: SizedBox(
+                            height: 250,
                             width: size.width,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
@@ -102,7 +104,12 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 15),
-                        SizedBox(
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: lightGray,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           height: 200,
                           child: SingleChildScrollView(
                             child: HtmlWidget(

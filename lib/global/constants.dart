@@ -15,6 +15,7 @@ const lightGray = Color(0xFFD3D3D3);
 const borderGray = Color(0xFFEAEAEA);
 const darkGray = Color(0xFF404040);
 const gray = Color(0xFF888888);
+const grey200 = Color(0xFFe5e7eb);
 const orange = Color(0xFFF9A425);
 const red = Color(0xFFAF1E1E);
 
