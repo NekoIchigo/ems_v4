@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/add_shift_controller.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
-import 'package:ems_v4/global/controller/change_schedule_controller.dart';
+import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/schedule.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
@@ -26,8 +27,9 @@ class _AddShiftFormState extends State<AddShiftForm> {
   List<bool> isSelected = [true, false];
   final TextEditingController _reason = TextEditingController();
   final AuthController _auth = Get.find<AuthController>();
-  final ChangeScheduleController _scheduleController =
-      Get.find<ChangeScheduleController>();
+  final AddShiftController _addShiftController = Get.find<AddShiftController>();
+  final TransactionController _transactionController =
+      Get.find<TransactionController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   int transactionId = 0;
   bool isLoading = false;
@@ -37,16 +39,23 @@ class _AddShiftFormState extends State<AddShiftForm> {
 
   @override
   void initState() {
-    _scheduleController.getScheduleByType("Fixed Schedule", null);
-    if (_scheduleController.transactionData['id'] != 0) {
-      fillInValues(_scheduleController.transactionData['data']);
+    if (_addShiftController.transactionData['id'] != 0) {
+      fillInValues(_addShiftController.transactionData['data']);
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _addShiftController.getScheduleByType(
+        "Fixed Schedule",
+        _addShiftController.transactionData['data'] != null
+            ? _addShiftController.transactionData['data']['schedule_id']
+            : null,
+      );
+    });
     super.initState();
   }
 
   // @override
   // void dispose() {
-  //   _scheduleController.transactionData.value = {"id": "0"};
+  //   _addShiftController.transactionData.value = {"id": "0"};
   //   super.dispose();
   // }
 
@@ -70,8 +79,8 @@ class _AddShiftFormState extends State<AddShiftForm> {
               () => SelectedItemTabs(
                 pageCount: extraData != null ? 3 : 1,
                 transactionLogs:
-                    _scheduleController.selectedTransactionLogs.value,
-                isLogsLoading: _scheduleController.isLogsLoading.value,
+                    _addShiftController.selectedTransactionLogs.value,
+                isLogsLoading: _addShiftController.isLogsLoading.value,
                 status: "",
                 title: "Add New Schedule",
                 detailPage: SingleChildScrollView(
@@ -89,11 +98,15 @@ class _AddShiftFormState extends State<AddShiftForm> {
                               extraData != null,
                           onDateTimeChanged: (value) {
                             dateStart = value[0].toString().split(" ")[0];
-                            _scheduleController.fetchScheduleList(
-                              DateTimeRange(
-                                  start: DateTime.parse(dateStart!),
-                                  end: DateTime.parse(dateEnd!)),
-                            );
+                            _transactionController.getSingleSchedule(dateStart);
+                            setState(() {
+                              dateError = null;
+                            });
+                            // _addShiftController.fetchScheduleList(
+                            //   DateTimeRange(
+                            //       start: DateTime.parse(dateStart!),
+                            //       end: DateTime.parse(dateEnd!)),
+                            // );
                             setState(() {
                               dateError = null;
                             });
@@ -145,12 +158,12 @@ class _AddShiftFormState extends State<AddShiftForm> {
                                           subTitle:
                                               "Are you sure you want to cancel your change schedule request?\n This action cannot be undone.",
                                           onPressed: () {
-                                            if (_scheduleController
+                                            if (_addShiftController
                                                 .isLoading.isFalse) {
                                               setState(() {
                                                 isLoading = true;
                                               });
-                                              _scheduleController.cancelRequest(
+                                              _addShiftController.cancelRequest(
                                                 transactionId,
                                                 context,
                                               );
@@ -171,7 +184,7 @@ class _AddShiftFormState extends State<AddShiftForm> {
                                   submitForm(extraData != null);
                                 },
                                 isLoading:
-                                    _scheduleController.isSubmitting.value,
+                                    _addShiftController.isSubmitting.value,
                                 label: extraData != null ? "Update" : "Submit",
                                 size: Size(size.width * .4, 40),
                                 radius: 8,
@@ -222,7 +235,7 @@ class _AddShiftFormState extends State<AddShiftForm> {
                         buttonIndex++) {
                       if (buttonIndex == index) {
                         isSelected[buttonIndex] = true;
-                        _scheduleController.getScheduleByType(
+                        _addShiftController.getScheduleByType(
                           index == 0 ? "Fixed Schedule" : "Flexi Schedule",
                           null,
                         );
@@ -247,10 +260,10 @@ class _AddShiftFormState extends State<AddShiftForm> {
               textStyle: defaultStyle,
               hintText: "Select schedule",
               initialSelection:
-                  _scheduleController.selectedSchedule.value.id == 0
+                  _addShiftController.selectedSchedule.value.id == 0
                       ? null
-                      : _scheduleController.selectedSchedule.value,
-              trailingIcon: _scheduleController.isLoading.value
+                      : _addShiftController.selectedSchedule.value,
+              trailingIcon: _addShiftController.isLoading.value
                   ? const SizedBox(
                       height: 20,
                       width: 20,
@@ -260,7 +273,7 @@ class _AddShiftFormState extends State<AddShiftForm> {
                       ),
                     )
                   : null,
-              enabled: _scheduleController.isLoading.isFalse ||
+              enabled: _addShiftController.isLoading.isFalse ||
                   (extraData?['status'] != 'pending' && extraData != null),
               inputDecorationTheme: InputDecorationTheme(
                 constraints: const BoxConstraints(maxHeight: 45),
@@ -279,11 +292,11 @@ class _AddShiftFormState extends State<AddShiftForm> {
               ),
               onSelected: (value) {
                 setState(() {
-                  _scheduleController.selectedSchedule.value = value!;
+                  _addShiftController.selectedSchedule.value = value!;
                   scheduleError = null;
                 });
               },
-              dropdownMenuEntries: _scheduleController.schedules
+              dropdownMenuEntries: _addShiftController.schedules
                   .map<DropdownMenuEntry<Schedule>>((value) {
                 return DropdownMenuEntry(
                   value: value,
@@ -323,12 +336,6 @@ class _AddShiftFormState extends State<AddShiftForm> {
       // );
       _reason.text = data["reason"] ?? "";
       attachments = data['attachments'] ?? [];
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _scheduleController.getScheduleByType(
-          "Fixed Schedule",
-          data['schedule_id'],
-        );
-      });
     }
   }
 
@@ -344,7 +351,7 @@ class _AddShiftFormState extends State<AddShiftForm> {
         dateError = 'This field is required.';
         hasError = true;
       }
-      if (_scheduleController.selectedSchedule.value.id == 0) {
+      if (_addShiftController.selectedSchedule.value.id == 0) {
         scheduleError = 'This field is required.';
         hasError = true;
       }
@@ -357,8 +364,8 @@ class _AddShiftFormState extends State<AddShiftForm> {
       "id": isUpdate ? transactionId : null,
       "attendance_date": dateStart,
       // "end_date": dateEnd,
-      // "current_schedule_id": _scheduleController.currentScheduleId.value,
-      "schedule_id": _scheduleController.selectedSchedule.value.id,
+      // "current_schedule_id": _addShiftController.currentScheduleId.value,
+      "schedule_id": _addShiftController.selectedSchedule.value.id,
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,
@@ -366,9 +373,9 @@ class _AddShiftFormState extends State<AddShiftForm> {
     };
 
     if (isUpdate) {
-      _scheduleController.updateRequestForm(data);
+      _addShiftController.updateRequestForm(data);
     } else {
-      _scheduleController.sendRequest(data);
+      _addShiftController.sendRequest(data);
     }
   }
 }

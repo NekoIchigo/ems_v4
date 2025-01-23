@@ -29,6 +29,7 @@ class AddShiftController extends GetxController {
 
   Future<void> sendRequest(Map<String, dynamic> data) async {
     isSubmitting.value = true;
+    print(data);
     _apiCall
         .postRequest(apiUrl: "/save-add-shift", data: data, catchError: () {})
         .then((result) {
@@ -37,7 +38,7 @@ class AddShiftController extends GetxController {
         navigatorKey.currentContext!.push("/transaction_result", extra: {
           "result": result["success"],
           "message": result["message"],
-          "path": "/change_schedule",
+          "path": "/add_shift",
         });
       } else {
         showDialog(
