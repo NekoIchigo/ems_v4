@@ -26,34 +26,36 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
     return Stack(
       children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: FlutterCarousel(
-            options: FlutterCarouselOptions(
-              height: size.height * .75,
-              showIndicator:
-                  _announcementController.postedAnnouncements.length > 1,
-              enableInfiniteScroll:
-                  _announcementController.postedAnnouncements.length > 1,
-              slideIndicator: CircularSlideIndicator(),
-              autoPlay: _announcementController.postedAnnouncements.length > 1,
-              autoPlayAnimationDuration: const Duration(seconds: 3),
-            ),
-            items: _announcementController.postedAnnouncements.map((item) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+        FlutterCarousel(
+          options: FlutterCarouselOptions(
+            height: size.height * .80,
+            showIndicator:
+                _announcementController.postedAnnouncements.length > 1,
+            enableInfiniteScroll:
+                _announcementController.postedAnnouncements.length > 1,
+            slideIndicator: CircularSlideIndicator(),
+            autoPlay: _announcementController.postedAnnouncements.length > 1,
+            autoPlayAnimationDuration: const Duration(seconds: 3),
+          ),
+          items: _announcementController.postedAnnouncements.map((item) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: size.width,
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  // margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: SingleChildScrollView(
+                    padding: EdgeInsetsDirectional.zero,
                     child: Column(
                       children: [
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 50),
                         Visibility(
                           visible: item['banner_path'] != null,
                           child: SizedBox(
                             height: 250,
+                            width: size.width,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               child: item['banner_path'] != null
                                   ? File(item['banner_path']).existsSync()
                                       ? Image.file(File(item['banner_path']),
@@ -73,8 +75,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                           visible: item['banner_path'] == null,
                           child: SizedBox(
                             height: 250,
+                            width: size.width,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               child: Image.asset(
                                 'assets/images/announcement.png',
                                 fit: BoxFit.fitWidth,
@@ -86,9 +89,27 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(item['user']['name']),
-                            Text(_dateTimeUtils
-                                .fromLaravelDateFormat(item['start_date']))
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Posted by:",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                Text(item['user']['name']),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Date Posted:",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                Text(_dateTimeUtils
+                                    .fromLaravelDateFormat(item['start_date']))
+                              ],
+                            )
                           ],
                         ),
                         const SizedBox(height: 15),
@@ -98,24 +119,27 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 15),
-                        SizedBox(
-                          height: 200,
-                          child: SingleChildScrollView(
-                            child: HtmlWidget(
-                              item['content'],
-                            ),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: lightGray200,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: HtmlWidget(
+                            item['content'],
                           ),
                         ),
+                        const SizedBox(height: 15),
                       ],
                     ),
-                  );
-                },
-              );
-            }).toList(),
-          ),
+                  ),
+                );
+              },
+            );
+          }).toList(),
         ),
         Positioned(
-          right: 0,
+          right: 5,
           child: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
