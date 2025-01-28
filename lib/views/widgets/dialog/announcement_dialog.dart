@@ -27,7 +27,7 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
     return Dialog(
       insetPadding: Device.get().isTablet
           ? const EdgeInsets.symmetric(vertical: 20, horizontal: 100)
-          : const EdgeInsets.all(20),
+          : const EdgeInsets.all(0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),

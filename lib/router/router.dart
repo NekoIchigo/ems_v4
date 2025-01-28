@@ -1,5 +1,6 @@
 import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/announcement_page.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
@@ -184,6 +185,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const HomeResultPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/announcement',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const AnnouncementPage(),
               ),
             ),
           ],

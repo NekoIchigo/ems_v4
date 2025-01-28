@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:ems_v4/global/api.dart';
 import 'package:ems_v4/router/router.dart';
-import 'package:ems_v4/views/widgets/dialog/announcement_dialog.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class AnnouncementController extends GetxController {
   RxList announcements = [].obs;
@@ -44,12 +41,7 @@ class AnnouncementController extends GetxController {
             }
           }
           if (postedAnnouncements.isNotEmpty && isInit) {
-            showDialog(
-              context: navigatorKey.currentContext!,
-              builder: (context) {
-                return AnnouncementDialog(items: postedAnnouncements);
-              },
-            );
+            navigatorKey.currentContext!.go('/announcement');
           }
         })
         .catchError((error) {})
