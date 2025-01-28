@@ -38,7 +38,7 @@ class HomeController extends GetxController {
       isClockOut = false.obs,
       isClockInOutComplete = false.obs,
       isUserSick = false.obs,
-      isMobileUser = false.obs,
+      isMobileUser = true.obs,
       isShowDropDown = false.obs,
       isSecondShift = false.obs,
       hasSecondShift = false.obs,
