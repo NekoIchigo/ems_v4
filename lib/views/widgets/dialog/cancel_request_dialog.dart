@@ -86,7 +86,7 @@ class CancelRequestDialog extends StatelessWidget {
               children: [
                 RoundedCustomButton(
                   onPressed: () {
-                    onPressed();
+                    Navigator.of(context).pop();
                   },
                   isLoading: isLoading,
                   label: "No, Keep Request",
