@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class AnnouncementPage extends StatefulWidget {
   const AnnouncementPage({super.key});
@@ -142,7 +143,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
           right: 5,
           child: IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              context.go('/in_out');
             },
             icon: const Icon(Icons.close_rounded),
           ),
