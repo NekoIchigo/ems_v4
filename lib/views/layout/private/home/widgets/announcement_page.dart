@@ -1,64 +1,62 @@
 import 'dart:io';
 
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/announcement_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
-class AnnouncementDialog extends StatefulWidget {
-  final List items;
-  const AnnouncementDialog({
-    super.key,
-    required this.items,
-  });
+class AnnouncementPage extends StatefulWidget {
+  const AnnouncementPage({super.key});
 
   @override
-  State<AnnouncementDialog> createState() => _AnnouncementDialogState();
+  State<AnnouncementPage> createState() => _AnnouncementPageState();
 }
 
-class _AnnouncementDialogState extends State<AnnouncementDialog> {
+class _AnnouncementPageState extends State<AnnouncementPage> {
+  final AnnouncementController _announcementController =
+      Get.find<AnnouncementController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Dialog(
-      insetPadding: Device.get().isTablet
-          ? const EdgeInsets.symmetric(vertical: 20, horizontal: 100)
-          : const EdgeInsets.all(0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      insetAnimationDuration: const Duration(milliseconds: 100),
-      child: Stack(
-        children: [
-          FlutterCarousel(
-            options: FlutterCarouselOptions(
-              height: size.height * .75,
-              showIndicator: widget.items.length > 1,
-              enableInfiniteScroll: widget.items.length > 1,
-              slideIndicator: CircularSlideIndicator(),
-              autoPlay: widget.items.length > 1,
-              autoPlayAnimationDuration: const Duration(seconds: 3),
-            ),
-            items: widget.items.map((item) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+
+    return Stack(
+      children: [
+        FlutterCarousel(
+          options: FlutterCarouselOptions(
+            height: size.height * .80,
+            showIndicator:
+                _announcementController.postedAnnouncements.length > 1,
+            enableInfiniteScroll:
+                _announcementController.postedAnnouncements.length > 1,
+            slideIndicator: CircularSlideIndicator(),
+            autoPlay: _announcementController.postedAnnouncements.length > 1,
+            autoPlayAnimationDuration: const Duration(seconds: 3),
+          ),
+          items: _announcementController.postedAnnouncements.map((item) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: size.width,
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  // margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: SingleChildScrollView(
+                    padding: EdgeInsetsDirectional.zero,
                     child: Column(
                       children: [
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 50),
                         Visibility(
                           visible: item['banner_path'] != null,
                           child: SizedBox(
                             height: 250,
                             width: size.width,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               child: item['banner_path'] != null
                                   ? File(item['banner_path']).existsSync()
                                       ? Image.file(File(item['banner_path']),
@@ -80,7 +78,7 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                             height: 250,
                             width: size.width,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               child: Image.asset(
                                 'assets/images/announcement.png',
                                 fit: BoxFit.fitWidth,
@@ -97,8 +95,7 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                               children: [
                                 const Text(
                                   "Posted by:",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(fontWeight: FontWeight.w600),
                                 ),
                                 Text(item['user']['name']),
                               ],
@@ -126,34 +123,32 @@ class _AnnouncementDialogState extends State<AnnouncementDialog> {
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: lightGray,
-                            borderRadius: BorderRadius.circular(20),
+                            color: lightGray200,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          height: size.height * .26,
-                          child: SingleChildScrollView(
-                            child: HtmlWidget(
-                              item['content'],
-                            ),
+                          child: HtmlWidget(
+                            item['content'],
                           ),
                         ),
+                        const SizedBox(height: 15),
                       ],
                     ),
-                  );
-                },
-              );
-            }).toList(),
-          ),
-          Positioned(
-            right: 0,
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+                  ),
+                );
               },
-              icon: const Icon(Icons.close_rounded),
-            ),
-          )
-        ],
-      ),
+            );
+          }).toList(),
+        ),
+        Positioned(
+          right: 5,
+          child: IconButton(
+            onPressed: () {
+              context.go('/in_out');
+            },
+            icon: const Icon(Icons.close_rounded),
+          ),
+        )
+      ],
     );
   }
 }
