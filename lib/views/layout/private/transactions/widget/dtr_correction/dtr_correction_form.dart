@@ -493,11 +493,11 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         hasError = true;
       }
 
-      if (_transactionController.clockInAt.value == "00:00" &&
-          _transactionController.clockOutAt.value == "00:00") {
-        timeChangeError = 'There must be a changes in this field';
-        hasError = true;
-      }
+      // if (_transactionController.clockInAt.value == "00:00" &&
+      //     _transactionController.clockOutAt.value == "00:00") {
+      //   timeChangeError = 'There must be a changes in this field';
+      //   hasError = true;
+      // }
     });
 
     if (hasError) {
