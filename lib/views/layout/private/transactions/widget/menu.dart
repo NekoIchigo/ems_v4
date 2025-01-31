@@ -190,7 +190,6 @@ class _TransactionMenuState extends State<TransactionMenu> {
                           DateTime.now(),
                         );
                       }
-
                       context.push(path);
                     },
                     title: transactionItems[index]["title"],
