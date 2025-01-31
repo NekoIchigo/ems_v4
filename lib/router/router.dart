@@ -2,6 +2,7 @@ import 'package:ems_v4/views/layout/private/create_password/create_password_cont
 import 'package:ems_v4/views/layout/private/home/home.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/in_out_page_v2.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
@@ -152,13 +153,22 @@ final router = GoRouter(
               buildPageWithDefaultTransition<void>(
                   context: context, state: state, child: Home(child: child)),
           routes: [
+            // GoRoute(
+            //   path: '/in_out',
+            //   pageBuilder: (context, state) =>
+            //       buildPageWithDefaultTransition<void>(
+            //     context: context,
+            //     state: state,
+            //     child: const InOutPage(),
+            //   ),
+            // ),
             GoRoute(
               path: '/in_out',
               pageBuilder: (context, state) =>
                   buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const InOutPage(),
+                child: const InOutPageV2(),
               ),
             ),
             GoRoute(

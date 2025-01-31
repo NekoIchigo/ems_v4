@@ -1,5 +1,9 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/auth_controller.dart';
+import 'package:ems_v4/global/controller/setting_controller.dart';
+import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class EMSContainer extends StatefulWidget {
   final Widget child;
@@ -10,6 +14,20 @@ class EMSContainer extends StatefulWidget {
 }
 
 class _EMSContainerState extends State<EMSContainer> {
+  final DateTimeUtils _dateTimeUtils = DateTimeUtils();
+  final AuthController _auth = Get.find<AuthController>();
+  final SettingsController _settings = Get.find<SettingsController>();
+
+  late DateTime currentTime;
+  late String greetings;
+
+  @override
+  void initState() {
+    super.initState();
+    currentTime = _settings.currentTime.value;
+    greetings = _dateTimeUtils.getGreeting(currentTime.hour);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,11 +50,30 @@ class _EMSContainerState extends State<EMSContainer> {
                 color: bgPrimaryBlue,
               ),
               Positioned(
-                top: 45,
+                top: 55,
                 left: 10,
                 child: Image.asset(
                   'assets/images/GEMS4white.png',
-                  height: 45,
+                  height: 40,
+                ),
+              ),
+              Positioned(
+                top: 65,
+                right: 10,
+                child: Row(
+                  children: [
+                    Text(
+                      '$greetings ',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      '${_auth.employee!.value.firstName}!',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Positioned(
