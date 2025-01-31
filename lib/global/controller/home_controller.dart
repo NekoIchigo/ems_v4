@@ -32,6 +32,7 @@ class HomeController extends GetxController {
 
   RxString currentLocation = ''.obs;
   RxList<String> scheduleList = ["-- Select --", ""].obs;
+  RxList weekSchedule = [].obs;
   RxBool isInsideVicinity = false.obs,
       hasClockOutsideVicinity = false.obs,
       isLoading = false.obs,
@@ -91,6 +92,8 @@ class HomeController extends GetxController {
     );
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
+
+      weekSchedule.value = result['data']['week_schedule'];
       isNewShift.value = data['is_new_shift'];
       isClockInOutComplete.value = data['is_shift_complete'];
       isClockOut.value = data['is_clockout'];

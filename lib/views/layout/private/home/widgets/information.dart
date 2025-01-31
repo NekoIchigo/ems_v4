@@ -392,6 +392,7 @@ class _HomeInfoPageState extends State<HomeInfoPage> {
       children: [
         RoundedCustomButton(
           onPressed: () {
+            _homeController.checkNewShift();
             _homeInfoKey.currentContext?.pop();
           },
           label: 'Close',
