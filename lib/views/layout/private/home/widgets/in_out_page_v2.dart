@@ -7,8 +7,10 @@ import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/dialog/announcement_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -41,7 +43,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
     super.initState();
     _homeController.isLoading.value = false;
     currentTime = _settings.currentTime.value;
-    date = DateFormat("EEEE, MMM dd y").format(currentTime);
+    date = DateFormat("MMMM dd, y, EEEE").format(currentTime);
     greetings = _dateTimeUtils.getGreeting(currentTime.hour);
   }
 
@@ -51,7 +53,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
 
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        // color: lightGray,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Obx(
@@ -60,8 +62,9 @@ class _InOutPageV2State extends State<InOutPageV2> {
           child: Column(
             children: [
               greetingWidget(size),
-              buttonSection(size),
-              additionalShift(size),
+              detailsSection(size),
+              weekSchedule(size),
+              // additionalShift(size),
               announcementSection(size),
             ],
           ),
@@ -75,347 +78,208 @@ class _InOutPageV2State extends State<InOutPageV2> {
       () => Column(
         children: [
           Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-            ),
+            color: bgPrimaryBlue,
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      greetings == 'Good morning,'
+                          ? 'assets/images/sunrise.png'
+                          : 'assets/images/night.png',
+                      height: 50,
+                    ),
+                    const SizedBox(width: 30),
+                    Text(
+                      DateFormat("hh:mm a").format(_settings.currentTime.value),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 32,
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Container(
+                      color: Colors.white,
+                      width: 1,
+                      height: 50,
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Text(
+                        date,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 20),
-                Text(
-                  date,
-                  style: smallStyle,
-                ),
-                Text(
-                  '$greetings ${_auth.employee!.value.firstName}!',
-                  style: const TextStyle(
-                    color: gray700,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  _homeController.isDropdownEnable.isTrue
-                      ? 'Choose shift'
-                      : "Today's shift",
-                  style: defaultStyle,
-                ),
-                const SizedBox(height: 10),
                 Visibility(
-                  visible: _homeController.isShowDropDown.isFalse,
+                  visible: _homeController.isMobileUser.isFalse,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    width: size.width,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
-                      border: Border.all(color: gray),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Row(
                       children: [
-                        Text(
-                          _homeController.scheduleList.first,
-                          style:
-                              const TextStyle(color: primaryBlue, fontSize: 13),
+                        const SizedBox(
+                          width: 10,
                         ),
-                        Visibility(
-                          visible: _homeController.hasSecondShift.isTrue,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: Text(
-                              _homeController.scheduleList.last,
-                              style: const TextStyle(
-                                  color: primaryBlue, fontSize: 13),
+                        const Icon(
+                          Icons.warning_rounded,
+                          color: colorError,
+                          size: 50,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Clock-In/Out Not Allowed",
+                              style: TextStyle(
+                                color: colorError,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                        ),
+                            SizedBox(
+                              width: size.width * .7,
+                              child: const Text(
+                                "There is no need to clock in and out here. HR has designated you to use the manual DTR/Timesheet.",
+                                softWrap: true,
+                                style: TextStyle(
+                                  color: gray,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
                 ),
                 Visibility(
-                  visible: _homeController.isShowDropDown.isTrue,
-                  child: DropdownMenu<String>(
-                    width: size.width * .9,
-                    hintText: "-Select-",
-                    errorText: reasonError,
-                    enabled: _homeController.isDropdownEnable.isTrue,
-                    textStyle:
-                        const TextStyle(color: primaryBlue, fontSize: 13),
-                    initialSelection:
-                        _homeController.initialDropdownString.value != ""
-                            ? _homeController.initialDropdownString.value
-                            : null,
-                    inputDecorationTheme: InputDecorationTheme(
-                      isDense: true,
-                      errorMaxLines: 1,
-                      constraints: BoxConstraints.tight(
-                        Size.fromHeight(reasonError != null ? 63 : 40),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 10,
-                      ),
-                      hintStyle: const TextStyle(color: gray, fontSize: 13),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: gray300),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderSide: BorderSide(color: gray300),
-                      ),
-                      errorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: colorError),
-                      ),
-                    ),
-                    onSelected: (String? value) async {
-                      shiftId = value;
-                      final selectedIndex =
-                          _homeController.scheduleList.indexOf(value!);
-                      _homeController.checkCurrentAttendanceRecordBySchedule();
-                      reasonError = null;
-                      _homeController.initialDropdownString.value = value;
-
-                      _homeController.isSecondShift.value =
-                          _homeController.scheduleList.indexOf(value) != 0;
-
-                      _homeController.checkNewShift().then((value) {
-                        if (selectedIndex == 1 &&
-                            _homeController.isSecondShiftComplete.isFalse) {
-                          _homeController.isClockInOutComplete.value = false;
-                          _homeController.isNewShift.value = true;
-                          _homeController.isFirstShiftComplete.value = false;
-                          _homeController.greetings.value =
-                              "To begin your next shift, clock in again";
-                        }
-                      });
-
-                      setState(() {});
-                    },
-                    menuStyle: const MenuStyle(
-                      surfaceTintColor: MaterialStatePropertyAll(Colors.white),
-                      backgroundColor: MaterialStatePropertyAll(Colors.white),
-                    ),
-                    dropdownMenuEntries: _homeController.scheduleList
-                        .map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                        value: value,
-                        label: value,
-                        labelWidget: Text(
-                          value,
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                        style: const ButtonStyle(
-                          foregroundColor:
-                              MaterialStatePropertyAll(primaryBlue),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                Visibility(
-                  visible: _homeController.hasSecondShift.isTrue &&
-                      _homeController.isClockOut.isTrue,
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      "To see your other shift, you must clock out this shift.",
-                      style: smallStyle,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              const SizedBox(height: 15),
-              Text(
-                _homeController.greetings.value,
-                style: defaultStyle,
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget buttonSection(Size size) {
-    return SizedBox(
-      height: size.height * .5,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          _homeController.isMobileUser.isFalse
-              ? Positioned(
-                  top: 50,
-                  child: Image.asset('assets/images/dtr_not_allowed_1.png',
-                      width: size.width * .62),
-                )
-              : _homeController.isClockInOutComplete.isTrue
-                  ? Positioned(
-                      top: 50,
-                      child: Image.asset('assets/images/EMS1.png',
-                          width: size.width * .62),
-                    )
-                  : Positioned(
-                      top: 20,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Positioned(
-                            child: _homeController.isClockOut.isTrue
-                                ? Lottie.asset("assets/lottie/Clock-out.json",
-                                    width: 300)
-                                : Lottie.asset("assets/lottie/Clock-in.json",
-                                    width: 300),
-                          ),
-                          Positioned(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(
-                                        size.width * .38, size.width * .38),
-                                    shape: const CircleBorder(),
-                                    backgroundColor:
-                                        _homeController.isClockOut.isTrue
-                                            ? colorError
-                                            : colorSuccess,
-                                  ),
-                                  onPressed: () async {
-                                    await _settings
-                                        .checkLocationService('/in_out');
-                                    await _settings
-                                        .checkLocationPermission('/in_out');
-
-                                    if (_homeController
-                                            .isDropdownEnable.isTrue &&
-                                        _homeController
-                                                .initialDropdownString.value ==
-                                            "") {
-                                      reasonError = "Please select a shift.";
-                                      setState(() {});
-                                    } else {
-                                      if (_homeController.isClockOut.isFalse) {
-                                        _homeController
-                                            .setClockInLocation()
-                                            .then((value) {
-                                          context.push('/info');
-                                        });
-                                      } else {
-                                        _homeController
-                                            .setClockOutLocation()
-                                            .then((value) {
-                                          context.push('/info');
-                                        });
-                                      }
-                                    }
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        _homeController.isClockOut.isTrue
-                                            ? "CLOCK OUT"
-                                            : "CLOCK IN",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          shadows: <Shadow>[
-                                            Shadow(
-                                              offset: const Offset(0.0, 5.0),
-                                              blurRadius: 8.0,
-                                              color:
-                                                  Colors.white.withOpacity(.40),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: _homeController.isLoading.isTrue,
-                                  child: SizedBox(
-                                    width: size.width * .44,
-                                    height: size.width * .44,
-                                    child: CircularProgressIndicator(
-                                      color: _homeController.isClockOut.isTrue
-                                          ? colorError
-                                          : colorSuccess,
-                                      strokeCap: StrokeCap.round,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-          Positioned(
-            top: 7,
-            child: Text(
-              DateFormat("hh:mm a").format(_settings.currentTime.value),
-              style: titleStyle,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Visibility(
-              visible: _homeController.isMobileUser.isTrue,
-              child: detailsSection(size),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Visibility(
-                visible: _homeController.isMobileUser.isFalse,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  visible: _homeController.isMobileUser.isTrue,
                   child: Column(
                     children: [
-                      const Text(
-                        "Clock-In/Out Not Allowed",
-                        style: titleStyle,
-                      ),
-                      const SizedBox(height: 15),
-                      const Text(
-                        "There is no need to clock in and out here.",
-                        style: smallStyle,
-                      ),
-                      const SizedBox(height: 5),
-                      const Text(
-                        "HR has designated you no to use manual DTR/Timesheet",
-                        style: smallStyle,
-                      ),
-                      const SizedBox(height: 10),
-                      TextButton(
-                        onPressed: () {
-                          _mainNavigationController.tabController.animateTo(1);
-                          context.go("/time_entries");
-                        },
-                        child: const Text(
-                          "View Attendance Records >",
-                          style: TextStyle(
-                            color: primaryBlue,
-                            decoration: TextDecoration.underline,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          backgroundColor: colorSuccess,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(color: Colors.white),
                           ),
+                        ),
+                        onPressed: () async {
+                          if (_homeController.isLoading.isFalse) {
+                            await _settings.checkLocationService('/in_out');
+                            await _settings.checkLocationPermission('/in_out');
+
+                            if (_homeController.isDropdownEnable.isTrue &&
+                                _homeController.initialDropdownString.value ==
+                                    "") {
+                              reasonError = "Please select a shift.";
+                              setState(() {});
+                            } else {
+                              _homeController.isClockOut.value = false;
+                              _homeController
+                                  .setClockInLocation()
+                                  .then((value) {
+                                context.push('/info');
+                              });
+                            }
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.input_rounded,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              _homeController.isLoading.isFalse
+                                  ? "Clock In"
+                                  : "Processing ...",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          backgroundColor: _homeController.isClockOut.isFalse
+                              ? gray
+                              : colorError,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(color: Colors.white),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (_homeController.isLoading.isFalse) {
+                            await _settings.checkLocationService('/in_out');
+                            await _settings.checkLocationPermission('/in_out');
+
+                            if (_homeController.isDropdownEnable.isTrue &&
+                                _homeController.initialDropdownString.value ==
+                                    "") {
+                              reasonError = "Please select a shift.";
+                              setState(() {});
+                            } else {
+                              if (_homeController.isClockOut.isTrue) {
+                                _homeController
+                                    .setClockOutLocation()
+                                    .then((value) {
+                                  context.push('/info');
+                                });
+                              }
+                            }
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.output_rounded,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              _homeController.isLoading.isFalse
+                                  ? "Clock Out"
+                                  : "Processing ...",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                )),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ],
       ),
@@ -423,82 +287,224 @@ class _InOutPageV2State extends State<InOutPageV2> {
   }
 
   Widget detailsSection(Size size) {
-    return SizedBox(
-      height: size.height * .16,
-      width: size.width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 140,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.access_time, color: primaryBlue),
-                const Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    'Clock In',
-                    style: defaultStyle,
-                  ),
-                ),
-                Text(
-                  _dateTimeUtils.formatTime(
-                      dateTime: _homeController.attendance.value.clockInAt),
-                  style: defaultStyle,
-                ),
-                Visibility(
-                  visible: _timeEntriesController.hasPrevAttendance.isTrue,
-                  child: Text(
-                    _dateTimeUtils.formatTime(
-                        dateTime: _timeEntriesController
-                            .prevAttendance.value.clockInAt),
-                    style: defaultStyle,
-                  ),
-                ),
-              ],
+          Text(
+            _homeController.isDropdownEnable.isTrue
+                ? "Please Choose Shift"
+                : "Your Today's Shift",
+            style: const TextStyle(
+              color: gray700,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(width: 20),
-          Container(
-            width: 140,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+          const SizedBox(height: 10),
+          Visibility(
+            visible: _homeController.isShowDropDown.isFalse,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              width: size.width,
+              decoration: BoxDecoration(
+                color: bgLightGray,
+                // border: Border.all(color: gray),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _homeController.scheduleList.first,
+                    style: defaultStyle,
+                  ),
+                  Visibility(
+                    visible: _homeController.hasSecondShift.isTrue,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Text(
+                        _homeController.scheduleList.last,
+                        style: defaultStyle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.access_time_filled, color: primaryBlue),
-                const Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    'Clock Out',
-                    style: defaultStyle,
+          ),
+          Visibility(
+            visible: _homeController.isShowDropDown.isTrue,
+            child: DropdownMenu<String>(
+              width: size.width * .95,
+              hintText: "-Select-",
+              errorText: reasonError,
+              enabled: _homeController.isDropdownEnable.isTrue,
+              textStyle: const TextStyle(color: primaryBlue, fontSize: 13),
+              initialSelection:
+                  _homeController.initialDropdownString.value != ""
+                      ? _homeController.initialDropdownString.value
+                      : null,
+              inputDecorationTheme: InputDecorationTheme(
+                fillColor: bgLightGray,
+                filled: true,
+                isDense: true,
+                errorMaxLines: 1,
+                constraints: BoxConstraints.tight(
+                  Size.fromHeight(reasonError != null ? 63 : 40),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 10,
+                ),
+                hintStyle: const TextStyle(color: gray, fontSize: 13),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: bgLightGray),
+                ),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: bgLightGray),
+                ),
+                disabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: bgLightGray),
+                ),
+                errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: colorError),
+                ),
+              ),
+              onSelected: (String? value) async {
+                shiftId = value;
+                final selectedIndex =
+                    _homeController.scheduleList.indexOf(value!);
+                _homeController.checkCurrentAttendanceRecordBySchedule();
+                reasonError = null;
+                _homeController.initialDropdownString.value = value;
+
+                _homeController.isSecondShift.value =
+                    _homeController.scheduleList.indexOf(value) != 0;
+
+                _homeController.checkNewShift().then((value) {
+                  if (selectedIndex == 1 &&
+                      _homeController.isSecondShiftComplete.isFalse) {
+                    _homeController.isClockInOutComplete.value = false;
+                    _homeController.isNewShift.value = true;
+                    _homeController.isFirstShiftComplete.value = false;
+                    _homeController.greetings.value =
+                        "To begin your next shift, clock in again";
+                  }
+                });
+
+                setState(() {});
+              },
+              menuStyle: const MenuStyle(
+                surfaceTintColor: MaterialStatePropertyAll(Colors.white),
+                backgroundColor: MaterialStatePropertyAll(Colors.white),
+              ),
+              dropdownMenuEntries: _homeController.scheduleList
+                  .map<DropdownMenuEntry<String>>((String value) {
+                return DropdownMenuEntry<String>(
+                  value: value,
+                  label: value,
+                  labelWidget: Text(
+                    value,
+                    style: const TextStyle(fontSize: 14),
                   ),
-                ),
-                Text(
-                  _dateTimeUtils.formatTime(
-                      dateTime: _homeController.attendance.value.clockOutAt),
-                  style: defaultStyle,
-                ),
-                Visibility(
-                  visible: _timeEntriesController.hasPrevAttendance.isTrue,
-                  child: Text(
-                    _dateTimeUtils.formatTime(
-                        dateTime: _timeEntriesController
-                            .prevAttendance.value.clockOutAt),
-                    style: defaultStyle,
+                  style: const ButtonStyle(
+                    foregroundColor: MaterialStatePropertyAll(primaryBlue),
                   ),
-                ),
-              ],
+                );
+              }).toList(),
+            ),
+          ),
+          Visibility(
+            visible: _homeController.hasSecondShift.isTrue &&
+                _homeController.isClockOut.isTrue,
+            child: const Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Text(
+                "To see your other shift, you must clock out this shift.",
+                style: smallStyle,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget weekSchedule(Size size) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "January 23 - Febuary 02, 2025 Shifts",
+            style: TextStyle(
+              color: gray700,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: size.height * .25,
+            child: ListView.builder(
+              padding: EdgeInsetsDirectional.zero,
+              itemCount: _homeController.weekSchedule.length,
+              itemBuilder: (context, index) {
+                final data = _homeController.weekSchedule[index];
+                final date = DateTime.parse(data['date']);
+                print(data);
+                String dayAbbreviation = DateFormat('E').format(date);
+                String formattedDate = DateFormat('MMMM dd, y').format(date);
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    color: bgLightGray,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
+                        width: 80,
+                        child: Center(
+                          child: Text(
+                            dayAbbreviation,
+                            style: const TextStyle(
+                              color: primaryBlue,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            formattedDate,
+                            style: defaultStyle,
+                          ),
+                          Text(
+                            '${data['first_shift']['work_start']} to ${data['first_shift']['work_end']}, Restday ${data['first_shift']['rest_days']}',
+                            style: smallStyle,
+                          ),
+                          Visibility(
+                            visible: data['second_shift'] != null,
+                            child: Text(
+                              '${data['second_shift']['work_start']} to ${data['second_shift']['work_end']}, Restday ${data['second_shift']['work_end']}',
+                              style: smallStyle,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -583,28 +589,59 @@ class _InOutPageV2State extends State<InOutPageV2> {
                     );
                   } else {
                     final item = _announcement.announcements[index];
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 0),
-                      title: Text(
-                        _dateTimeUtils
-                            .fromLaravelDateFormat(item['start_date']),
-                        style: blueDefaultStyle,
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: bgLightGray,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      subtitle: Text(
-                        item['name'],
-                        style: defaultStyle,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['name'],
+                            style: TextStyle(
+                              color: bgSecondaryBlue,
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "Date Published: ${DateFormat("MMMM dd, y").format(DateTime.parse(item['start_date']))}",
+                            style: defaultStyle,
+                          ),
+                          Text(
+                            "Posted by: ${item['user']['name']}",
+                            style: defaultStyle,
+                          ),
+                        ],
                       ),
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AnnouncementDialog(
-                                items: [_announcement.announcements[index]]);
-                          },
-                        );
-                      },
                     );
+
+                    // ListTile(
+                    //   contentPadding: const EdgeInsets.symmetric(
+                    //       horizontal: 10, vertical: 0),
+                    //   title: Text(
+                    //     _dateTimeUtils
+                    //         .fromLaravelDateFormat(item['start_date']),
+                    //     style: blueDefaultStyle,
+                    //   ),
+                    //   subtitle: Text(
+                    //     item['name'],
+                    //     style: defaultStyle,
+                    //   ),
+                    //   onTap: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (context) {
+                    //         return AnnouncementDialog(
+                    //             items: [_announcement.announcements[index]]);
+                    //       },
+                    //     );
+                    //   },
+                    // );
                   }
                 },
               ),

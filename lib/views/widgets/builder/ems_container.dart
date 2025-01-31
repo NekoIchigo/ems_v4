@@ -54,11 +54,11 @@ class _EMSContainerState extends State<EMSContainer> {
                 left: 10,
                 child: Image.asset(
                   'assets/images/GEMS4white.png',
-                  height: 40,
+                  height: 45,
                 ),
               ),
               Positioned(
-                top: 65,
+                top: 70,
                 right: 10,
                 child: Row(
                   children: [
@@ -84,7 +84,7 @@ class _EMSContainerState extends State<EMSContainer> {
                 child: Center(
                   child: Container(
                     alignment: Alignment.center,
-                    height: size.height * .87,
+                    height: size.height * .90,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius:
