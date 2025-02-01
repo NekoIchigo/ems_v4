@@ -67,6 +67,11 @@ const TextStyle defaultStyle = TextStyle(
   fontSize: 14,
 );
 
+const TextStyle defaultWhiteStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 14,
+);
+
 const TextStyle blueDefaultStyle = TextStyle(
   color: bgSecondaryBlue,
   fontSize: 14,
@@ -79,6 +84,11 @@ const TextStyle xSmallStyle = TextStyle(
 
 const TextStyle smallStyle = TextStyle(
   color: gray700,
+  fontSize: 13,
+);
+
+const TextStyle smallWhiteStyle = TextStyle(
+  color: Colors.white,
   fontSize: 13,
 );
 

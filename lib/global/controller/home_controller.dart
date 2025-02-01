@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class HomeController extends GetxController {
   final AuthController _authService = Get.find<AuthController>();
@@ -30,7 +31,7 @@ class HomeController extends GetxController {
       greetings = "Begin another day by clocking in.".obs,
       workEnd2 = "??:??".obs;
 
-  RxString currentLocation = ''.obs;
+  RxString currentLocation = ''.obs, dateRange = ''.obs;
   RxList<String> scheduleList = ["-- Select --", ""].obs;
   RxList weekSchedule = [].obs;
   RxBool isInsideVicinity = false.obs,
@@ -106,7 +107,8 @@ class HomeController extends GetxController {
       restday2.value = data['restday2'] ?? "";
       scheduleId1.value = data['schedule_id'];
       scheduleId2.value = data['schedule_id2'] ?? 0;
-
+      dateRange.value =
+          "${DateFormat('MMMM dd').format(DateTime.parse(weekSchedule[0]['date']))} - ${DateFormat('MMMM dd, y').format(DateTime.parse(weekSchedule[weekSchedule.length - 1]['date']))}";
       hasSecondShift.value = scheduleId2.value != 0;
       isDropdownEnable.value = hasSecondShift.isTrue && isClockOut.isFalse;
       isShowDropDown.value = hasSecondShift.isTrue && isMobileUser.isTrue;

@@ -62,7 +62,10 @@ class _InOutPageV2State extends State<InOutPageV2> {
           child: Column(
             children: [
               greetingWidget(size),
-              detailsSection(size),
+              Visibility(
+                visible: _homeController.isMobileUser.isTrue,
+                child: detailsSection(size),
+              ),
               weekSchedule(size),
               // additionalShift(size),
               announcementSection(size),
@@ -93,7 +96,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
                           : 'assets/images/night.png',
                       height: 50,
                     ),
-                    const SizedBox(width: 30),
+                    const SizedBox(width: 25),
                     Text(
                       DateFormat("hh:mm a").format(_settings.currentTime.value),
                       style: const TextStyle(
@@ -102,13 +105,13 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         fontSize: 32,
                       ),
                     ),
-                    const SizedBox(width: 15),
+                    const SizedBox(width: 25),
                     Container(
                       color: Colors.white,
                       width: 1,
                       height: 50,
                     ),
-                    const SizedBox(width: 15),
+                    const SizedBox(width: 25),
                     Expanded(
                       child: Text(
                         date,
@@ -439,9 +442,12 @@ class _InOutPageV2State extends State<InOutPageV2> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "January 23 - Febuary 02, 2025 Shifts",
-            style: TextStyle(
+          Visibility(
+              visible: _homeController.isMobileUser.isFalse,
+              child: const SizedBox(height: 20)),
+          Text(
+            "${_homeController.dateRange.value} Shifts",
+            style: const TextStyle(
               color: gray700,
               fontSize: 14,
               fontWeight: FontWeight.bold,
@@ -456,13 +462,35 @@ class _InOutPageV2State extends State<InOutPageV2> {
               itemBuilder: (context, index) {
                 final data = _homeController.weekSchedule[index];
                 final date = DateTime.parse(data['date']);
-                print(data);
+                final now = DateTime.now();
+                final isToday = now.year == date.year &&
+                    now.month == date.month &&
+                    now.day == date.day &&
+                    _homeController.isMobileUser.isFalse;
                 String dayAbbreviation = DateFormat('E').format(date);
                 String formattedDate = DateFormat('MMMM dd, y').format(date);
+                String? firstShiftRestday;
+                String? secondShiftRestday;
+
+                if (data['first_shift']['rest_days'] is List) {
+                  firstShiftRestday =
+                      data['first_shift']['rest_days'].join(',');
+                } else {
+                  firstShiftRestday = data['first_shift']['rest_days'];
+                }
+
+                if (data['second_shift'] != null &&
+                    data['second_shift']['rest_days'] is List) {
+                  secondShiftRestday =
+                      data['second_shift']?['rest_days'].join(',');
+                } else {
+                  secondShiftRestday = data['second_shift']?['rest_days'];
+                }
+
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   decoration: BoxDecoration(
-                    color: bgLightGray,
+                    color: isToday ? bgPrimaryBlue : bgLightGray,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
@@ -473,8 +501,8 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         child: Center(
                           child: Text(
                             dayAbbreviation,
-                            style: const TextStyle(
-                              color: primaryBlue,
+                            style: TextStyle(
+                              color: isToday ? Colors.white : primaryBlue,
                               fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),
@@ -486,17 +514,17 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         children: [
                           Text(
                             formattedDate,
-                            style: defaultStyle,
+                            style: isToday ? defaultWhiteStyle : defaultStyle,
                           ),
                           Text(
-                            '${data['first_shift']['work_start']} to ${data['first_shift']['work_end']}, Restday ${data['first_shift']['rest_days']}',
-                            style: smallStyle,
+                            '${data['first_shift']['work_start']} to ${data['first_shift']['work_end']}, Restday ${firstShiftRestday.toString()}',
+                            style: isToday ? smallWhiteStyle : smallStyle,
                           ),
                           Visibility(
                             visible: data['second_shift'] != null,
                             child: Text(
-                              '${data['second_shift']['work_start']} to ${data['second_shift']['work_end']}, Restday ${data['second_shift']['work_end']}',
-                              style: smallStyle,
+                              '${data['second_shift']?['work_start']} to ${data['second_shift']?['work_end']}, Restday ${secondShiftRestday.toString()}',
+                              style: isToday ? smallWhiteStyle : smallStyle,
                             ),
                           ),
                         ],
@@ -506,6 +534,22 @@ class _InOutPageV2State extends State<InOutPageV2> {
                 );
               },
             ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text("Is shift incorrect? Click ", style: smallStyle),
+              InkWell(
+                onTap: () {
+                  context.push('/change_schedule_form');
+                },
+                child: const Text(
+                  "here.",
+                  style: TextStyle(
+                      color: primaryBlue, decoration: TextDecoration.underline),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -601,13 +645,13 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         children: [
                           Text(
                             item['name'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: bgSecondaryBlue,
                               fontSize: 16,
                               // fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             "Date Published: ${DateFormat("MMMM dd, y").format(DateTime.parse(item['start_date']))}",
                             style: defaultStyle,
