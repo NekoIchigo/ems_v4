@@ -7,10 +7,9 @@ import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/views/widgets/builder/column_builder.dart';
 import 'package:ems_v4/views/widgets/dialog/announcement_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -205,13 +204,12 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.input_rounded,
-                              color: Colors.white,
+                            SvgPicture.asset(
+                              "assets/svg/clock_in.svg",
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 5),
                             Text(
-                              _homeController.isLoading.isFalse
+                              _homeController.isClockInProcessing.isFalse
                                   ? "Clock In"
                                   : "Processing ...",
                               style: const TextStyle(
@@ -259,13 +257,12 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.output_rounded,
-                              color: Colors.white,
+                            SvgPicture.asset(
+                              "assets/svg/clock_out.svg",
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 5),
                             Text(
-                              _homeController.isLoading.isFalse
+                              _homeController.isClockOutProcessing.isFalse
                                   ? "Clock Out"
                                   : "Processing ...",
                               style: const TextStyle(
@@ -454,86 +451,82 @@ class _InOutPageV2State extends State<InOutPageV2> {
             ),
           ),
           const SizedBox(height: 10),
-          SizedBox(
-            height: size.height * .25,
-            child: ListView.builder(
-              padding: EdgeInsetsDirectional.zero,
-              itemCount: _homeController.weekSchedule.length,
-              itemBuilder: (context, index) {
-                final data = _homeController.weekSchedule[index];
-                final date = DateTime.parse(data['date']);
-                final now = DateTime.now();
-                final isToday = now.year == date.year &&
-                    now.month == date.month &&
-                    now.day == date.day &&
-                    _homeController.isMobileUser.isFalse;
-                String dayAbbreviation = DateFormat('E').format(date);
-                String formattedDate = DateFormat('MMMM dd, y').format(date);
-                String? firstShiftRestday;
-                String? secondShiftRestday;
+          ColumnBuilder(
+            // padding: EdgeInsetsDirectional.zero,
+            itemCount: _homeController.weekSchedule.length,
+            itemBuilder: (context, index) {
+              final data = _homeController.weekSchedule[index];
+              final date = DateTime.parse(data['date']);
+              final now = DateTime.now();
+              final isToday = now.year == date.year &&
+                  now.month == date.month &&
+                  now.day == date.day &&
+                  _homeController.isMobileUser.isFalse;
+              String dayAbbreviation = DateFormat('E').format(date);
+              String formattedDate = DateFormat('MMMM dd, y').format(date);
+              String? firstShiftRestday;
+              String? secondShiftRestday;
 
-                if (data['first_shift']['rest_days'] is List) {
-                  firstShiftRestday =
-                      data['first_shift']['rest_days'].join(',');
-                } else {
-                  firstShiftRestday = data['first_shift']['rest_days'];
-                }
+              if (data['first_shift']['rest_days'] is List) {
+                firstShiftRestday = data['first_shift']['rest_days'].join(',');
+              } else {
+                firstShiftRestday = data['first_shift']['rest_days'];
+              }
 
-                if (data['second_shift'] != null &&
-                    data['second_shift']['rest_days'] is List) {
-                  secondShiftRestday =
-                      data['second_shift']?['rest_days'].join(',');
-                } else {
-                  secondShiftRestday = data['second_shift']?['rest_days'];
-                }
+              if (data['second_shift'] != null &&
+                  data['second_shift']['rest_days'] is List) {
+                secondShiftRestday =
+                    data['second_shift']?['rest_days'].join(',');
+              } else {
+                secondShiftRestday = data['second_shift']?['rest_days'];
+              }
 
-                return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                  decoration: BoxDecoration(
-                    color: isToday ? bgPrimaryBlue : bgLightGray,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 15.0),
-                        width: 80,
-                        child: Center(
-                          child: Text(
-                            dayAbbreviation,
-                            style: TextStyle(
-                              color: isToday ? Colors.white : primaryBlue,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                            ),
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: isToday ? bgPrimaryBlue : bgLightGray,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      width: 80,
+                      child: Center(
+                        child: Text(
+                          dayAbbreviation,
+                          style: TextStyle(
+                            color: isToday ? Colors.white : primaryBlue,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            formattedDate,
-                            style: isToday ? defaultWhiteStyle : defaultStyle,
-                          ),
-                          Text(
-                            '${data['first_shift']['work_start']} to ${data['first_shift']['work_end']}, Restday ${firstShiftRestday.toString()}',
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          formattedDate,
+                          style: isToday ? defaultWhiteStyle : defaultStyle,
+                        ),
+                        Text(
+                          '${data['first_shift']['work_start']} to ${data['first_shift']['work_end']}, Restday ${firstShiftRestday.toString()}',
+                          style: isToday ? smallWhiteStyle : smallStyle,
+                        ),
+                        Visibility(
+                          visible: data['second_shift'] != null,
+                          child: Text(
+                            '${data['second_shift']?['work_start']} to ${data['second_shift']?['work_end']}, Restday ${secondShiftRestday.toString()}',
                             style: isToday ? smallWhiteStyle : smallStyle,
                           ),
-                          Visibility(
-                            visible: data['second_shift'] != null,
-                            child: Text(
-                              '${data['second_shift']?['work_start']} to ${data['second_shift']?['work_end']}, Restday ${secondShiftRestday.toString()}',
-                              style: isToday ? smallWhiteStyle : smallStyle,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -633,34 +626,49 @@ class _InOutPageV2State extends State<InOutPageV2> {
                     );
                   } else {
                     final item = _announcement.announcements[index];
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: bgLightGray,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item['name'],
-                            style: const TextStyle(
-                              color: bgSecondaryBlue,
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
+                    return InkWell(
+                      onTap: () {
+                        context.push("/announcement");
+                        _announcement.postedAnnouncements.value = [
+                          _announcement.announcements[index]
+                        ];
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (context) {
+                        //     return AnnouncementDialog(
+                        //         items: [_announcement.announcements[index]]);
+                        //   },
+                        // );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: bgLightGray,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item['name'],
+                              style: const TextStyle(
+                                color: bgSecondaryBlue,
+                                fontSize: 16,
+                                // fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Date Published: ${DateFormat("MMMM dd, y").format(DateTime.parse(item['start_date']))}",
-                            style: defaultStyle,
-                          ),
-                          Text(
-                            "Posted by: ${item['user']['name']}",
-                            style: defaultStyle,
-                          ),
-                        ],
+                            const SizedBox(height: 10),
+                            Text(
+                              "Date Published: ${DateFormat("MMMM dd, y").format(DateTime.parse(item['start_date']))}",
+                              style: defaultStyle,
+                            ),
+                            Text(
+                              "Posted by: ${item['user']['name']}",
+                              style: defaultStyle,
+                            ),
+                          ],
+                        ),
                       ),
                     );
 

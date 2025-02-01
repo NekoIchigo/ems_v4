@@ -43,7 +43,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               builder: (BuildContext context) {
                 return Container(
                   width: size.width,
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   margin: const EdgeInsets.only(right: 10.0),
                   child: SingleChildScrollView(
                     padding: EdgeInsetsDirectional.zero,
@@ -95,9 +95,15 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                               children: [
                                 const Text(
                                   "Posted by:",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                  ),
                                 ),
-                                Text(item['user']['name']),
+                                Text(
+                                  item['user']['name'],
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ],
                             ),
                             Column(
@@ -105,10 +111,16 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                               children: [
                                 const Text(
                                   "Date Posted:",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                  ),
                                 ),
-                                Text(_dateTimeUtils
-                                    .fromLaravelDateFormat(item['start_date']))
+                                Text(
+                                  _dateTimeUtils.fromLaravelDateFormat(
+                                      item['start_date']),
+                                  style: const TextStyle(fontSize: 12),
+                                )
                               ],
                             )
                           ],

@@ -48,7 +48,9 @@ class HomeController extends GetxController {
       isFirstShiftComplete = false.obs,
       isSecondShiftComplete = false.obs,
       isGettingStarted = false.obs,
-      isNewShift = false.obs;
+      isNewShift = false.obs,
+      isClockInProcessing = false.obs,
+      isClockOutProcessing = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
 
@@ -170,6 +172,7 @@ class HomeController extends GetxController {
 
   Future setClockInLocation() async {
     isLoading.value = true;
+    isClockInProcessing.value = true;
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
     var result = await apiCall.postRequest(
@@ -181,6 +184,7 @@ class HomeController extends GetxController {
       catchError: (error) => isLoading.value = false,
     );
     isLoading.value = false;
+    isClockInProcessing.value = false;
 
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
@@ -212,6 +216,7 @@ class HomeController extends GetxController {
 
   Future setClockOutLocation() async {
     isLoading.value = true;
+    isClockOutProcessing.value = true;
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.bestForNavigation);
     var result = await apiCall.postRequest(
@@ -222,7 +227,10 @@ class HomeController extends GetxController {
       apiUrl: '/mobile/calculate-location/${_authService.employee!.value.id}',
       catchError: (error) => isLoading.value = false,
     );
+
     isLoading.value = false;
+    isClockOutProcessing.value = false;
+
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
       isInsideVicinity.value = data['is_inside_vicinity'];

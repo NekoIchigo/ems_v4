@@ -43,7 +43,7 @@ class AnnouncementController extends GetxController {
             }
           }
           if (postedAnnouncements.isNotEmpty && isInit) {
-            navigatorKey.currentContext!.go('/announcement');
+            navigatorKey.currentContext!.push('/announcement');
           }
         })
         .catchError((error) {})
