@@ -17,7 +17,8 @@ class AnnouncementController extends GetxController {
   final ApiCall _apiCall = ApiCall();
 
   Future index(bool isInit) async {
-    postedAnnouncements.value = [];
+    postedAnnouncements.clear();
+    announcements.clear();
     isLoading.value = true;
     today = DateTime(today.year, today.month, today.day);
     _apiCall

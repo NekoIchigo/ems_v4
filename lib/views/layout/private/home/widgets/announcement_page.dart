@@ -44,7 +44,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                 return Container(
                   width: size.width,
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  // margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                  margin: const EdgeInsets.only(right: 10.0),
                   child: SingleChildScrollView(
                     padding: EdgeInsetsDirectional.zero,
                     child: Column(
