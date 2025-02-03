@@ -29,6 +29,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       children: [
         FlutterCarousel(
           options: FlutterCarouselOptions(
+            viewportFraction: 1,
             height: size.height * .80,
             showIndicator:
                 _announcementController.postedAnnouncements.length > 1,
@@ -42,8 +43,11 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               builder: (BuildContext context) {
                 return Container(
                   width: size.width,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  margin: const EdgeInsets.only(right: 10.0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                  // margin: _announcementController.postedAnnouncements.length > 1
+                  //     ? const EdgeInsets.symmetric(horizontal: 10.0)
+                  //     : const EdgeInsets.all(0),
                   child: SingleChildScrollView(
                     padding: EdgeInsetsDirectional.zero,
                     child: Column(
