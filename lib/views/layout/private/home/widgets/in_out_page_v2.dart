@@ -67,6 +67,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
               ),
               weekSchedule(size),
               // additionalShift(size),
+              recentActivity(size),
               announcementSection(size),
             ],
           ),
@@ -571,6 +572,73 @@ class _InOutPageV2State extends State<InOutPageV2> {
     );
   }
 
+  Widget recentActivity(Size size) {
+    return Container(
+      width: size.width,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Recent Activity',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            decoration: BoxDecoration(
+              color: bgLightGray,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              width: size.width,
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 70,
+                        child: Text(
+                          "Clock in: ",
+                          style: defaultStyle,
+                        ),
+                      ),
+                      Text(
+                        _dateTimeUtils.formatTime(
+                            dateTime:
+                                _homeController.attendance.value.clockInAt),
+                        style: defaultStyle,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 70,
+                        child: Text(
+                          "Clock out: ",
+                          style: defaultStyle,
+                        ),
+                      ),
+                      Text(
+                        _dateTimeUtils.formatTime(
+                            dateTime:
+                                _homeController.attendance.value.clockOutAt),
+                        style: defaultStyle,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget announcementSection(Size size) {
     return Obx(
       () => Visibility(
@@ -586,7 +654,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
                 'Announcements',
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
               ColumnBuilder(
                 itemCount: _announcement.announcements.length + 1,
                 itemBuilder: (context, index) {

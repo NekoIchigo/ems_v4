@@ -32,8 +32,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             height: size.height * .80,
             showIndicator:
                 _announcementController.postedAnnouncements.length > 1,
-            enableInfiniteScroll:
-                _announcementController.postedAnnouncements.length > 1,
+            enableInfiniteScroll: false,
             slideIndicator: CircularSlideIndicator(),
             autoPlay: _announcementController.postedAnnouncements.length > 1,
             autoPlayAnimationDuration: const Duration(seconds: 3),
