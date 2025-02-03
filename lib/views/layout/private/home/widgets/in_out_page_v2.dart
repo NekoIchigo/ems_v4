@@ -711,6 +711,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 5),
                         padding: const EdgeInsets.all(15),
+                        width: size.width,
                         decoration: BoxDecoration(
                           color: bgLightGray,
                           borderRadius: BorderRadius.circular(10),
