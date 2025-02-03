@@ -339,7 +339,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
           Visibility(
             visible: _homeController.isShowDropDown.isTrue,
             child: DropdownMenu<String>(
-              width: size.width * .95,
+              width: size.width * .90,
               hintText: "-Select-",
               errorText: reasonError,
               enabled: _homeController.isDropdownEnable.isTrue,
