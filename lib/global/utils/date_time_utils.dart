@@ -38,6 +38,14 @@ class DateTimeUtils {
     }
   }
 
+  String formatDateTime({DateTime? dateTime}) {
+    if (dateTime != null) {
+      return DateFormat("MMMM dd, y, hh:mm a").format(dateTime);
+    } else {
+      return '??/??/????';
+    }
+  }
+
   String getGreeting(hour) {
     if (hour >= 0 && hour < 12) {
       return 'Good morning,';

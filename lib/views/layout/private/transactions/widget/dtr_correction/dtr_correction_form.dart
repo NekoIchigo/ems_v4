@@ -148,6 +148,8 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
                                       borderSide: BorderSide(color: colorError),
                                     ),
                                   ),
+                                  initialSelection: _transactionController
+                                      .schedules.firstOrNull?["id"],
                                   onSelected: (value) {
                                     selectedScheduleId = value ?? 0;
                                     if (_transactionController
@@ -485,15 +487,17 @@ class _DTRCorrectionFormState extends State<DTRCorrectionForm> {
         reasonError = 'This field is required.';
         hasError = true;
       }
+
       if (attendanceDate == "") {
         dateError = 'This field is required.';
         hasError = true;
       }
-      if (_transactionController.clockInAt.value == "00:00" &&
-          _transactionController.clockOutAt.value == "00:00") {
-        timeChangeError = 'There must be a changes in this field';
-        hasError = true;
-      }
+
+      // if (_transactionController.clockInAt.value == "00:00" &&
+      //     _transactionController.clockOutAt.value == "00:00") {
+      //   timeChangeError = 'There must be a changes in this field';
+      //   hasError = true;
+      // }
     });
 
     if (hasError) {

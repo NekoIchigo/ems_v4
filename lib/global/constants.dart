@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-// const globalBaseUrl = "https://gems-stg.globalland.com.ph/"; // stg
+const globalBaseUrl = "https://gems-stg.globalland.com.ph/"; // stg
 // const globalBaseUrl = "https://preprod-gems.globalland.com.ph/"; // pre-prod
-const globalBaseUrl = "https://gems.globalland.com.ph/"; // prod
+// const globalBaseUrl = "https://gems.globalland.com.ph/"; // prod
 // const globalBaseUrl = "http://10.10.10.79:8000/"; // local
 const primaryBlue = Color(0xFF2465C7);
 const navBlue = Color(0xFF274D85);
@@ -12,9 +12,12 @@ const bgSky = Color(0xFFF3F8FF);
 const bgLightBlue = Color(0xFFEEF5FF);
 const bgLightGray = Color(0xFFECECEC);
 const lightGray = Color(0xFFD3D3D3);
+const lightGray100 = Color(0xFFECEDF0);
+const lightGray200 = Color(0xFFF5F5F5);
 const borderGray = Color(0xFFEAEAEA);
 const darkGray = Color(0xFF404040);
 const gray = Color(0xFF888888);
+const grey200 = Color(0xFFe5e7eb);
 const orange = Color(0xFFF9A425);
 const red = Color(0xFFAF1E1E);
 
@@ -64,6 +67,11 @@ const TextStyle defaultStyle = TextStyle(
   fontSize: 14,
 );
 
+const TextStyle defaultWhiteStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 14,
+);
+
 const TextStyle blueDefaultStyle = TextStyle(
   color: bgSecondaryBlue,
   fontSize: 14,
@@ -76,6 +84,11 @@ const TextStyle xSmallStyle = TextStyle(
 
 const TextStyle smallStyle = TextStyle(
   color: gray700,
+  fontSize: 13,
+);
+
+const TextStyle smallWhiteStyle = TextStyle(
+  color: Colors.white,
   fontSize: 13,
 );
 

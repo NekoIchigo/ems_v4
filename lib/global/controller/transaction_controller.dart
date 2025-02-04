@@ -11,7 +11,7 @@ class TransactionController extends GetxController {
   RxString initialSchedule = "".obs;
   RxMap transactionData = {}.obs;
   RxString dtrRange = "00:00 to 00:00".obs,
-      scheduleName = "Schedule name".obs,
+      scheduleName = "--".obs,
       clockInAt = "00:00".obs,
       clockOutAt = "00:00".obs;
   final int routerKey = 3;

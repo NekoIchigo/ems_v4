@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Timer(const Duration(seconds: 1), () {
       if (_settings.isMaintenance.isFalse) {
-        _authService.hasUser.isTrue
+        _authService.employee != null
             ? _key.currentContext?.go('/pin_login')
             : _key.currentContext?.go('/login');
       }

@@ -1,5 +1,5 @@
 import 'package:ems_v4/global/constants.dart';
-import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
+import 'package:ems_v4/global/controller/add_shift_controller.dart';
 import 'package:ems_v4/global/controller/message_controller.dart';
 import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
@@ -10,16 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class DTRCorrection extends StatefulWidget {
-  const DTRCorrection({super.key});
+class AddShift extends StatefulWidget {
+  const AddShift({super.key});
 
   @override
-  State<DTRCorrection> createState() => _DTRCorrectionState();
+  State<AddShift> createState() => _AddShiftState();
 }
 
-class _DTRCorrectionState extends State<DTRCorrection> {
-  final DTRCorrectionController _correctionController =
-      Get.find<DTRCorrectionController>();
+class _AddShiftState extends State<AddShift> {
+  final AddShiftController _addShiftController = Get.find<AddShiftController>();
   final TransactionController _transactionController =
       Get.find<TransactionController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
@@ -53,7 +52,7 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               const SizedBox(height: 25),
               const Center(
                 child: Text(
-                  "DTR Correction",
+                  "Add New Schedule",
                   style: blueTitleStyle,
                 ),
               ),
@@ -68,35 +67,32 @@ class _DTRCorrectionState extends State<DTRCorrection> {
                     startDate = value['dates'][0];
                     endDate = value['dates'][1];
                   }
-                  _correctionController.getAllDTR(
-                    value['day'],
-                    startDate,
-                    endDate,
-                  );
+
+                  _addShiftController.getAllAddShift(
+                      value['day'], startDate, endDate);
                 },
               ),
               Obx(
                 () => TransactionsTabs(
                   onTap: (TransactionItem? item) {
-                    _correctionController.getLogs(item!.id);
+                    _addShiftController.getLogs(item!.id);
                     // _messaging.subscribeInChannel(
                     //   channelName: "dtr-request-chat-${item.id}",
                     // );
                     _messaging.fetchChatHistory(
                       item.id.toString(),
-                      "dtr-request-chat",
+                      "add-shift-chat",
                     );
                     _messaging.parentId.value = item.id.toString();
-                    _messaging.messagingType.value = "dtr-request-chat";
-                    _correctionController.transactionData = item.toMap().obs;
-                    context.push("/dtr_correction_form", extra: item.toMap());
+                    _messaging.messagingType.value = "add-shift-chat";
+                    _addShiftController.transactionData = item.toMap().obs;
+                    context.push("/add_shift_form", extra: item.toMap());
                   },
-                  approvedList: formatList(_correctionController.approvedList),
-                  cancelledList:
-                      formatList(_correctionController.cancelledList),
-                  pendingList: formatList(_correctionController.pendingList),
-                  rejectedList: formatList(_correctionController.rejectedList),
-                  isLoading: _correctionController.isLoading.isTrue,
+                  approvedList: formatList(_addShiftController.approvedList),
+                  cancelledList: formatList(_addShiftController.cancelledList),
+                  pendingList: formatList(_addShiftController.pendingList),
+                  rejectedList: formatList(_addShiftController.rejectedList),
+                  isLoading: _addShiftController.isLoading.isTrue,
                 ),
               ),
             ],
@@ -108,10 +104,10 @@ class _DTRCorrectionState extends State<DTRCorrection> {
               shape: const CircleBorder(),
               backgroundColor: bgPrimaryBlue,
               onPressed: () {
-                _correctionController.transactionData = {"id": "0"}.obs;
+                _addShiftController.transactionData = {"id": "0"}.obs;
                 _transactionController.clockOutAt.value = "00:00";
                 _transactionController.clockInAt.value = "00:00";
-                context.push("/dtr_correction_form");
+                context.push("/add_shift_form");
               },
               child: const Icon(
                 Icons.add,
@@ -127,21 +123,12 @@ class _DTRCorrectionState extends State<DTRCorrection> {
 
   List<TransactionItem> formatList(List data) {
     return data.map((request) {
-      final formattedClockIn = request['clock_in_at'] == null
-          ? ""
-          : "Clock in: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_in_at']))}";
-      final formattedClockOut = request['clock_out_at'] == null
-          ? ""
-          : "| Clock out: ${_dateTimeUtils.formatTime(dateTime: DateTime.parse(request['clock_out_at']))}";
-
-      final subtitle = "$formattedClockIn $formattedClockOut";
-
       return TransactionItem(
         id: request["id"],
         title: _dateTimeUtils.fromLaravelDateFormat(request["attendance_date"]),
         dateCreated:
             _dateTimeUtils.fromLaravelDateFormat(request["created_at"]),
-        subtitle: subtitle,
+        subtitle: request['schedule']['name'],
         status: request["status"],
         type: "",
         data: request,

@@ -1,6 +1,7 @@
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/add_shift_controller.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
-import 'package:ems_v4/global/controller/change_schedule_controller.dart';
+import 'package:ems_v4/global/controller/transaction_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
 import 'package:ems_v4/models/schedule.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/tabbar/selected_item_tabs.dart';
@@ -9,25 +10,27 @@ import 'package:ems_v4/views/widgets/dialog/cancel_request_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
+import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class ChangeScheduleForm extends StatefulWidget {
-  const ChangeScheduleForm({super.key});
+class AddShiftForm extends StatefulWidget {
+  const AddShiftForm({super.key});
 
   @override
-  State<ChangeScheduleForm> createState() => _ChangeScheduleFormState();
+  State<AddShiftForm> createState() => _AddShiftFormState();
 }
 
-class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
+class _AddShiftFormState extends State<AddShiftForm> {
   late Size size;
 
   List<bool> isSelected = [true, false];
   final TextEditingController _reason = TextEditingController();
   final AuthController _auth = Get.find<AuthController>();
-  final ChangeScheduleController _scheduleController =
-      Get.find<ChangeScheduleController>();
+  final AddShiftController _addShiftController = Get.find<AddShiftController>();
+  final TransactionController _transactionController =
+      Get.find<TransactionController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   int transactionId = 0;
   bool isLoading = false;
@@ -37,16 +40,23 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
 
   @override
   void initState() {
-    _scheduleController.getScheduleByType("Fixed Schedule", null);
-    if (_scheduleController.transactionData['id'] != 0) {
-      fillInValues(_scheduleController.transactionData['data']);
+    if (_addShiftController.transactionData['id'] != 0) {
+      fillInValues(_addShiftController.transactionData['data']);
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _addShiftController.getScheduleByType(
+        "Fixed Schedule",
+        _addShiftController.transactionData['data'] != null
+            ? _addShiftController.transactionData['data']['schedule_id']
+            : null,
+      );
+    });
     super.initState();
   }
 
   // @override
   // void dispose() {
-  //   _scheduleController.transactionData.value = {"id": "0"};
+  //   _addShiftController.transactionData.value = {"id": "0"};
   //   super.dispose();
   // }
 
@@ -70,10 +80,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
               () => SelectedItemTabs(
                 pageCount: extraData != null ? 3 : 1,
                 transactionLogs:
-                    _scheduleController.selectedTransactionLogs.value,
-                isLogsLoading: _scheduleController.isLogsLoading.value,
+                    _addShiftController.selectedTransactionLogs.value,
+                isLogsLoading: _addShiftController.isLogsLoading.value,
                 status: "",
-                title: "Change Schedule",
+                title: "Add New Schedule",
                 detailPage: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -83,19 +93,21 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         const NumberLabel(label: "Select the date", number: 1),
                         const SizedBox(height: 15),
                         CustomDateInput(
-                          type: "range",
+                          type: "single",
                           fromDate: dateStart,
-                          toDate: dateEnd,
                           readOnly: extraData?['status'] != 'pending' &&
                               extraData != null,
                           onDateTimeChanged: (value) {
                             dateStart = value[0].toString().split(" ")[0];
-                            dateEnd = value[1].toString().split(" ")[0];
-                            _scheduleController.fetchScheduleList(
-                              DateTimeRange(
-                                  start: DateTime.parse(dateStart!),
-                                  end: DateTime.parse(dateEnd!)),
-                            );
+                            _transactionController.getSingleSchedule(dateStart);
+                            setState(() {
+                              dateError = null;
+                            });
+                            // _addShiftController.fetchScheduleList(
+                            //   DateTimeRange(
+                            //       start: DateTime.parse(dateStart!),
+                            //       end: DateTime.parse(dateEnd!)),
+                            // );
                             setState(() {
                               dateError = null;
                             });
@@ -103,9 +115,33 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                           error: dateError,
                           child: Container(),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(25, 15, 0, 0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: _transactionController.isLoading.isTrue
+                                    ? const CustomLoader(height: 30)
+                                    : Container(
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: gray100,
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                        ),
+                                        child: Text(
+                                          _transactionController
+                                              .scheduleName.value,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: defaultStyle,
+                                        ),
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 15),
-                        const NumberLabel(
-                            label: "Change schedule details", number: 2),
+                        const NumberLabel(label: "Add schedule", number: 2),
                         const SizedBox(height: 15),
                         formField2(extraData),
                         const SizedBox(height: 15),
@@ -143,16 +179,16 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                                         builder: (context) =>
                                             CancelRequestDialog(
                                           isLoading: isLoading,
-                                          title: "Cancel Change Schedule",
+                                          title: "Cancel Add Schedule",
                                           subTitle:
-                                              "Are you sure you want to cancel your change schedule request?\n This action cannot be undone.",
+                                              "Are you sure you want to cancel your add schedule request?\n This action cannot be undone.",
                                           onPressed: () {
-                                            if (_scheduleController
+                                            if (_addShiftController
                                                 .isLoading.isFalse) {
                                               setState(() {
                                                 isLoading = true;
                                               });
-                                              _scheduleController.cancelRequest(
+                                              _addShiftController.cancelRequest(
                                                 transactionId,
                                                 context,
                                               );
@@ -173,7 +209,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                                   submitForm(extraData != null);
                                 },
                                 isLoading:
-                                    _scheduleController.isSubmitting.value,
+                                    _addShiftController.isSubmitting.value,
                                 label: extraData != null ? "Update" : "Submit",
                                 size: Size(size.width * .4, 40),
                                 radius: 8,
@@ -224,7 +260,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                         buttonIndex++) {
                       if (buttonIndex == index) {
                         isSelected[buttonIndex] = true;
-                        _scheduleController.getScheduleByType(
+                        _addShiftController.getScheduleByType(
                           index == 0 ? "Fixed Schedule" : "Flexi Schedule",
                           null,
                         );
@@ -245,14 +281,14 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
           Obx(
             () => DropdownMenu<Schedule>(
               width: size.width * .84,
-              textStyle: defaultStyle,
               menuHeight: size.height * .2,
+              textStyle: defaultStyle,
               hintText: "Select schedule",
               initialSelection:
-                  _scheduleController.selectedSchedule.value.id == 0
+                  _addShiftController.selectedSchedule.value.id == 0
                       ? null
-                      : _scheduleController.selectedSchedule.value,
-              trailingIcon: _scheduleController.isLoading.value
+                      : _addShiftController.selectedSchedule.value,
+              trailingIcon: _addShiftController.isLoading.value
                   ? const SizedBox(
                       height: 20,
                       width: 20,
@@ -262,7 +298,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
                       ),
                     )
                   : null,
-              enabled: _scheduleController.isLoading.isFalse ||
+              enabled: _addShiftController.isLoading.isFalse ||
                   (extraData?['status'] != 'pending' && extraData != null),
               inputDecorationTheme: InputDecorationTheme(
                 constraints: const BoxConstraints(maxHeight: 45),
@@ -281,11 +317,11 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
               ),
               onSelected: (value) {
                 setState(() {
-                  _scheduleController.selectedSchedule.value = value!;
+                  _addShiftController.selectedSchedule.value = value!;
                   scheduleError = null;
                 });
               },
-              dropdownMenuEntries: _scheduleController.schedules
+              dropdownMenuEntries: _addShiftController.schedules
                   .map<DropdownMenuEntry<Schedule>>((value) {
                 return DropdownMenuEntry(
                   value: value,
@@ -315,22 +351,17 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
 
       dateStart = _dateTimeUtils.formatDate(
         dateTime: DateTime.tryParse(
-          data['start_date'],
+          data['attendance_date'],
         ),
       );
-      dateEnd = _dateTimeUtils.formatDate(
-        dateTime: DateTime.tryParse(
-          data['end_date'],
-        ),
-      );
+      // dateEnd = _dateTimeUtils.formatDate(
+      //   dateTime: DateTime.tryParse(
+      //     data['end_date'],
+      //   ),
+      // );
       _reason.text = data["reason"] ?? "";
       attachments = data['attachments'] ?? [];
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _scheduleController.getScheduleByType(
-          "Fixed Schedule",
-          data['new_schedule_id'],
-        );
-      });
+      _transactionController.getSingleSchedule(dateStart);
     }
   }
 
@@ -346,7 +377,7 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
         dateError = 'This field is required.';
         hasError = true;
       }
-      if (_scheduleController.selectedSchedule.value.id == 0) {
+      if (_addShiftController.selectedSchedule.value.id == 0) {
         scheduleError = 'This field is required.';
         hasError = true;
       }
@@ -357,10 +388,10 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     }
     var data = {
       "id": isUpdate ? transactionId : null,
-      "start_date": dateStart,
-      "end_date": dateEnd,
-      "current_schedule_id": _scheduleController.currentScheduleId.value,
-      "new_schedule_id": _scheduleController.selectedSchedule.value.id,
+      "attendance_date": dateStart,
+      // "end_date": dateEnd,
+      // "current_schedule_id": _addShiftController.currentScheduleId.value,
+      "schedule_id": _addShiftController.selectedSchedule.value.id,
       "company_id": _auth.company.value.id,
       "employee_id": _auth.employee?.value.id,
       "reason": _reason.text,
@@ -368,9 +399,9 @@ class _ChangeScheduleFormState extends State<ChangeScheduleForm> {
     };
 
     if (isUpdate) {
-      _scheduleController.updateRequestForm(data);
+      _addShiftController.updateRequestForm(data);
     } else {
-      _scheduleController.sendRequest(data);
+      _addShiftController.sendRequest(data);
     }
   }
 }

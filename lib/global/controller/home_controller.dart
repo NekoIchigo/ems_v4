@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class HomeController extends GetxController {
   final AuthController _authService = Get.find<AuthController>();
@@ -30,15 +31,16 @@ class HomeController extends GetxController {
       greetings = "Begin another day by clocking in.".obs,
       workEnd2 = "??:??".obs;
 
-  RxString currentLocation = ''.obs;
+  RxString currentLocation = ''.obs, dateRange = ''.obs;
   RxList<String> scheduleList = ["-- Select --", ""].obs;
+  RxList weekSchedule = [].obs;
   RxBool isInsideVicinity = false.obs,
       hasClockOutsideVicinity = false.obs,
       isLoading = false.obs,
       isClockOut = false.obs,
       isClockInOutComplete = false.obs,
       isUserSick = false.obs,
-      isMobileUser = false.obs,
+      isMobileUser = true.obs,
       isShowDropDown = false.obs,
       isSecondShift = false.obs,
       hasSecondShift = false.obs,
@@ -46,7 +48,9 @@ class HomeController extends GetxController {
       isFirstShiftComplete = false.obs,
       isSecondShiftComplete = false.obs,
       isGettingStarted = false.obs,
-      isNewShift = false.obs;
+      isNewShift = false.obs,
+      isClockInProcessing = false.obs,
+      isClockOutProcessing = false.obs;
 
   Rx<AttendanceRecord> attendance = AttendanceRecord().obs;
 
@@ -91,6 +95,8 @@ class HomeController extends GetxController {
     );
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
+
+      weekSchedule.value = result['data']['week_schedule'];
       isNewShift.value = data['is_new_shift'];
       isClockInOutComplete.value = data['is_shift_complete'];
       isClockOut.value = data['is_clockout'];
@@ -103,7 +109,8 @@ class HomeController extends GetxController {
       restday2.value = data['restday2'] ?? "";
       scheduleId1.value = data['schedule_id'];
       scheduleId2.value = data['schedule_id2'] ?? 0;
-
+      dateRange.value =
+          "${DateFormat('MMMM dd').format(DateTime.parse(weekSchedule[0]['date']))} - ${DateFormat('MMMM dd, y').format(DateTime.parse(weekSchedule[weekSchedule.length - 1]['date']))}";
       hasSecondShift.value = scheduleId2.value != 0;
       isDropdownEnable.value = hasSecondShift.isTrue && isClockOut.isFalse;
       isShowDropDown.value = hasSecondShift.isTrue && isMobileUser.isTrue;
@@ -167,6 +174,7 @@ class HomeController extends GetxController {
 
   Future setClockInLocation() async {
     isLoading.value = true;
+    isClockInProcessing.value = true;
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
     var result = await apiCall.postRequest(
@@ -178,6 +186,7 @@ class HomeController extends GetxController {
       catchError: (error) => isLoading.value = false,
     );
     isLoading.value = false;
+    isClockInProcessing.value = false;
 
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
@@ -209,8 +218,9 @@ class HomeController extends GetxController {
 
   Future setClockOutLocation() async {
     isLoading.value = true;
+    isClockOutProcessing.value = true;
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
     var result = await apiCall.postRequest(
       data: {
         'latitude': position.latitude,
@@ -219,7 +229,10 @@ class HomeController extends GetxController {
       apiUrl: '/mobile/calculate-location/${_authService.employee!.value.id}',
       catchError: (error) => isLoading.value = false,
     );
+
     isLoading.value = false;
+    isClockOutProcessing.value = false;
+
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
       isInsideVicinity.value = data['is_inside_vicinity'];

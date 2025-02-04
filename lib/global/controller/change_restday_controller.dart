@@ -62,7 +62,7 @@ class ChangeRestdayController extends GetxController {
       parameters: {
         "days": days,
         "startDate": startDate,
-        "emdDate": endDate,
+        "endDate": endDate,
       },
     ).then((result) {
       final data = result["data"];

@@ -67,7 +67,7 @@ class OvertimeController extends GetxController {
             parameters: {
               "days": days,
               "startDate": startDate,
-              "emdDate": endDate,
+              "endDate": endDate,
             },
             catchError: () {})
         .then((result) {

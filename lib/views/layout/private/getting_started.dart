@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/announcement_controller.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
@@ -20,6 +23,8 @@ class _GettingStartedState extends State<GettingStarted> {
   final SettingsController _settings = Get.find<SettingsController>();
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
+  final AnnouncementController _announcementController =
+      Get.find<AnnouncementController>();
 
   @override
   void initState() {
@@ -30,6 +35,7 @@ class _GettingStartedState extends State<GettingStarted> {
   Future loadFunction() async {
     _homeController.isGettingStarted.value = true;
     await _auth.updateEmployeeInfo();
+    await _announcementController.index(true);
     await _timeEntriesController.getAttendanceList(days: 1);
     await _timeEntriesController.getPreviousClockIn();
     await _settings.getServerTime();
@@ -54,14 +60,23 @@ class _GettingStartedState extends State<GettingStarted> {
     return Obx(
       () => Visibility(
         visible: _homeController.isGettingStarted.value,
-        child: Container(
-          color: Colors.black.withOpacity(0.7),
-          child: Center(
-            child: LoadingAnimationWidget.inkDrop(
-              color: primaryBlue,
-              size: 40,
+        child: Stack(
+          children: [
+            BackdropFilter(
+              filter: ImageFilter.blur(
+                  sigmaX: 5.0, sigmaY: 5.0), // Adjust blur strength
+              child: Container(
+                color:
+                    Colors.black.withOpacity(0.7), // Semi-transparent overlay
+              ),
             ),
-          ),
+            Center(
+              child: LoadingAnimationWidget.inkDrop(
+                color: primaryBlue,
+                size: 40,
+              ),
+            ),
+          ],
         ),
       ),
     );

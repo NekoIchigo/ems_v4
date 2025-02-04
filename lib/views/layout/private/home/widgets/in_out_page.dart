@@ -1,10 +1,12 @@
+import 'package:ems_v4/global/controller/announcement_controller.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/home_controller.dart';
 import 'package:ems_v4/global/constants.dart';
 import 'package:ems_v4/global/controller/setting_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/utils/date_time_utils.dart';
-import 'package:ems_v4/views/widgets/buttons/announcement_button.dart';
+import 'package:ems_v4/views/widgets/builder/column_builder.dart';
+import 'package:ems_v4/views/widgets/dialog/announcement_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ems_v4/global/controller/main_navigation_controller.dart';
 import 'package:get/get.dart';
@@ -27,6 +29,8 @@ class _InOutPageState extends State<InOutPage> {
   final TimeEntriesController _timeEntriesController =
       Get.find<TimeEntriesController>();
   final HomeController _homeController = Get.find<HomeController>();
+  final AnnouncementController _announcement =
+      Get.find<AnnouncementController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   late DateTime currentTime;
   late String date, greetings;
@@ -62,7 +66,7 @@ class _InOutPageState extends State<InOutPage> {
               greetingWidget(size),
               buttonSection(size),
               additionalShift(size),
-              // announcementSection(),
+              announcementSection(size),
             ],
           ),
         ),
@@ -252,109 +256,117 @@ class _InOutPageState extends State<InOutPage> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          _homeController.isClockInOutComplete.isTrue
+          _homeController.isMobileUser.isFalse
               ? Positioned(
                   top: 50,
-                  child: Image.asset('assets/images/EMS1.png',
+                  child: Image.asset('assets/images/dtr_not_allowed_1.png',
                       width: size.width * .62),
                 )
-              : Positioned(
-                  top: 20,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Positioned(
-                        child: _homeController.isClockOut.isTrue
-                            ? Lottie.asset("assets/lottie/Clock-out.json",
-                                width: 300)
-                            : Lottie.asset("assets/lottie/Clock-in.json",
-                                width: 300),
-                      ),
-                      Positioned(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize:
-                                    Size(size.width * .38, size.width * .38),
-                                maximumSize: Size(150, 150),
-                                shape: const CircleBorder(),
-                                backgroundColor:
-                                    _homeController.isClockOut.isTrue
-                                        ? colorError
-                                        : colorSuccess,
-                              ),
-                              onPressed: () async {
-                                await _settings.checkLocationService('/in_out');
-                                await _settings
-                                    .checkLocationPermission('/in_out');
+              : _homeController.isClockInOutComplete.isTrue
+                  ? Positioned(
+                      top: 50,
+                      child: Image.asset('assets/images/EMS1.png',
+                          width: size.width * .62),
+                    )
+                  : Positioned(
+                      top: 20,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Positioned(
+                            child: _homeController.isClockOut.isTrue
+                                ? Lottie.asset("assets/lottie/Clock-out.json",
+                                    width: 300)
+                                : Lottie.asset("assets/lottie/Clock-in.json",
+                                    width: 300),
+                          ),
+                          Positioned(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size(
+                                        size.width * .38, size.width * .38),
+                                    shape: const CircleBorder(),
+                                    backgroundColor:
+                                        _homeController.isClockOut.isTrue
+                                            ? colorError
+                                            : colorSuccess,
+                                  ),
+                                  onPressed: () async {
+                                    await _settings
+                                        .checkLocationService('/in_out');
+                                    await _settings
+                                        .checkLocationPermission('/in_out');
 
-                                if (_homeController.isDropdownEnable.isTrue &&
-                                    _homeController
-                                            .initialDropdownString.value ==
-                                        "") {
-                                  reasonError = "Please select a shift.";
-                                  setState(() {});
-                                } else {
-                                  if (_homeController.isClockOut.isFalse) {
-                                    _homeController
-                                        .setClockInLocation()
-                                        .then((value) {
-                                      context.push('/info');
-                                    });
-                                  } else {
-                                    _homeController
-                                        .setClockOutLocation()
-                                        .then((value) {
-                                      context.push('/info');
-                                    });
-                                  }
-                                }
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    _homeController.isClockOut.isTrue
-                                        ? "CLOCK OUT"
-                                        : "CLOCK IN",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      shadows: <Shadow>[
-                                        Shadow(
-                                          offset: const Offset(0.0, 5.0),
-                                          blurRadius: 8.0,
-                                          color: Colors.white.withOpacity(.40),
+                                    if (_homeController
+                                            .isDropdownEnable.isTrue &&
+                                        _homeController
+                                                .initialDropdownString.value ==
+                                            "") {
+                                      reasonError = "Please select a shift.";
+                                      setState(() {});
+                                    } else {
+                                      if (_homeController.isClockOut.isFalse) {
+                                        _homeController
+                                            .setClockInLocation()
+                                            .then((value) {
+                                          context.push('/info');
+                                        });
+                                      } else {
+                                        _homeController
+                                            .setClockOutLocation()
+                                            .then((value) {
+                                          context.push('/info');
+                                        });
+                                      }
+                                    }
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        _homeController.isClockOut.isTrue
+                                            ? "CLOCK OUT"
+                                            : "CLOCK IN",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          shadows: <Shadow>[
+                                            Shadow(
+                                              offset: const Offset(0.0, 5.0),
+                                              blurRadius: 8.0,
+                                              color:
+                                                  Colors.white.withOpacity(.40),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: _homeController.isLoading.isTrue,
+                                  child: SizedBox(
+                                    width: size.width * .44,
+                                    height: size.width * .44,
+                                    child: CircularProgressIndicator(
+                                      color: _homeController.isClockOut.isTrue
+                                          ? colorError
+                                          : colorSuccess,
+                                      strokeCap: StrokeCap.round,
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            Visibility(
-                              visible: _homeController.isLoading.isTrue,
-                              child: SizedBox(
-                                width: size.width * .44,
-                                height: size.width * .44,
-                                child: CircularProgressIndicator(
-                                  color: _homeController.isClockOut.isTrue
-                                      ? colorError
-                                      : colorSuccess,
-                                  strokeCap: StrokeCap.round,
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
           Positioned(
             top: 7,
             child: Text(
@@ -370,23 +382,42 @@ class _InOutPageState extends State<InOutPage> {
             ),
           ),
           Positioned(
-            bottom: 40,
+            bottom: 0,
             child: Visibility(
                 visible: _homeController.isMobileUser.isFalse,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: TextButton(
-                    onPressed: () {
-                      _mainNavigationController.tabController.animateTo(1);
-                      context.go("/time_entries");
-                    },
-                    child: const Text(
-                      "View Attendance Records Here",
-                      style: TextStyle(
-                        color: gray,
-                        decoration: TextDecoration.underline,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Clock-In/Out Not Allowed",
+                        style: titleStyle,
                       ),
-                    ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        "There is no need to clock in and out here.",
+                        style: smallStyle,
+                      ),
+                      const SizedBox(height: 5),
+                      const Text(
+                        "HR has designated you no to use manual DTR/Timesheet",
+                        style: smallStyle,
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () {
+                          _mainNavigationController.tabController.animateTo(1);
+                          context.go("/time_entries");
+                        },
+                        child: const Text(
+                          "View Attendance Records >",
+                          style: TextStyle(
+                            color: primaryBlue,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 )),
           ),
@@ -501,34 +532,89 @@ class _InOutPageState extends State<InOutPage> {
     );
   }
 
-  Widget announcementSection() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Announcement',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget announcementSection(Size size) {
+    return Obx(
+      () => Visibility(
+        visible: _announcement.announcements.isNotEmpty,
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(20, 15, 20, 40),
+          color: Colors.white,
+          width: size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AnnouncementButton(
-                onPressed: () {},
-                date: DateTime.now(),
-                title: 'Trick or Treat',
+              const Text(
+                'Announcements',
+                style: TextStyle(fontWeight: FontWeight.w600),
               ),
-              AnnouncementButton(
-                onPressed: () {},
-                date: DateTime.now(),
-                title: 'Trick or Treat',
+              const SizedBox(height: 15),
+              ColumnBuilder(
+                itemCount: _announcement.announcements.length + 1,
+                itemBuilder: (context, index) {
+                  if (_announcement.announcements.length == index) {
+                    return Column(
+                      children: [
+                        Visibility(
+                          visible: _announcement.totalAnnouncement > 3 &&
+                              _announcement.isLoading.isFalse &&
+                              _announcement.currentPage.value <
+                                  _announcement.paginateLength.value,
+                          child: InkWell(
+                            onTap: () {
+                              if (_announcement.currentPage.value <
+                                  _announcement.paginateLength.value) {
+                                _announcement.currentPage.value++;
+                                _announcement.index(false);
+                              }
+                            },
+                            child: const Text(
+                              "View more",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: _announcement.isLoading.isTrue,
+                          child: const SizedBox(
+                            width: 15,
+                            height: 15,
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                        // Icon(Icons.keyboard_arrow_down_rounded)
+                      ],
+                    );
+                  } else {
+                    final item = _announcement.announcements[index];
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 0),
+                      title: Text(
+                        _dateTimeUtils
+                            .fromLaravelDateFormat(item['start_date']),
+                        style: blueDefaultStyle,
+                      ),
+                      subtitle: Text(
+                        item['name'],
+                        style: defaultStyle,
+                      ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AnnouncementDialog(
+                                items: [_announcement.announcements[index]]);
+                          },
+                        );
+                      },
+                    );
+                  }
+                },
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

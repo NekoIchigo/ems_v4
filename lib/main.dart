@@ -1,3 +1,5 @@
+import 'package:ems_v4/global/controller/add_shift_controller.dart';
+import 'package:ems_v4/global/controller/announcement_controller.dart';
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
     Get.put(MessageController());
     Get.put(TimeRecordsController());
     Get.put(NotificationController());
+    Get.put(AnnouncementController());
+    Get.put(AddShiftController());
 
     return MaterialApp.router(
       routerConfig: router,

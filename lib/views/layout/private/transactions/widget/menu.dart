@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:ems_v4/global/constants.dart';
+import 'package:ems_v4/global/controller/add_shift_controller.dart';
 import 'package:ems_v4/global/controller/change_restday_controller.dart';
 import 'package:ems_v4/global/controller/change_schedule_controller.dart';
 import 'package:ems_v4/global/controller/dtr_correction_controller.dart';
@@ -31,6 +30,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       Get.find<ChangeScheduleController>();
   final ChangeRestdayController _changeRestday =
       Get.find<ChangeRestdayController>();
+  final AddShiftController _addShiftController = Get.find<AddShiftController>();
 
   final List transactionItems = [
     {
@@ -93,6 +93,16 @@ class _TransactionMenuState extends State<TransactionMenu> {
       ),
       "path": "/change_restday",
     },
+    {
+      "title": "Add New Schedule",
+      "key": "add_shift",
+      "icon": SvgPicture.asset(
+        "assets/svg/file_plus.svg",
+        height: 50,
+        color: primaryBlue,
+      ),
+      "path": "/add_shift",
+    },
   ];
 
   @override
@@ -127,12 +137,13 @@ class _TransactionMenuState extends State<TransactionMenu> {
           ),
           const SizedBox(height: 20),
           SizedBox(
-            height: size.height * .6,
+            height: size.height * .7,
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 1.1,
+                childAspectRatio: 1.3,
+                mainAxisExtent: 130,
               ),
               itemCount: transactionItems.length,
               itemBuilder: (context, index) {
@@ -172,8 +183,13 @@ class _TransactionMenuState extends State<TransactionMenu> {
                           DateTime.now(),
                           DateTime.now(),
                         );
+                      } else if (path == "/add_shift") {
+                        _addShiftController.getAllAddShift(
+                          30,
+                          DateTime.now(),
+                          DateTime.now(),
+                        );
                       }
-
                       context.push(path);
                     },
                     title: transactionItems[index]["title"],

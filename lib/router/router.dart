@@ -1,7 +1,9 @@
 import 'package:ems_v4/views/layout/private/create_password/create_password_container.dart';
 import 'package:ems_v4/views/layout/private/home/home.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/announcement_page.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/health_declaration.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/in_out_page.dart';
+import 'package:ems_v4/views/layout/private/home/widgets/in_out_page_v2.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/information.dart';
 import 'package:ems_v4/views/layout/private/home/widgets/result.dart';
 import 'package:ems_v4/views/layout/private/main_navigation.dart';
@@ -19,6 +21,8 @@ import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_he
 import 'package:ems_v4/views/layout/private/time_entries/widgets/time_entries_index.dart';
 import 'package:ems_v4/views/layout/private/transactions/transaction_result.dart';
 import 'package:ems_v4/views/layout/private/transactions/transactions.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/add_shift/add_shift.dart';
+import 'package:ems_v4/views/layout/private/transactions/widget/add_shift/add_shift_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_restday/change_restday_form.dart';
 import 'package:ems_v4/views/layout/private/transactions/widget/change_schedule/change_schedule.dart';
@@ -150,13 +154,22 @@ final router = GoRouter(
               buildPageWithDefaultTransition<void>(
                   context: context, state: state, child: Home(child: child)),
           routes: [
+            // GoRoute(
+            //   path: '/in_out',
+            //   pageBuilder: (context, state) =>
+            //       buildPageWithDefaultTransition<void>(
+            //     context: context,
+            //     state: state,
+            //     child: const InOutPage(),
+            //   ),
+            // ),
             GoRoute(
               path: '/in_out',
               pageBuilder: (context, state) =>
                   buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const InOutPage(),
+                child: const InOutPageV2(),
               ),
             ),
             GoRoute(
@@ -184,6 +197,15 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const HomeResultPage(),
+              ),
+            ),
+            GoRoute(
+              path: '/announcement',
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const AnnouncementPage(),
               ),
             ),
           ],
@@ -355,6 +377,24 @@ final router = GoRouter(
                 context: context,
                 state: state,
                 child: const ChangeRestdayForm(),
+              ),
+            ),
+            GoRoute(
+              path: "/add_shift",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const AddShift(),
+              ),
+            ),
+            GoRoute(
+              path: "/add_shift_form",
+              pageBuilder: (context, state) =>
+                  buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const AddShiftForm(),
               ),
             ),
           ],
