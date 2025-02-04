@@ -115,23 +115,12 @@ class _AddShiftFormState extends State<AddShiftForm> {
                           error: dateError,
                           child: Container(),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: gray300),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(25, 15, 0, 0),
                           child: Row(
                             children: [
-                              const SizedBox(
-                                width: 70,
-                                child: Text(
-                                  "Schedule",
-                                  style: defaultStyle,
-                                ),
-                              ),
                               Expanded(
-                                child: isLoading
+                                child: _transactionController.isLoading.isTrue
                                     ? const CustomLoader(height: 30)
                                     : Container(
                                         padding: const EdgeInsets.all(5),
@@ -372,6 +361,7 @@ class _AddShiftFormState extends State<AddShiftForm> {
       // );
       _reason.text = data["reason"] ?? "";
       attachments = data['attachments'] ?? [];
+      _transactionController.getSingleSchedule(dateStart);
     }
   }
 

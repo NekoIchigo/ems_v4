@@ -40,7 +40,7 @@ class DateTimeUtils {
 
   String formatDateTime({DateTime? dateTime}) {
     if (dateTime != null) {
-      return DateFormat("MM/dd/yyyy hh:mm a").format(dateTime);
+      return DateFormat("MMMM dd, y, hh:mm a").format(dateTime);
     } else {
       return '??/??/????';
     }
