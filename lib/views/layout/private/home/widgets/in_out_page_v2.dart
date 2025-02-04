@@ -605,7 +605,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         ),
                       ),
                       Text(
-                        _dateTimeUtils.formatTime(
+                        _dateTimeUtils.formatDateTime(
                             dateTime:
                                 _homeController.attendance.value.clockInAt),
                         style: defaultStyle,
@@ -623,7 +623,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         ),
                       ),
                       Text(
-                        _dateTimeUtils.formatTime(
+                        _dateTimeUtils.formatDateTime(
                             dateTime:
                                 _homeController.attendance.value.clockOutAt),
                         style: defaultStyle,

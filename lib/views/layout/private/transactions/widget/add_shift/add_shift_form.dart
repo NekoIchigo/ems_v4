@@ -10,6 +10,7 @@ import 'package:ems_v4/views/widgets/dialog/cancel_request_dialog.dart';
 import 'package:ems_v4/views/widgets/inputs/date_input.dart';
 import 'package:ems_v4/views/widgets/inputs/number_label.dart';
 import 'package:ems_v4/views/widgets/inputs/reason_input.dart';
+import 'package:ems_v4/views/widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -114,9 +115,44 @@ class _AddShiftFormState extends State<AddShiftForm> {
                           error: dateError,
                           child: Container(),
                         ),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: gray300),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: 70,
+                                child: Text(
+                                  "Schedule",
+                                  style: defaultStyle,
+                                ),
+                              ),
+                              Expanded(
+                                child: isLoading
+                                    ? const CustomLoader(height: 30)
+                                    : Container(
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: gray100,
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                        ),
+                                        child: Text(
+                                          _transactionController
+                                              .scheduleName.value,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: defaultStyle,
+                                        ),
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 15),
-                        const NumberLabel(
-                            label: "Change schedule details", number: 2),
+                        const NumberLabel(label: "Add schedule", number: 2),
                         const SizedBox(height: 15),
                         formField2(extraData),
                         const SizedBox(height: 15),
@@ -154,9 +190,9 @@ class _AddShiftFormState extends State<AddShiftForm> {
                                         builder: (context) =>
                                             CancelRequestDialog(
                                           isLoading: isLoading,
-                                          title: "Cancel Change Schedule",
+                                          title: "Cancel Add Schedule",
                                           subTitle:
-                                              "Are you sure you want to cancel your change schedule request?\n This action cannot be undone.",
+                                              "Are you sure you want to cancel your add schedule request?\n This action cannot be undone.",
                                           onPressed: () {
                                             if (_addShiftController
                                                 .isLoading.isFalse) {
