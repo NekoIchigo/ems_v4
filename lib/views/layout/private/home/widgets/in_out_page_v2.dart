@@ -681,14 +681,14 @@ class _InOutPageV2State extends State<InOutPageV2> {
                             ),
                           ),
                         ),
-                        Visibility(
-                          visible: _announcement.isLoading.isTrue,
-                          child: const SizedBox(
-                            width: 15,
-                            height: 15,
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
+                        // Visibility(
+                        //   visible: _announcement.isLoading.isTrue,
+                        //   child: const SizedBox(
+                        //     width: 15,
+                        //     height: 15,
+                        //     child: CircularProgressIndicator(),
+                        //   ),
+                        // )
                         // Icon(Icons.keyboard_arrow_down_rounded)
                       ],
                     );

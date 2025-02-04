@@ -34,7 +34,10 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
             showIndicator:
                 _announcementController.postedAnnouncements.length > 1,
             enableInfiniteScroll: false,
-            slideIndicator: CircularSlideIndicator(),
+            slideIndicator: CircularSlideIndicator(
+              slideIndicatorOptions: const SlideIndicatorOptions(
+                  indicatorBackgroundColor: bgPrimaryBlue),
+            ),
             autoPlay: _announcementController.postedAnnouncements.length > 1,
             autoPlayAnimationDuration: const Duration(seconds: 3),
           ),
