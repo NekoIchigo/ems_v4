@@ -42,7 +42,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
     super.initState();
     _homeController.isLoading.value = false;
     currentTime = _settings.currentTime.value;
-    date = DateFormat("MMMM dd, y, EEEE").format(currentTime);
+    date = DateFormat("MMM dd, y, EEEE").format(currentTime);
     greetings = _dateTimeUtils.getGreeting(currentTime.hour);
   }
 
