@@ -129,6 +129,8 @@ class HomeController extends GetxController {
             int.parse(attendance.value.scheduleId ?? "0") == scheduleId1.value;
         isSecondShiftComplete.value = isClockInOutComplete.isTrue &&
             int.parse(attendance.value.scheduleId ?? "0") == scheduleId2.value;
+      } else if (data['attendance_record'] != null) {
+        attendance = AttendanceRecord.fromJson(data['attendance_record']).obs;
       } else {
         attendance = AttendanceRecord().obs;
       }
