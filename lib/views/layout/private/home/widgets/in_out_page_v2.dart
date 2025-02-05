@@ -102,7 +102,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
                     Text(
                       DateFormat("hh:mm a").format(_settings.currentTime.value),
                       style: const TextStyle(
-                        color: Color.fromARGB(255, 208, 205, 205),
+                        color: Colors.white,
                         fontWeight: FontWeight.w600,
                         fontSize: 32,
                       ),
