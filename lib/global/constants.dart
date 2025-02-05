@@ -92,6 +92,16 @@ const TextStyle smallWhiteStyle = TextStyle(
   fontSize: 13,
 );
 
+const TextStyle xsmallStyle = TextStyle(
+  color: gray700,
+  fontSize: 11,
+);
+
+const TextStyle xsmallWhiteStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 11,
+);
+
 const TextStyle mediumStyle = TextStyle(
   color: gray700,
   fontSize: 16,

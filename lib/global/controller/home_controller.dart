@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ems_v4/global/controller/auth_controller.dart';
 import 'package:ems_v4/global/controller/time_entries_controller.dart';
 import 'package:ems_v4/global/api.dart';
@@ -93,6 +95,7 @@ class HomeController extends GetxController {
       apiUrl: '/mobile/check-shift/1',
       catchError: (error) => isGettingStarted.value = false,
     );
+    log(result.toString());
     if (result.containsKey('success') && result['success']) {
       var data = result['data'];
 
@@ -126,9 +129,11 @@ class HomeController extends GetxController {
         attendance =
             AttendanceRecord.fromJson(data['current_attendance_record']).obs;
         isFirstShiftComplete.value = isClockInOutComplete.isTrue &&
-            int.parse(attendance.value.scheduleId ?? "0") == scheduleId1.value;
+            (int.tryParse(attendance.value.scheduleId ?? "0") ?? 0) ==
+                scheduleId1.value;
         isSecondShiftComplete.value = isClockInOutComplete.isTrue &&
-            int.parse(attendance.value.scheduleId ?? "0") == scheduleId2.value;
+            (int.tryParse(attendance.value.scheduleId ?? "0") ?? 0) ==
+                scheduleId2.value;
       } else if (data['attendance_record'] != null) {
         attendance = AttendanceRecord.fromJson(data['attendance_record']).obs;
       } else {
