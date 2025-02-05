@@ -34,7 +34,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
       Get.find<AnnouncementController>();
   final DateTimeUtils _dateTimeUtils = DateTimeUtils();
   late DateTime currentTime;
-  late String date, greetings;
+  late String date, greetings, dateDay;
   String? reasonError, shiftId = "";
 
   @override
@@ -42,7 +42,8 @@ class _InOutPageV2State extends State<InOutPageV2> {
     super.initState();
     _homeController.isLoading.value = false;
     currentTime = _settings.currentTime.value;
-    date = DateFormat("MMMM dd, y, EEEE").format(currentTime);
+    date = DateFormat("MM/dd/yyyy").format(currentTime);
+    dateDay = DateFormat("EEEE").format(currentTime);
     greetings = _dateTimeUtils.getGreeting(currentTime.hour);
   }
 
@@ -87,6 +88,7 @@ class _InOutPageV2State extends State<InOutPageV2> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 10),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -105,18 +107,24 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         fontSize: 32,
                       ),
                     ),
-                    const SizedBox(width: 25),
+                    const SizedBox(width: 15),
                     Container(
                       color: Colors.white,
                       width: 1,
                       height: 50,
                     ),
-                    const SizedBox(width: 25),
-                    Expanded(
-                      child: Text(
-                        date,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                    const SizedBox(width: 15),
+                    Column(
+                      children: [
+                        Text(
+                          date,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          dateDay,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -418,17 +426,17 @@ class _InOutPageV2State extends State<InOutPageV2> {
               }).toList(),
             ),
           ),
-          Visibility(
-            visible: _homeController.hasSecondShift.isTrue &&
-                _homeController.isClockOut.isTrue,
-            child: const Padding(
-              padding: EdgeInsets.only(top: 8.0),
-              child: Text(
-                "To see your other shift, you must clock out this shift.",
-                style: smallStyle,
-              ),
-            ),
-          )
+          // Visibility(
+          //   visible: _homeController.hasSecondShift.isTrue &&
+          //       _homeController.isClockOut.isTrue,
+          //   child: const Padding(
+          //     padding: EdgeInsets.only(top: 8.0),
+          //     child: Text(
+          //       "To see your other shift, you must clock out this shift.",
+          //       style: smallStyle,
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -513,13 +521,13 @@ class _InOutPageV2State extends State<InOutPageV2> {
                         ),
                         Text(
                           '${data['first_shift']['work_start']} to ${data['first_shift']['work_end']}, Restday ${firstShiftRestday.toString()}',
-                          style: isToday ? smallWhiteStyle : smallStyle,
+                          style: isToday ? xsmallWhiteStyle : xsmallStyle,
                         ),
                         Visibility(
                           visible: data['second_shift'] != null,
                           child: Text(
                             '${data['second_shift']?['work_start']} to ${data['second_shift']?['work_end']}, Restday ${secondShiftRestday.toString()}',
-                            style: isToday ? smallWhiteStyle : smallStyle,
+                            style: isToday ? xsmallWhiteStyle : xsmallStyle,
                           ),
                         ),
                       ],
