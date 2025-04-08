@@ -33,6 +33,10 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>This app use optional local authentication to login.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app use location for clock-in and clock-out.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app use optional microphone for app use.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To ensure precise time and attendance records, please turn on location service. 
 	This allows our app to accurately log your location when cloking in and out.</string>
